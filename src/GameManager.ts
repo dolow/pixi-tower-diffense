@@ -14,25 +14,29 @@ export default class GameManager {
   }
 
   public static start(initialScene: Scene, params: { width: number, height: number, option?: PIXI.ApplicationOptions }): void {
-    GameManager.instance.pixiApp = new PIXI.Application(params.width, params.height, params.option);
-    document.body.appendChild(GameManager.instance.pixiApp.view);
+    const instance = GameManager.instance;
 
-    GameManager.instance.loadScene(initialScene);
+    instance.pixiApp = new PIXI.Application(params.width, params.height, params.option);
+    document.body.appendChild(instance.pixiApp.view);
 
-    GameManager.instance.pixiApp.ticker.add((delta: number) => {
-      if (GameManager.instance.currentScene) {
-        GameManager.instance.currentScene.update(delta);
+    GameManager.loadScene(initialScene);
+
+    instance.pixiApp.ticker.add((delta: number) => {
+      if (instance.currentScene) {
+        instance.currentScene.update(delta);
       }
     });
   }
 
-  public loadScene(scene: Scene): void {
-    if (this.currentScene) {
-      this.currentScene.destroy();
+  public static loadScene(scene: Scene): void {
+    const instance = GameManager.instance;
+
+    if (instance.currentScene) {
+      instance.currentScene.destroy();
     }
-    this.currentScene = scene;
-    if (this.pixiApp) {
-      this.pixiApp.stage.addChild(this.currentScene);
+    instance.currentScene = scene;
+    if (instance.pixiApp) {
+      instance.pixiApp.stage.addChild(instance.currentScene);
     }
   }
 }

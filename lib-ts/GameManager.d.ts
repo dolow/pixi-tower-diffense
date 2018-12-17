@@ -10,5 +10,5 @@ export default class GameManager {
         height: number;
         option?: PIXI.ApplicationOptions;
     }): void;
-    loadScene(scene: Scene): void;
+    static loadScene(scene: Scene): void;
 }
