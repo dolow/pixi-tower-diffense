@@ -7,7 +7,8 @@
     "build:develop": "webpack --mode development",
     "build:production": "webpack --mode production",
     "build:docs": "typedoc 'src/'",
-    "workflow:build": "npm run build:develop && npm run build:production && npm run build:docs"
+    "workflow:build": "npm run build:develop && npm run build:production && npm run build:docs",
+    "server": "webpack-dev-server"
   },
   "author": "Smith",
   "license": "MIT",
@@ -29,7 +30,8 @@
     "typedoc": "^0.13.0",
     "typescript": "^3.2.2",
     "webpack": "^4.27.1",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
     "pixi.js": "^4.8.3"

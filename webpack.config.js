@@ -1,13 +1,6 @@
 const webpack = require('webpack');
 const path    = require('path');
 
-const plugins = [
-  // compressing
-  new webpack.optimize.OccurrenceOrderPlugin(),
-  // compressing
-  new webpack.optimize.AggressiveMergingPlugin()
-];
-
 module.exports = (env, argv) => {
   const mode = process.env.NODE_ENV || process.env.WEBPACK_ENV || argv.mode || 'development';
 
@@ -20,12 +13,13 @@ module.exports = (env, argv) => {
     output: {
       path: path.join(__dirname, 'lib'),
       filename: (mode === 'production')
-        ? 'scene-graph-mediator-rt.min.js'
-        : 'scene-graph-mediator-rt.js',
-      library: 'scene-graph-mediator-rt',
+        ? 'tower-diffence.min.js'
+        : 'tower-diffence.js',
+      library: 'tower-diffence',
       libraryTarget: 'umd'
     },
 
+    // typescript transpiling files
     module: {
       rules: [
         {
@@ -38,8 +32,9 @@ module.exports = (env, argv) => {
       ]
     },
 
+    // binding files
     resolve: {
-      extensions: ['.ts'],
+      extensions: ['.js', '.ts'],
       modules: [
         path.resolve(__dirname, 'src'),
         "node_modules"
@@ -51,6 +46,16 @@ module.exports = (env, argv) => {
     },
 
     devtool: (mode === 'production') ? false : 'source-map',
-    plugins: plugins
+
+    plugins: [
+      new webpack.optimize.OccurrenceOrderPlugin(),
+      new webpack.optimize.AggressiveMergingPlugin()
+    ],
+
+    devServer: {
+      contentBase: path.join(__dirname, 'www'),
+      compress: true,
+      port: 8080
+    }
   }
 };
