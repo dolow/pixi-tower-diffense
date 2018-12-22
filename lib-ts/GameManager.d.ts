@@ -2,10 +2,10 @@ import * as PIXI from 'pixi.js';
 import Scene from './scenes/Scene';
 export default class GameManager {
     static instance: GameManager;
-    private pixiApp?;
+    game: PIXI.Application;
     private currentScene?;
-    constructor();
-    static start(initialScene: Scene, params: {
+    constructor(app: PIXI.Application);
+    static start(params: {
         width: number;
         height: number;
         option?: PIXI.ApplicationOptions;

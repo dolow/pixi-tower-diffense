@@ -1,6 +1,4 @@
-import Scene from './Scene';
+import Scene from 'scenes/Scene';
 export default class TitleScene extends Scene {
-    private text;
-    constructor();
-    private onGameStartTapped;
+    onGameStartTapped(): void;
 }

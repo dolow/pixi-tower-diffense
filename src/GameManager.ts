@@ -4,41 +4,77 @@ import Scene from './scenes/Scene';
 export default class GameManager {
   public static instance: GameManager;
 
-  private pixiApp?: PIXI.Application;
+  public game!: PIXI.Application;
   private currentScene?: Scene;
 
-  constructor() {
+  constructor(app: PIXI.Application) {
     if (GameManager.instance) {
       throw new Error('GameManager can be instantiate only once');
     }
+
+    this.game = app;
   }
 
-  public static start(initialScene: Scene, params: { width: number, height: number, option?: PIXI.ApplicationOptions }): void {
-    const instance = GameManager.instance;
+  public static start(params: { width: number, height: number, option?: PIXI.ApplicationOptions }): void {
+    const game = new PIXI.Application(params.width, params.height, params.option);
+    GameManager.instance = new GameManager(game);
+    document.body.appendChild(GameManager.instance.game.view);
 
-    instance.pixiApp = new PIXI.Application(params.width, params.height, params.option);
-    document.body.appendChild(instance.pixiApp.view);
-
-    GameManager.loadScene(initialScene);
-
-    instance.pixiApp.ticker.add((delta: number) => {
-      if (instance.currentScene) {
-        instance.currentScene.update(delta);
+    GameManager.instance.game.ticker.add((delta: number) => {
+      if (GameManager.instance.currentScene) {
+        GameManager.instance.currentScene.update(delta);
       }
     });
   }
 
-  public static loadScene(scene: Scene): void {
+  public static sceneResourceLoaded:        boolean = true;
+  public static sceneTransitionOutFinished: boolean = true;
+
+  public static get isSceneLoading(): boolean {
+    return (!GameManager.sceneResourceLoaded || !GameManager.sceneTransitionOutFinished);
+  }
+
+  public static replaceSceneIfPossible(newScene: Scene): boolean {
+    if (GameManager.isSceneLoading) {
+      return false;
+    }
+
     const instance = GameManager.instance;
 
     if (instance.currentScene) {
       instance.currentScene.destroy();
     }
-    instance.currentScene = scene;
-    if (instance.pixiApp) {
-      instance.pixiApp.stage.addChild(instance.currentScene);
+    instance.currentScene = newScene;
+
+    if (instance.game) {
+      instance.game.stage.addChild(newScene);
+    }
+
+    newScene.beginTransitionIn((_: Scene) => {});
+
+    return true;
+  }
+
+  public static loadScene(newScene: Scene): void {
+    const instance = GameManager.instance;
+
+    if (!instance.currentScene) {
+      GameManager.sceneTransitionOutFinished = true;
+      newScene.loadResource(() => {
+        GameManager.sceneResourceLoaded = true;
+        GameManager.replaceSceneIfPossible(newScene);
+      });
+    } else {
+      GameManager.sceneResourceLoaded = false;
+      GameManager.sceneTransitionOutFinished = false;
+      newScene.loadResource(() => {
+        GameManager.sceneResourceLoaded = true;
+        GameManager.replaceSceneIfPossible(newScene);
+      });
+      instance.currentScene.beginTransitionOut((_: Scene) => {
+        GameManager.sceneTransitionOutFinished = true;
+        GameManager.replaceSceneIfPossible(newScene);
+      });
     }
   }
 }
-
-GameManager.instance = new GameManager();

@@ -1,12 +1,14 @@
-import TitleScene from './scenes/TitleScene';
-import GameManager from './GameManager';
+import TitleScene from 'scenes/TitleScene';
+import GameManager from 'GameManager';
 
 window.onload = () => {
-  GameManager.start(new TitleScene(), {
-    width: 640,
-    height: 1136,
+  GameManager.start({
+    width: 1136,
+    height: 640,
     option: {
       backgroundColor: 0x222222
     }
   });
+
+  GameManager.loadScene(new TitleScene());
 };

@@ -11,7 +11,7 @@ module.exports = (env, argv) => {
     },
 
     output: {
-      path: path.join(__dirname, 'lib'),
+      path: path.join(__dirname, 'www'),
       filename: (mode === 'production')
         ? 'tower-diffence.min.js'
         : 'tower-diffence.js',
