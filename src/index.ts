@@ -1,5 +1,5 @@
 import TitleScene from 'scenes/TitleScene';
-import GameManager from 'GameManager';
+import GameManager from 'managers/GameManager';
 
 window.onload = () => {
   GameManager.start({
@@ -11,4 +11,8 @@ window.onload = () => {
   });
 
   GameManager.loadScene(new TitleScene());
+
+  Debug: {
+    (window as any).GameManager = GameManager;
+  }
 };

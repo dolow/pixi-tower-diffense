@@ -8,6 +8,7 @@ import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 export default abstract class Scene extends PIXI.Container {
   protected hasSceneUiGraph: boolean = true;
   protected uiGraph!: { [key: string]: PIXI.Container };
+  protected uiGraphContainer: PIXI.Container = new PIXI.Container();
 
   constructor() {
     super();
@@ -32,6 +33,7 @@ export default abstract class Scene extends PIXI.Container {
 
     if (assets.length <= 0) {
       onResourceLoaded();
+      this.onResourceLoaded();
       return;
     }
 
@@ -43,8 +45,12 @@ export default abstract class Scene extends PIXI.Container {
         }
 
         onResourceLoaded();
+        this.onResourceLoaded();
       }
     );
+  }
+
+  protected onResourceLoaded(): void {
   }
 
   protected createResourceList(): LoaderAddParam[] {
@@ -79,7 +85,7 @@ export default abstract class Scene extends PIXI.Container {
       }
 
       this.uiGraph[nodeData.id] = node;
-      this.addChild(node);
+      this.uiGraphContainer.addChild(node);
     }
   }
 

@@ -44116,10 +44116,600 @@ var Config = Object.freeze({
 
 /***/ }),
 
-/***/ "./src/GameManager.ts":
-/*!****************************!*\
-  !*** ./src/GameManager.ts ***!
-  \****************************/
+/***/ "./src/ResourceMaster.ts":
+/*!*******************************!*\
+  !*** ./src/ResourceMaster.ts ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! Config */ "./src/Config.ts");
+
+var ResourceMaster = Object.freeze({
+    UnitAnimationTypes: Object.freeze({
+        WAIT: 'wait',
+        WALK: 'walk',
+        ATTACK: 'attack',
+        DAMAGE: 'damage',
+        DYING: 'dying'
+    }),
+    SceneUiGraph: function (scene) {
+        var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
+        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
+    },
+    UnitMasterEntryPoint: function () {
+        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json";
+    },
+    UnitMaster: function (unitIds) {
+        var joinedUnitIds = unitIds.join('&unitId[]=');
+        return ResourceMaster.UnitMasterEntryPoint() + "?unitId[]=" + joinedUnitIds;
+    },
+    UnitTexture: function (unitId) {
+        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
+    },
+    UnitPanelTexture: function (unitId) {
+        if (unitId <= 0) {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_empty.png";
+        }
+        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + unitId + ".png";
+    },
+    BattleBgForeTileCount: 10,
+    BattleBgFore: function () {
+        var list = [];
+        for (var i = 1; i <= ResourceMaster.BattleBgForeTileCount; i++) {
+            list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_" + i + ".png");
+        }
+        return list;
+    },
+    UnitTextureFrameName: function (unitActionType, unitId, index) {
+        return "unit_" + unitId + "_" + unitActionType + "_" + index + ".png";
+    }
+});
+/* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/Background.ts":
+/*!******************************************!*\
+  !*** ./src/display/battle/Background.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var Background = /** @class */ (function (_super) {
+    __extends(Background, _super);
+    function Background() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Background, "resourceList", {
+        get: function () {
+            if (Background.resourceListCache.length === 0) {
+                var tiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgFore();
+                for (var i = 0; i < tiles.length; i++) {
+                    Background.resourceListCache.push(tiles[i]);
+                }
+            }
+            return Background.resourceListCache;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Background.prototype.init = function () {
+        var list = Background.resourceList;
+        var x = 0;
+        for (var i = 0; i < list.length; i++) {
+            var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[list[i]].texture;
+            var sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
+            sprite.position.x = x;
+            x += sprite.width;
+            this.addChild(sprite);
+        }
+    };
+    Background.resourceListCache = [];
+    return Background;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+/* harmony default export */ __webpack_exports__["default"] = (Background);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/UnitButton.ts":
+/*!******************************************!*\
+  !*** ./src/display/battle/UnitButton.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var UnitButton = /** @class */ (function (_super) {
+    __extends(UnitButton, _super);
+    function UnitButton() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.slotIndex = -1;
+        _this.unitId = -1;
+        return _this;
+    }
+    return UnitButton;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]));
+/* harmony default export */ __webpack_exports__["default"] = (UnitButton);
+
+
+/***/ }),
+
+/***/ "./src/entity/actor/Unit.ts":
+/*!**********************************!*\
+  !*** ./src/entity/actor/Unit.ts ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var UnitEntity = /** @class */ (function () {
+    function UnitEntity(master, isPlayer) {
+        // dynamic data
+        this.id = 0;
+        this.isPlayer = true;
+        // dynamic data
+        this.currentHealth = 0;
+        this.state = 0;
+        // data for pixi object
+        this.currentAnimationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes.WAIT;
+        this.currentAnimationFrame = 0;
+        this.currentAnimationTime = 0;
+        this.master = master;
+        this.isPlayer = isPlayer;
+    }
+    return UnitEntity;
+}());
+var Unit = /** @class */ (function (_super) {
+    __extends(Unit, _super);
+    function Unit(master, ally) {
+        var _this = _super.call(this, master, ally) || this;
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
+        return _this;
+    }
+    Unit.prototype.isAlly = function (target) {
+        return ((this.isPlayer && target.isPlayer) ||
+            (!this.isPlayer && !target.isPlayer));
+    };
+    Unit.prototype.isFoe = function (target) {
+        return ((this.isPlayer && !target.isPlayer) ||
+            (!this.isPlayer && target.isPlayer));
+    };
+    Unit.prototype.isHitFrame = function () {
+        return this.currentAnimationFrame === this.hitFrame;
+    };
+    Unit.prototype.damage = function (value) {
+        this.currentHealth -= value;
+        return this.currentHealth;
+    };
+    Object.defineProperty(Unit.prototype, "animationType", {
+        get: function () {
+            return this.currentAnimationType;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "animationFrame", {
+        get: function () {
+            return this.currentAnimationFrame;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "animationTime", {
+        get: function () {
+            return this.currentAnimationTime;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "unitId", {
+        get: function () {
+            return this.master.unitId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "cost", {
+        get: function () {
+            return this.master.cost;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "maxHealth", {
+        get: function () {
+            return this.master.maxHealth;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "power", {
+        get: function () {
+            return this.master.power;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "speed", {
+        get: function () {
+            return this.master.speed;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "wieldFrames", {
+        get: function () {
+            return this.master.wieldFrames;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Unit.prototype, "hitFrame", {
+        get: function () {
+            return this.master.hitFrame;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Unit.prototype.getAnimationMaxFrameIndex = function (type) {
+        return this.master.animationMaxFrameIndexes[type];
+    };
+    Unit.prototype.getAnimationUpdateDuration = function (type) {
+        return this.master.animationUpdateDurations[type];
+    };
+    Unit.prototype.getAnimationMaxFrameTime = function (type) {
+        if (type === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes.DYING) {
+            // TODO
+            return 1;
+        }
+        return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
+    };
+    Unit.prototype.isFoeContact = function (target) {
+        return (this.isPlayer)
+            ? (this.sprite.position.x + this.sprite.width) <= target.sprite.position.x
+            : (this.sprite.position.x - target.sprite.width) >= target.sprite.position.x;
+    };
+    Unit.prototype.setAnimationType = function (type, keepIndex) {
+        if (keepIndex === void 0) { keepIndex = false; }
+        if (this.currentAnimationType === type) {
+            return;
+        }
+        this.currentAnimationType = type;
+        if (!keepIndex) {
+            this.currentAnimationFrame = 1;
+        }
+    };
+    Unit.prototype.updateAnimation = function () {
+        this.currentAnimationTime++;
+        var type = this.currentAnimationType;
+        if (this.currentAnimationTime % this.getAnimationUpdateDuration(type) !== 0) {
+            return;
+        }
+        this.currentAnimationFrame++;
+        var animationMaxFrameTime = this.getAnimationMaxFrameTime(type);
+        if (this.currentAnimationTime >= animationMaxFrameTime) {
+            this.currentAnimationTime = 1;
+            this.currentAnimationFrame = 1;
+        }
+        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitTextureFrameName(type, this.unitId, this.currentAnimationFrame);
+        this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[name];
+    };
+    return Unit;
+}(UnitEntity));
+/* harmony default export */ __webpack_exports__["default"] = (Unit);
+
+
+/***/ }),
+
+/***/ "./src/enum/UnitState.ts":
+/*!*******************************!*\
+  !*** ./src/enum/UnitState.ts ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var UnitState = Object.freeze({
+    IDLE: 1,
+    LOCKED: 2,
+    DYING: 3,
+    DEAD: 4
+});
+/* harmony default export */ __webpack_exports__["default"] = (UnitState);
+
+
+/***/ }),
+
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+
+
+window.onload = function () {
+    managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].start({
+        width: 1136,
+        height: 640,
+        option: {
+            backgroundColor: 0x222222
+        }
+    });
+    managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_0__["default"]());
+    Debug: {
+        window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"];
+    }
+};
+
+
+/***/ }),
+
+/***/ "./src/managers/BattleManager.ts":
+/*!***************************************!*\
+  !*** ./src/managers/BattleManager.ts ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
+/* harmony import */ var entity_actor_Unit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! entity/actor/Unit */ "./src/entity/actor/Unit.ts");
+
+
+
+var INVALID_UNIT_ID = -1;
+var BattleManager = /** @class */ (function () {
+    function BattleManager() {
+        this.costRecoveryPerFrame = 0;
+        this.maxAvailableCost = 100;
+        this.onUnitsSpawned = function (_) { };
+        this.onAvailableCostUpdated = function (_) { };
+        this.currentAvailableCost = 0;
+        this.units = [];
+        this.unitMasterCache = new Map();
+        this.requestedSpawnUnitIds = [];
+    }
+    BattleManager.prototype.updateAvailableCost = function (newCost) {
+        if (newCost > this.maxAvailableCost) {
+            newCost = this.maxAvailableCost;
+        }
+        this.currentAvailableCost = newCost;
+        this.onAvailableCostUpdated(this.currentAvailableCost);
+        return this.currentAvailableCost;
+    };
+    BattleManager.prototype.setUnitDataMaster = function (unitMaster) {
+        this.unitMasterCache.clear();
+        for (var i = 0; i < unitMaster.length; i++) {
+            var master = unitMaster[i];
+            this.unitMasterCache.set(master.unitId, master);
+        }
+    };
+    BattleManager.prototype.requestSpawn = function (unitId, isPlayer) {
+        this.requestedSpawnUnitIds.push({ unitId: unitId, isPlayer: isPlayer });
+    };
+    BattleManager.prototype.requestSpawnPlayer = function (unitId) {
+        this.requestSpawn(unitId, true);
+    };
+    BattleManager.prototype.requestSpawnAI = function (unitId) {
+        this.requestSpawn(unitId, false);
+    };
+    BattleManager.prototype.trySpawn = function (unitId, isPlayer) {
+        var master = this.unitMasterCache.get(unitId);
+        if (!master || this.currentAvailableCost < master.cost) {
+            return null;
+        }
+        this.updateAvailableCost(this.currentAvailableCost - master.cost);
+        var unit = new entity_actor_Unit__WEBPACK_IMPORTED_MODULE_2__["default"](master, isPlayer);
+        unit.id = this.units.length;
+        unit.currentHealth = unit.maxHealth;
+        unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
+        this.units.push(unit);
+        return unit;
+    };
+    BattleManager.prototype.isDied = function (unit) {
+        return unit.id === INVALID_UNIT_ID;
+    };
+    BattleManager.prototype.die = function (unit) {
+        unit.id = INVALID_UNIT_ID;
+        if (unit.sprite) {
+            unit.sprite.destroy();
+        }
+    };
+    BattleManager.prototype.update = function (_delta) {
+        this.updateAvailableCost(this.currentAvailableCost + this.costRecoveryPerFrame);
+        this.updateSpawn();
+        // update units
+        for (var i = 0; i < this.units.length;) {
+            var unit = this.units[i];
+            switch (unit.state) {
+                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE: {
+                    var direction = unit.isPlayer ? 1 : -1;
+                    unit.sprite.position.x += unit.speed * direction;
+                    break;
+                }
+                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED: {
+                    if (!unit.isHitFrame()) {
+                        break;
+                    }
+                    for (var j = 0; j < this.units.length; j++) {
+                        var target = this.units[j];
+                        if (unit.isAlly(target) || !unit.isFoeContact(target)) {
+                            continue;
+                        }
+                        target.currentHealth -= unit.power;
+                    }
+                    break;
+                }
+                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING:
+                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD:
+                default: break;
+            }
+            unit.updateAnimation();
+            this.updateState(unit);
+            this.updateAnimateState(unit);
+            i++;
+        }
+        var newUnits = [];
+        for (var i = 0; i < this.units.length; i++) {
+            var unit = this.units[i];
+            if (!this.isDied(unit)) {
+                newUnits.push(unit);
+            }
+        }
+        this.units = newUnits;
+    };
+    BattleManager.prototype.updateState = function (unit) {
+        // DEAD > DYING > LOCKED > IDLE
+        if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD) {
+            return;
+        }
+        if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING) {
+            var maxAnimationTime = unit.getAnimationMaxFrameTime(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].UnitAnimationTypes.DYING);
+            if (unit.animationTime === maxAnimationTime) {
+                unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD;
+                this.die(unit);
+                return;
+            }
+        }
+        if (unit.currentHealth <= 0) {
+            unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING;
+            return;
+        }
+        var willLock = false;
+        for (var i = 0; i < this.units.length; i++) {
+            var target = this.units[i];
+            if (unit.isAlly(target)) {
+                continue;
+            }
+            if (unit.id === target.id) {
+                continue;
+            }
+            // wysiwyg collision box
+            if ((target.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE || target.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED) &&
+                unit.isFoeContact(target)) {
+                willLock = true;
+                break;
+            }
+        }
+        unit.state = (willLock) ? enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED : enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
+    };
+    BattleManager.prototype.updateAnimateState = function (unit) {
+        var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].UnitAnimationTypes;
+        switch (unit.state) {
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE:
+                unit.setAnimationType(animationTypes.WALK);
+                break;
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED:
+                unit.setAnimationType(animationTypes.ATTACK);
+                break;
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING:
+                unit.setAnimationType(animationTypes.DYING);
+                break;
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD:
+                unit.setAnimationType(animationTypes.DYING);
+                break;
+            default: break;
+        }
+    };
+    BattleManager.prototype.updateSpawn = function () {
+        if (this.requestedSpawnUnitIds.length === 0) {
+            return;
+        }
+        var spawnedUnits = [];
+        for (var i = 0; i < this.requestedSpawnUnitIds.length; i++) {
+            var reservedUnit = this.requestedSpawnUnitIds[i];
+            var unit = this.trySpawn(reservedUnit.unitId, reservedUnit.isPlayer);
+            if (unit) {
+                spawnedUnits.push(unit);
+            }
+        }
+        this.requestedSpawnUnitIds = [];
+        if (spawnedUnits.length === 0) {
+            return;
+        }
+        this.onUnitsSpawned(spawnedUnits);
+    };
+    return BattleManager;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (BattleManager);
+
+
+/***/ }),
+
+/***/ "./src/managers/GameManager.ts":
+/*!*************************************!*\
+  !*** ./src/managers/GameManager.ts ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44145,79 +44735,55 @@ var GameManager = /** @class */ (function () {
             }
         });
     };
-    GameManager.loadScene = function (scene) {
+    Object.defineProperty(GameManager, "isSceneLoading", {
+        get: function () {
+            return (!GameManager.sceneResourceLoaded || !GameManager.sceneTransitionOutFinished);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    GameManager.replaceSceneIfPossible = function (newScene) {
+        if (GameManager.isSceneLoading) {
+            return false;
+        }
         var instance = GameManager.instance;
         if (instance.currentScene) {
             instance.currentScene.destroy();
         }
-        instance.currentScene = scene;
+        instance.currentScene = newScene;
         if (instance.game) {
-            instance.game.stage.addChild(instance.currentScene);
+            instance.game.stage.addChild(newScene);
+        }
+        newScene.beginTransitionIn(function (_) { });
+        return true;
+    };
+    GameManager.loadScene = function (newScene) {
+        var instance = GameManager.instance;
+        if (instance.currentScene) {
+            GameManager.sceneResourceLoaded = false;
+            GameManager.sceneTransitionOutFinished = false;
+            newScene.loadResource(function () {
+                GameManager.sceneResourceLoaded = true;
+                GameManager.replaceSceneIfPossible(newScene);
+            });
+            instance.currentScene.beginTransitionOut(function (_) {
+                GameManager.sceneTransitionOutFinished = true;
+                GameManager.replaceSceneIfPossible(newScene);
+            });
+        }
+        else {
+            GameManager.sceneTransitionOutFinished = true;
+            newScene.loadResource(function () {
+                GameManager.sceneResourceLoaded = true;
+                GameManager.replaceSceneIfPossible(newScene);
+            });
         }
     };
+    GameManager.sceneResourceLoaded = true;
+    GameManager.sceneTransitionOutFinished = true;
     return GameManager;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (GameManager);
-
-
-/***/ }),
-
-/***/ "./src/ResourceMaster.ts":
-/*!*******************************!*\
-  !*** ./src/ResourceMaster.ts ***!
-  \*******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! Config */ "./src/Config.ts");
-
-var ResourceMaster = Object.freeze({
-    SceneUiGraph: function (scene) {
-        var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) {
-            return "_" + s.charAt(0).toLowerCase();
-        });
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
-    },
-    Unit: function (unitId) {
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
-    },
-    UnitPanel: function (unitId) {
-        if (unitId <= 0) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_empty.png";
-        }
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + unitId + ".png";
-    }
-});
-/* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
-
-
-/***/ }),
-
-/***/ "./src/index.ts":
-/*!**********************!*\
-  !*** ./src/index.ts ***!
-  \**********************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
-/* harmony import */ var GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! GameManager */ "./src/GameManager.ts");
-
-
-window.onload = function () {
-    GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].start({
-        width: 1136,
-        height: 640,
-        option: {
-            backgroundColor: 0x222222
-        }
-    });
-    GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_0__["default"]());
-};
 
 
 /***/ }),
@@ -44389,13 +44955,16 @@ var UiNodeFactory = /** @class */ (function () {
     };
     UiNodeFactory.prototype.attachUiEventByGraphElement = function (events, node, target) {
         node.interactive = true;
-        for (var i = 0; i < events.length; i++) {
+        var _loop_1 = function (i) {
             var event_1 = events[i];
             var fx = target[event_1.callback];
             if (!fx) {
-                continue;
+                return "continue";
             }
-            node.on(event_1.type, fx, target);
+            node.on(event_1.type, function () { return fx.call.apply(fx, [target].concat(event_1.arguments)); });
+        };
+        for (var i = 0; i < events.length; i++) {
+            _loop_1(i);
         }
     };
     return UiNodeFactory;
@@ -44417,7 +44986,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/UiNodeFactory/UiNodeFactory */ "./src/modules/UiNodeFactory/UiNodeFactory.ts");
-/* harmony import */ var nodes_battle_UnitButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! nodes/battle/UnitButton */ "./src/nodes/battle/UnitButton.ts");
+/* harmony import */ var display_battle_UnitButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! display/battle/UnitButton */ "./src/display/battle/UnitButton.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44446,51 +45015,11 @@ var UnitButtonFactory = /** @class */ (function (_super) {
                 texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[nodeParams.textureName];
             }
         }
-        return new nodes_battle_UnitButton__WEBPACK_IMPORTED_MODULE_2__["default"](texture);
+        return new display_battle_UnitButton__WEBPACK_IMPORTED_MODULE_2__["default"](texture);
     };
     return UnitButtonFactory;
 }(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (UnitButtonFactory);
-
-
-/***/ }),
-
-/***/ "./src/nodes/battle/UnitButton.ts":
-/*!****************************************!*\
-  !*** ./src/nodes/battle/UnitButton.ts ***!
-  \****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-var UnitButton = /** @class */ (function (_super) {
-    __extends(UnitButton, _super);
-    function UnitButton() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.slotIndex = -1;
-        _this.unitId = -1;
-        return _this;
-    }
-    return UnitButton;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]));
-/* harmony default export */ __webpack_exports__["default"] = (UnitButton);
 
 
 /***/ }),
@@ -44507,8 +45036,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var managers_BattleManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/BattleManager */ "./src/managers/BattleManager.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var display_battle_Background__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! display/battle/Background */ "./src/display/battle/Background.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44526,12 +45058,23 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+
+
+
 var debugMaxUnitCount = 5;
-var debugUnits = [1, -1, -1, -1, -1];
+var debugUnits = [1, -1, 3, -1, 5];
+var BattleState = Object.freeze({
+    LOADING_RESOURCES: 1,
+    READY: 2,
+    INGAME: 3,
+    FINISHED: 4
+});
 var BattleScene = /** @class */ (function (_super) {
     __extends(BattleScene, _super);
     function BattleScene() {
         var _this = _super.call(this) || this;
+        _this.pointerDownCount = 0;
+        _this.lastPointerPositionX = 0;
         Debug: {
             _this.maxUnitCount = debugMaxUnitCount;
             _this.unitIds = debugUnits;
@@ -44539,57 +45082,157 @@ var BattleScene = /** @class */ (function (_super) {
         if (_this.unitIds.length <= 0) {
             throw new Error('at lease one unit id is required.');
         }
-        _this.loadResource();
+        _this.interactive = true;
+        _this.on('pointerdown', function (e) { return _this.onPointerDown(e); });
+        _this.on('pointermove', function (e) { return _this.onPointerMove(e); });
+        _this.on('pointercancel', function (e) { return _this.onPointerUp(e); });
+        _this.on('pointerup', function (e) { return _this.onPointerUp(e); });
+        _this.on('pointerout', function (e) { return _this.onPointerUp(e); });
+        _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        _this.manager.onUnitsSpawned = function (units) { return _this.onGameMasterSpawnedUnits(units); };
+        _this.manager.onAvailableCostUpdated = function (units) { return _this.onGameMasterUpdatedCost(units); };
+        Debug: {
+            _this.manager.costRecoveryPerFrame = 1;
+            _this.manager.maxAvailableCost = 1000;
+        }
+        _this.state = BattleState.LOADING_RESOURCES;
+        _this.background = new display_battle_Background__WEBPACK_IMPORTED_MODULE_6__["default"]();
+        _this.unitButtons = [];
         return _this;
     }
+    BattleScene.prototype.onPointerDown = function (event) {
+        this.pointerDownCount++;
+        console.log("onPointerDown", this.pointerDownCount);
+        if (this.pointerDownCount === 1) {
+            this.lastPointerPositionX = event.data.global.x;
+        }
+    };
+    BattleScene.prototype.onPointerMove = function (event) {
+        if (this.pointerDownCount <= 0) {
+            return;
+        }
+        var xPos = event.data.global.x;
+        var newBackgroundPos = this.background.position.x + (xPos - this.lastPointerPositionX);
+        var maxLeft = 0;
+        var maxRight = -(this.background.width - managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.screen.width);
+        if (newBackgroundPos > maxLeft) {
+            newBackgroundPos = 0;
+        }
+        else if (newBackgroundPos < maxRight) {
+            newBackgroundPos = maxRight;
+        }
+        this.background.position.x = newBackgroundPos;
+        this.lastPointerPositionX = xPos;
+    };
+    BattleScene.prototype.onPointerUp = function (_) {
+        this.pointerDownCount--;
+        console.log("onPointerUp", this.pointerDownCount);
+        if (this.pointerDownCount < 0) {
+            this.pointerDownCount = 0;
+        }
+    };
     BattleScene.prototype.createResourceList = function () {
         var assets = _super.prototype.createResourceList.call(this);
         for (var i = 0; i < this.unitIds.length; i++) {
             var unitId = this.unitIds[i];
             if (unitId >= 0) {
-                var unitUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit(unitId);
-                var unitPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanel(unitId);
+                var unitUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitTexture(unitId);
+                var unitPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(unitId);
                 assets.push({ name: unitUrl, url: unitUrl });
                 assets.push({ name: unitPanelUrl, url: unitPanelUrl });
             }
         }
+        var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitMaster(this.unitIds);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitMasterEntryPoint(), url: unitMasterUrl });
         // load empty button
-        if (this.unitIds.length < this.maxUnitCount) {
-            var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanel(-1);
+        if (this.unitIds.indexOf(-1) >= 0) {
+            var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(-1);
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
+        }
+        var bgResources = display_battle_Background__WEBPACK_IMPORTED_MODULE_6__["default"].resourceList;
+        for (var i = 0; i < bgResources.length; i++) {
+            var bgResourceUrl = bgResources[i];
+            assets.push({ name: bgResourceUrl, url: bgResourceUrl });
         }
         return assets;
     };
     BattleScene.prototype.onResourceLoaded = function () {
+        var masterData = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitMasterEntryPoint()];
+        this.manager.setUnitDataMaster(masterData.data);
+        this.background.init();
+        this.addChild(this.background);
+        this.addChild(this.uiGraphContainer);
+        this.state = BattleState.READY;
+    };
+    BattleScene.prototype.update = function (delta) {
+        switch (this.state) {
+            case BattleState.LOADING_RESOURCES: break;
+            case BattleState.READY: {
+                this.state = BattleState.INGAME;
+                break;
+            }
+            case BattleState.INGAME: {
+                this.manager.update(delta);
+                break;
+            }
+        }
+    };
+    BattleScene.prototype.beginTransitionIn = function (onTransitionFinished) {
+        this.initUnitButtons(this.unitIds);
+        onTransitionFinished(this);
+    };
+    /**
+     * GameMaster events
+     */
+    BattleScene.prototype.onGameMasterSpawnedUnits = function (units) {
+        for (var i = 0; i < units.length; i++) {
+            var unit = units[i];
+            unit.sprite.position.y = 200 + Math.random() * 200;
+            this.background.addChild(unit.sprite);
+        }
+    };
+    BattleScene.prototype.onGameMasterUpdatedCost = function (cost) {
+        this.uiGraph.cost_text.text = "" + cost;
+    };
+    /**
+     * UnitButton event
+     */
+    BattleScene.prototype.onUnitButtonTapped = function (buttonIndex) {
+        if (this.state !== BattleState.INGAME) {
+            return;
+        }
+        this.manager.requestSpawnPlayer(this.unitButtons[buttonIndex].unitId);
+    };
+    BattleScene.prototype.initUnitButtons = function (unitIds) {
+        this.unitButtons = [];
         for (var unitButtonIndex = 0; unitButtonIndex < this.maxUnitCount; unitButtonIndex++) {
             var uiGraphUnitButtonName = "unit_button_" + (unitButtonIndex + 1);
             var unitButton = this.uiGraph[uiGraphUnitButtonName];
             if (!unitButton) {
                 continue;
             }
-            var unitId = this.unitIds[unitButtonIndex];
-            var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanel(unitId);
-            var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId].texture;
-            if (!texture) {
-                continue;
+            InitIndividual: {
+                var unitId = unitIds[unitButtonIndex];
+                var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(unitId);
+                var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId].texture;
+                if (!texture) {
+                    continue;
+                }
+                unitButton.slotIndex = unitButtonIndex;
+                unitButton.unitId = unitId;
+                unitButton.texture = texture;
             }
-            unitButton.slotIndex = unitButtonIndex;
-            unitButton.unitId = unitId;
-            unitButton.texture = texture;
+            this.unitButtons[unitButtonIndex] = unitButton;
         }
     };
     BattleScene.prototype.getCustomUiGraphFactory = function (type) {
-        var Factory = null;
-        switch (type) {
-            case 'unit_button': Factory = modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_3__["default"];
-        }
-        if (Factory) {
-            return new Factory();
+        if (type === 'unit_button') {
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__["default"]();
         }
         return null;
     };
     return BattleScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_2__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_4__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleScene);
 
 
@@ -44629,11 +45272,36 @@ var Scene = /** @class */ (function (_super) {
     function Scene() {
         var _this = _super.call(this) || this;
         _this.hasSceneUiGraph = true;
+        _this.uiGraphContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
         _this.uiGraph = {};
-        _this.loadResource();
         return _this;
     }
     Scene.prototype.update = function (_) {
+    };
+    Scene.prototype.beginTransitionIn = function (onTransitionFinished) {
+        onTransitionFinished(this);
+    };
+    Scene.prototype.beginTransitionOut = function (onTransitionFinished) {
+        onTransitionFinished(this);
+    };
+    Scene.prototype.loadResource = function (onResourceLoaded) {
+        var _this = this;
+        var assets = this.createResourceList();
+        if (assets.length <= 0) {
+            onResourceLoaded();
+            this.onResourceLoaded();
+            return;
+        }
+        pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(assets).load(function (_, resources) {
+            if (_this.hasSceneUiGraph) {
+                var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(_this);
+                _this.applySceneUiGraph(resources[sceneUiGraphName].data);
+            }
+            onResourceLoaded();
+            _this.onResourceLoaded();
+        });
+    };
+    Scene.prototype.onResourceLoaded = function () {
     };
     Scene.prototype.createResourceList = function () {
         if (this.hasSceneUiGraph) {
@@ -44643,21 +45311,6 @@ var Scene = /** @class */ (function (_super) {
             ];
         }
         return [];
-    };
-    Scene.prototype.loadResource = function () {
-        var _this = this;
-        var assets = this.createResourceList();
-        if (assets.length <= 0) {
-            this.onResourceLoaded();
-            return;
-        }
-        pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(assets).load(function (_, resources) {
-            if (_this.hasSceneUiGraph) {
-                var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(_this);
-                _this.applySceneUiGraph(resources[sceneUiGraphName].data);
-            }
-            _this.onResourceLoaded();
-        });
     };
     Scene.prototype.applySceneUiGraph = function (uiData) {
         for (var i = 0; i < uiData.nodes.length; i++) {
@@ -44677,10 +45330,8 @@ var Scene = /** @class */ (function (_super) {
                 factory.attachUiEventByGraphElement(nodeData.events, node, this);
             }
             this.uiGraph[nodeData.id] = node;
-            this.addChild(node);
+            this.uiGraphContainer.addChild(node);
         }
-    };
-    Scene.prototype.onResourceLoaded = function () {
     };
     Scene.prototype.getCustomUiGraphFactory = function (_type) {
         return null;
@@ -44701,7 +45352,7 @@ var Scene = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var GameManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! GameManager */ "./src/GameManager.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 /* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 /* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
@@ -44726,7 +45377,10 @@ var TitleScene = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TitleScene.prototype.onGameStartTapped = function () {
-        GameManager__WEBPACK_IMPORTED_MODULE_0__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__["default"]());
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_0__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__["default"]());
+    };
+    TitleScene.prototype.onResourceLoaded = function () {
+        this.addChild(this.uiGraphContainer);
     };
     return TitleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_1__["default"]));

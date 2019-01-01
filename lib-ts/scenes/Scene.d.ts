@@ -7,11 +7,14 @@ export default abstract class Scene extends PIXI.Container {
     protected uiGraph: {
         [key: string]: PIXI.Container;
     };
+    protected uiGraphContainer: PIXI.Container;
     constructor();
     update(_: number): void;
-    protected createResourceList(): LoaderAddParam[];
-    protected loadResource(): void;
-    protected applySceneUiGraph(uiData: UI.Graph): void;
+    beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void;
+    beginTransitionOut(onTransitionFinished: (scene: Scene) => void): void;
+    loadResource(onResourceLoaded: () => void): void;
     protected onResourceLoaded(): void;
+    protected createResourceList(): LoaderAddParam[];
+    protected applySceneUiGraph(uiData: UI.Graph): void;
     protected getCustomUiGraphFactory(_type: string): UiNodeFactory | null;
 }
