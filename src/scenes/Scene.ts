@@ -5,54 +5,72 @@ import * as UI from 'interfaces/UiGraph/index';
 import UiGraph from 'modules/UiGraph';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 
+/**
+ * ゲームシーンの抽象クラス
+ * UiGraph を利用して UI 情報を透過的に読み込み初期化する
+ * また、シーン間のトランジションイベントを提供する
+ * いずれのイベントも実装クラスにて独自処理の実装が可能
+ */
 export default abstract class Scene extends PIXI.Container {
+  /**
+   * UiGraph を利用して読み込む UI があるかどうか
+   */
   protected hasSceneUiGraph: boolean = true;
-  protected uiGraph!: { [key: string]: PIXI.Container };
+  /**
+   * UiGraph でロードされた UI データ
+   */
+  protected uiGraph: { [key: string]: PIXI.Container } = {};
+  /**
+   * UiGraph でロードされた UI データを配置するための PIXI.Container
+   * 描画順による前後関係を統制するために一つの Container にまとめる
+   */
   protected uiGraphContainer: PIXI.Container = new PIXI.Container();
 
-  constructor() {
-    super();
+  protected objectsToUpdate: { update: (delta: number) => void }[] = [];
 
-    this.uiGraph = {};
+  /**
+   * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
+   */
+  public update(delta: number): void {
+    this.updateRegisteredObjects(delta);
   }
 
-  public update(_: number): void {
-
+  protected registerUpdatingObject(object: { update: (delta: number) => void }): void {
+    this.objectsToUpdate.push(object);
   }
 
+  protected updateRegisteredObjects(delta: number): void {
+    for (let i = 0; i < this.objectsToUpdate.length;) {
+      const obj = this.objectsToUpdate[i];
+      if (!obj) {
+        this.objectsToUpdate = this.objectsToUpdate.splice(i, 1);
+        continue
+      }
+      this.objectsToUpdate[i].update(delta);
+      i++;
+    }
+  }
+
+  /**
+   * シーン追加トランジション開始
+   * 引数でトランジション終了時のコールバックを指定できる
+   */
   public beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void {
     onTransitionFinished(this);
   }
 
+  /**
+   * シーン削除トランジション開始
+   * 引数でトランジション終了時のコールバックを指定できる
+   */
   public beginTransitionOut(onTransitionFinished: (scene: Scene) => void): void {
     onTransitionFinished(this);
   }
 
-  public loadResource(onResourceLoaded: () => void): void {
-    const assets = this.createResourceList();
-
-    if (assets.length <= 0) {
-      onResourceLoaded();
-      this.onResourceLoaded();
-      return;
-    }
-
-    PIXI.loader.add(assets).load(
-      (_: PIXI.loaders.Loader, resources: { [key: string]: PIXI.loaders.Resource }) => {
-        if (this.hasSceneUiGraph) {
-          const sceneUiGraphName = ResourceMaster.SceneUiGraph(this);
-          this.applySceneUiGraph(resources[sceneUiGraphName].data);
-        }
-
-        onResourceLoaded();
-        this.onResourceLoaded();
-      }
-    );
-  }
-
-  protected onResourceLoaded(): void {
-  }
-
+  /**
+   * loadResource に用いるリソースリストを作成するメソッド
+   * デフォルトでは UiGraph のリソースリストを作成する
+   */
   protected createResourceList(): LoaderAddParam[] {
     if (this.hasSceneUiGraph) {
       const name = ResourceMaster.SceneUiGraph(this);
@@ -63,7 +81,39 @@ export default abstract class Scene extends PIXI.Container {
     return [];
   }
 
-  protected applySceneUiGraph(uiData: UI.Graph): void {
+  /**
+   * リソースをロードする
+   * デフォルトでは UiGraph 用の情報が取得される
+   */
+  public loadResource(onResourceLoaded: () => void): void {
+    const assets = this.createResourceList();
+    const pixiLoaderOnLoaded = () => {
+      onResourceLoaded();
+      this.onResourceLoaded();
+    };
+
+    if (assets.length <= 0) {
+      pixiLoaderOnLoaded();
+    } else {
+      PIXI.loader.add(assets).load(pixiLoaderOnLoaded);
+    }
+  }
+
+  /**
+   * loadResource 完了時のコールバックメソッド
+   */
+  protected onResourceLoaded(): void {
+    if (this.hasSceneUiGraph) {
+      const sceneUiGraphName = ResourceMaster.SceneUiGraph(this);
+      this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
+      this.addChild(this.uiGraphContainer);
+    }
+  }
+
+  /**
+   * UiGraph 用の PIXI.Container インスタンスに UiGraph 要素をロードする
+   */
+  protected prepareUiGraphContainer(uiData: UI.Graph): void {
     for (let i = 0; i < uiData.nodes.length; i++) {
       const nodeData = uiData.nodes[i];
 
@@ -89,6 +139,9 @@ export default abstract class Scene extends PIXI.Container {
     }
   }
 
+  /**
+   * UiGraph にシーン独自の要素を追加する場合にこのメソッドを利用する
+   */
   protected getCustomUiGraphFactory(_type: string): UiNodeFactory | null {
     return null;
   }

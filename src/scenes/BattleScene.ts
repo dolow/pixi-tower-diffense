@@ -1,110 +1,194 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
+import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
-import GameManager from 'managers/GameManager';
+import UnitState from 'enum/UnitState';
 import BattleManager from 'managers/BattleManager';
 import Scene from 'scenes/Scene';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
 import UnitButton from 'display/battle/UnitButton';
-import Unit from 'entity/actor/Unit';
-import Background from 'display/battle/Background';
+import Unit from 'display/battle/Unit';
+import Field from 'display/battle/Field';
+import Dead from 'display/battle/effect/Dead';
 
 const debugMaxUnitCount = 5;
+const debugField: number = 1;
+const debugStage: number = 1;
 const debugUnits: number[] = [1, -1, 3, -1, 5];
 
+/**
+ * BattleScene のステートのリスト
+ */
 const BattleState = Object.freeze({
   LOADING_RESOURCES: 1,
   READY: 2,
   INGAME: 3,
   FINISHED: 4
-})
+});
 
-export default class BattleScene extends Scene {
-  private maxUnitCount!: number;
+/**
+ * メインのゲーム部分のシーン
+ * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
+ */
+export default class BattleScene extends Scene implements BattleManagerDelegate {
+  /**
+   * 最大ユニット編成数
+   */
+  private maxUnitSlotCount!: number;
+  /**
+   * 利用するフィールドID
+   */
+  private fieldId!: number;
+  /**
+   * 挑戦するステージID
+   */
+  private stageId!: number;
+  /**
+   * 編成したユニットID配列
+   */
   private unitIds!: number[];
-
+  /**
+   * このシーンのステート
+   */
   private state!: number;
+  /**
+   * ゲームロジックを処理する BattleManager のインスタンス
+   */
   private manager!: BattleManager;
+  /**
+   * 背景の PIXI.Container
+   */
+  private field!: Field;
 
-  private background!: Background;
-  private unitButtons!: UnitButton[];
+  private destroyList: PIXI.Container[] = [];
+
+  /**
+   * 拠点の座標
+   */
+  private basePos = {
+    player: 0,
+    ai: 0
+  };
+
+  /**
+   * GameMasterDelegate 実装
+   * Unit が発生したときのコールバック
+   * Field に Unit のスプライトを追加する
+   */
+  public onUnitsSpawned(units: Unit[]): void {
+    for (let i = 0; i < units.length; i++) {
+      const unit = units[i];
+      if (unit.isPlayer) {
+        unit.sprite.position.x = this.basePos.player;
+      } else {
+        unit.sprite.position.x = this.basePos.ai;
+      }
+      unit.sprite.position.y = 200 + Math.random() * 100;
+      this.field.addChild(unit.sprite);
+    }
+  }
+
+  /**
+   * ユニットのステートが変更した際のコールバック
+   */
+  public onUnitStateChanged(unit: Unit, _oldState: number): void {
+    unit.resetAnimation();
+  }
+
+  /**
+   * GameMasterDelegate 実装
+   * Unit が更新されたときのコールバック
+   * Unit のアニメーションを更新する
+   */
+  public onUnitUpdated(unit: Unit): void {
+    const animationTypes = ResourceMaster.UnitAnimationTypes;
+    let animationType = null;
+
+    switch (unit.state) {
+      case UnitState.IDLE: {
+        animationType = animationTypes.WALK;
+        const direction = unit.isPlayer ? 1 : -1;
+        unit.sprite.position.x += unit.speed * direction;
+        break;
+      }
+      case UnitState.LOCKED: {
+        animationType = animationTypes.ATTACK;
+        break;
+      }
+      case UnitState.DEAD: {
+        const effect = new Dead(!unit.isPlayer);
+        effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
+        this.field.addChild(effect);
+        this.registerUpdatingObject(effect);
+
+        if (unit.sprite) {
+          this.destroyList.push(unit.sprite);
+        }
+        break;
+      }
+      default: break;
+    }
+
+    if (animationType) {
+      unit.updateAnimation(animationType);
+    }
+  }
+  /**
+   * GameMasterDelegate 実装
+   * 利用可能なコストの値が変動したときのコールバック
+   */
+  public onAvailableCostUpdated(cost: number): void {
+    (this.uiGraph.cost_text as PIXI.Text).text = `${cost}`;
+  }
+
+  /**
+   * GameMasterDelegate 実装
+   * 渡されたユニット同士が接敵可能か返す
+   */
+  public shouldLock(attacker: Unit, target: Unit): boolean {
+    return attacker.isFoeContact(target);
+  }
+
+  /**
+   * GameMasterDelegate 実装
+   * 渡されたユニット同士が攻撃可能か返す
+   */
+  public shouldDamage(attacker: Unit, target: Unit): boolean {
+    if (!attacker.isHitFrame()) {
+      return false;
+    }
+
+    return attacker.isFoeContact(target);
+  }
+
 
   constructor() {
     super();
 
-    Debug: {
-      this.maxUnitCount = debugMaxUnitCount;
-      this.unitIds = debugUnits;
-    }
-
-    if (this.unitIds.length <= 0) {
-      throw new Error('at lease one unit id is required.');
-    }
-
-    this.interactive = true;
-    this.on('pointerdown',   (e: PIXI.interaction.InteractionEvent) => this.onPointerDown(e));
-    this.on('pointermove',   (e: PIXI.interaction.InteractionEvent) => this.onPointerMove(e));
-    this.on('pointercancel', (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
-    this.on('pointerup',     (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
-    this.on('pointerout',    (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
-
+    // BattleManager インスタンスの作成とコールバックの登録
     this.manager = new BattleManager();
-    this.manager.onUnitsSpawned = (units) => this.onGameMasterSpawnedUnits(units);
-    this.manager.onAvailableCostUpdated = (units) => this.onGameMasterUpdatedCost(units);
+    this.manager.setDelegator(this);
+
+    // Background インスタンスの作成
+    this.field = new Field();
+    // デフォルトのシーンステート
+    this.state = BattleState.LOADING_RESOURCES;
 
     Debug: {
+      this.maxUnitSlotCount = debugMaxUnitCount;
+      this.fieldId = debugField;
+      this.stageId = debugStage;
+      this.unitIds = debugUnits;
       this.manager.costRecoveryPerFrame = 1;
       this.manager.maxAvailableCost     = 1000;
     }
-
-    this.state = BattleState.LOADING_RESOURCES;
-
-    this.background  = new Background();
-    this.unitButtons = [];
   }
 
-  private pointerDownCount: number = 0;
-  private lastPointerPositionX: number = 0;
-
-  private onPointerDown(event: PIXI.interaction.InteractionEvent): void {
-    this.pointerDownCount++;
-    console.log("onPointerDown", this.pointerDownCount);
-    if (this.pointerDownCount === 1) {
-      this.lastPointerPositionX = event.data.global.x;
-    }
-  }
-
-  private onPointerMove(event: PIXI.interaction.InteractionEvent): void {
-    if (this.pointerDownCount <= 0) {
-      return;
-    }
-
-    const xPos = event.data.global.x;
-
-    let newBackgroundPos = this.background.position.x + (xPos - this.lastPointerPositionX);
-
-    const maxLeft = 0;
-    const maxRight = -(this.background.width - GameManager.instance.game.screen.width);
-
-    if (newBackgroundPos > maxLeft) {
-      newBackgroundPos = 0;
-    } else if (newBackgroundPos < maxRight) {
-      newBackgroundPos = maxRight;
-    }
-
-    this.background.position.x = newBackgroundPos;
-    this.lastPointerPositionX = xPos;
-  }
-
-  private onPointerUp(_: PIXI.interaction.InteractionEvent): void {
-    this.pointerDownCount--;
-    console.log("onPointerUp", this.pointerDownCount);
-    if (this.pointerDownCount < 0) {
-      this.pointerDownCount = 0;
-    }
-  }
-
+  /**
+   * リソースリストの作成
+   * ユーザが選択したユニットとフィールドのリソース情報も加える
+   */
   protected createResourceList(): LoaderAddParam[] {
     const assets = super.createResourceList();
 
@@ -118,35 +202,85 @@ export default class BattleScene extends Scene {
       }
     }
 
-    const unitMasterUrl = ResourceMaster.UnitMaster(this.unitIds);
-    assets.push({ name: ResourceMaster.UnitMasterEntryPoint(), url: unitMasterUrl });
+    const fieldMasterUrl = ResourceMaster.Field(this.fieldId);
+    assets.push({ name: ResourceMaster.FieldEntryPoint(), url: fieldMasterUrl });
 
-    // load empty button
+    const aiWaveMasterUrl = ResourceMaster.AIWave(this.stageId);
+    assets.push({ name: ResourceMaster.AIWaveEntryPoint(), url: aiWaveMasterUrl });
+
+    const unitMasterUrl = ResourceMaster.Unit(this.unitIds);
+    assets.push({ name: ResourceMaster.UnitEntryPoint(), url: unitMasterUrl });
+
     if (this.unitIds.indexOf(-1) >= 0) {
       const emptyPanelUrl = ResourceMaster.UnitPanelTexture(-1);
       assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
     }
 
-    const bgResources = Background.resourceList;
-    for (let i = 0; i < bgResources.length; i++) {
-      const bgResourceUrl = bgResources[i];
+    const fieldResources = Field.resourceList;
+    for (let i = 0; i < fieldResources.length; i++) {
+      const bgResourceUrl = fieldResources[i];
       assets.push({ name: bgResourceUrl, url: bgResourceUrl });
+    }
+
+    const deadResources = Dead.resourceList;
+    for (let i = 0; i < deadResources.length; i++) {
+      const deadResourceUrl = deadResources[i];
+      assets.push({ name: deadResourceUrl, url: deadResourceUrl });
     }
 
     return assets;
   }
 
+  /**
+   * リソースロード完了コールバック
+   * BattleManager にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
+   */
   protected onResourceLoaded(): void {
-    const masterData = PIXI.loader.resources[ResourceMaster.UnitMasterEntryPoint()];
-    this.manager.setUnitDataMaster(masterData.data);
+    const resources = PIXI.loader.resources;
 
-    this.background.init();
-    this.addChild(this.background);
+    const sceneUiGraphName = ResourceMaster.SceneUiGraph(this);
+    this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
+
+    const fieldMaster = resources[ResourceMaster.FieldEntryPoint()];
+    this.basePos.player = fieldMaster.data.playerBasePosition;
+    this.basePos.ai     = fieldMaster.data.aiBasePosition;
+
+    const aiWaveMaster = resources[ResourceMaster.AIWaveEntryPoint()];
+    const unitMaster = resources[ResourceMaster.UnitEntryPoint()];
+
+    this.manager.init(aiWaveMaster.data, unitMaster.data);
+    this.field.init();
+
+    for (let index = 0; index < this.maxUnitSlotCount; index++) {
+      const unitButton = this.getUiGraphUnitButton(index);
+      if (!unitButton) {
+        continue;
+      }
+
+      unitButton.init(index, this.unitIds[index]);
+    }
+
+    this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
     this.state = BattleState.READY;
   }
 
+  /**
+   * 独自 UiGraph 要素のファクトリを返す
+   * BattleScene は UnitButton を独自で定義している
+   */
+  protected getCustomUiGraphFactory(type: string): UiNodeFactory | null {
+    if (type === 'unit_button') {
+      return new UnitButtonFactory();
+    }
+    return null;
+  }
+
+  /**
+   * 毎フレームの更新処理
+   * シーンのステートに応じて処理する
+   */
   public update(delta: number): void {
     switch (this.state) {
       case BattleState.LOADING_RESOURCES: break;
@@ -159,70 +293,36 @@ export default class BattleScene extends Scene {
         break;
       }
     }
-  }
 
-  public beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void {
-    this.initUnitButtons(this.unitIds);
+    this.updateRegisteredObjects(delta);
 
-    onTransitionFinished(this);
-  }
-
-  /**
-   * GameMaster events
-   */
-  private onGameMasterSpawnedUnits(units: Unit[]): void {
-    for (let i = 0; i < units.length; i++) {
-      const unit = units[i];
-      unit.sprite.position.y = 200 + Math.random() * 200;
-      this.background.addChild(unit.sprite);
+    for (let i = 0; i < this.destroyList.length; i++) {
+      this.destroyList[i].destroy();
     }
-  }
-  private onGameMasterUpdatedCost(cost: number): void {
-    (this.uiGraph.cost_text as PIXI.Text).text = `${cost}`;
+
+    this.destroyList = [];
   }
 
   /**
-   * UnitButton event
+   * UnitButton 用のコールバック
+   * タップされたボタンに応じたユニットの生成を BattleManager にリクエストする
    */
   public onUnitButtonTapped(buttonIndex: number): void {
     if (this.state !== BattleState.INGAME) {
       return;
     }
 
-    this.manager.requestSpawnPlayer(this.unitButtons[buttonIndex].unitId);
-  }
-
-  private initUnitButtons(unitIds: number[]): void {
-    this.unitButtons = [];
-
-    for (let unitButtonIndex = 0; unitButtonIndex < this.maxUnitCount; unitButtonIndex++) {
-      const uiGraphUnitButtonName = `unit_button_${unitButtonIndex+1}`;
-      const unitButton = this.uiGraph[uiGraphUnitButtonName] as UnitButton;
-      if (!unitButton) {
-        continue;
-      }
-
-      InitIndividual: {
-        const unitId     = unitIds[unitButtonIndex];
-        const resourceId = ResourceMaster.UnitPanelTexture(unitId);
-        const texture = PIXI.loader.resources[resourceId].texture;
-        if (!texture) {
-          continue;
-        }
-
-        unitButton.slotIndex = unitButtonIndex;
-        unitButton.unitId    = unitId;
-        unitButton.texture   = texture;
-      }
-
-      this.unitButtons[unitButtonIndex] = unitButton;
+    const unitButton = this.getUiGraphUnitButton(buttonIndex);
+    if (unitButton) {
+      this.manager.requestSpawnPlayer(unitButton.unitId);
     }
   }
 
-  protected getCustomUiGraphFactory(type: string): UiNodeFactory | null {
-    if (type === 'unit_button') {
-      return new UnitButtonFactory();
-    }
-    return null;
+  /**
+   * ボタンインデックスから UnitButton インスタンスを返す
+   */
+  private getUiGraphUnitButton(index: number): UnitButton | undefined {
+    const uiGraphUnitButtonName = `unit_button_${index+1}`;
+    return this.uiGraph[uiGraphUnitButtonName] as UnitButton;
   }
 }

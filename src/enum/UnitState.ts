@@ -1,8 +1,10 @@
+/**
+ * ユニットのステート
+ */
 const UnitState = Object.freeze({
   IDLE: 1,
   LOCKED: 2,
-  DYING: 3,
-  DEAD: 4
+  DEAD: 3
 });
 
 export default UnitState;

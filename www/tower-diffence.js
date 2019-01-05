@@ -44108,7 +44108,11 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/**
+ * 設定オブジェクト
+ */
 var Config = Object.freeze({
+    // リソースのエントリーポイント
     ResourceBaseUrl: 'assets/'
 });
 /* harmony default export */ __webpack_exports__["default"] = (Config);
@@ -44127,24 +44131,38 @@ var Config = Object.freeze({
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! Config */ "./src/Config.ts");
 
+/**
+ * リソースの URL や命名規則のマスタ
+ */
 var ResourceMaster = Object.freeze({
     UnitAnimationTypes: Object.freeze({
         WAIT: 'wait',
         WALK: 'walk',
         ATTACK: 'attack',
-        DAMAGE: 'damage',
-        DYING: 'dying'
+        DAMAGE: 'damage'
     }),
     SceneUiGraph: function (scene) {
         var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
         return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
     },
-    UnitMasterEntryPoint: function () {
+    FieldEntryPoint: function () {
+        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json";
+    },
+    Field: function (fieldId) {
+        return ResourceMaster.FieldEntryPoint() + "?fieldId=" + fieldId;
+    },
+    AIWaveEntryPoint: function () {
+        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json";
+    },
+    AIWave: function (stageId) {
+        return ResourceMaster.AIWaveEntryPoint() + "?stageId=" + stageId;
+    },
+    UnitEntryPoint: function () {
         return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json";
     },
-    UnitMaster: function (unitIds) {
+    Unit: function (unitIds) {
         var joinedUnitIds = unitIds.join('&unitId[]=');
-        return ResourceMaster.UnitMasterEntryPoint() + "?unitId[]=" + joinedUnitIds;
+        return ResourceMaster.UnitEntryPoint() + "?unitId[]=" + joinedUnitIds;
     },
     UnitTexture: function (unitId) {
         return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
@@ -44156,6 +44174,8 @@ var ResourceMaster = Object.freeze({
         return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + unitId + ".png";
     },
     BattleBgForeTileCount: 10,
+    BattleBgMiddleTileCount: 6,
+    BattleBgBackTileCount: 3,
     BattleBgFore: function () {
         var list = [];
         for (var i = 1; i <= ResourceMaster.BattleBgForeTileCount; i++) {
@@ -44163,8 +44183,30 @@ var ResourceMaster = Object.freeze({
         }
         return list;
     },
+    BattleBgMiddle: function () {
+        var list = [];
+        for (var i = 1; i <= ResourceMaster.BattleBgMiddleTileCount; i++) {
+            list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_" + i + ".png");
+        }
+        return list;
+    },
+    BattleBgBack: function () {
+        var list = [];
+        for (var i = 1; i <= ResourceMaster.BattleBgBackTileCount; i++) {
+            list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_" + i + ".png");
+        }
+        return list;
+    },
     UnitTextureFrameName: function (unitActionType, unitId, index) {
         return "unit_" + unitId + "_" + unitActionType + "_" + index + ".png";
+    },
+    Dead: {
+        Bucket: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_bucket.png";
+        },
+        Spirit: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_spirit.png";
+        }
     }
 });
 /* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
@@ -44172,10 +44214,10 @@ var ResourceMaster = Object.freeze({
 
 /***/ }),
 
-/***/ "./src/display/battle/Background.ts":
-/*!******************************************!*\
-  !*** ./src/display/battle/Background.ts ***!
-  \******************************************/
+/***/ "./src/display/battle/Field.ts":
+/*!*************************************!*\
+  !*** ./src/display/battle/Field.ts ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44184,6 +44226,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44199,47 +44242,110 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-var Background = /** @class */ (function (_super) {
-    __extends(Background, _super);
-    function Background() {
-        return _super !== null && _super.apply(this, arguments) || this;
+
+var Field = /** @class */ (function (_super) {
+    __extends(Field, _super);
+    function Field() {
+        var _this = _super.call(this) || this;
+        _this.pointerDownCount = 0;
+        _this.lastPointerPositionX = 0;
+        _this.foregroundScrollLimit = -1;
+        _this.containers = {
+            fore: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
+            middle: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
+            back: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]()
+        };
+        // ユーザ操作で画面をスクロールできるようにする
+        _this.interactive = true;
+        _this.on('pointerdown', function (e) { return _this.onPointerDown(e); });
+        _this.on('pointermove', function (e) { return _this.onPointerMove(e); });
+        _this.on('pointercancel', function (e) { return _this.onPointerUp(e); });
+        _this.on('pointerup', function (e) { return _this.onPointerUp(e); });
+        _this.on('pointerout', function (e) { return _this.onPointerUp(e); });
+        return _this;
     }
-    Object.defineProperty(Background, "resourceList", {
+    Object.defineProperty(Field, "resourceList", {
         get: function () {
-            if (Background.resourceListCache.length === 0) {
-                var tiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgFore();
-                for (var i = 0; i < tiles.length; i++) {
-                    Background.resourceListCache.push(tiles[i]);
-                }
+            if (Field.resourceListCache.length === 0) {
+                var foreTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgFore();
+                var middleTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgMiddle();
+                var backTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgBack();
+                Field.resourceListCache = Field.resourceListCache.concat(foreTiles);
+                Field.resourceListCache = Field.resourceListCache.concat(middleTiles);
+                Field.resourceListCache = Field.resourceListCache.concat(backTiles);
             }
-            return Background.resourceListCache;
+            return Field.resourceListCache;
         },
         enumerable: true,
         configurable: true
     });
-    Background.prototype.init = function () {
-        var list = Background.resourceList;
-        var x = 0;
-        for (var i = 0; i < list.length; i++) {
-            var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[list[i]].texture;
-            var sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
-            sprite.position.x = x;
-            x += sprite.width;
-            this.addChild(sprite);
+    Field.prototype.init = function () {
+        var tiles = {
+            fore: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgFore(),
+            middle: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgMiddle(),
+            back: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgBack()
+        };
+        var layers = Object.keys(tiles);
+        for (var i = 0; i < layers.length; i++) {
+            var layer = layers[i];
+            var layerTiles = tiles[layer];
+            var x = 0;
+            for (var j = 0; j < layerTiles.length; j++) {
+                var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[layerTiles[j]].texture;
+                var sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
+                sprite.position.x = x;
+                x += sprite.width;
+                this.containers[layer].addChild(sprite);
+            }
+        }
+        this.addChild(this.containers.back);
+        this.addChild(this.containers.middle);
+        this.addChild(this.containers.fore);
+        var screenWidth = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.screen.width;
+        this.foregroundScrollLimit = -(this.width - screenWidth);
+    };
+    Field.prototype.onPointerDown = function (event) {
+        this.pointerDownCount++;
+        if (this.pointerDownCount === 1) {
+            this.lastPointerPositionX = event.data.global.x;
         }
     };
-    Background.resourceListCache = [];
-    return Background;
+    Field.prototype.onPointerMove = function (event) {
+        if (this.pointerDownCount <= 0) {
+            return;
+        }
+        var xPos = event.data.global.x;
+        var distance = xPos - this.lastPointerPositionX;
+        var newForegroundPos = this.position.x + distance;
+        if (newForegroundPos > 0) {
+            newForegroundPos = 0;
+        }
+        else if (newForegroundPos < this.foregroundScrollLimit) {
+            newForegroundPos = this.foregroundScrollLimit;
+        }
+        this.position.x = newForegroundPos;
+        this.containers.middle.position.x = newForegroundPos * -0.6;
+        this.containers.back.position.x = newForegroundPos * -0.9;
+        this.lastPointerPositionX = xPos;
+    };
+    Field.prototype.onPointerUp = function (_) {
+        this.pointerDownCount--;
+        if (this.pointerDownCount < 0) {
+            this.pointerDownCount = 0;
+        }
+    };
+    Field.resourceListCache = [];
+    return Field;
 }(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
-/* harmony default export */ __webpack_exports__["default"] = (Background);
+/* harmony default export */ __webpack_exports__["default"] = (Field);
 
 
 /***/ }),
 
-/***/ "./src/display/battle/UnitButton.ts":
-/*!******************************************!*\
-  !*** ./src/display/battle/UnitButton.ts ***!
-  \******************************************/
+/***/ "./src/display/battle/Unit.ts":
+/*!************************************!*\
+  !*** ./src/display/battle/Unit.ts ***!
+  \************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44247,47 +44353,8 @@ var Background = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-var UnitButton = /** @class */ (function (_super) {
-    __extends(UnitButton, _super);
-    function UnitButton() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.slotIndex = -1;
-        _this.unitId = -1;
-        return _this;
-    }
-    return UnitButton;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]));
-/* harmony default export */ __webpack_exports__["default"] = (UnitButton);
-
-
-/***/ }),
-
-/***/ "./src/entity/actor/Unit.ts":
-/*!**********************************!*\
-  !*** ./src/entity/actor/Unit.ts ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! entity/UnitEntity */ "./src/entity/UnitEntity.ts");
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44303,66 +44370,32 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-var UnitEntity = /** @class */ (function () {
-    function UnitEntity(master, isPlayer) {
-        // dynamic data
-        this.id = 0;
-        this.isPlayer = true;
-        // dynamic data
-        this.currentHealth = 0;
-        this.state = 0;
-        // data for pixi object
-        this.currentAnimationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes.WAIT;
-        this.currentAnimationFrame = 0;
-        this.currentAnimationTime = 0;
-        this.master = master;
-        this.isPlayer = isPlayer;
-    }
-    return UnitEntity;
-}());
+
+/**
+ * ユニットの振舞い、及び見た目に関する処理を行う
+ * UnitEntity を継承する
+ */
 var Unit = /** @class */ (function (_super) {
     __extends(Unit, _super);
     function Unit(master, ally) {
         var _this = _super.call(this, master, ally) || this;
+        /**
+         * 現在のアニメーションフレーム
+         */
+        _this.animationFrameIndex = 0;
+        /**
+         * 現在のアニメーション
+         */
+        _this.elapsedFrameCount = 0;
         _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
+        if (!_this.isPlayer) {
+            _this.sprite.scale.x = -1;
+        }
         return _this;
     }
-    Unit.prototype.isAlly = function (target) {
-        return ((this.isPlayer && target.isPlayer) ||
-            (!this.isPlayer && !target.isPlayer));
-    };
-    Unit.prototype.isFoe = function (target) {
-        return ((this.isPlayer && !target.isPlayer) ||
-            (!this.isPlayer && target.isPlayer));
-    };
     Unit.prototype.isHitFrame = function () {
-        return this.currentAnimationFrame === this.hitFrame;
+        return this.animationFrameIndex === this.hitFrame;
     };
-    Unit.prototype.damage = function (value) {
-        this.currentHealth -= value;
-        return this.currentHealth;
-    };
-    Object.defineProperty(Unit.prototype, "animationType", {
-        get: function () {
-            return this.currentAnimationType;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Unit.prototype, "animationFrame", {
-        get: function () {
-            return this.currentAnimationFrame;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Unit.prototype, "animationTime", {
-        get: function () {
-            return this.currentAnimationTime;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(Unit.prototype, "unitId", {
         get: function () {
             return this.master.unitId;
@@ -44419,45 +44452,258 @@ var Unit = /** @class */ (function (_super) {
         return this.master.animationUpdateDurations[type];
     };
     Unit.prototype.getAnimationMaxFrameTime = function (type) {
-        if (type === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes.DYING) {
-            // TODO
-            return 1;
-        }
         return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
     };
     Unit.prototype.isFoeContact = function (target) {
+        if (!this.sprite || !target.sprite) {
+            return false;
+        }
         return (this.isPlayer)
-            ? (this.sprite.position.x + this.sprite.width) <= target.sprite.position.x
-            : (this.sprite.position.x - target.sprite.width) >= target.sprite.position.x;
+            ? (this.sprite.position.x + this.sprite.width + target.sprite.width) >= target.sprite.position.x
+            : (target.sprite.position.x + target.sprite.width + this.sprite.width) >= this.sprite.position.x;
     };
-    Unit.prototype.setAnimationType = function (type, keepIndex) {
-        if (keepIndex === void 0) { keepIndex = false; }
-        if (this.currentAnimationType === type) {
-            return;
-        }
-        this.currentAnimationType = type;
-        if (!keepIndex) {
-            this.currentAnimationFrame = 1;
-        }
+    Unit.prototype.resetAnimation = function () {
+        this.elapsedFrameCount = 0;
+        this.animationFrameIndex = 1;
     };
-    Unit.prototype.updateAnimation = function () {
-        this.currentAnimationTime++;
-        var type = this.currentAnimationType;
-        if (this.currentAnimationTime % this.getAnimationUpdateDuration(type) !== 0) {
-            return;
+    Unit.prototype.updateAnimation = function (type, index) {
+        if (index === void 0) { index = -1; }
+        var animationUpdateDuration = this.getAnimationUpdateDuration(type);
+        if (index >= 1) {
+            this.elapsedFrameCount = animationUpdateDuration * (index - 1);
+            this.animationFrameIndex = index;
         }
-        this.currentAnimationFrame++;
+        else {
+            this.elapsedFrameCount++;
+            if (this.elapsedFrameCount % animationUpdateDuration !== 0) {
+                return;
+            }
+            this.animationFrameIndex++;
+        }
         var animationMaxFrameTime = this.getAnimationMaxFrameTime(type);
-        if (this.currentAnimationTime >= animationMaxFrameTime) {
-            this.currentAnimationTime = 1;
-            this.currentAnimationFrame = 1;
+        if (this.elapsedFrameCount >= animationMaxFrameTime) {
+            this.elapsedFrameCount = 1;
+            this.animationFrameIndex = 1;
         }
-        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitTextureFrameName(type, this.unitId, this.currentAnimationFrame);
+        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].UnitTextureFrameName(type, this.unitId, this.animationFrameIndex);
         this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[name];
     };
     return Unit;
-}(UnitEntity));
+}(entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (Unit);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/UnitButton.ts":
+/*!******************************************!*\
+  !*** ./src/display/battle/UnitButton.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var UnitButton = /** @class */ (function (_super) {
+    __extends(UnitButton, _super);
+    function UnitButton() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.slotIndex = -1;
+        _this.unitId = -1;
+        return _this;
+    }
+    UnitButton.prototype.init = function (slotIndex, unitId) {
+        var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(unitId);
+        var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId].texture;
+        if (!texture) {
+            return;
+        }
+        this.slotIndex = slotIndex;
+        this.unitId = unitId;
+        this.texture = texture;
+    };
+    return UnitButton;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]));
+/* harmony default export */ __webpack_exports__["default"] = (UnitButton);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/effect/Dead.ts":
+/*!*******************************************!*\
+  !*** ./src/display/battle/effect/Dead.ts ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var TO_RAD = Math.PI / 180.0;
+var Dead = /** @class */ (function (_super) {
+    __extends(Dead, _super);
+    function Dead(flip) {
+        var _this = _super.call(this) || this;
+        _this.elapsedFrameCount = 0;
+        var textureCache = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache;
+        var bucketTexture = textureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Bucket()];
+        var spiritTexture = textureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Spirit()];
+        _this.bucket = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](bucketTexture);
+        _this.spirit = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](spiritTexture);
+        _this.bucket.anchor.y = 0.0;
+        _this.spirit.position.y = -_this.bucket.height;
+        if (flip) {
+            _this.bucket.scale.x = -1;
+            _this.spirit.scale.x = -1;
+            _this.spirit.position.x = -((_this.bucket.width - _this.spirit.width) * 0.5);
+        }
+        else {
+            _this.spirit.position.x = (_this.bucket.width - _this.spirit.width) * 0.5;
+        }
+        _this.addChild(_this.bucket);
+        _this.addChild(_this.spirit);
+        _this.spirit.visible = false;
+        return _this;
+    }
+    Object.defineProperty(Dead, "resourceList", {
+        get: function () {
+            if (Dead.resourceListCache.length === 0) {
+                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Bucket());
+                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Spirit());
+            }
+            return Dead.resourceListCache;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Dead.prototype.update = function (_delta) {
+        this.elapsedFrameCount++;
+        switch (this.elapsedFrameCount) {
+            case 4:
+                this.bucket.rotation = 25.0 * TO_RAD;
+                break;
+            case 8:
+                this.bucket.rotation = -25.0 * TO_RAD;
+                break;
+            case 12:
+                this.bucket.rotation = 15.0 * TO_RAD;
+                break;
+            case 16:
+                this.bucket.rotation = -15.0 * TO_RAD;
+                break;
+            case 20:
+                this.bucket.rotation = 5.0 * TO_RAD;
+                break;
+            case 24:
+                this.bucket.rotation = -5.0 * TO_RAD;
+                break;
+            case 26: {
+                this.bucket.rotation = 0.0;
+                this.spirit.visible = true;
+                break;
+            }
+            case 80:
+                this.destroy();
+                break;
+            default: {
+                if (this.elapsedFrameCount > 26) {
+                    this.spirit.y = this.spirit.y - 3;
+                }
+            }
+        }
+    };
+    Dead.resourceListCache = [];
+    return Dead;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+/* harmony default export */ __webpack_exports__["default"] = (Dead);
+
+
+/***/ }),
+
+/***/ "./src/entity/UnitEntity.ts":
+/*!**********************************!*\
+  !*** ./src/entity/UnitEntity.ts ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * ユニットのパラメータ
+ */
+var UnitEntity = /** @class */ (function () {
+    function UnitEntity(master, isPlayer) {
+        /**
+         * 一意の ID
+         * ユニット生成順に動的に割り当てられる
+         */
+        this.id = 0;
+        /**
+         * プレイヤー側のユニットかどうか
+         */
+        this.isPlayer = true;
+        /**
+         * 現在のヒットポイント
+         */
+        this.currentHealth = 0;
+        /**
+         * ステート
+         */
+        this.state = 0;
+        this.master = master;
+        this.isPlayer = isPlayer;
+    }
+    UnitEntity.prototype.isAlly = function (target) {
+        return ((this.isPlayer && target.isPlayer) ||
+            (!this.isPlayer && !target.isPlayer));
+    };
+    UnitEntity.prototype.isFoe = function (target) {
+        return ((this.isPlayer && !target.isPlayer) ||
+            (!this.isPlayer && target.isPlayer));
+    };
+    UnitEntity.prototype.damage = function (value) {
+        this.currentHealth -= value;
+        return this.currentHealth;
+    };
+    return UnitEntity;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (UnitEntity);
 
 
 /***/ }),
@@ -44471,11 +44717,13 @@ var Unit = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/**
+ * ユニットのステート
+ */
 var UnitState = Object.freeze({
     IDLE: 1,
     LOCKED: 2,
-    DYING: 3,
-    DEAD: 4
+    DEAD: 3
 });
 /* harmony default export */ __webpack_exports__["default"] = (UnitState);
 
@@ -44495,6 +44743,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 
 
+/**
+ * エントリーポイント
+ * window.load のタイミングで GameManager を起動する
+ */
 window.onload = function () {
     managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].start({
         width: 1136,
@@ -44503,6 +44755,7 @@ window.onload = function () {
             backgroundColor: 0x222222
         }
     });
+    // 最初の新の読み込み
     managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_0__["default"]());
     Debug: {
         window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"];
@@ -44521,183 +44774,250 @@ window.onload = function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
-/* harmony import */ var entity_actor_Unit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! entity/actor/Unit */ "./src/entity/actor/Unit.ts");
-
+/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
+/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
 
 
 var INVALID_UNIT_ID = -1;
+var DefaultDelegator = /** @class */ (function () {
+    function DefaultDelegator() {
+    }
+    DefaultDelegator.prototype.onUnitsSpawned = function (_units) { };
+    DefaultDelegator.prototype.onUnitStateChanged = function (_unit, _oldState) { };
+    DefaultDelegator.prototype.onUnitUpdated = function (_unit) { };
+    DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
+    DefaultDelegator.prototype.shouldLock = function (_attacker, _target) { return true; };
+    DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) { return true; };
+    return DefaultDelegator;
+}());
+/**
+ * ゲーム内バトルパートのマネージャ
+ * ゲームロジックを中心に扱う
+ * TODO: Although GameManager is singleton, BattleManager is expected to be used by creating instance.
+ * So class name should be changed.
+ */
 var BattleManager = /** @class */ (function () {
     function BattleManager() {
+        /**
+         * フレームごとのコスト回復量
+         */
         this.costRecoveryPerFrame = 0;
+        /**
+         * 利用可能コストの上限値
+         */
         this.maxAvailableCost = 100;
-        this.onUnitsSpawned = function (_) { };
-        this.onAvailableCostUpdated = function (_) { };
-        this.currentAvailableCost = 0;
+        /**
+         * BattleManagerDelegate 実装オブジェクト
+         */
+        this.delegator = new DefaultDelegator();
+        /**
+         * 現在の利用可能なコスト
+         */
+        this.availableCost = 0;
+        /**
+         * 生成済みの Unit インスタンスを保持する配列
+         */
         this.units = [];
+        /**
+         * AIWaveMaster をキャッシュするための Map
+         */
+        this.aiWaveMasterCache = new Map();
+        /**
+         * UnitMaster をキャッシュするための Map
+         */
         this.unitMasterCache = new Map();
-        this.requestedSpawnUnitIds = [];
+        /**
+         * 外部から生成をリクエストされたユニット情報を保持する配列
+         */
+        this.spawnRequestedUnitUnitIds = [];
+        /**
+         * 経過フレーム数
+         */
+        this.passedFrameCount = 0;
     }
-    BattleManager.prototype.updateAvailableCost = function (newCost) {
-        if (newCost > this.maxAvailableCost) {
-            newCost = this.maxAvailableCost;
-        }
-        this.currentAvailableCost = newCost;
-        this.onAvailableCostUpdated(this.currentAvailableCost);
-        return this.currentAvailableCost;
-    };
-    BattleManager.prototype.setUnitDataMaster = function (unitMaster) {
+    BattleManager.prototype.init = function (aiWaveMaster, unitMaster, delegator) {
+        this.aiWaveMasterCache.clear();
         this.unitMasterCache.clear();
+        var waves = aiWaveMaster.waves;
+        var keys = Object.keys(waves);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            this.aiWaveMasterCache.set(Number.parseInt(key), waves[key]);
+        }
         for (var i = 0; i < unitMaster.length; i++) {
-            var master = unitMaster[i];
-            this.unitMasterCache.set(master.unitId, master);
+            var unit = unitMaster[i];
+            this.unitMasterCache.set(unit.unitId, unit);
+        }
+        if (delegator) {
+            this.delegator = delegator;
         }
     };
-    BattleManager.prototype.requestSpawn = function (unitId, isPlayer) {
-        this.requestedSpawnUnitIds.push({ unitId: unitId, isPlayer: isPlayer });
+    BattleManager.prototype.setDelegator = function (delegator) {
+        this.delegator = delegator;
     };
+    /**
+     * Unit 生成をリクエストする
+     */
+    BattleManager.prototype.requestSpawn = function (unitId, isPlayer) {
+        this.spawnRequestedUnitUnitIds.push({ unitId: unitId, isPlayer: isPlayer });
+    };
+    /**
+     * Unit 生成をリクエストする
+     * プレイヤーユニット生成リクエストのシュガー
+     */
     BattleManager.prototype.requestSpawnPlayer = function (unitId) {
         this.requestSpawn(unitId, true);
     };
+    /**
+     * Unit 生成をリクエストする
+     * AIユニット生成リクエストのシュガー
+     */
     BattleManager.prototype.requestSpawnAI = function (unitId) {
         this.requestSpawn(unitId, false);
     };
+    /**
+     * コストを消費し、Unit 生成を試みる
+     * コストが足りなければ何もしない
+     */
     BattleManager.prototype.trySpawn = function (unitId, isPlayer) {
         var master = this.unitMasterCache.get(unitId);
-        if (!master || this.currentAvailableCost < master.cost) {
+        if (!master) {
             return null;
         }
-        this.updateAvailableCost(this.currentAvailableCost - master.cost);
-        var unit = new entity_actor_Unit__WEBPACK_IMPORTED_MODULE_2__["default"](master, isPlayer);
+        if (isPlayer) {
+            if (this.availableCost < master.cost) {
+                return null;
+            }
+            this.refreshAvailableCost(this.availableCost - master.cost);
+        }
+        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_1__["default"](master, isPlayer);
         unit.id = this.units.length;
         unit.currentHealth = unit.maxHealth;
-        unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
+        unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
         this.units.push(unit);
         return unit;
     };
+    /**
+     * 渡された Unit が、ロジック上死亡扱いであるかどうかを返す
+     */
     BattleManager.prototype.isDied = function (unit) {
         return unit.id === INVALID_UNIT_ID;
     };
-    BattleManager.prototype.die = function (unit) {
-        unit.id = INVALID_UNIT_ID;
-        if (unit.sprite) {
-            unit.sprite.destroy();
-        }
-    };
+    /**
+     * ゲーム更新処理
+     * 外部から適切なタイミングでコールされる
+     */
     BattleManager.prototype.update = function (_delta) {
-        this.updateAvailableCost(this.currentAvailableCost + this.costRecoveryPerFrame);
-        this.updateSpawn();
+        this.refreshAvailableCost(this.availableCost + this.costRecoveryPerFrame);
+        this.requestAISpawn(this.passedFrameCount);
+        this.updateSpawnRequest();
+        var activeUnits = [];
         // update units
-        for (var i = 0; i < this.units.length;) {
-            var unit = this.units[i];
-            switch (unit.state) {
-                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE: {
-                    var direction = unit.isPlayer ? 1 : -1;
-                    unit.sprite.position.x += unit.speed * direction;
-                    break;
-                }
-                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED: {
-                    if (!unit.isHitFrame()) {
-                        break;
-                    }
-                    for (var j = 0; j < this.units.length; j++) {
-                        var target = this.units[j];
-                        if (unit.isAlly(target) || !unit.isFoeContact(target)) {
-                            continue;
-                        }
-                        target.currentHealth -= unit.power;
-                    }
-                    break;
-                }
-                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING:
-                case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD:
-                default: break;
-            }
-            unit.updateAnimation();
-            this.updateState(unit);
-            this.updateAnimateState(unit);
-            i++;
-        }
-        var newUnits = [];
         for (var i = 0; i < this.units.length; i++) {
             var unit = this.units[i];
+            // update parameter
             if (!this.isDied(unit)) {
-                newUnits.push(unit);
+                this.updateDamage(unit);
+                this.updateState(unit);
+            }
+            this.delegator.onUnitUpdated(unit);
+            if (!this.isDied(unit)) {
+                activeUnits.push(unit);
             }
         }
-        this.units = newUnits;
+        this.units = activeUnits;
+        this.passedFrameCount++;
     };
-    BattleManager.prototype.updateState = function (unit) {
-        // DEAD > DYING > LOCKED > IDLE
-        if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD) {
+    BattleManager.prototype.updateDamage = function (unit) {
+        if (unit.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
             return;
         }
-        if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING) {
-            var maxAnimationTime = unit.getAnimationMaxFrameTime(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].UnitAnimationTypes.DYING);
-            if (unit.animationTime === maxAnimationTime) {
-                unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD;
-                this.die(unit);
-                return;
-            }
-        }
-        if (unit.currentHealth <= 0) {
-            unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING;
-            return;
-        }
-        var willLock = false;
         for (var i = 0; i < this.units.length; i++) {
             var target = this.units[i];
             if (unit.isAlly(target)) {
                 continue;
             }
-            if (unit.id === target.id) {
-                continue;
-            }
-            // wysiwyg collision box
-            if ((target.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE || target.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED) &&
-                unit.isFoeContact(target)) {
-                willLock = true;
-                break;
+            if (this.delegator.shouldDamage(unit, target)) {
+                target.currentHealth -= unit.power;
             }
         }
-        unit.state = (willLock) ? enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED : enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
     };
-    BattleManager.prototype.updateAnimateState = function (unit) {
-        var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].UnitAnimationTypes;
-        switch (unit.state) {
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE:
-                unit.setAnimationType(animationTypes.WALK);
+    /**
+     * Unit のステートを更新する
+     * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
+     */
+    BattleManager.prototype.updateState = function (unit) {
+        var oldState = unit.state;
+        var newState = oldState;
+        do {
+            if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD) {
                 break;
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED:
-                unit.setAnimationType(animationTypes.ATTACK);
+            }
+            if (unit.currentHealth <= 0) {
+                unit.id = INVALID_UNIT_ID;
+                newState = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
                 break;
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DYING:
-                unit.setAnimationType(animationTypes.DYING);
-                break;
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD:
-                unit.setAnimationType(animationTypes.DYING);
-                break;
-            default: break;
+            }
+            for (var i = 0; i < this.units.length; i++) {
+                var target = this.units[i];
+                if (unit.isAlly(target)) {
+                    continue;
+                }
+                if (target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE && target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
+                    continue;
+                }
+                if (this.delegator.shouldLock(unit, target)) {
+                    newState = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
+                    break;
+                }
+            }
+        } while (false);
+        if (newState !== oldState) {
+            unit.state = newState;
+            this.delegator.onUnitStateChanged(unit, oldState);
         }
     };
-    BattleManager.prototype.updateSpawn = function () {
-        if (this.requestedSpawnUnitIds.length === 0) {
+    BattleManager.prototype.requestAISpawn = function (targetFrame) {
+        var waves = this.aiWaveMasterCache.get(targetFrame);
+        if (!waves) {
+            return;
+        }
+        for (var i = 0; i < waves.length; i++) {
+            var unitId = waves[i].unitId;
+            this.requestSpawnAI(unitId);
+        }
+    };
+    /**
+     * 受け付けた Unit 生成リクエストを処理する
+     */
+    BattleManager.prototype.updateSpawnRequest = function () {
+        if (this.spawnRequestedUnitUnitIds.length === 0) {
             return;
         }
         var spawnedUnits = [];
-        for (var i = 0; i < this.requestedSpawnUnitIds.length; i++) {
-            var reservedUnit = this.requestedSpawnUnitIds[i];
+        for (var i = 0; i < this.spawnRequestedUnitUnitIds.length; i++) {
+            var reservedUnit = this.spawnRequestedUnitUnitIds[i];
             var unit = this.trySpawn(reservedUnit.unitId, reservedUnit.isPlayer);
             if (unit) {
                 spawnedUnits.push(unit);
             }
         }
-        this.requestedSpawnUnitIds = [];
+        this.spawnRequestedUnitUnitIds = [];
         if (spawnedUnits.length === 0) {
             return;
         }
-        this.onUnitsSpawned(spawnedUnits);
+        this.delegator.onUnitsSpawned(spawnedUnits);
+    };
+    /**
+     * 利用可能なコストを更新し、専用のコールバックをコールする
+     */
+    BattleManager.prototype.refreshAvailableCost = function (newCost) {
+        if (newCost > this.maxAvailableCost) {
+            newCost = this.maxAvailableCost;
+        }
+        this.availableCost = newCost;
+        this.delegator.onAvailableCostUpdated(this.availableCost);
+        return this.availableCost;
     };
     return BattleManager;
 }());
@@ -44718,13 +45038,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 
+/**
+ * ゲーム全体のマネージャ
+ * 主にシーンを扱う
+ */
 var GameManager = /** @class */ (function () {
+    /**
+     * コンストラクタ
+     * PIXI.Application インスタンスはユーザ任意のものを使用する
+     */
     function GameManager(app) {
         if (GameManager.instance) {
             throw new Error('GameManager can be instantiate only once');
         }
         this.game = app;
     }
+    /**
+     * ゲームを起動する
+     * 画面サイズや PIXI.ApplicationOptions を渡すことができる
+     */
     GameManager.start = function (params) {
         var game = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"](params.width, params.height, params.option);
         GameManager.instance = new GameManager(game);
@@ -44736,13 +45068,19 @@ var GameManager = /** @class */ (function () {
         });
     };
     Object.defineProperty(GameManager, "isSceneLoading", {
+        /**
+         * シーンがロード中、あるいはトランジション中であるかを返す
+         */
         get: function () {
             return (!GameManager.sceneResourceLoaded || !GameManager.sceneTransitionOutFinished);
         },
         enumerable: true,
         configurable: true
     });
-    GameManager.replaceSceneIfPossible = function (newScene) {
+    /**
+     * 可能であれば新しいシーンへのトランジションを開始する
+     */
+    GameManager.transitionInIfPossible = function (newScene) {
         if (GameManager.isSceneLoading) {
             return false;
         }
@@ -44757,6 +45095,11 @@ var GameManager = /** @class */ (function () {
         newScene.beginTransitionIn(function (_) { });
         return true;
     };
+    /**
+     * シーンをロードする
+     * 新しいシーンのリソース読み込みと古いシーンのトランジションを同時に開始する
+     * いずれも完了したら、新しいシーンのトランジションを開始する
+     */
     GameManager.loadScene = function (newScene) {
         var instance = GameManager.instance;
         if (instance.currentScene) {
@@ -44764,22 +45107,30 @@ var GameManager = /** @class */ (function () {
             GameManager.sceneTransitionOutFinished = false;
             newScene.loadResource(function () {
                 GameManager.sceneResourceLoaded = true;
-                GameManager.replaceSceneIfPossible(newScene);
+                GameManager.transitionInIfPossible(newScene);
             });
             instance.currentScene.beginTransitionOut(function (_) {
                 GameManager.sceneTransitionOutFinished = true;
-                GameManager.replaceSceneIfPossible(newScene);
+                GameManager.transitionInIfPossible(newScene);
             });
         }
         else {
             GameManager.sceneTransitionOutFinished = true;
             newScene.loadResource(function () {
                 GameManager.sceneResourceLoaded = true;
-                GameManager.replaceSceneIfPossible(newScene);
+                GameManager.transitionInIfPossible(newScene);
             });
         }
     };
+    /**
+     * シーンのリソースロード完了フラグ
+     * シーントランジションを制御するためのフラグ
+     */
     GameManager.sceneResourceLoaded = true;
+    /**
+     * シーンのトランジション完了フラグ
+     * シーントランジションを制御するためのフラグ
+     */
     GameManager.sceneTransitionOutFinished = true;
     return GameManager;
 }());
@@ -44801,9 +45152,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var modules_UiNodeFactory_SpriteFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/UiNodeFactory/SpriteFactory */ "./src/modules/UiNodeFactory/SpriteFactory.ts");
 
 
+/**
+ * UI を静的に定義しランタイムでロードするためのモジュール
+ * 指定されたノードのファクトリを生成して保持する
+ */
 var UiGraph = /** @class */ (function () {
     function UiGraph() {
     }
+    /**
+     * ファクトリを取得
+     * なければキャッシュを作る
+     */
     UiGraph.getFactory = function (type) {
         if (!UiGraph.cachedFactory[type]) {
             var Factory = void 0;
@@ -44822,6 +45181,9 @@ var UiGraph = /** @class */ (function () {
         }
         return UiGraph.cachedFactory[type];
     };
+    /**
+     * ファクトリのキャッシュ
+     */
     UiGraph.cachedFactory = {};
     return UiGraph;
 }());
@@ -44854,6 +45216,10 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+/**
+ * PIXI.Sprite のファクトリ
+ * テクスチャに、定義されているテクスチャ名で PIXI.utils.TextureCache から引いたデータを用いる
+ */
 var SpriteFactory = /** @class */ (function (_super) {
     __extends(SpriteFactory, _super);
     function SpriteFactory() {
@@ -44899,6 +45265,9 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+/**
+ * PIXI.Text のファクトリ
+ */
 var TextFactory = /** @class */ (function (_super) {
     __extends(TextFactory, _super);
     function TextFactory() {
@@ -44939,12 +45308,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 
+/**
+ * UiGraph 要素のファクトリの基本クラス
+ */
 var UiNodeFactory = /** @class */ (function () {
     function UiNodeFactory() {
     }
+    /**
+     * 派生クラスで実装し、適切な UiGraph ノードを生成する
+     * デフォルトでは PIXI.Container インスタンスを返す
+     */
     UiNodeFactory.prototype.createUiNode = function (_) {
         return new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
     };
+    /**
+     * 静的なノードデータから PIXI.Container 派生オブジェクトを生成する
+     */
     UiNodeFactory.prototype.createUiNodeByGraphElement = function (nodeData) {
         var node = this.createUiNode(nodeData.params);
         if (node) {
@@ -44953,6 +45332,9 @@ var UiNodeFactory = /** @class */ (function () {
         }
         return node;
     };
+    /**
+     * 定義されたイベントを実装する
+     */
     UiNodeFactory.prototype.attachUiEventByGraphElement = function (events, node, target) {
         node.interactive = true;
         var _loop_1 = function (i) {
@@ -45003,6 +45385,10 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+/**
+ * バトルで用いる UnitButton のファクトリ
+ * UnitButton インスタンスを返す
+ */
 var UnitButtonFactory = /** @class */ (function (_super) {
     __extends(UnitButtonFactory, _super);
     function UnitButtonFactory() {
@@ -45036,11 +45422,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
 /* harmony import */ var managers_BattleManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/BattleManager */ "./src/managers/BattleManager.ts");
 /* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 /* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
-/* harmony import */ var display_battle_Background__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! display/battle/Background */ "./src/display/battle/Background.ts");
+/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
+/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45061,76 +45448,140 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+
 var debugMaxUnitCount = 5;
+var debugField = 1;
+var debugStage = 1;
 var debugUnits = [1, -1, 3, -1, 5];
+/**
+ * BattleScene のステートのリスト
+ */
 var BattleState = Object.freeze({
     LOADING_RESOURCES: 1,
     READY: 2,
     INGAME: 3,
     FINISHED: 4
 });
+/**
+ * メインのゲーム部分のシーン
+ * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
+ */
 var BattleScene = /** @class */ (function (_super) {
     __extends(BattleScene, _super);
     function BattleScene() {
         var _this = _super.call(this) || this;
-        _this.pointerDownCount = 0;
-        _this.lastPointerPositionX = 0;
-        Debug: {
-            _this.maxUnitCount = debugMaxUnitCount;
-            _this.unitIds = debugUnits;
-        }
-        if (_this.unitIds.length <= 0) {
-            throw new Error('at lease one unit id is required.');
-        }
-        _this.interactive = true;
-        _this.on('pointerdown', function (e) { return _this.onPointerDown(e); });
-        _this.on('pointermove', function (e) { return _this.onPointerMove(e); });
-        _this.on('pointercancel', function (e) { return _this.onPointerUp(e); });
-        _this.on('pointerup', function (e) { return _this.onPointerUp(e); });
-        _this.on('pointerout', function (e) { return _this.onPointerUp(e); });
+        _this.destroyList = [];
+        /**
+         * 拠点の座標
+         */
+        _this.basePos = {
+            player: 0,
+            ai: 0
+        };
+        // BattleManager インスタンスの作成とコールバックの登録
         _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_3__["default"]();
-        _this.manager.onUnitsSpawned = function (units) { return _this.onGameMasterSpawnedUnits(units); };
-        _this.manager.onAvailableCostUpdated = function (units) { return _this.onGameMasterUpdatedCost(units); };
+        _this.manager.setDelegator(_this);
+        // Background インスタンスの作成
+        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_6__["default"]();
+        // デフォルトのシーンステート
+        _this.state = BattleState.LOADING_RESOURCES;
         Debug: {
+            _this.maxUnitSlotCount = debugMaxUnitCount;
+            _this.fieldId = debugField;
+            _this.stageId = debugStage;
+            _this.unitIds = debugUnits;
             _this.manager.costRecoveryPerFrame = 1;
             _this.manager.maxAvailableCost = 1000;
         }
-        _this.state = BattleState.LOADING_RESOURCES;
-        _this.background = new display_battle_Background__WEBPACK_IMPORTED_MODULE_6__["default"]();
-        _this.unitButtons = [];
         return _this;
     }
-    BattleScene.prototype.onPointerDown = function (event) {
-        this.pointerDownCount++;
-        console.log("onPointerDown", this.pointerDownCount);
-        if (this.pointerDownCount === 1) {
-            this.lastPointerPositionX = event.data.global.x;
+    /**
+     * GameMasterDelegate 実装
+     * Unit が発生したときのコールバック
+     * Field に Unit のスプライトを追加する
+     */
+    BattleScene.prototype.onUnitsSpawned = function (units) {
+        for (var i = 0; i < units.length; i++) {
+            var unit = units[i];
+            if (unit.isPlayer) {
+                unit.sprite.position.x = this.basePos.player;
+            }
+            else {
+                unit.sprite.position.x = this.basePos.ai;
+            }
+            unit.sprite.position.y = 200 + Math.random() * 100;
+            this.field.addChild(unit.sprite);
         }
     };
-    BattleScene.prototype.onPointerMove = function (event) {
-        if (this.pointerDownCount <= 0) {
-            return;
-        }
-        var xPos = event.data.global.x;
-        var newBackgroundPos = this.background.position.x + (xPos - this.lastPointerPositionX);
-        var maxLeft = 0;
-        var maxRight = -(this.background.width - managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.screen.width);
-        if (newBackgroundPos > maxLeft) {
-            newBackgroundPos = 0;
-        }
-        else if (newBackgroundPos < maxRight) {
-            newBackgroundPos = maxRight;
-        }
-        this.background.position.x = newBackgroundPos;
-        this.lastPointerPositionX = xPos;
+    /**
+     * ユニットのステートが変更した際のコールバック
+     */
+    BattleScene.prototype.onUnitStateChanged = function (unit, _oldState) {
+        unit.resetAnimation();
     };
-    BattleScene.prototype.onPointerUp = function (_) {
-        this.pointerDownCount--;
-        console.log("onPointerUp", this.pointerDownCount);
-        if (this.pointerDownCount < 0) {
-            this.pointerDownCount = 0;
+    /**
+     * GameMasterDelegate 実装
+     * Unit が更新されたときのコールバック
+     * Unit のアニメーションを更新する
+     */
+    BattleScene.prototype.onUnitUpdated = function (unit) {
+        var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes;
+        var animationType = null;
+        switch (unit.state) {
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_2__["default"].IDLE: {
+                animationType = animationTypes.WALK;
+                var direction = unit.isPlayer ? 1 : -1;
+                unit.sprite.position.x += unit.speed * direction;
+                break;
+            }
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_2__["default"].LOCKED: {
+                animationType = animationTypes.ATTACK;
+                break;
+            }
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD: {
+                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_7__["default"](!unit.isPlayer);
+                effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
+                this.field.addChild(effect);
+                this.registerUpdatingObject(effect);
+                if (unit.sprite) {
+                    this.destroyList.push(unit.sprite);
+                }
+                break;
+            }
+            default: break;
+        }
+        if (animationType) {
+            unit.updateAnimation(animationType);
         }
     };
+    /**
+     * GameMasterDelegate 実装
+     * 利用可能なコストの値が変動したときのコールバック
+     */
+    BattleScene.prototype.onAvailableCostUpdated = function (cost) {
+        this.uiGraph.cost_text.text = "" + cost;
+    };
+    /**
+     * GameMasterDelegate 実装
+     * 渡されたユニット同士が接敵可能か返す
+     */
+    BattleScene.prototype.shouldLock = function (attacker, target) {
+        return attacker.isFoeContact(target);
+    };
+    /**
+     * GameMasterDelegate 実装
+     * 渡されたユニット同士が攻撃可能か返す
+     */
+    BattleScene.prototype.shouldDamage = function (attacker, target) {
+        if (!attacker.isHitFrame()) {
+            return false;
+        }
+        return attacker.isFoeContact(target);
+    };
+    /**
+     * リソースリストの作成
+     * ユーザが選択したユニットとフィールドのリソース情報も加える
+     */
     BattleScene.prototype.createResourceList = function () {
         var assets = _super.prototype.createResourceList.call(this);
         for (var i = 0; i < this.unitIds.length; i++) {
@@ -45142,28 +45593,68 @@ var BattleScene = /** @class */ (function (_super) {
                 assets.push({ name: unitPanelUrl, url: unitPanelUrl });
             }
         }
-        var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitMaster(this.unitIds);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitMasterEntryPoint(), url: unitMasterUrl });
-        // load empty button
+        var fieldMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field(this.fieldId);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].FieldEntryPoint(), url: fieldMasterUrl });
+        var aiWaveMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AIWave(this.stageId);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AIWaveEntryPoint(), url: aiWaveMasterUrl });
+        var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit(this.unitIds);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitEntryPoint(), url: unitMasterUrl });
         if (this.unitIds.indexOf(-1) >= 0) {
             var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(-1);
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
         }
-        var bgResources = display_battle_Background__WEBPACK_IMPORTED_MODULE_6__["default"].resourceList;
-        for (var i = 0; i < bgResources.length; i++) {
-            var bgResourceUrl = bgResources[i];
+        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_6__["default"].resourceList;
+        for (var i = 0; i < fieldResources.length; i++) {
+            var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
+        }
+        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_7__["default"].resourceList;
+        for (var i = 0; i < deadResources.length; i++) {
+            var deadResourceUrl = deadResources[i];
+            assets.push({ name: deadResourceUrl, url: deadResourceUrl });
         }
         return assets;
     };
+    /**
+     * リソースロード完了コールバック
+     * BattleManager にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
+     */
     BattleScene.prototype.onResourceLoaded = function () {
-        var masterData = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitMasterEntryPoint()];
-        this.manager.setUnitDataMaster(masterData.data);
-        this.background.init();
-        this.addChild(this.background);
+        var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
+        var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+        this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
+        var fieldMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].FieldEntryPoint()];
+        this.basePos.player = fieldMaster.data.playerBasePosition;
+        this.basePos.ai = fieldMaster.data.aiBasePosition;
+        var aiWaveMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AIWaveEntryPoint()];
+        var unitMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitEntryPoint()];
+        this.manager.init(aiWaveMaster.data, unitMaster.data);
+        this.field.init();
+        for (var index = 0; index < this.maxUnitSlotCount; index++) {
+            var unitButton = this.getUiGraphUnitButton(index);
+            if (!unitButton) {
+                continue;
+            }
+            unitButton.init(index, this.unitIds[index]);
+        }
+        this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
         this.state = BattleState.READY;
     };
+    /**
+     * 独自 UiGraph 要素のファクトリを返す
+     * BattleScene は UnitButton を独自で定義している
+     */
+    BattleScene.prototype.getCustomUiGraphFactory = function (type) {
+        if (type === 'unit_button') {
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__["default"]();
+        }
+        return null;
+    };
+    /**
+     * 毎フレームの更新処理
+     * シーンのステートに応じて処理する
+     */
     BattleScene.prototype.update = function (delta) {
         switch (this.state) {
             case BattleState.LOADING_RESOURCES: break;
@@ -45176,60 +45667,31 @@ var BattleScene = /** @class */ (function (_super) {
                 break;
             }
         }
-    };
-    BattleScene.prototype.beginTransitionIn = function (onTransitionFinished) {
-        this.initUnitButtons(this.unitIds);
-        onTransitionFinished(this);
-    };
-    /**
-     * GameMaster events
-     */
-    BattleScene.prototype.onGameMasterSpawnedUnits = function (units) {
-        for (var i = 0; i < units.length; i++) {
-            var unit = units[i];
-            unit.sprite.position.y = 200 + Math.random() * 200;
-            this.background.addChild(unit.sprite);
+        this.updateRegisteredObjects(delta);
+        for (var i = 0; i < this.destroyList.length; i++) {
+            this.destroyList[i].destroy();
         }
-    };
-    BattleScene.prototype.onGameMasterUpdatedCost = function (cost) {
-        this.uiGraph.cost_text.text = "" + cost;
+        this.destroyList = [];
     };
     /**
-     * UnitButton event
+     * UnitButton 用のコールバック
+     * タップされたボタンに応じたユニットの生成を BattleManager にリクエストする
      */
     BattleScene.prototype.onUnitButtonTapped = function (buttonIndex) {
         if (this.state !== BattleState.INGAME) {
             return;
         }
-        this.manager.requestSpawnPlayer(this.unitButtons[buttonIndex].unitId);
-    };
-    BattleScene.prototype.initUnitButtons = function (unitIds) {
-        this.unitButtons = [];
-        for (var unitButtonIndex = 0; unitButtonIndex < this.maxUnitCount; unitButtonIndex++) {
-            var uiGraphUnitButtonName = "unit_button_" + (unitButtonIndex + 1);
-            var unitButton = this.uiGraph[uiGraphUnitButtonName];
-            if (!unitButton) {
-                continue;
-            }
-            InitIndividual: {
-                var unitId = unitIds[unitButtonIndex];
-                var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(unitId);
-                var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId].texture;
-                if (!texture) {
-                    continue;
-                }
-                unitButton.slotIndex = unitButtonIndex;
-                unitButton.unitId = unitId;
-                unitButton.texture = texture;
-            }
-            this.unitButtons[unitButtonIndex] = unitButton;
+        var unitButton = this.getUiGraphUnitButton(buttonIndex);
+        if (unitButton) {
+            this.manager.requestSpawnPlayer(unitButton.unitId);
         }
     };
-    BattleScene.prototype.getCustomUiGraphFactory = function (type) {
-        if (type === 'unit_button') {
-            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__["default"]();
-        }
-        return null;
+    /**
+     * ボタンインデックスから UnitButton インスタンスを返す
+     */
+    BattleScene.prototype.getUiGraphUnitButton = function (index) {
+        var uiGraphUnitButtonName = "unit_button_" + (index + 1);
+        return this.uiGraph[uiGraphUnitButtonName];
     };
     return BattleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_4__["default"]));
@@ -45267,42 +45729,70 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+/**
+ * ゲームシーンの抽象クラス
+ * UiGraph を利用して UI 情報を透過的に読み込み初期化する
+ * また、シーン間のトランジションイベントを提供する
+ * いずれのイベントも実装クラスにて独自処理の実装が可能
+ */
 var Scene = /** @class */ (function (_super) {
     __extends(Scene, _super);
     function Scene() {
-        var _this = _super.call(this) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * UiGraph を利用して読み込む UI があるかどうか
+         */
         _this.hasSceneUiGraph = true;
-        _this.uiGraphContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        /**
+         * UiGraph でロードされた UI データ
+         */
         _this.uiGraph = {};
+        /**
+         * UiGraph でロードされた UI データを配置するための PIXI.Container
+         * 描画順による前後関係を統制するために一つの Container にまとめる
+         */
+        _this.uiGraphContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        _this.objectsToUpdate = [];
         return _this;
     }
-    Scene.prototype.update = function (_) {
+    /**
+     * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
+     */
+    Scene.prototype.update = function (delta) {
+        this.updateRegisteredObjects(delta);
     };
+    Scene.prototype.registerUpdatingObject = function (object) {
+        this.objectsToUpdate.push(object);
+    };
+    Scene.prototype.updateRegisteredObjects = function (delta) {
+        for (var i = 0; i < this.objectsToUpdate.length;) {
+            var obj = this.objectsToUpdate[i];
+            if (!obj) {
+                this.objectsToUpdate = this.objectsToUpdate.splice(i, 1);
+                continue;
+            }
+            this.objectsToUpdate[i].update(delta);
+            i++;
+        }
+    };
+    /**
+     * シーン追加トランジション開始
+     * 引数でトランジション終了時のコールバックを指定できる
+     */
     Scene.prototype.beginTransitionIn = function (onTransitionFinished) {
         onTransitionFinished(this);
     };
+    /**
+     * シーン削除トランジション開始
+     * 引数でトランジション終了時のコールバックを指定できる
+     */
     Scene.prototype.beginTransitionOut = function (onTransitionFinished) {
         onTransitionFinished(this);
     };
-    Scene.prototype.loadResource = function (onResourceLoaded) {
-        var _this = this;
-        var assets = this.createResourceList();
-        if (assets.length <= 0) {
-            onResourceLoaded();
-            this.onResourceLoaded();
-            return;
-        }
-        pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(assets).load(function (_, resources) {
-            if (_this.hasSceneUiGraph) {
-                var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(_this);
-                _this.applySceneUiGraph(resources[sceneUiGraphName].data);
-            }
-            onResourceLoaded();
-            _this.onResourceLoaded();
-        });
-    };
-    Scene.prototype.onResourceLoaded = function () {
-    };
+    /**
+     * loadResource に用いるリソースリストを作成するメソッド
+     * デフォルトでは UiGraph のリソースリストを作成する
+     */
     Scene.prototype.createResourceList = function () {
         if (this.hasSceneUiGraph) {
             var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
@@ -45312,7 +45802,38 @@ var Scene = /** @class */ (function (_super) {
         }
         return [];
     };
-    Scene.prototype.applySceneUiGraph = function (uiData) {
+    /**
+     * リソースをロードする
+     * デフォルトでは UiGraph 用の情報が取得される
+     */
+    Scene.prototype.loadResource = function (onResourceLoaded) {
+        var _this = this;
+        var assets = this.createResourceList();
+        var pixiLoaderOnLoaded = function () {
+            onResourceLoaded();
+            _this.onResourceLoaded();
+        };
+        if (assets.length <= 0) {
+            pixiLoaderOnLoaded();
+        }
+        else {
+            pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(assets).load(pixiLoaderOnLoaded);
+        }
+    };
+    /**
+     * loadResource 完了時のコールバックメソッド
+     */
+    Scene.prototype.onResourceLoaded = function () {
+        if (this.hasSceneUiGraph) {
+            var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+            this.prepareUiGraphContainer(pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[sceneUiGraphName].data);
+            this.addChild(this.uiGraphContainer);
+        }
+    };
+    /**
+     * UiGraph 用の PIXI.Container インスタンスに UiGraph 要素をロードする
+     */
+    Scene.prototype.prepareUiGraphContainer = function (uiData) {
         for (var i = 0; i < uiData.nodes.length; i++) {
             var nodeData = uiData.nodes[i];
             var factory = modules_UiGraph__WEBPACK_IMPORTED_MODULE_2__["default"].getFactory(nodeData.type);
@@ -45333,6 +45854,9 @@ var Scene = /** @class */ (function (_super) {
             this.uiGraphContainer.addChild(node);
         }
     };
+    /**
+     * UiGraph にシーン独自の要素を追加する場合にこのメソッドを利用する
+     */
     Scene.prototype.getCustomUiGraphFactory = function (_type) {
         return null;
     };
@@ -45371,16 +45895,19 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+/**
+ * タイトルシーン
+ */
 var TitleScene = /** @class */ (function (_super) {
     __extends(TitleScene, _super);
     function TitleScene() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    /**
+     * ゲーム開始ボタンが押下されたときのコールバック
+     */
     TitleScene.prototype.onGameStartTapped = function () {
         managers_GameManager__WEBPACK_IMPORTED_MODULE_0__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__["default"]());
-    };
-    TitleScene.prototype.onResourceLoaded = function () {
-        this.addChild(this.uiGraphContainer);
     };
     return TitleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_1__["default"]));

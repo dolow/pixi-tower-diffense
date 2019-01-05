@@ -68,9 +68,11 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class"><a href="classes/background.html" class="tsd-kind-icon">Background</a></li>
 								<li class="tsd-kind-class"><a href="classes/battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a></li>
 								<li class="tsd-kind-class"><a href="classes/battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a></li>
+								<li class="tsd-kind-class"><a href="classes/dead.html" class="tsd-kind-icon">Dead</a></li>
+								<li class="tsd-kind-class tsd-is-not-exported"><a href="classes/defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a></li>
+								<li class="tsd-kind-class"><a href="classes/field.html" class="tsd-kind-icon">Field</a></li>
 								<li class="tsd-kind-class"><a href="classes/gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a></li>
 								<li class="tsd-kind-class"><a href="classes/scene.html" class="tsd-kind-icon">Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/spritefactory.html" class="tsd-kind-icon">Sprite<wbr>Factory</a></li>
@@ -81,17 +83,21 @@
 								<li class="tsd-kind-class"><a href="classes/unit.html" class="tsd-kind-icon">Unit</a></li>
 								<li class="tsd-kind-class"><a href="classes/unitbutton.html" class="tsd-kind-icon">Unit<wbr>Button</a></li>
 								<li class="tsd-kind-class"><a href="classes/unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a></li>
-								<li class="tsd-kind-class tsd-is-not-exported"><a href="classes/unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a></li>
+								<li class="tsd-kind-class"><a href="classes/unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface"><a href="interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/event.html" class="tsd-kind-icon">Event</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/graph.html" class="tsd-kind-icon">Graph</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/loaderaddparam.html" class="tsd-kind-icon">Loader<wbr>Add<wbr>Param</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/metadata.html" class="tsd-kind-icon">Metadata</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/node.html" class="tsd-kind-icon">Node</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/spritenodeparams.html" class="tsd-kind-icon">Sprite<wbr>Node<wbr>Params</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/textnode.html" class="tsd-kind-icon">Text<wbr>Node</a></li>
@@ -106,8 +112,11 @@
 								<li class="tsd-kind-variable"><a href="globals.html#config" class="tsd-kind-icon">Config</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#invalid_unit_id" class="tsd-kind-icon">INVALID_<wbr>UNIT_<wbr>ID</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a></li>
 							</ul>
 						</section>
@@ -122,9 +131,14 @@
 					<div class="tsd-signature tsd-kind-icon">Battle<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({LOADING_RESOURCES: 1,READY: 2,INGAME: 3,FINISHED: 4})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:16</li>
+							<li>Defined in scenes/BattleScene.ts:23</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>BattleScene のステートのリスト</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -134,12 +148,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="config" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Config</h3>
-					<div class="tsd-signature tsd-kind-icon">Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({ResourceBaseUrl: &#x27;assets/&#x27;})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({// リソースのエントリーポイントResourceBaseUrl: &#x27;assets/&#x27;})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Config.ts:1</li>
+							<li>Defined in Config.ts:4</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>設定オブジェクト</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -152,34 +171,24 @@
 					<div class="tsd-signature tsd-kind-icon">INVALID_<wbr>UNIT_<wbr>ID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">-1</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:6</li>
+							<li>Defined in managers/BattleManager.ts:8</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="resourcemaster" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Resource<wbr>Master</h3>
-					<div class="tsd-signature tsd-kind-icon">Resource<wbr>Master<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({UnitAnimationTypes: Object.freeze({WAIT: &#x27;wait&#x27;,WALK: &#x27;walk&#x27;,ATTACK: &#x27;attack&#x27;,DAMAGE: &#x27;damage&#x27;,DYING: &#x27;dying&#x27;}),SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json&#x60;;},UnitMasterEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/unit_master.json&#x60;;},UnitMaster: (unitIds: number[]): string &#x3D;&gt; {const joinedUnitIds &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${ResourceMaster.UnitMasterEntryPoint()}?unitId[]&#x3D;${joinedUnitIds}&#x60;;},UnitTexture: (unitId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/units/${unitId}.json&#x60;;},UnitPanelTexture: (unitId: number): string &#x3D;&gt; {if (unitId &lt;&#x3D; 0) {return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_empty.png&#x60;;}return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${unitId}.png&#x60;;},BattleBgForeTileCount: 10,BattleBgFore: (): string[] &#x3D;&gt; {const list &#x3D; [];for (let i &#x3D; 1; i &lt;&#x3D; ResourceMaster.BattleBgForeTileCount; i++) {list.push(&#x60;${Config.ResourceBaseUrl}/battle/bg_1_${i}.png&#x60;);}return list;},UnitTextureFrameName: (unitActionType: string, unitId: number, index: number): string &#x3D;&gt; {return &#x60;unit_${unitId}_${unitActionType}_${index}.png&#x60;;}})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Resource<wbr>Master<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({UnitAnimationTypes: Object.freeze({WAIT: &#x27;wait&#x27;,WALK: &#x27;walk&#x27;,ATTACK: &#x27;attack&#x27;,DAMAGE: &#x27;damage&#x27;}),SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json&#x60;;},FieldEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/field_master.json&#x60;;},Field: (fieldId: number): string &#x3D;&gt; {return &#x60;${ResourceMaster.FieldEntryPoint()}?fieldId&#x3D;${fieldId}&#x60;;},AIWaveEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/ai_wave_master.json&#x60;;},AIWave: (stageId: number): string &#x3D;&gt; {return &#x60;${ResourceMaster.AIWaveEntryPoint()}?stageId&#x3D;${stageId}&#x60;;},UnitEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/unit_master.json&#x60;;},Unit: (unitIds: number[]): string &#x3D;&gt; {const joinedUnitIds &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${ResourceMaster.UnitEntryPoint()}?unitId[]&#x3D;${joinedUnitIds}&#x60;;},UnitTexture: (unitId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/units/${unitId}.json&#x60;;},UnitPanelTexture: (unitId: number): string &#x3D;&gt; {if (unitId &lt;&#x3D; 0) {return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_empty.png&#x60;;}return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${unitId}.png&#x60;;},BattleBgForeTileCount: 10,BattleBgMiddleTileCount: 6,BattleBgBackTileCount: 3,BattleBgFore: (): string[] &#x3D;&gt; {const list &#x3D; [];for (let i &#x3D; 1; i &lt;&#x3D; ResourceMaster.BattleBgForeTileCount; i++) {list.push(&#x60;${Config.ResourceBaseUrl}/battle/bg_1_${i}.png&#x60;);}return list;},BattleBgMiddle: (): string[] &#x3D;&gt; {const list &#x3D; [];for (let i &#x3D; 1; i &lt;&#x3D; ResourceMaster.BattleBgMiddleTileCount; i++) {list.push(&#x60;${Config.ResourceBaseUrl}/battle/bg_2_${i}.png&#x60;);}return list;},BattleBgBack: (): string[] &#x3D;&gt; {const list &#x3D; [];for (let i &#x3D; 1; i &lt;&#x3D; ResourceMaster.BattleBgBackTileCount; i++) {list.push(&#x60;${Config.ResourceBaseUrl}/battle/bg_3_${i}.png&#x60;);}return list;},UnitTextureFrameName: (unitActionType: string, unitId: number, index: number): string &#x3D;&gt; {return &#x60;unit_${unitId}_${unitActionType}_${index}.png&#x60;;},Dead: {Bucket: () &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png&#x60;;},Spirit: () &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png&#x60;;}}})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ResourceMaster.ts:4</li>
+							<li>Defined in ResourceMaster.ts:7</li>
 						</ul>
 					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-						</ul>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>リソースの URL や命名規則のマスタ</p>
+						</div>
 					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable">
-					<a name="unitstate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> Unit<wbr>State</h3>
-					<div class="tsd-signature tsd-kind-icon">Unit<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({IDLE: 1,LOCKED: 2,DYING: 3,DEAD: 4})</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in enum/UnitState.ts:1</li>
-						</ul>
-					</aside>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -187,12 +196,62 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="to_rad" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> TO_<wbr>RAD</h3>
+					<div class="tsd-signature tsd-kind-icon">TO_<wbr>RAD<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;Math.PI / 180.0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in display/battle/effect/Dead.ts:4</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="unitstate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Unit<wbr>State</h3>
+					<div class="tsd-signature tsd-kind-icon">Unit<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({IDLE: 1,LOCKED: 2,DEAD: 3})</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in enum/UnitState.ts:4</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ユニットのステート</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="debugfield" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> debug<wbr>Field</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in scenes/BattleScene.ts:16</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
 					<a name="debugmaxunitcount" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> debug<wbr>Max<wbr>Unit<wbr>Count</h3>
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">5</span><span class="tsd-signature-symbol"> =&nbsp;5</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:13</li>
+							<li>Defined in scenes/BattleScene.ts:15</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="debugstage" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> debug<wbr>Stage</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<wbr>Stage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in scenes/BattleScene.ts:17</li>
 						</ul>
 					</aside>
 				</section>
@@ -202,7 +261,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[1, -1, 3, -1, 5]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:14</li>
+							<li>Defined in scenes/BattleScene.ts:18</li>
 						</ul>
 					</aside>
 				</section>
@@ -219,13 +278,19 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="classes/background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/dead.html" class="tsd-kind-icon">Dead</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="classes/defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/field.html" class="tsd-kind-icon">Field</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a>
@@ -257,11 +322,20 @@
 					<li class=" tsd-kind-class">
 						<a href="classes/unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
+					<li class=" tsd-kind-class">
 						<a href="classes/unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/graph.html" class="tsd-kind-icon">Graph</a>
@@ -274,6 +348,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/node.html" class="tsd-kind-icon">Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a>
@@ -302,11 +379,20 @@
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a>

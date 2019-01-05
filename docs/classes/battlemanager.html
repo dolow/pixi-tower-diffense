@@ -64,6 +64,16 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>ゲーム内バトルパートのマネージャ
+							ゲームロジックを中心に扱う
+							TODO: Although GameManager is singleton, BattleManager is expected to be used by creating instance.
+						So class name should be changed.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -79,10 +89,13 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#aiwavemastercache" class="tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlemanager.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#currentavailablecost" class="tsd-kind-icon">current<wbr>Available<wbr>Cost</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#delegator" class="tsd-kind-icon">delegator</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlemanager.html#maxavailablecost" class="tsd-kind-icon">max<wbr>Available<wbr>Cost</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#requestedspawnunitids" class="tsd-kind-icon">requested<wbr>Spawn<wbr>Unit<wbr>Ids</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#passedframecount" class="tsd-kind-icon">passed<wbr>Frame<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#spawnrequestedunitunitids" class="tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#unitmastercache" class="tsd-kind-icon">unit<wbr>Master<wbr>Cache</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#units" class="tsd-kind-icon">units</a></li>
 							</ul>
@@ -90,19 +103,18 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#die" class="tsd-kind-icon">die</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#init" class="tsd-kind-icon">init</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#isdied" class="tsd-kind-icon">is<wbr>Died</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#onunitsspawned" class="tsd-kind-icon">on<wbr>Units<wbr>Spawned</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#refreshavailablecost" class="tsd-kind-icon">refresh<wbr>Available<wbr>Cost</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#requestaispawn" class="tsd-kind-icon">requestAISpawn</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#requestspawn" class="tsd-kind-icon">request<wbr>Spawn</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#requestspawnai" class="tsd-kind-icon">request<wbr>SpawnAI</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#requestspawnplayer" class="tsd-kind-icon">request<wbr>Spawn<wbr>Player</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#setunitdatamaster" class="tsd-kind-icon">set<wbr>Unit<wbr>Data<wbr>Master</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#setdelegator" class="tsd-kind-icon">set<wbr>Delegator</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#tryspawn" class="tsd-kind-icon">try<wbr>Spawn</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#update" class="tsd-kind-icon">update</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updateanimatestate" class="tsd-kind-icon">update<wbr>Animate<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#updateavailablecost" class="tsd-kind-icon">update<wbr>Available<wbr>Cost</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatespawn" class="tsd-kind-icon">update<wbr>Spawn</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatedamage" class="tsd-kind-icon">update<wbr>Damage</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatespawnrequest" class="tsd-kind-icon">update<wbr>Spawn<wbr>Request</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatestate" class="tsd-kind-icon">update<wbr>State</a></li>
 							</ul>
 						</section>
@@ -111,25 +123,65 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="aiwavemastercache" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> ai<wbr>Wave<wbr>Master<wbr>Cache</h3>
+					<div class="tsd-signature tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in managers/BattleManager.ts:52</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>AIWaveMaster をキャッシュするための Map</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="availablecost" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> available<wbr>Cost</h3>
+					<div class="tsd-signature tsd-kind-icon">available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in managers/BattleManager.ts:44</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>現在の利用可能なコスト</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="costrecoveryperframe" class="tsd-anchor"></a>
 					<h3>cost<wbr>Recovery<wbr>Per<wbr>Frame</h3>
 					<div class="tsd-signature tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:9</li>
+							<li>Defined in managers/BattleManager.ts:30</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>フレームごとのコスト回復量</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="currentavailablecost" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> current<wbr>Available<wbr>Cost</h3>
-					<div class="tsd-signature tsd-kind-icon">current<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<a name="delegator" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> delegator</h3>
+					<div class="tsd-signature tsd-kind-icon">delegator<span class="tsd-signature-symbol">:</span> <a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol"> =&nbsp;new DefaultDelegator()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:14</li>
+							<li>Defined in managers/BattleManager.ts:39</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>BattleManagerDelegate 実装オブジェクト</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="maxavailablecost" class="tsd-anchor"></a>
@@ -137,19 +189,44 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:10</li>
+							<li>Defined in managers/BattleManager.ts:34</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>利用可能コストの上限値</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="requestedspawnunitids" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> requested<wbr>Spawn<wbr>Unit<wbr>Ids</h3>
-					<div class="tsd-signature tsd-kind-icon">requested<wbr>Spawn<wbr>Unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<a name="passedframecount" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> passed<wbr>Frame<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">passed<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:18</li>
+							<li>Defined in managers/BattleManager.ts:64</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>経過フレーム数</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="spawnrequestedunitunitids" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids</h3>
+					<div class="tsd-signature tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in managers/BattleManager.ts:60</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>外部から生成をリクエストされたユニット情報を保持する配列</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="unitmastercache" class="tsd-anchor"></a>
@@ -157,9 +234,14 @@
 					<div class="tsd-signature tsd-kind-icon">unit<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:16</li>
+							<li>Defined in managers/BattleManager.ts:56</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>UnitMaster をキャッシュするための Map</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="units" class="tsd-anchor"></a>
@@ -167,30 +249,41 @@
 					<div class="tsd-signature tsd-kind-icon">units<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:15</li>
+							<li>Defined in managers/BattleManager.ts:48</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>生成済みの Unit インスタンスを保持する配列</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="die" class="tsd-anchor"></a>
-					<h3>die</h3>
+					<a name="init" class="tsd-anchor"></a>
+					<h3>init</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">die<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>aiWaveMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/aiwavemaster.html" class="tsd-signature-type">AIWaveMaster</a>, unitMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">[]</span>, delegator<span class="tsd-signature-symbol">?: </span><a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:67</li>
+									<li>Defined in managers/BattleManager.ts:66</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>unit: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>aiWaveMaster: <a href="../interfaces/aiwavemaster.html" class="tsd-signature-type">AIWaveMaster</a></h5>
+								</li>
+								<li>
+									<h5>unitMaster: <a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> delegator: <a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -201,65 +294,75 @@
 					<a name="isdied" class="tsd-anchor"></a>
 					<h3>is<wbr>Died</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Died<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Died<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:63</li>
+									<li>Defined in managers/BattleManager.ts:140</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>渡された Unit が、ロジック上死亡扱いであるかどうかを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>unit: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>unit: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onavailablecostupdated" class="tsd-anchor"></a>
-					<h3>on<wbr>Available<wbr>Cost<wbr>Updated</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated<span class="tsd-signature-symbol">(</span>_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="refreshavailablecost" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> refresh<wbr>Available<wbr>Cost</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">refresh<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">(</span>newCost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:12</li>
+									<li>Defined in managers/BattleManager.ts:276</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>利用可能なコストを更新し、専用のコールバックをコールする</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>_: <span class="tsd-signature-type">number</span></h5>
+									<h5>newCost: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onunitsspawned" class="tsd-anchor"></a>
-					<h3>on<wbr>Units<wbr>Spawned</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Units<wbr>Spawned<span class="tsd-signature-symbol">(</span>_<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="requestaispawn" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> requestAISpawn</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">requestAISpawn<span class="tsd-signature-symbol">(</span>targetFrame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:11</li>
+									<li>Defined in managers/BattleManager.ts:235</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>_: <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>targetFrame: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -276,9 +379,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:37</li>
+									<li>Defined in managers/BattleManager.ts:94</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unit 生成をリクエストする</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -302,9 +410,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:43</li>
+									<li>Defined in managers/BattleManager.ts:108</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unit 生成をリクエストする
+									AIユニット生成リクエストのシュガー</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -325,9 +439,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:40</li>
+									<li>Defined in managers/BattleManager.ts:101</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unit 生成をリクエストする
+									プレイヤーユニット生成リクエストのシュガー</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -339,22 +459,22 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setunitdatamaster" class="tsd-anchor"></a>
-					<h3>set<wbr>Unit<wbr>Data<wbr>Master</h3>
+					<a name="setdelegator" class="tsd-anchor"></a>
+					<h3>set<wbr>Delegator</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Unit<wbr>Data<wbr>Master<span class="tsd-signature-symbol">(</span>unitMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Delegator<span class="tsd-signature-symbol">(</span>delegator<span class="tsd-signature-symbol">: </span><a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:29</li>
+									<li>Defined in managers/BattleManager.ts:87</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>unitMaster: <a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>delegator: <a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -371,9 +491,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:47</li>
+									<li>Defined in managers/BattleManager.ts:116</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>コストを消費し、Unit 生成を試みる
+									コストが足りなければ何もしない</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -400,9 +526,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:74</li>
+									<li>Defined in managers/BattleManager.ts:148</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>ゲーム更新処理
+									外部から適切なタイミングでコールされる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -414,16 +546,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="updateanimatestate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Animate<wbr>State</h3>
+					<a name="updatedamage" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Damage</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Animate<wbr>State<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Damage<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:167</li>
+									<li>Defined in managers/BattleManager.ts:179</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -436,42 +568,24 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="updateavailablecost" class="tsd-anchor"></a>
-					<h3>update<wbr>Available<wbr>Cost</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">(</span>newCost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in managers/BattleManager.ts:20</li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>newCost: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="updatespawn" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Spawn</h3>
+					<a name="updatespawnrequest" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Spawn<wbr>Request</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Spawn<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Spawn<wbr>Request<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:178</li>
+									<li>Defined in managers/BattleManager.ts:250</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>受け付けた Unit 生成リクエストを処理する</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -486,9 +600,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:125</li>
+									<li>Defined in managers/BattleManager.ts:199</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unit のステートを更新する
+									ステート優先順位は右記の通り DEAD &gt; LOCKED &gt; IDLE</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -511,25 +631,31 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="background.html" class="tsd-kind-icon">Background</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
 						<a href="battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="battlemanager.html#aiwavemastercache" class="tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="battlemanager.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="battlemanager.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#currentavailablecost" class="tsd-kind-icon">current<wbr>Available<wbr>Cost</a>
+								<a href="battlemanager.html#delegator" class="tsd-kind-icon">delegator</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="battlemanager.html#maxavailablecost" class="tsd-kind-icon">max<wbr>Available<wbr>Cost</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#requestedspawnunitids" class="tsd-kind-icon">requested<wbr>Spawn<wbr>Unit<wbr>Ids</a>
+								<a href="battlemanager.html#passedframecount" class="tsd-kind-icon">passed<wbr>Frame<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="battlemanager.html#spawnrequestedunitunitids" class="tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="battlemanager.html#unitmastercache" class="tsd-kind-icon">unit<wbr>Master<wbr>Cache</a>
@@ -538,16 +664,16 @@
 								<a href="battlemanager.html#units" class="tsd-kind-icon">units</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#die" class="tsd-kind-icon">die</a>
+								<a href="battlemanager.html#init" class="tsd-kind-icon">init</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="battlemanager.html#isdied" class="tsd-kind-icon">is<wbr>Died</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="battlemanager.html#refreshavailablecost" class="tsd-kind-icon">refresh<wbr>Available<wbr>Cost</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#onunitsspawned" class="tsd-kind-icon">on<wbr>Units<wbr>Spawned</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="battlemanager.html#requestaispawn" class="tsd-kind-icon">requestAISpawn</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="battlemanager.html#requestspawn" class="tsd-kind-icon">request<wbr>Spawn</a>
@@ -559,7 +685,7 @@
 								<a href="battlemanager.html#requestspawnplayer" class="tsd-kind-icon">request<wbr>Spawn<wbr>Player</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#setunitdatamaster" class="tsd-kind-icon">set<wbr>Unit<wbr>Data<wbr>Master</a>
+								<a href="battlemanager.html#setdelegator" class="tsd-kind-icon">set<wbr>Delegator</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="battlemanager.html#tryspawn" class="tsd-kind-icon">try<wbr>Spawn</a>
@@ -568,13 +694,10 @@
 								<a href="battlemanager.html#update" class="tsd-kind-icon">update</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updateanimatestate" class="tsd-kind-icon">update<wbr>Animate<wbr>State</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#updateavailablecost" class="tsd-kind-icon">update<wbr>Available<wbr>Cost</a>
+								<a href="battlemanager.html#updatedamage" class="tsd-kind-icon">update<wbr>Damage</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updatespawn" class="tsd-kind-icon">update<wbr>Spawn</a>
+								<a href="battlemanager.html#updatespawnrequest" class="tsd-kind-icon">update<wbr>Spawn<wbr>Request</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="battlemanager.html#updatestate" class="tsd-kind-icon">update<wbr>State</a>
@@ -585,6 +708,15 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dead.html" class="tsd-kind-icon">Dead</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="field.html" class="tsd-kind-icon">Field</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a>
@@ -616,11 +748,20 @@
 					<li class=" tsd-kind-class">
 						<a href="unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
+					<li class=" tsd-kind-class">
 						<a href="unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="../interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="../interfaces/event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/graph.html" class="tsd-kind-icon">Graph</a>
@@ -633,6 +774,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/node.html" class="tsd-kind-icon">Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a>
@@ -661,11 +805,20 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a>

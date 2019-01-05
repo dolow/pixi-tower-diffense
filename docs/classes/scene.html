@@ -64,6 +64,16 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>ゲームシーンの抽象クラス
+							UiGraph を利用して UI 情報を透過的に読み込み初期化する
+							また、シーン間のトランジションイベントを提供する
+						いずれのイベントも実装クラスにて独自処理の実装が可能</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -96,10 +106,10 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="scene.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -135,6 +145,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#mask" class="tsd-kind-icon">mask</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#parent" class="tsd-kind-icon">parent</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#pivot" class="tsd-kind-icon">pivot</a></li>
@@ -177,7 +188,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#addchild" class="tsd-kind-icon">add<wbr>Child</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#applysceneuigraph" class="tsd-kind-icon">apply<wbr>Scene<wbr>UiGraph</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a></li>
@@ -200,6 +210,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a></li>
@@ -216,28 +228,42 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scene.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">new <wbr>Scene<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scene.html" class="tsd-signature-type">Scene</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides EventEmitter.__constructor</p>
+								<p>Inherited from EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in scenes/Scene.ts:11</li>
+									<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:4085</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Minimal EventEmitter interface that is molded against the Node.js
+									EventEmitter interface.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>constructor</dt>
+									<dd></dd>
+									<dt>api</dt>
+									<dd><p>public</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="scene.html" class="tsd-signature-type">Scene</a></h4>
 						</li>
 					</ul>
@@ -493,9 +519,14 @@
 					<div class="tsd-signature tsd-kind-icon">has<wbr>Scene<wbr>UiGraph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/Scene.ts:9</li>
+							<li>Defined in scenes/Scene.ts:18</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>UiGraph を利用して読み込む UI があるかどうか</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="height" class="tsd-anchor"></a>
@@ -571,6 +602,16 @@
 						<p>Inherited from DisplayObject.name</p>
 						<ul>
 							<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:354</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="objectstoupdate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> objects<wbr>ToUpdate</h3>
+					<div class="tsd-signature tsd-kind-icon">objects<wbr>ToUpdate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in scenes/Scene.ts:29</li>
 						</ul>
 					</aside>
 				</section>
@@ -730,9 +771,14 @@
 					<div class="tsd-signature tsd-kind-icon">ui<wbr>Graph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/Scene.ts:10</li>
+							<li>Defined in scenes/Scene.ts:22</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>UiGraph でロードされた UI データ</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -748,9 +794,15 @@
 					<div class="tsd-signature tsd-kind-icon">ui<wbr>Graph<wbr>Container<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol"> =&nbsp;new PIXI.Container()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/Scene.ts:11</li>
+							<li>Defined in scenes/Scene.ts:27</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>UiGraph でロードされた UI データを配置するための PIXI.Container
+							描画順による前後関係を統制するために一つの Container にまとめる</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="visible" class="tsd-anchor"></a>
@@ -1247,29 +1299,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<a name="applysceneuigraph" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> apply<wbr>Scene<wbr>UiGraph</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">apply<wbr>Scene<wbr>UiGraph<span class="tsd-signature-symbol">(</span>uiData<span class="tsd-signature-symbol">: </span><a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in scenes/Scene.ts:66</li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>uiData: <a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="begintransitionin" class="tsd-anchor"></a>
 					<h3>begin<wbr>Transition<wbr>In</h3>
@@ -1280,9 +1309,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/Scene.ts:23</li>
+									<li>Defined in scenes/Scene.ts:58</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>シーン追加トランジション開始
+									引数でトランジション終了時のコールバックを指定できる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1321,9 +1356,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/Scene.ts:27</li>
+									<li>Defined in scenes/Scene.ts:66</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>シーン削除トランジション開始
+									引数でトランジション終了時のコールバックを指定できる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1398,9 +1439,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/Scene.ts:56</li>
+									<li>Defined in scenes/Scene.ts:74</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>loadResource に用いるリソースリストを作成するメソッド
+									デフォルトでは UiGraph のリソースリストを作成する</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -1619,9 +1666,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/Scene.ts:92</li>
+									<li>Defined in scenes/Scene.ts:145</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UiGraph にシーン独自の要素を追加する場合にこのメソッドを利用する</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1759,9 +1811,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/Scene.ts:31</li>
+									<li>Defined in scenes/Scene.ts:88</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>リソースをロードする
+									デフォルトでは UiGraph 用の情報が取得される</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1897,9 +1955,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/Scene.ts:53</li>
+									<li>Defined in scenes/Scene.ts:105</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>loadResource 完了時のコールバックメソッド</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1973,6 +2036,80 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="prepareuigraphcontainer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> prepare<wbr>UiGraph<wbr>Container</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container<span class="tsd-signature-symbol">(</span>uiData<span class="tsd-signature-symbol">: </span><a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in scenes/Scene.ts:116</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UiGraph 用の PIXI.Container インスタンスに UiGraph 要素をロードする</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>uiData: <a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="registerupdatingobject" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> register<wbr>Updating<wbr>Object</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Updating<wbr>Object<span class="tsd-signature-symbol">(</span>object<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in scenes/Scene.ts:38</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>object: <span class="tsd-signature-type">object</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>update<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></h5>
+											<ul class="tsd-parameters">
+												<li class="tsd-parameter-siganture">
+													<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported">
+														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+													</ul>
+													<ul class="tsd-descriptions">
+														<li class="tsd-description">
+															<h4 class="tsd-parameters-title">Parameters</h4>
+															<ul class="tsd-parameters">
+																<li>
+																	<h5>delta: <span class="tsd-signature-type">number</span></h5>
+																</li>
+															</ul>
+															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2448,19 +2585,47 @@
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/Scene.ts:19</li>
+									<li>Defined in scenes/Scene.ts:34</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>GameManager によって requestAnimationFrame 毎に呼び出されるメソッド</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>delta: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="updateregisteredobjects" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> update<wbr>Registered<wbr>Objects</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Registered<wbr>Objects<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in scenes/Scene.ts:42</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>_: <span class="tsd-signature-type">number</span></h5>
+									<h5>delta: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2499,13 +2664,19 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dead.html" class="tsd-kind-icon">Dead</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="field.html" class="tsd-kind-icon">Field</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a>
@@ -2515,7 +2686,7 @@
 					<li class="current tsd-kind-class">
 						<a href="scene.html" class="tsd-kind-icon">Scene</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 								<a href="scene.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
@@ -2607,6 +2778,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="scene.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="scene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="scene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a>
@@ -2719,9 +2893,6 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="scene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#applysceneuigraph" class="tsd-kind-icon">apply<wbr>Scene<wbr>UiGraph</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="scene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a>
 							</li>
@@ -2788,6 +2959,12 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="scene.html#once" class="tsd-kind-icon">once</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="scene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="scene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="scene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
 							</li>
@@ -2836,6 +3013,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="scene.html#update" class="tsd-kind-icon">update</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="scene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="scene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a>
 							</li>
@@ -2867,11 +3047,20 @@
 					<li class=" tsd-kind-class">
 						<a href="unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
+					<li class=" tsd-kind-class">
 						<a href="unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="../interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="../interfaces/event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/graph.html" class="tsd-kind-icon">Graph</a>
@@ -2884,6 +3073,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/node.html" class="tsd-kind-icon">Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a>
@@ -2912,11 +3104,20 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a>

@@ -1,3 +1,6 @@
+/**
+ * ユニットパラメータマスターのスキーマ定義
+ */
 export default interface UnitMaster {
   // data
   unitId:      number;

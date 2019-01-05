@@ -64,6 +64,14 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>PIXI.Sprite のファクトリ
+						テクスチャに、定義されているテクスチャ名で PIXI.utils.TextureCache から引いたデータを用いる</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -105,9 +113,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="uinodefactory.html">UiNodeFactory</a>.<a href="uinodefactory.html#attachuieventbygraphelement">attachUiEventByGraphElement</a></p>
 								<ul>
-									<li>Defined in modules/UiNodeFactory/UiNodeFactory.ts:20</li>
+									<li>Defined in modules/UiNodeFactory/UiNodeFactory.ts:33</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>定義されたイベントを実装する</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -135,7 +148,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="uinodefactory.html">UiNodeFactory</a>.<a href="uinodefactory.html#createuinode">createUiNode</a></p>
 								<ul>
-									<li>Defined in modules/UiNodeFactory/SpriteFactory.ts:5</li>
+									<li>Defined in modules/UiNodeFactory/SpriteFactory.ts:9</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -162,9 +175,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="uinodefactory.html">UiNodeFactory</a>.<a href="uinodefactory.html#createuinodebygraphelement">createUiNodeByGraphElement</a></p>
 								<ul>
-									<li>Defined in modules/UiNodeFactory/UiNodeFactory.ts:9</li>
+									<li>Defined in modules/UiNodeFactory/UiNodeFactory.ts:19</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>静的なノードデータから PIXI.Container 派生オブジェクトを生成する</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -191,13 +209,19 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dead.html" class="tsd-kind-icon">Dead</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="field.html" class="tsd-kind-icon">Field</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a>
@@ -244,11 +268,20 @@
 					<li class=" tsd-kind-class">
 						<a href="unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
+					<li class=" tsd-kind-class">
 						<a href="unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="../interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="../interfaces/event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/graph.html" class="tsd-kind-icon">Graph</a>
@@ -261,6 +294,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/node.html" class="tsd-kind-icon">Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a>
@@ -289,11 +325,20 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a>

@@ -1,12 +1,41 @@
 import * as PIXI from 'pixi.js'
 import Scene from 'scenes/Scene';
 
+/**
+ * ゲーム全体のマネージャ
+ * 主にシーンを扱う
+ */
 export default class GameManager {
+  /**
+   * シングルトン新スタンス
+   */
   public static instance: GameManager;
 
+  /**
+   * シーンのリソースロード完了フラグ
+   * シーントランジションを制御するためのフラグ
+   */
+  public static sceneResourceLoaded: boolean = true;
+  /**
+   * シーンのトランジション完了フラグ
+   * シーントランジションを制御するためのフラグ
+   */
+  public static sceneTransitionOutFinished: boolean = true;
+
+  /**
+   * PIXI.Application インスタンス
+   * 初期化時に生成される
+   */
   public game!: PIXI.Application;
+  /**
+   * 現在のシーンインスタンス
+   */
   private currentScene?: Scene;
 
+  /**
+   * コンストラクタ
+   * PIXI.Application インスタンスはユーザ任意のものを使用する
+   */
   constructor(app: PIXI.Application) {
     if (GameManager.instance) {
       throw new Error('GameManager can be instantiate only once');
@@ -15,6 +44,10 @@ export default class GameManager {
     this.game = app;
   }
 
+  /**
+   * ゲームを起動する
+   * 画面サイズや PIXI.ApplicationOptions を渡すことができる
+   */
   public static start(params: { width: number, height: number, option?: PIXI.ApplicationOptions }): void {
     const game = new PIXI.Application(params.width, params.height, params.option);
     GameManager.instance = new GameManager(game);
@@ -27,14 +60,17 @@ export default class GameManager {
     });
   }
 
-  public static sceneResourceLoaded:        boolean = true;
-  public static sceneTransitionOutFinished: boolean = true;
-
+  /**
+   * シーンがロード中、あるいはトランジション中であるかを返す
+   */
   public static get isSceneLoading(): boolean {
     return (!GameManager.sceneResourceLoaded || !GameManager.sceneTransitionOutFinished);
   }
 
-  public static replaceSceneIfPossible(newScene: Scene): boolean {
+  /**
+   * 可能であれば新しいシーンへのトランジションを開始する
+   */
+  public static transitionInIfPossible(newScene: Scene): boolean {
     if (GameManager.isSceneLoading) {
       return false;
     }
@@ -55,6 +91,11 @@ export default class GameManager {
     return true;
   }
 
+  /**
+   * シーンをロードする
+   * 新しいシーンのリソース読み込みと古いシーンのトランジションを同時に開始する
+   * いずれも完了したら、新しいシーンのトランジションを開始する
+   */
   public static loadScene(newScene: Scene): void {
     const instance = GameManager.instance;
 
@@ -63,17 +104,17 @@ export default class GameManager {
       GameManager.sceneTransitionOutFinished = false;
       newScene.loadResource(() => {
         GameManager.sceneResourceLoaded = true;
-        GameManager.replaceSceneIfPossible(newScene);
+        GameManager.transitionInIfPossible(newScene);
       });
       instance.currentScene.beginTransitionOut((_: Scene) => {
         GameManager.sceneTransitionOutFinished = true;
-        GameManager.replaceSceneIfPossible(newScene);
+        GameManager.transitionInIfPossible(newScene);
       });
     } else {
       GameManager.sceneTransitionOutFinished = true;
       newScene.loadResource(() => {
         GameManager.sceneResourceLoaded = true;
-        GameManager.replaceSceneIfPossible(newScene);
+        GameManager.transitionInIfPossible(newScene);
       });
     }
   }

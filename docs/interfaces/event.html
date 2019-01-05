@@ -64,6 +64,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>UiGraph Event コンポーネント定義</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -95,7 +102,7 @@
 					<div class="tsd-signature tsd-kind-icon">arguments<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in interfaces/UiGraph/Event.ts:4</li>
+							<li>Defined in interfaces/UiGraph/Event.ts:7</li>
 						</ul>
 					</aside>
 				</section>
@@ -105,7 +112,7 @@
 					<div class="tsd-signature tsd-kind-icon">callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in interfaces/UiGraph/Event.ts:3</li>
+							<li>Defined in interfaces/UiGraph/Event.ts:6</li>
 						</ul>
 					</aside>
 				</section>
@@ -115,7 +122,7 @@
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in interfaces/UiGraph/Event.ts:2</li>
+							<li>Defined in interfaces/UiGraph/Event.ts:5</li>
 						</ul>
 					</aside>
 				</section>
@@ -132,13 +139,19 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="../classes/background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="../classes/battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/dead.html" class="tsd-kind-icon">Dead</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="../classes/defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/field.html" class="tsd-kind-icon">Field</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a>
@@ -170,8 +183,14 @@
 					<li class=" tsd-kind-class">
 						<a href="../classes/unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
+					<li class=" tsd-kind-class">
 						<a href="../classes/unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -192,6 +211,9 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
+						<a href="fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="graph.html" class="tsd-kind-icon">Graph</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -202,6 +224,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="node.html" class="tsd-kind-icon">Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a>
@@ -230,11 +255,20 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a>

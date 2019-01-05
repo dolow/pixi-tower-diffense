@@ -64,6 +64,14 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>ゲーム全体のマネージャ
+						主にシーンを扱う</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -102,8 +110,8 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="gamemanager.html#loadscene" class="tsd-kind-icon">load<wbr>Scene</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="gamemanager.html#replacesceneifpossible" class="tsd-kind-icon">replace<wbr>Scene<wbr>IfPossible</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="gamemanager.html#start" class="tsd-kind-icon">start</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="gamemanager.html#transitioninifpossible" class="tsd-kind-icon">transition<wbr>InIf<wbr>Possible</a></li>
 							</ul>
 						</section>
 					</div>
@@ -121,9 +129,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/GameManager.ts:8</li>
+									<li>Defined in managers/GameManager.ts:33</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>コンストラクタ
+									PIXI.Application インスタンスはユーザ任意のものを使用する</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -143,9 +157,14 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Scene<span class="tsd-signature-symbol">:</span> <a href="scene.html" class="tsd-signature-type">Scene</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/GameManager.ts:8</li>
+							<li>Defined in managers/GameManager.ts:33</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>現在のシーンインスタンス</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="game" class="tsd-anchor"></a>
@@ -153,9 +172,15 @@
 					<div class="tsd-signature tsd-kind-icon">game<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Application</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/GameManager.ts:7</li>
+							<li>Defined in managers/GameManager.ts:29</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>PIXI.Application インスタンス
+							初期化時に生成される</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="instance" class="tsd-anchor"></a>
@@ -163,9 +188,14 @@
 					<div class="tsd-signature tsd-kind-icon">instance<span class="tsd-signature-symbol">:</span> <a href="gamemanager.html" class="tsd-signature-type">GameManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/GameManager.ts:5</li>
+							<li>Defined in managers/GameManager.ts:12</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>シングルトン新スタンス</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="sceneresourceloaded" class="tsd-anchor"></a>
@@ -173,9 +203,15 @@
 					<div class="tsd-signature tsd-kind-icon">scene<wbr>Resource<wbr>Loaded<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/GameManager.ts:30</li>
+							<li>Defined in managers/GameManager.ts:18</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>シーンのリソースロード完了フラグ
+							シーントランジションを制御するためのフラグ</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="scenetransitionoutfinished" class="tsd-anchor"></a>
@@ -183,9 +219,15 @@
 					<div class="tsd-signature tsd-kind-icon">scene<wbr>Transition<wbr>Out<wbr>Finished<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/GameManager.ts:31</li>
+							<li>Defined in managers/GameManager.ts:23</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>シーンのトランジション完了フラグ
+							シーントランジションを制御するためのフラグ</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -200,9 +242,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/GameManager.ts:33</li>
+									<li>Defined in managers/GameManager.ts:66</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>シーンがロード中、あるいはトランジション中であるかを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -220,9 +267,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/GameManager.ts:58</li>
+									<li>Defined in managers/GameManager.ts:99</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>シーンをロードする
+										新しいシーンのリソース読み込みと古いシーンのトランジションを同時に開始する
+									いずれも完了したら、新しいシーンのトランジションを開始する</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -230,29 +284,6 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="replacesceneifpossible" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> replace<wbr>Scene<wbr>IfPossible</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">replace<wbr>Scene<wbr>IfPossible<span class="tsd-signature-symbol">(</span>newScene<span class="tsd-signature-symbol">: </span><a href="scene.html" class="tsd-signature-type">Scene</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in managers/GameManager.ts:37</li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>newScene: <a href="scene.html" class="tsd-signature-type">Scene</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -266,9 +297,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/GameManager.ts:18</li>
+									<li>Defined in managers/GameManager.ts:51</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>ゲームを起動する
+									画面サイズや PIXI.ApplicationOptions を渡すことができる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -290,6 +327,34 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="transitioninifpossible" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> transition<wbr>InIf<wbr>Possible</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">transition<wbr>InIf<wbr>Possible<span class="tsd-signature-symbol">(</span>newScene<span class="tsd-signature-symbol">: </span><a href="scene.html" class="tsd-signature-type">Scene</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in managers/GameManager.ts:73</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>可能であれば新しいシーンへのトランジションを開始する</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>newScene: <a href="scene.html" class="tsd-signature-type">Scene</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -303,13 +368,19 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dead.html" class="tsd-kind-icon">Dead</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="field.html" class="tsd-kind-icon">Field</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -341,10 +412,10 @@
 								<a href="gamemanager.html#loadscene" class="tsd-kind-icon">load<wbr>Scene</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="gamemanager.html#replacesceneifpossible" class="tsd-kind-icon">replace<wbr>Scene<wbr>IfPossible</a>
+								<a href="gamemanager.html#start" class="tsd-kind-icon">start</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="gamemanager.html#start" class="tsd-kind-icon">start</a>
+								<a href="gamemanager.html#transitioninifpossible" class="tsd-kind-icon">transition<wbr>InIf<wbr>Possible</a>
 							</li>
 						</ul>
 					</li>
@@ -377,11 +448,20 @@
 					<li class=" tsd-kind-class">
 						<a href="unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
+					<li class=" tsd-kind-class">
 						<a href="unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="../interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="../interfaces/event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/graph.html" class="tsd-kind-icon">Graph</a>
@@ -394,6 +474,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/node.html" class="tsd-kind-icon">Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a>
@@ -422,11 +505,20 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a>

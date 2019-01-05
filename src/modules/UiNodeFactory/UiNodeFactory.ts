@@ -1,11 +1,21 @@
 import * as PIXI from 'pixi.js';
 import * as UI from 'interfaces/UiGraph/index';
 
+/**
+ * UiGraph 要素のファクトリの基本クラス
+ */
 export default class UiNodeFactory {
+  /**
+   * 派生クラスで実装し、適切な UiGraph ノードを生成する
+   * デフォルトでは PIXI.Container インスタンスを返す
+   */
   public createUiNode(_?: UI.NodeParams): PIXI.Container | null {
     return new PIXI.Container();
   }
 
+  /**
+   * 静的なノードデータから PIXI.Container 派生オブジェクトを生成する
+   */
   public createUiNodeByGraphElement(nodeData: UI.Node): PIXI.Container | null {
     const node = this.createUiNode(nodeData.params);
 
@@ -17,6 +27,9 @@ export default class UiNodeFactory {
     return node;
   }
 
+  /**
+   * 定義されたイベントを実装する
+   */
   public attachUiEventByGraphElement(
     events: UI.Event[],
     node: PIXI.Container,
