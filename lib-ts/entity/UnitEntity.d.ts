@@ -21,6 +21,10 @@ export default class UnitEntity {
      */
     state: number;
     /**
+     * 拠点からの距離
+     */
+    distance: number;
+    /**
      * ロック中のユニット
      */
     lockedUnit: UnitEntity | null;

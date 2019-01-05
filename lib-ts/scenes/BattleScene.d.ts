@@ -54,7 +54,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     /**
      * GameMasterDelegate 実装
      * Unit が更新されたときのコールバック
-     * Unit のアニメーションを更新する
+     * Unit のアニメーションと PIXI による描画を更新する
      */
     onUnitUpdated(unit: Unit): void;
     /**
@@ -72,6 +72,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 渡されたユニット同士が攻撃可能か返す
      */
     shouldDamage(attacker: Unit, target: Unit): boolean;
+    shouldWalk(unit: Unit): boolean;
     constructor();
     /**
      * リソースリストの作成

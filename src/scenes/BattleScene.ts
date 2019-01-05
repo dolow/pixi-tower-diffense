@@ -16,7 +16,7 @@ const debugMaxUnitCount = 5;
 const debugField: number = 1;
 const debugStage: number = 1;
 const debugUnits: number[] = [1, -1, 3, -1, 5];
-const debugCostRecoveryPerFrame = 0.1;
+const debugCostRecoveryPerFrame = 0.05;
 const debugMaxAvailableCost     = 100;
 
 /**
@@ -100,17 +100,26 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   /**
    * GameMasterDelegate 実装
    * Unit が更新されたときのコールバック
-   * Unit のアニメーションを更新する
+   * Unit のアニメーションと PIXI による描画を更新する
    */
   public onUnitUpdated(unit: Unit): void {
     const animationTypes = ResourceMaster.UnitAnimationTypes;
-    let animationType = null;
+    let animationType = unit.getAnimationType();
 
     switch (unit.state) {
       case UnitState.IDLE: {
-        animationType = animationTypes.WALK;
-        const direction = unit.isPlayer ? 1 : -1;
-        unit.sprite.position.x += unit.speed * direction;
+        if (animationType !== animationTypes.WALK) {
+          if (unit.isAnimationLastFrameTime()) {
+            animationType = animationTypes.WALK;
+            unit.resetAnimation();
+          }
+        } else {
+          if (unit.isPlayer) {
+            unit.sprite.position.x = this.basePos.player + unit.distance;
+          } else {
+            unit.sprite.position.x = this.basePos.ai - unit.distance;
+          }
+        }
         break;
       }
       case UnitState.LOCKED: {
@@ -161,6 +170,12 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     }
 
     return attacker.isFoeContact(target);
+  }
+  public shouldWalk(unit: Unit): boolean {
+    if (unit.getAnimationType() === ResourceMaster.UnitAnimationTypes.WALK) {
+      return true;
+    }
+    return unit.isAnimationLastFrameTime();
   }
 
 

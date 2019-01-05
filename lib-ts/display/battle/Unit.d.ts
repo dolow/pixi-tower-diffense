@@ -11,6 +11,10 @@ export default class Unit extends UnitEntity {
      */
     sprite: PIXI.Sprite;
     /**
+     * 現在のアニメーション種別
+     */
+    protected animationType: string;
+    /**
      * 現在のアニメーションフレーム
      */
     protected animationFrameIndex: number;
@@ -26,11 +30,13 @@ export default class Unit extends UnitEntity {
     readonly speed: number;
     readonly wieldFrames: number;
     readonly hitFrame: number;
+    isAnimationLastFrameTime(type?: string): boolean;
+    getAnimationType(): string;
     getAnimationMaxFrameIndex(type: string): number;
     getAnimationUpdateDuration(type: string): number;
     getAnimationMaxFrameTime(type: string): number;
     constructor(master: UnitMaster, ally: boolean);
     isFoeContact(target: Unit): boolean;
     resetAnimation(): void;
-    updateAnimation(type: string, index?: number): void;
+    updateAnimation(type: string): void;
 }

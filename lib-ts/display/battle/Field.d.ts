@@ -6,6 +6,7 @@ export default class Field extends PIXI.Container {
     private foregroundScrollLimit;
     private containers;
     private foreZLines;
+    private lastAddedZLineIndex;
     static readonly resourceList: string[];
     constructor();
     init(zLines?: number): void;

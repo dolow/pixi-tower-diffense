@@ -14,9 +14,13 @@ export default class Unit extends UnitEntity {
   public sprite!: PIXI.Sprite;
 
   /**
+   * 現在のアニメーション種別
+   */
+  protected animationType: string = '';
+  /**
    * 現在のアニメーションフレーム
    */
-  protected animationFrameIndex: number = 0;
+  protected animationFrameIndex: number = 1;
   /**
    * 現在のアニメーション経過フレーム数
    */
@@ -52,11 +56,19 @@ export default class Unit extends UnitEntity {
     return this.master.hitFrame;
   }
 
+  public isAnimationLastFrameTime(type: string = this.animationType): boolean {
+    const maxFrameTime = this.getAnimationMaxFrameTime(type);
+    return this.elapsedFrameCount === maxFrameTime;
+  }
+
+  public getAnimationType(): string {
+    return this.animationType;
+  }
   public getAnimationMaxFrameIndex(type: string): number {
-    return this.master.animationMaxFrameIndexes[type];
+    return this.master.animationMaxFrameIndexes[type] || 0;
   }
   public getAnimationUpdateDuration(type: string): number {
-    return this.master.animationUpdateDurations[type];
+    return this.master.animationUpdateDurations[type] || 0;
   }
   public getAnimationMaxFrameTime(type: string): number {
     return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
@@ -81,26 +93,21 @@ export default class Unit extends UnitEntity {
     this.animationFrameIndex = 1;
   }
 
-  public updateAnimation(type: string, index: number = -1): void {
-    const animationUpdateDuration = this.getAnimationUpdateDuration(type);
-    if (index >= 1) {
-      this.elapsedFrameCount   = animationUpdateDuration * (index - 1);
-      this.animationFrameIndex = index;
-    } else {
-      this.elapsedFrameCount++;
-      if (this.elapsedFrameCount % animationUpdateDuration !== 0) {
-        return;
+  public updateAnimation(type: string): void {
+    this.animationType = type;
+
+    const animationUpdateDuration = this.getAnimationUpdateDuration(this.animationType);
+    if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
+      if (this.isAnimationLastFrameTime()) {
+        this.resetAnimation();
       }
+
+      const name = ResourceMaster.UnitTextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
+      this.sprite.texture = PIXI.utils.TextureCache[name];
+
       this.animationFrameIndex++;
     }
 
-    const animationMaxFrameTime = this.getAnimationMaxFrameTime(type);
-    if (this.elapsedFrameCount >= animationMaxFrameTime) {
-      this.elapsedFrameCount = 1;
-      this.animationFrameIndex = 1;
-    }
-
-    const name = ResourceMaster.UnitTextureFrameName(type, this.unitId, this.animationFrameIndex);
-    this.sprite.texture = PIXI.utils.TextureCache[name];
+    this.elapsedFrameCount++;
   }
 }

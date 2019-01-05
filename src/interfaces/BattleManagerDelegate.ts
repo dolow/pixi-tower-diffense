@@ -25,4 +25,8 @@ export default interface BattleManagerDelegate {
    * 渡されたユニットが攻撃可能か返す
    */
   shouldDamage(attacker: Unit, target: Unit): boolean;
+  /**
+   * 渡されたユニットが移動可能か返す
+   */
+  shouldWalk(unit: Unit): boolean;
 }

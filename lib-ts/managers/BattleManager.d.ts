@@ -91,6 +91,7 @@ export default class BattleManager {
      */
     private updateState;
     private updateDamage;
+    private updateDistance;
     private updateDeadState;
     private updateLockedState;
     private updateIdleState;

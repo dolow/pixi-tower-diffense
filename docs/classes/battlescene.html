@@ -231,6 +231,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#shouldlock" class="tsd-kind-icon">should<wbr>Lock</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#shouldwalk" class="tsd-kind-icon">should<wbr>Walk</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battlescene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battlescene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
@@ -261,7 +262,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:164</li>
+									<li>Defined in scenes/BattleScene.ts:179</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="battlescene.html" class="tsd-signature-type">BattleScene</a></h4>
@@ -1561,7 +1562,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#createresourcelist">createResourceList</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:193</li>
+									<li>Defined in scenes/BattleScene.ts:208</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1789,7 +1790,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#getcustomuigraphfactory">getCustomUiGraphFactory</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:274</li>
+									<li>Defined in scenes/BattleScene.ts:289</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1872,7 +1873,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:325</li>
+									<li>Defined in scenes/BattleScene.ts:340</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2112,7 +2113,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onavailablecostupdated">onAvailableCostUpdated</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:142</li>
+									<li>Defined in scenes/BattleScene.ts:151</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2142,7 +2143,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#onresourceloaded">onResourceLoaded</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:239</li>
+									<li>Defined in scenes/BattleScene.ts:254</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2165,7 +2166,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:311</li>
+									<li>Defined in scenes/BattleScene.ts:326</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2234,7 +2235,7 @@
 								<div class="lead">
 									<p>GameMasterDelegate 実装
 										Unit が更新されたときのコールバック
-									Unit のアニメーションを更新する</p>
+									Unit のアニメーションと PIXI による描画を更新する</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2768,7 +2769,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shoulddamage">shouldDamage</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:158</li>
+									<li>Defined in scenes/BattleScene.ts:167</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2801,7 +2802,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldlock">shouldLock</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:150</li>
+									<li>Defined in scenes/BattleScene.ts:159</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2817,6 +2818,30 @@
 								</li>
 								<li>
 									<h5>target: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="shouldwalk" class="tsd-anchor"></a>
+					<h3>should<wbr>Walk</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Walk<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldwalk">shouldWalk</a></p>
+								<ul>
+									<li>Defined in scenes/BattleScene.ts:174</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>unit: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -2971,7 +2996,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#update">update</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:285</li>
+									<li>Defined in scenes/BattleScene.ts:300</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3450,6 +3475,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="battlescene.html#shouldlock" class="tsd-kind-icon">should<wbr>Lock</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="battlescene.html#shouldwalk" class="tsd-kind-icon">should<wbr>Walk</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="battlescene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a>

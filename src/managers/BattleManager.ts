@@ -15,6 +15,7 @@ class DefaultDelegator implements BattleManagerDelegate {
   public onAvailableCostUpdated(_cost: number): void {}
   public shouldLock(_attacker: Unit, _target: Unit): boolean { return true; }
   public shouldDamage(_attacker: Unit, _target: Unit): boolean { return true; }
+  public shouldWalk(_unit: Unit): boolean { return true }
 }
 
 /**
@@ -184,6 +185,7 @@ export default class BattleManager {
   private updateParameter(): void {
     for (let i = 0; i < this.units.length; i++) {
       this.updateDamage(this.units[i]);
+      this.updateDistance(this.units[i]);
     }
   }
 
@@ -234,6 +236,14 @@ export default class BattleManager {
 
     if (this.delegator.shouldDamage(unit, unit.lockedUnit as Unit)) {
       unit.lockedUnit.currentHealth -= unit.power;
+    }
+  }
+  private updateDistance(unit: Unit): void {
+    if (unit.state !== UnitState.IDLE) {
+      return;
+    }
+    if (this.delegator.shouldWalk(unit)) {
+      unit.distance += unit.speed;
     }
   }
 

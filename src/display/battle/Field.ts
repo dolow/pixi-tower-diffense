@@ -17,6 +17,7 @@ export default class Field extends PIXI.Container {
   };
 
   private foreZLines: PIXI.Container[] = [];
+  private lastAddedZLineIndex: number = -1;
 
   public static get resourceList(): string[] {
     if (Field.resourceListCache.length === 0) {
@@ -80,9 +81,18 @@ export default class Field extends PIXI.Container {
   }
 
   public addChildToRandomZLine(container: PIXI.Container): void {
-    const index = Math.floor(Math.random() * this.foreZLines.length);
+    let index = Math.floor(Math.random() * this.foreZLines.length);
+    if (index === this.lastAddedZLineIndex) {
+      index++;
+      if (index > (this.foreZLines.length - 1)) {
+        index = 0;
+      }
+    }
     container.position.y = 200 + index * 16;
     this.foreZLines[index].addChild(container);
+
+    // 重なって表示されないようにする
+    this.lastAddedZLineIndex = index;
   }
 
   private onPointerDown(event: PIXI.interaction.InteractionEvent): void {

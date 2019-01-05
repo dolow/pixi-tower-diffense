@@ -44256,6 +44256,7 @@ var Field = /** @class */ (function (_super) {
             back: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]()
         };
         _this.foreZLines = [];
+        _this.lastAddedZLineIndex = -1;
         // ユーザ操作で画面をスクロールできるようにする
         _this.interactive = true;
         _this.on('pointerdown', function (e) { return _this.onPointerDown(e); });
@@ -44315,8 +44316,16 @@ var Field = /** @class */ (function (_super) {
     };
     Field.prototype.addChildToRandomZLine = function (container) {
         var index = Math.floor(Math.random() * this.foreZLines.length);
+        if (index === this.lastAddedZLineIndex) {
+            index++;
+            if (index > (this.foreZLines.length - 1)) {
+                index = 0;
+            }
+        }
         container.position.y = 200 + index * 16;
         this.foreZLines[index].addChild(container);
+        // 重なって表示されないようにする
+        this.lastAddedZLineIndex = index;
     };
     Field.prototype.onPointerDown = function (event) {
         this.pointerDownCount++;
@@ -44395,9 +44404,13 @@ var Unit = /** @class */ (function (_super) {
     function Unit(master, ally) {
         var _this = _super.call(this, master, ally) || this;
         /**
+         * 現在のアニメーション種別
+         */
+        _this.animationType = '';
+        /**
          * 現在のアニメーションフレーム
          */
-        _this.animationFrameIndex = 0;
+        _this.animationFrameIndex = 1;
         /**
          * 現在のアニメーション経過フレーム数
          */
@@ -44464,11 +44477,19 @@ var Unit = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Unit.prototype.isAnimationLastFrameTime = function (type) {
+        if (type === void 0) { type = this.animationType; }
+        var maxFrameTime = this.getAnimationMaxFrameTime(type);
+        return this.elapsedFrameCount === maxFrameTime;
+    };
+    Unit.prototype.getAnimationType = function () {
+        return this.animationType;
+    };
     Unit.prototype.getAnimationMaxFrameIndex = function (type) {
-        return this.master.animationMaxFrameIndexes[type];
+        return this.master.animationMaxFrameIndexes[type] || 0;
     };
     Unit.prototype.getAnimationUpdateDuration = function (type) {
-        return this.master.animationUpdateDurations[type];
+        return this.master.animationUpdateDurations[type] || 0;
     };
     Unit.prototype.getAnimationMaxFrameTime = function (type) {
         return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
@@ -44482,27 +44503,18 @@ var Unit = /** @class */ (function (_super) {
         this.elapsedFrameCount = 0;
         this.animationFrameIndex = 1;
     };
-    Unit.prototype.updateAnimation = function (type, index) {
-        if (index === void 0) { index = -1; }
-        var animationUpdateDuration = this.getAnimationUpdateDuration(type);
-        if (index >= 1) {
-            this.elapsedFrameCount = animationUpdateDuration * (index - 1);
-            this.animationFrameIndex = index;
-        }
-        else {
-            this.elapsedFrameCount++;
-            if (this.elapsedFrameCount % animationUpdateDuration !== 0) {
-                return;
+    Unit.prototype.updateAnimation = function (type) {
+        this.animationType = type;
+        var animationUpdateDuration = this.getAnimationUpdateDuration(this.animationType);
+        if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
+            if (this.isAnimationLastFrameTime()) {
+                this.resetAnimation();
             }
+            var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].UnitTextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
+            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[name_1];
             this.animationFrameIndex++;
         }
-        var animationMaxFrameTime = this.getAnimationMaxFrameTime(type);
-        if (this.elapsedFrameCount >= animationMaxFrameTime) {
-            this.elapsedFrameCount = 1;
-            this.animationFrameIndex = 1;
-        }
-        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].UnitTextureFrameName(type, this.unitId, this.animationFrameIndex);
-        this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[name];
+        this.elapsedFrameCount++;
     };
     return Unit;
 }(entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__["default"]));
@@ -44704,6 +44716,10 @@ var UnitEntity = /** @class */ (function () {
          */
         this.state = 0;
         /**
+         * 拠点からの距離
+         */
+        this.distance = 0;
+        /**
          * ロック中のユニット
          */
         this.lockedUnit = null;
@@ -44809,6 +44825,7 @@ var DefaultDelegator = /** @class */ (function () {
     DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
     DefaultDelegator.prototype.shouldLock = function (_attacker, _target) { return true; };
     DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) { return true; };
+    DefaultDelegator.prototype.shouldWalk = function (_unit) { return true; };
     return DefaultDelegator;
 }());
 /**
@@ -44958,6 +44975,7 @@ var BattleManager = /** @class */ (function () {
     BattleManager.prototype.updateParameter = function () {
         for (var i = 0; i < this.units.length; i++) {
             this.updateDamage(this.units[i]);
+            this.updateDistance(this.units[i]);
         }
     };
     /**
@@ -45001,8 +45019,15 @@ var BattleManager = /** @class */ (function () {
             return;
         }
         if (this.delegator.shouldDamage(unit, unit.lockedUnit)) {
-            console.log(this.passedFrameCount + "\u30BF\u30FC\u30F3\u76EE: \u30E6\u30CB\u30C3\u30C8" + unit.id + " \u306E\u653B\u6483\uFF01 \u30E6\u30CB\u30C3\u30C8" + unit.lockedUnit.id + " \u306B " + unit.power + " \u306E\u30C0\u30E1\u30FC\u30B8\uFF01 (" + (unit.lockedUnit.currentHealth - unit.power) + ")");
             unit.lockedUnit.currentHealth -= unit.power;
+        }
+    };
+    BattleManager.prototype.updateDistance = function (unit) {
+        if (unit.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE) {
+            return;
+        }
+        if (this.delegator.shouldWalk(unit)) {
+            unit.distance += unit.speed;
         }
     };
     BattleManager.prototype.updateDeadState = function (_unit) {
@@ -45513,7 +45538,7 @@ var debugMaxUnitCount = 5;
 var debugField = 1;
 var debugStage = 1;
 var debugUnits = [1, -1, 3, -1, 5];
-var debugCostRecoveryPerFrame = 0.1;
+var debugCostRecoveryPerFrame = 0.05;
 var debugMaxAvailableCost = 100;
 /**
  * BattleScene のステートのリスト
@@ -45583,16 +45608,27 @@ var BattleScene = /** @class */ (function (_super) {
     /**
      * GameMasterDelegate 実装
      * Unit が更新されたときのコールバック
-     * Unit のアニメーションを更新する
+     * Unit のアニメーションと PIXI による描画を更新する
      */
     BattleScene.prototype.onUnitUpdated = function (unit) {
         var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes;
-        var animationType = null;
+        var animationType = unit.getAnimationType();
         switch (unit.state) {
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_2__["default"].IDLE: {
-                animationType = animationTypes.WALK;
-                var direction = unit.isPlayer ? 1 : -1;
-                unit.sprite.position.x += unit.speed * direction;
+                if (animationType !== animationTypes.WALK) {
+                    if (unit.isAnimationLastFrameTime()) {
+                        animationType = animationTypes.WALK;
+                        unit.resetAnimation();
+                    }
+                }
+                else {
+                    if (unit.isPlayer) {
+                        unit.sprite.position.x = this.basePos.player + unit.distance;
+                    }
+                    else {
+                        unit.sprite.position.x = this.basePos.ai - unit.distance;
+                    }
+                }
                 break;
             }
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_2__["default"].LOCKED: {
@@ -45638,6 +45674,12 @@ var BattleScene = /** @class */ (function (_super) {
             return false;
         }
         return attacker.isFoeContact(target);
+    };
+    BattleScene.prototype.shouldWalk = function (unit) {
+        if (unit.getAnimationType() === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes.WALK) {
+            return true;
+        }
+        return unit.isAnimationLastFrameTime();
     };
     /**
      * リソースリストの作成
