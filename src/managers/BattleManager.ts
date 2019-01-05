@@ -43,6 +43,10 @@ export default class BattleManager {
    */
   private availableCost: number = 0;
   /**
+   * 次に割り当てるユニットID
+   */
+  private nextUnitId: number = 0;
+  /**
    * 生成済みの Unit インスタンスを保持する配列
    */
   private units: Unit[] = [];
@@ -127,7 +131,7 @@ export default class BattleManager {
     }
 
     const unit = new Unit(master, isPlayer);
-    unit.id = this.units.length;
+    unit.id = this.nextUnitId++;
     unit.currentHealth = unit.maxHealth;
     unit.state = UnitState.IDLE;
     this.units.push(unit);
@@ -174,6 +178,16 @@ export default class BattleManager {
   }
 
   /**
+   * Unit のパラメータを更新する
+   * ステートは全てのパラメータが変化した後に更新する
+   */
+  private updateParameter(): void {
+    for (let i = 0; i < this.units.length; i++) {
+      this.updateDamage(this.units[i]);
+    }
+  }
+
+  /**
    * Unit のステートを更新する
    * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
    */
@@ -210,12 +224,6 @@ export default class BattleManager {
       if (oldState !== unit.state) {
         this.delegator.onUnitStateChanged(unit, oldState);
       }
-    }
-  }
-
-  private updateParameter(): void {
-    for (let i = 0; i < this.units.length; i++) {
-      this.updateDamage(this.units[i]);
     }
   }
 

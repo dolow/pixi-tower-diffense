@@ -15,7 +15,7 @@ export default class Unit extends UnitEntity {
      */
     protected animationFrameIndex: number;
     /**
-     * 現在のアニメーション
+     * 現在のアニメーション経過フレーム数
      */
     protected elapsedFrameCount: number;
     isHitFrame(): boolean;

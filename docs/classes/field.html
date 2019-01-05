@@ -119,6 +119,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="field.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="field.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="field.html#filters" class="tsd-kind-icon">filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="field.html#forezlines" class="tsd-kind-icon">foreZLines</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="field.html#foregroundscrolllimit" class="tsd-kind-icon">foreground<wbr>Scroll<wbr>Limit</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="field.html#height" class="tsd-kind-icon">height</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="field.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a></li>
@@ -175,6 +176,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="field.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="field.html#addchild" class="tsd-kind-icon">add<wbr>Child</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="field.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="field.html#addchildtorandomzline" class="tsd-kind-icon">add<wbr>Child<wbr>ToRandomZLine</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="field.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="field.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="field.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a></li>
@@ -236,7 +238,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in display/battle/Field.ts:29</li>
+									<li>Defined in display/battle/Field.ts:31</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="field.html" class="tsd-signature-type">Field</a></h4>
@@ -485,6 +487,16 @@
 						<p>Inherited from DisplayObject.filters</p>
 						<ul>
 							<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:412</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="forezlines" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> foreZLines</h3>
+					<div class="tsd-signature tsd-kind-icon">foreZLines<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in display/battle/Field.ts:19</li>
 						</ul>
 					</aside>
 				</section>
@@ -890,7 +902,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Field.ts:19</li>
+									<li>Defined in display/battle/Field.ts:21</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -1218,6 +1230,29 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="addchildtorandomzline" class="tsd-anchor"></a>
+					<h3>add<wbr>Child<wbr>ToRandomZLine</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Child<wbr>ToRandomZLine<span class="tsd-signature-symbol">(</span>container<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in display/battle/Field.ts:82</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>container: <span class="tsd-signature-type">Container</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1565,15 +1600,21 @@
 					<a name="init" class="tsd-anchor"></a>
 					<h3>init</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>zLines<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Field.ts:43</li>
+									<li>Defined in display/battle/Field.ts:45</li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> zLines: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;8</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1754,7 +1795,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Field.ts:72</li>
+									<li>Defined in display/battle/Field.ts:88</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1777,7 +1818,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Field.ts:79</li>
+									<li>Defined in display/battle/Field.ts:95</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1800,7 +1841,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Field.ts:102</li>
+									<li>Defined in display/battle/Field.ts:119</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2427,18 +2468,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="dead.html" class="tsd-kind-icon">Dead</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -2512,6 +2541,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="field.html#filters" class="tsd-kind-icon">filters</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="field.html#forezlines" class="tsd-kind-icon">foreZLines</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="field.html#foregroundscrolllimit" class="tsd-kind-icon">foreground<wbr>Scroll<wbr>Limit</a>
@@ -2651,6 +2683,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 								<a href="field.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="field.html#addchildtorandomzline" class="tsd-kind-icon">add<wbr>Child<wbr>ToRandomZLine</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="field.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
@@ -2769,111 +2804,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="scene.html" class="tsd-kind-icon">Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="spritefactory.html" class="tsd-kind-icon">Sprite<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="textfactory.html" class="tsd-kind-icon">Text<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="titlescene.html" class="tsd-kind-icon">Title<wbr>Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="uigraph.html" class="tsd-kind-icon">Ui<wbr>Graph</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="uinodefactory.html" class="tsd-kind-icon">Ui<wbr>Node<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="unit.html" class="tsd-kind-icon">Unit</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="unitbutton.html" class="tsd-kind-icon">Unit<wbr>Button</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/event.html" class="tsd-kind-icon">Event</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/graph.html" class="tsd-kind-icon">Graph</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/loaderaddparam.html" class="tsd-kind-icon">Loader<wbr>Add<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/metadata.html" class="tsd-kind-icon">Metadata</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/node.html" class="tsd-kind-icon">Node</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/nodeparams.html" class="tsd-kind-icon">Node<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/spritenode.html" class="tsd-kind-icon">Sprite<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/spritenodeparams.html" class="tsd-kind-icon">Sprite<wbr>Node<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/textnode.html" class="tsd-kind-icon">Text<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/textnodeparams.html" class="tsd-kind-icon">Text<wbr>Node<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/unitmaster.html" class="tsd-kind-icon">Unit<wbr>Master</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#battlestate" class="tsd-kind-icon">Battle<wbr>State</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#config" class="tsd-kind-icon">Config</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#invalid_unit_id" class="tsd-kind-icon">INVALID_<wbr>UNIT_<wbr>ID</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#unitstate" class="tsd-kind-icon">Unit<wbr>State</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#debugfield" class="tsd-kind-icon">debug<wbr>Field</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#debugmaxunitcount" class="tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#debugstage" class="tsd-kind-icon">debug<wbr>Stage</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#debugunits" class="tsd-kind-icon">debug<wbr>Units</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

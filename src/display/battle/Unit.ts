@@ -18,12 +18,16 @@ export default class Unit extends UnitEntity {
    */
   protected animationFrameIndex: number = 0;
   /**
-   * 現在のアニメーション
+   * 現在のアニメーション経過フレーム数
    */
   protected elapsedFrameCount: number = 0;
 
   public isHitFrame(): boolean {
-    return this.animationFrameIndex === this.hitFrame;
+    if (this.animationFrameIndex !== this.hitFrame) {
+      return false;
+    }
+    const updateDuration = this.getAnimationUpdateDuration(ResourceMaster.UnitAnimationTypes.ATTACK);
+    return (this.elapsedFrameCount % updateDuration) === 0;
   }
 
   public get unitId(): number {

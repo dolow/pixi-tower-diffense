@@ -16,6 +16,8 @@ const debugMaxUnitCount = 5;
 const debugField: number = 1;
 const debugStage: number = 1;
 const debugUnits: number[] = [1, -1, 3, -1, 5];
+const debugCostRecoveryPerFrame = 0.1;
+const debugMaxAvailableCost     = 100;
 
 /**
  * BattleScene のステートのリスト
@@ -84,8 +86,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       } else {
         unit.sprite.position.x = this.basePos.ai;
       }
-      unit.sprite.position.y = 200 + Math.random() * 100;
-      this.field.addChild(unit.sprite);
+      this.field.addChildToRandomZLine(unit.sprite);
     }
   }
 
@@ -139,7 +140,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * 利用可能なコストの値が変動したときのコールバック
    */
   public onAvailableCostUpdated(cost: number): void {
-    (this.uiGraph.cost_text as PIXI.Text).text = `${cost}`;
+    (this.uiGraph.cost_text as PIXI.Text).text = `${Math.floor(cost)}`;
   }
 
   /**
@@ -180,8 +181,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       this.fieldId = debugField;
       this.stageId = debugStage;
       this.unitIds = debugUnits;
-      this.manager.costRecoveryPerFrame = 1;
-      this.manager.maxAvailableCost     = 1000;
+      this.manager.costRecoveryPerFrame = debugCostRecoveryPerFrame;
+      this.manager.maxAvailableCost     = debugMaxAvailableCost;
     }
   }
 

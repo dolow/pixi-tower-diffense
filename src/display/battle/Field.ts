@@ -16,6 +16,8 @@ export default class Field extends PIXI.Container {
     back: new PIXI.Container()
   };
 
+  private foreZLines: PIXI.Container[] = [];
+
   public static get resourceList(): string[] {
     if (Field.resourceListCache.length === 0) {
       const foreTiles   = ResourceMaster.BattleBgFore();
@@ -40,7 +42,7 @@ export default class Field extends PIXI.Container {
     this.on('pointerout',    (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
   }
 
-  public init(): void {
+  public init(zLines: number = 8): void {
     const tiles: { [key: string]: string[] } = {
       fore:   ResourceMaster.BattleBgFore(),
       middle: ResourceMaster.BattleBgMiddle(),
@@ -65,8 +67,22 @@ export default class Field extends PIXI.Container {
     this.addChild(this.containers.middle);
     this.addChild(this.containers.fore);
 
+    // フィールドに奥行きを出すためにユニットを前後に配置できるようにする
+    // z-index の後からの制御はコストが高いため、予め PIXI.Container を割り当てておく
+    for (let i = 0; i < zLines; i++) {
+      const line = new PIXI.Container();
+      this.foreZLines.push(line);
+      this.containers.fore.addChild(line);
+    }
+
     const screenWidth = GameManager.instance.game.screen.width;
     this.foregroundScrollLimit = -(this.width - screenWidth);
+  }
+
+  public addChildToRandomZLine(container: PIXI.Container): void {
+    const index = Math.floor(Math.random() * this.foreZLines.length);
+    container.position.y = 200 + index * 16;
+    this.foreZLines[index].addChild(container);
   }
 
   private onPointerDown(event: PIXI.interaction.InteractionEvent): void {
@@ -92,6 +108,7 @@ export default class Field extends PIXI.Container {
       newForegroundPos = this.foregroundScrollLimit;
     }
 
+    // 背景に奥行きを出すために前景・中景・後景に分けてスクロール量を変化させる
     this.position.x = newForegroundPos;
     this.containers.middle.position.x = newForegroundPos * -0.6;
     this.containers.back.position.x   = newForegroundPos * -0.9;

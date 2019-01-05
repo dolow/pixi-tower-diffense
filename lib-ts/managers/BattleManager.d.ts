@@ -27,6 +27,10 @@ export default class BattleManager {
      */
     private availableCost;
     /**
+     * 次に割り当てるユニットID
+     */
+    private nextUnitId;
+    /**
      * 生成済みの Unit インスタンスを保持する配列
      */
     private units;
@@ -77,11 +81,15 @@ export default class BattleManager {
      */
     update(_delta: number): void;
     /**
+     * Unit のパラメータを更新する
+     * ステートは全てのパラメータが変化した後に更新する
+     */
+    private updateParameter;
+    /**
      * Unit のステートを更新する
      * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
      */
     private updateState;
-    private updateParameter;
     private updateDamage;
     private updateDeadState;
     private updateLockedState;

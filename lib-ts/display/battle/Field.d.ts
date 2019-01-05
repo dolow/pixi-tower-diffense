@@ -5,9 +5,11 @@ export default class Field extends PIXI.Container {
     private lastPointerPositionX;
     private foregroundScrollLimit;
     private containers;
+    private foreZLines;
     static readonly resourceList: string[];
     constructor();
-    init(): void;
+    init(zLines?: number): void;
+    addChildToRandomZLine(container: PIXI.Container): void;
     private onPointerDown;
     private onPointerMove;
     private onPointerUp;

@@ -44255,6 +44255,7 @@ var Field = /** @class */ (function (_super) {
             middle: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             back: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]()
         };
+        _this.foreZLines = [];
         // ユーザ操作で画面をスクロールできるようにする
         _this.interactive = true;
         _this.on('pointerdown', function (e) { return _this.onPointerDown(e); });
@@ -44279,7 +44280,8 @@ var Field = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Field.prototype.init = function () {
+    Field.prototype.init = function (zLines) {
+        if (zLines === void 0) { zLines = 8; }
         var tiles = {
             fore: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgFore(),
             middle: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgMiddle(),
@@ -44301,8 +44303,20 @@ var Field = /** @class */ (function (_super) {
         this.addChild(this.containers.back);
         this.addChild(this.containers.middle);
         this.addChild(this.containers.fore);
+        // フィールドに奥行きを出すためにユニットを前後に配置できるようにする
+        // z-index の後からの制御はコストが高いため、予め PIXI.Container を割り当てておく
+        for (var i = 0; i < zLines; i++) {
+            var line = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+            this.foreZLines.push(line);
+            this.containers.fore.addChild(line);
+        }
         var screenWidth = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.screen.width;
         this.foregroundScrollLimit = -(this.width - screenWidth);
+    };
+    Field.prototype.addChildToRandomZLine = function (container) {
+        var index = Math.floor(Math.random() * this.foreZLines.length);
+        container.position.y = 200 + index * 16;
+        this.foreZLines[index].addChild(container);
     };
     Field.prototype.onPointerDown = function (event) {
         this.pointerDownCount++;
@@ -44323,6 +44337,7 @@ var Field = /** @class */ (function (_super) {
         else if (newForegroundPos < this.foregroundScrollLimit) {
             newForegroundPos = this.foregroundScrollLimit;
         }
+        // 背景に奥行きを出すために前景・中景・後景に分けてスクロール量を変化させる
         this.position.x = newForegroundPos;
         this.containers.middle.position.x = newForegroundPos * -0.6;
         this.containers.back.position.x = newForegroundPos * -0.9;
@@ -44384,7 +44399,7 @@ var Unit = /** @class */ (function (_super) {
          */
         _this.animationFrameIndex = 0;
         /**
-         * 現在のアニメーション
+         * 現在のアニメーション経過フレーム数
          */
         _this.elapsedFrameCount = 0;
         _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
@@ -44394,7 +44409,11 @@ var Unit = /** @class */ (function (_super) {
         return _this;
     }
     Unit.prototype.isHitFrame = function () {
-        return this.animationFrameIndex === this.hitFrame;
+        if (this.animationFrameIndex !== this.hitFrame) {
+            return false;
+        }
+        var updateDuration = this.getAnimationUpdateDuration(ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].UnitAnimationTypes.ATTACK);
+        return (this.elapsedFrameCount % updateDuration) === 0;
     };
     Object.defineProperty(Unit.prototype, "unitId", {
         get: function () {
@@ -44685,7 +44704,7 @@ var UnitEntity = /** @class */ (function () {
          */
         this.state = 0;
         /**
-         * ロック中のユニット配列
+         * ロック中のユニット
          */
         this.lockedUnit = null;
         this.master = master;
@@ -44817,6 +44836,10 @@ var BattleManager = /** @class */ (function () {
          */
         this.availableCost = 0;
         /**
+         * 次に割り当てるユニットID
+         */
+        this.nextUnitId = 0;
+        /**
          * 生成済みの Unit インスタンスを保持する配列
          */
         this.units = [];
@@ -44893,7 +44916,7 @@ var BattleManager = /** @class */ (function () {
             this.refreshAvailableCost(this.availableCost - master.cost);
         }
         var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_1__["default"](master, isPlayer);
-        unit.id = this.units.length;
+        unit.id = this.nextUnitId++;
         unit.currentHealth = unit.maxHealth;
         unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
         this.units.push(unit);
@@ -44927,6 +44950,15 @@ var BattleManager = /** @class */ (function () {
         }
         this.units = activeUnits;
         this.passedFrameCount++;
+    };
+    /**
+     * Unit のパラメータを更新する
+     * ステートは全てのパラメータが変化した後に更新する
+     */
+    BattleManager.prototype.updateParameter = function () {
+        for (var i = 0; i < this.units.length; i++) {
+            this.updateDamage(this.units[i]);
+        }
     };
     /**
      * Unit のステートを更新する
@@ -44964,16 +44996,12 @@ var BattleManager = /** @class */ (function () {
             }
         }
     };
-    BattleManager.prototype.updateParameter = function () {
-        for (var i = 0; i < this.units.length; i++) {
-            this.updateDamage(this.units[i]);
-        }
-    };
     BattleManager.prototype.updateDamage = function (unit) {
         if (!unit.lockedUnit) {
             return;
         }
         if (this.delegator.shouldDamage(unit, unit.lockedUnit)) {
+            console.log(this.passedFrameCount + "\u30BF\u30FC\u30F3\u76EE: \u30E6\u30CB\u30C3\u30C8" + unit.id + " \u306E\u653B\u6483\uFF01 \u30E6\u30CB\u30C3\u30C8" + unit.lockedUnit.id + " \u306B " + unit.power + " \u306E\u30C0\u30E1\u30FC\u30B8\uFF01 (" + (unit.lockedUnit.currentHealth - unit.power) + ")");
             unit.lockedUnit.currentHealth -= unit.power;
         }
     };
@@ -45485,6 +45513,8 @@ var debugMaxUnitCount = 5;
 var debugField = 1;
 var debugStage = 1;
 var debugUnits = [1, -1, 3, -1, 5];
+var debugCostRecoveryPerFrame = 0.1;
+var debugMaxAvailableCost = 100;
 /**
  * BattleScene のステートのリスト
  */
@@ -45522,8 +45552,8 @@ var BattleScene = /** @class */ (function (_super) {
             _this.fieldId = debugField;
             _this.stageId = debugStage;
             _this.unitIds = debugUnits;
-            _this.manager.costRecoveryPerFrame = 1;
-            _this.manager.maxAvailableCost = 1000;
+            _this.manager.costRecoveryPerFrame = debugCostRecoveryPerFrame;
+            _this.manager.maxAvailableCost = debugMaxAvailableCost;
         }
         return _this;
     }
@@ -45541,8 +45571,7 @@ var BattleScene = /** @class */ (function (_super) {
             else {
                 unit.sprite.position.x = this.basePos.ai;
             }
-            unit.sprite.position.y = 200 + Math.random() * 100;
-            this.field.addChild(unit.sprite);
+            this.field.addChildToRandomZLine(unit.sprite);
         }
     };
     /**
@@ -45591,7 +45620,7 @@ var BattleScene = /** @class */ (function (_super) {
      * 利用可能なコストの値が変動したときのコールバック
      */
     BattleScene.prototype.onAvailableCostUpdated = function (cost) {
-        this.uiGraph.cost_text.text = "" + cost;
+        this.uiGraph.cost_text.text = "" + Math.floor(cost);
     };
     /**
      * GameMasterDelegate 実装
