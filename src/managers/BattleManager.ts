@@ -143,7 +143,7 @@ export default class BattleManager {
 
   /**
    * ゲーム更新処理
-   * 外部から適切なタイミングでコールされる
+   * 外部から任意のタイミングでコールする
    */
   public update(_delta: number): void {
     this.refreshAvailableCost(this.availableCost + this.costRecoveryPerFrame);
@@ -152,20 +152,17 @@ export default class BattleManager {
 
     this.updateSpawnRequest();
 
-    const activeUnits = [];
+    this.updateParameter();
 
-    // update units
+    this.updateState();
+
+    for (let i = 0; i < this.units.length; i++) {
+      this.delegator.onUnitUpdated(this.units[i]);
+    }
+
+    const activeUnits: Unit[] = [];
     for (let i = 0; i < this.units.length; i++) {
       const unit = this.units[i];
-
-      // update parameter
-      if (!this.isDied(unit)) {
-        this.updateDamage(unit);
-        this.updateState(unit);
-      }
-
-      this.delegator.onUnitUpdated(unit);
-
       if (!this.isDied(unit)) {
         activeUnits.push(unit);
       }
@@ -176,59 +173,94 @@ export default class BattleManager {
     this.passedFrameCount++;
   }
 
+  /**
+   * Unit のステートを更新する
+   * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
+   */
+  private updateState(): void {
+    // デリゲート処理のために古いステートを保持
+    const unitStates = [];
+    for (let i = 0; i < this.units.length; i++) {
+      unitStates.push(this.units[i].state);
+    }
+
+    for (let i = 0; i < this.units.length; i++) {
+      const unit = this.units[i];
+      if (unit.state === UnitState.DEAD) {
+        this.updateDeadState(unit);
+      }
+    }
+
+    for (let i = 0; i < this.units.length; i++) {
+      const unit = this.units[i];
+      if (unit.state === UnitState.LOCKED) {
+        this.updateLockedState(unit);
+      }
+    }
+    for (let i = 0; i < this.units.length; i++) {
+      const unit = this.units[i];
+      if (unit.state === UnitState.IDLE) {
+        this.updateIdleState(unit);
+      }
+    }
+
+    for (let i = 0; i < this.units.length; i++) {
+      const unit = this.units[i];
+      const oldState = unitStates[i];
+      if (oldState !== unit.state) {
+        this.delegator.onUnitStateChanged(unit, oldState);
+      }
+    }
+  }
+
+  private updateParameter(): void {
+    for (let i = 0; i < this.units.length; i++) {
+      this.updateDamage(this.units[i]);
+    }
+  }
+
   private updateDamage(unit: Unit): void {
-    if (unit.state !== UnitState.LOCKED) {
+    if (!unit.lockedUnit) {
       return;
     }
 
+    if (this.delegator.shouldDamage(unit, unit.lockedUnit as Unit)) {
+      unit.lockedUnit.currentHealth -= unit.power;
+    }
+  }
+
+  private updateDeadState(_unit: Unit): void {
+    // NOOP
+  }
+  private updateLockedState(unit: Unit): void {
+    // ロック解除判定
+    if (unit.lockedUnit && unit.lockedUnit.currentHealth <= 0) {
+      unit.lockedUnit = null;
+      unit.state      = UnitState.IDLE;
+    }
+
+    // 自身の DEAD 判定
+    if (unit.currentHealth <= 0) {
+      unit.id         = INVALID_UNIT_ID;
+      unit.lockedUnit = null;
+      unit.state      = UnitState.DEAD;
+    }
+  }
+  private updateIdleState(unit: Unit): void {
     for (let i = 0; i < this.units.length; i++) {
       const target = this.units[i];
       if (unit.isAlly(target)) {
         continue;
       }
-      if (this.delegator.shouldDamage(unit, target)) {
-        target.currentHealth -= unit.power;
+      if (target.state !== UnitState.IDLE && target.state !== UnitState.LOCKED) {
+        continue;
       }
-    }
-  }
 
-  /**
-   * Unit のステートを更新する
-   * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
-   */
-  private updateState(unit: Unit): void {
-    const oldState = unit.state;
-    let newState = oldState;
-
-    do {
-      if (unit.state === UnitState.DEAD) {
+      if (this.delegator.shouldLock(unit, target)) {
+        unit.lockedUnit = target;
+        unit.state = UnitState.LOCKED;
         break;
       }
-      if (unit.currentHealth <= 0) {
-        unit.id = INVALID_UNIT_ID;
-        newState = UnitState.DEAD;
-        break;
-      }
-
-      for (let i = 0; i < this.units.length; i++) {
-        const target = this.units[i];
-        if (unit.isAlly(target)) {
-          continue;
-        }
-        if (target.state !== UnitState.IDLE && target.state !== UnitState.LOCKED) {
-          continue;
-        }
-
-        if (this.delegator.shouldLock(unit, target)) {
-          newState = UnitState.LOCKED;
-          break;
-        }
-      }
-    } while(false);
-
-    if (newState !== oldState) {
-      unit.state = newState;
-      this.delegator.onUnitStateChanged(unit, oldState);
     }
   }
 

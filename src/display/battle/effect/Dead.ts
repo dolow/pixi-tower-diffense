@@ -49,6 +49,7 @@ export default class Dead extends PIXI.Container {
   public update(_delta: number): void {
     this.elapsedFrameCount++;
 
+    // TODO: move to sub system
     switch (this.elapsedFrameCount) {
       case 4:  this.bucket.rotation = 25.0 * TO_RAD;  break;
       case 8:  this.bucket.rotation = -25.0 * TO_RAD; break;

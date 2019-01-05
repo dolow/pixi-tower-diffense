@@ -73,15 +73,19 @@ export default class BattleManager {
     isDied(unit: UnitEntity): boolean;
     /**
      * ゲーム更新処理
-     * 外部から適切なタイミングでコールされる
+     * 外部から任意のタイミングでコールする
      */
     update(_delta: number): void;
-    private updateDamage;
     /**
      * Unit のステートを更新する
      * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
      */
     private updateState;
+    private updateParameter;
+    private updateDamage;
+    private updateDeadState;
+    private updateLockedState;
+    private updateIdleState;
     private requestAISpawn;
     /**
      * 受け付けた Unit 生成リクエストを処理する

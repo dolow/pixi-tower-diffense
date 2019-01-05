@@ -21,6 +21,10 @@ export default class UnitEntity {
      */
     state: number;
     /**
+     * ロック中のユニット配列
+     */
+    lockedUnit: UnitEntity | null;
+    /**
      * ユニットマスターデータ
      */
     protected master: UnitMaster;

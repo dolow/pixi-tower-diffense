@@ -13,7 +13,6 @@ export default class UnitEntity {
    * プレイヤー側のユニットかどうか
    */
   public isPlayer: boolean = true;
-
   /**
    * 現在のヒットポイント
    */
@@ -22,6 +21,10 @@ export default class UnitEntity {
    * ステート
    */
   public state: number = 0;
+  /**
+   * ロック中のユニット
+   */
+  public lockedUnit: UnitEntity | null = null;
 
   /**
    * ユニットマスターデータ
@@ -46,7 +49,7 @@ export default class UnitEntity {
       (!this.isPlayer &&  target.isPlayer)
     );
   }
-  
+
   public damage(value: number): number {
     this.currentHealth -= value;
     return this.currentHealth;

@@ -44455,9 +44455,6 @@ var Unit = /** @class */ (function (_super) {
         return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
     };
     Unit.prototype.isFoeContact = function (target) {
-        if (!this.sprite || !target.sprite) {
-            return false;
-        }
         return (this.isPlayer)
             ? (this.sprite.position.x + this.sprite.width + target.sprite.width) >= target.sprite.position.x
             : (target.sprite.position.x + target.sprite.width + this.sprite.width) >= this.sprite.position.x;
@@ -44613,6 +44610,7 @@ var Dead = /** @class */ (function (_super) {
     });
     Dead.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
+        // TODO: move to sub system
         switch (this.elapsedFrameCount) {
             case 4:
                 this.bucket.rotation = 25.0 * TO_RAD;
@@ -44686,6 +44684,10 @@ var UnitEntity = /** @class */ (function () {
          * ステート
          */
         this.state = 0;
+        /**
+         * ロック中のユニット配列
+         */
+        this.lockedUnit = null;
         this.master = master;
         this.isPlayer = isPlayer;
     }
@@ -44905,22 +44907,20 @@ var BattleManager = /** @class */ (function () {
     };
     /**
      * ゲーム更新処理
-     * 外部から適切なタイミングでコールされる
+     * 外部から任意のタイミングでコールする
      */
     BattleManager.prototype.update = function (_delta) {
         this.refreshAvailableCost(this.availableCost + this.costRecoveryPerFrame);
         this.requestAISpawn(this.passedFrameCount);
         this.updateSpawnRequest();
+        this.updateParameter();
+        this.updateState();
+        for (var i = 0; i < this.units.length; i++) {
+            this.delegator.onUnitUpdated(this.units[i]);
+        }
         var activeUnits = [];
-        // update units
         for (var i = 0; i < this.units.length; i++) {
             var unit = this.units[i];
-            // update parameter
-            if (!this.isDied(unit)) {
-                this.updateDamage(unit);
-                this.updateState(unit);
-            }
-            this.delegator.onUnitUpdated(unit);
             if (!this.isDied(unit)) {
                 activeUnits.push(unit);
             }
@@ -44928,53 +44928,85 @@ var BattleManager = /** @class */ (function () {
         this.units = activeUnits;
         this.passedFrameCount++;
     };
+    /**
+     * Unit のステートを更新する
+     * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
+     */
+    BattleManager.prototype.updateState = function () {
+        // デリゲート処理のために古いステートを保持
+        var unitStates = [];
+        for (var i = 0; i < this.units.length; i++) {
+            unitStates.push(this.units[i].state);
+        }
+        for (var i = 0; i < this.units.length; i++) {
+            var unit = this.units[i];
+            if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD) {
+                this.updateDeadState(unit);
+            }
+        }
+        for (var i = 0; i < this.units.length; i++) {
+            var unit = this.units[i];
+            if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
+                this.updateLockedState(unit);
+            }
+        }
+        for (var i = 0; i < this.units.length; i++) {
+            var unit = this.units[i];
+            if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE) {
+                this.updateIdleState(unit);
+            }
+        }
+        for (var i = 0; i < this.units.length; i++) {
+            var unit = this.units[i];
+            var oldState = unitStates[i];
+            if (oldState !== unit.state) {
+                this.delegator.onUnitStateChanged(unit, oldState);
+            }
+        }
+    };
+    BattleManager.prototype.updateParameter = function () {
+        for (var i = 0; i < this.units.length; i++) {
+            this.updateDamage(this.units[i]);
+        }
+    };
     BattleManager.prototype.updateDamage = function (unit) {
-        if (unit.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
+        if (!unit.lockedUnit) {
             return;
         }
+        if (this.delegator.shouldDamage(unit, unit.lockedUnit)) {
+            unit.lockedUnit.currentHealth -= unit.power;
+        }
+    };
+    BattleManager.prototype.updateDeadState = function (_unit) {
+        // NOOP
+    };
+    BattleManager.prototype.updateLockedState = function (unit) {
+        // ロック解除判定
+        if (unit.lockedUnit && unit.lockedUnit.currentHealth <= 0) {
+            unit.lockedUnit = null;
+            unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
+        }
+        // 自身の DEAD 判定
+        if (unit.currentHealth <= 0) {
+            unit.id = INVALID_UNIT_ID;
+            unit.lockedUnit = null;
+            unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
+        }
+    };
+    BattleManager.prototype.updateIdleState = function (unit) {
         for (var i = 0; i < this.units.length; i++) {
             var target = this.units[i];
             if (unit.isAlly(target)) {
                 continue;
             }
-            if (this.delegator.shouldDamage(unit, target)) {
-                target.currentHealth -= unit.power;
+            if (target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE && target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
+                continue;
             }
-        }
-    };
-    /**
-     * Unit のステートを更新する
-     * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
-     */
-    BattleManager.prototype.updateState = function (unit) {
-        var oldState = unit.state;
-        var newState = oldState;
-        do {
-            if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD) {
+            if (this.delegator.shouldLock(unit, target)) {
+                unit.lockedUnit = target;
+                unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
                 break;
             }
-            if (unit.currentHealth <= 0) {
-                unit.id = INVALID_UNIT_ID;
-                newState = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
-                break;
-            }
-            for (var i = 0; i < this.units.length; i++) {
-                var target = this.units[i];
-                if (unit.isAlly(target)) {
-                    continue;
-                }
-                if (target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE && target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
-                    continue;
-                }
-                if (this.delegator.shouldLock(unit, target)) {
-                    newState = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
-                    break;
-                }
-            }
-        } while (false);
-        if (newState !== oldState) {
-            unit.state = newState;
-            this.delegator.onUnitStateChanged(unit, oldState);
         }
     };
     BattleManager.prototype.requestAISpawn = function (targetFrame) {

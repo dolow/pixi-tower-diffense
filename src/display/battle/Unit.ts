@@ -67,9 +67,6 @@ export default class Unit extends UnitEntity {
   }
 
   public isFoeContact(target: Unit): boolean {
-    if (!this.sprite || !target.sprite) {
-      return false;
-    }
     return (this.isPlayer)
       ? (this.sprite.position.x + this.sprite.width + target.sprite.width) >= target.sprite.position.x
       : (target.sprite.position.x + target.sprite.width + this.sprite.width) >= this.sprite.position.x;
