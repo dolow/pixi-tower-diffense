@@ -1,9 +1,9 @@
+import FieldMaster from 'interfaces/master/Field';
 import AIWaveMaster from 'interfaces/master/AIWave';
 import UnitMaster from 'interfaces/master/Unit';
 import BaseMaster from 'interfaces/master/Base';
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import UnitEntity from 'entity/UnitEntity';
-import Unit from 'display/battle/Unit';
 /**
  * ゲーム内バトルパートのマネージャ
  * ゲームロジックを中心に扱う
@@ -38,7 +38,9 @@ export default class BattleManager {
     /**
      * 生成済みの Base インスタンスを保持する配列
      */
-    private baseEntityMap;
+    private baseEntities;
+    private fieldMasterCache;
+    getFieldMaster(): FieldMaster | null;
     /**
      * AIWaveMaster をキャッシュするための Map
      */
@@ -47,6 +49,11 @@ export default class BattleManager {
      * UnitMaster をキャッシュするための Map
      */
     private unitMasterCache;
+    getUnitMaster(unitId: number): UnitMaster | null;
+    /**
+     * BaseMaster をキャッシュするための Map
+     */
+    private baseMasterCache;
     /**
      * 外部から生成をリクエストされたユニット情報を保持する配列
      */
@@ -55,7 +62,16 @@ export default class BattleManager {
      * 経過フレーム数
      */
     private passedFrameCount;
-    init(aiWaveMaster: AIWaveMaster, unitMaster: UnitMaster[], playerBaseMaster: BaseMaster, aiBaseMaster: BaseMaster, delegator?: BattleManagerDelegate): void;
+    init(params: {
+        delegator: BattleManagerDelegate;
+        aiWaveMaster: AIWaveMaster;
+        fieldMaster: FieldMaster;
+        unitMasters: UnitMaster[];
+        baseMasterMap: {
+            player: BaseMaster;
+            ai: BaseMaster;
+        };
+    }): void;
     setDelegator(delegator: BattleManagerDelegate): void;
     /**
      * Unit 生成をリクエストする
@@ -71,11 +87,6 @@ export default class BattleManager {
      * AIユニット生成リクエストのシュガー
      */
     requestSpawnAI(unitId: number): void;
-    /**
-     * コストを消費し、Unit 生成を試みる
-     * コストが足りなければ何もしない
-     */
-    trySpawn(unitId: number, isPlayer: boolean): Unit | null;
     /**
      * 渡された Unit が、ロジック上死亡扱いであるかどうかを返す
      */
@@ -94,15 +105,17 @@ export default class BattleManager {
      * Unit のステートを更新する
      * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
      */
-    private updateState;
+    private updateUnitState;
     private updateDamage;
     private updateDistance;
-    private updateDeadState;
-    private updateLockedState;
-    private updateIdleState;
+    private updateUnitDeadState;
+    private updateUnitLockedState;
+    private updateUnitIdleState;
     private requestAISpawn;
     /**
      * 受け付けた Unit 生成リクエストを処理する
+     * プレイヤーユニットの場合はコストを消費し、Unit 生成を試みる
+     * コストが足りなければ何もしない
      */
     private updateSpawnRequest;
     /**

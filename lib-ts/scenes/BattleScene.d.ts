@@ -2,8 +2,9 @@ import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'scenes/Scene';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
+import AttackableEntity from 'entity/AttackableEntity';
 import BaseEntity from 'entity/BaseEntity';
-import Unit from 'display/battle/Unit';
+import UnitEntity from 'entity/UnitEntity';
 /**
  * メインのゲーム部分のシーン
  * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
@@ -13,14 +14,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 最大ユニット編成数
      */
     private maxUnitSlotCount;
-    /**
-     * Field マスタ
-     */
-    private fieldMaster;
-    /**
-     * Base マスタ
-     */
-    private baseMasterMap;
     /**
      * 利用するフィールドID
      */
@@ -55,44 +48,50 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     private bases;
     private destroyList;
     /**
-     * GameMasterDelegate 実装
-     * Base が発生したときのコールバック
+     * GameManagerDelegate 実装
+     * Base を発生させるときのコールバック
      * Field に Base のスプライトを追加する
      */
-    spawnBase(baseId: number): BaseEntity | null;
+    spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null;
     /**
-     * GameMasterDelegate 実装
+     * GameManagerDelegate 実装
+     * Unit を発生させるときのコールバック
+     * Field に Unit のスプライトを追加する
+     */
+    spawnUnitEntity(unitId: number, isPlayer: boolean): UnitEntity | null;
+    /**
+     * GameManagerDelegate 実装
      * Unit が発生したときのコールバック
      * Field に Unit のスプライトを追加する
      */
-    onUnitsSpawned(units: Unit[]): void;
+    onUnitsSpawned(units: UnitEntity[]): void;
     /**
      * ユニットのステートが変更した際のコールバック
      */
-    onUnitStateChanged(unit: Unit, _oldState: number): void;
+    onUnitStateChanged(entity: UnitEntity, _oldState: number): void;
     /**
-     * GameMasterDelegate 実装
+     * GameManagerDelegate 実装
      * Unit が更新されたときのコールバック
      * Unit のアニメーションと PIXI による描画を更新する
      */
-    onUnitUpdated(unit: Unit): void;
+    onUnitUpdated(entity: UnitEntity): void;
     /**
-     * GameMasterDelegate 実装
+     * GameManagerDelegate 実装
      * 利用可能なコストの値が変動したときのコールバック
      */
     onAvailableCostUpdated(cost: number): void;
     /**
-     * GameMasterDelegate 実装
+     * GameManagerDelegate 実装
      * 渡されたユニット同士が接敵可能か返す
      */
-    shouldLockUnit(attacker: Unit, target: Unit): boolean;
-    shouldLockBase(attacker: Unit, target: BaseEntity): boolean;
+    shouldLockUnit(attacker: AttackableEntity, target: UnitEntity): boolean;
+    shouldLockBase(attacker: AttackableEntity, target: BaseEntity): boolean;
     /**
-     * GameMasterDelegate 実装
+     * GameManagerDelegate 実装
      * 渡されたユニット同士が攻撃可能か返す
      */
-    shouldDamage(attacker: Unit, target: Unit): boolean;
-    shouldWalk(unit: Unit): boolean;
+    shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean;
+    shouldUnitWalk(entity: UnitEntity): boolean;
     constructor();
     /**
      * リソースリストの作成

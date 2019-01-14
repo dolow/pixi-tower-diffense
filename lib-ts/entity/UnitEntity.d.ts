@@ -1,4 +1,3 @@
-import UnitMaster from 'interfaces/master/Unit';
 import AttackableEntity from 'entity/AttackableEntity';
 /**
  * ユニットのパラメータ
@@ -9,6 +8,10 @@ export default class UnitEntity extends AttackableEntity {
      * ユニット生成順に動的に割り当てられる
      */
     id: number;
+    /**
+     * ユニットID
+     */
+    unitId: number;
     /**
      * ステート
      */
@@ -21,9 +24,5 @@ export default class UnitEntity extends AttackableEntity {
      * ロック中のユニット
      */
     lockedEntity: AttackableEntity | null;
-    /**
-     * ユニットマスターデータ
-     */
-    protected master: UnitMaster;
-    constructor(master: UnitMaster, isPlayer: boolean);
+    constructor(unitId: number, isPlayer: boolean);
 }

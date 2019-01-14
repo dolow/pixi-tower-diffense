@@ -93,8 +93,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shouldlockbase" class="tsd-kind-icon">should<wbr>Lock<wbr>Base</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shouldlockunit" class="tsd-kind-icon">should<wbr>Lock<wbr>Unit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shouldwalk" class="tsd-kind-icon">should<wbr>Walk</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#spawnbase" class="tsd-kind-icon">spawn<wbr>Base</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shouldunitwalk" class="tsd-kind-icon">should<wbr>Unit<wbr>Walk</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#spawnbaseentity" class="tsd-kind-icon">spawn<wbr>Base<wbr>Entity</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#spawnunitentity" class="tsd-kind-icon">spawn<wbr>Unit<wbr>Entity</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,7 +113,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:28</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:33</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -134,13 +135,13 @@
 					<a name="onunitstatechanged" class="tsd-anchor"></a>
 					<h3>on<wbr>Unit<wbr>State<wbr>Changed</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a>, oldState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a>, oldState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:20</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:25</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -151,7 +152,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>unit: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>unit: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 								<li>
 									<h5>oldState: <span class="tsd-signature-type">number</span></h5>
@@ -165,13 +166,13 @@
 					<a name="onunitupdated" class="tsd-anchor"></a>
 					<h3>on<wbr>Unit<wbr>Updated</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Updated<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Updated<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:24</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:29</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -182,7 +183,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>unit: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>unit: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -193,13 +194,13 @@
 					<a name="onunitsspawned" class="tsd-anchor"></a>
 					<h3>on<wbr>Units<wbr>Spawned</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Units<wbr>Spawned<span class="tsd-signature-symbol">(</span>units<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Units<wbr>Spawned<span class="tsd-signature-symbol">(</span>units<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:16</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:21</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -210,7 +211,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>units: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>units: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -221,13 +222,13 @@
 					<a name="shoulddamage" class="tsd-anchor"></a>
 					<h3>should<wbr>Damage</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Damage<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a>, target<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Damage<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, target<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:40</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:45</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -238,10 +239,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>attacker: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>attacker: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
 								</li>
 								<li>
-									<h5>target: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>target: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -252,13 +253,13 @@
 					<a name="shouldlockbase" class="tsd-anchor"></a>
 					<h3>should<wbr>Lock<wbr>Base</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Lock<wbr>Base<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a>, target<span class="tsd-signature-symbol">: </span><a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Lock<wbr>Base<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, target<span class="tsd-signature-symbol">: </span><a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:36</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:41</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,7 +270,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>attacker: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>attacker: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
 								</li>
 								<li>
 									<h5>target: <a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
@@ -283,13 +284,13 @@
 					<a name="shouldlockunit" class="tsd-anchor"></a>
 					<h3>should<wbr>Lock<wbr>Unit</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Lock<wbr>Unit<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a>, target<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Lock<wbr>Unit<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, target<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:32</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:37</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -300,10 +301,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>attacker: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>attacker: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
 								</li>
 								<li>
-									<h5>target: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>target: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -311,16 +312,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="shouldwalk" class="tsd-anchor"></a>
-					<h3>should<wbr>Walk</h3>
+					<a name="shouldunitwalk" class="tsd-anchor"></a>
+					<h3>should<wbr>Unit<wbr>Walk</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Walk<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Unit<wbr>Walk<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:44</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:49</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -331,7 +332,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>unit: <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>unit: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -339,16 +340,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="spawnbase" class="tsd-anchor"></a>
-					<h3>spawn<wbr>Base</h3>
+					<a name="spawnbaseentity" class="tsd-anchor"></a>
+					<h3>spawn<wbr>Base<wbr>Entity</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Base<span class="tsd-signature-symbol">(</span>baseId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Base<wbr>Entity<span class="tsd-signature-symbol">(</span>baseId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:8</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:9</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -361,8 +362,45 @@
 								<li>
 									<h5>baseId: <span class="tsd-signature-type">number</span></h5>
 								</li>
+								<li>
+									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">null</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="spawnunitentity" class="tsd-anchor"></a>
+					<h3>spawn<wbr>Unit<wbr>Entity</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Unit<wbr>Entity<span class="tsd-signature-symbol">(</span>unitId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:13</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>ユニットを生成する際のコールバック</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>unitId: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a>
 								<span class="tsd-signature-symbol"> | </span>
 								<span class="tsd-signature-type">null</span>
 							</h4>
@@ -408,10 +446,13 @@
 								<a href="battlemanagerdelegate.html#shouldlockunit" class="tsd-kind-icon">should<wbr>Lock<wbr>Unit</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="battlemanagerdelegate.html#shouldwalk" class="tsd-kind-icon">should<wbr>Walk</a>
+								<a href="battlemanagerdelegate.html#shouldunitwalk" class="tsd-kind-icon">should<wbr>Unit<wbr>Walk</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="battlemanagerdelegate.html#spawnbase" class="tsd-kind-icon">spawn<wbr>Base</a>
+								<a href="battlemanagerdelegate.html#spawnbaseentity" class="tsd-kind-icon">spawn<wbr>Base<wbr>Entity</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="battlemanagerdelegate.html#spawnunitentity" class="tsd-kind-icon">spawn<wbr>Unit<wbr>Entity</a>
 							</li>
 						</ul>
 					</li>

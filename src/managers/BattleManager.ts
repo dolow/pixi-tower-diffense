@@ -1,3 +1,4 @@
+import FieldMaster from 'interfaces/master/Field';
 import AIWaveMaster from 'interfaces/master/AIWave';
 import UnitMaster from 'interfaces/master/Unit';
 import BaseMaster from 'interfaces/master/Base';
@@ -5,21 +6,22 @@ import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import UnitState from 'enum/UnitState';
 import UnitEntity from 'entity/UnitEntity';
 import BaseEntity from 'entity/BaseEntity';
-import Unit from 'display/battle/Unit';
 
 const INVALID_UNIT_ID = -1;
-
+const BASE_ENTITIES_PLAYER_INDEX = 0;
+const BASE_ENTITIES_AI_INDEX = 1;
 
 class DefaultDelegator implements BattleManagerDelegate {
-  public spawnBase(_baseId: number): BaseEntity | null { return null; };
-  public onUnitsSpawned(_units: Unit[]): void {}
-  public onUnitStateChanged(_unit: Unit, _oldState: number): void {}
-  public onUnitUpdated(_unit: Unit): void {}
+  public spawnBaseEntity(_baseId: number, _isPlayer: boolean): BaseEntity | null { return null; };
+  public spawnUnitEntity(_unitId: number, _isPlayer: boolean): UnitEntity | null { return null; };
+  public onUnitsSpawned(_units: UnitEntity[]): void {}
+  public onUnitStateChanged(_unit: UnitEntity, _oldState: number): void {}
+  public onUnitUpdated(_unit: UnitEntity): void {}
   public onAvailableCostUpdated(_cost: number): void {}
-  public shouldLockUnit(_attacker: Unit, _target: Unit): boolean { return true; }
-  public shouldLockBase(_attacker: Unit, _target: BaseEntity): boolean { return true; }
-  public shouldDamage(_attacker: Unit, _target: Unit): boolean { return true; }
-  public shouldWalk(_unit: Unit): boolean { return true }
+  public shouldLockUnit(_attacker: UnitEntity, _target: UnitEntity): boolean { return true; }
+  public shouldLockBase(_attacker: UnitEntity, _target: BaseEntity): boolean { return true; }
+  public shouldDamage(_attacker: UnitEntity, _target: UnitEntity): boolean { return true; }
+  public shouldUnitWalk(_unit: UnitEntity): boolean { return true }
 }
 
 /**
@@ -54,14 +56,17 @@ export default class BattleManager {
   /**
    * 生成済みの Unit インスタンスを保持する配列
    */
-  private units: Unit[] = [];
+  private units: UnitEntity[] = [];
   /**
    * 生成済みの Base インスタンスを保持する配列
    */
-  private baseEntityMap: null | {
-    player: BaseEntity;
-    ai: BaseEntity;
-  } = null;
+  private baseEntities: BaseEntity[] = [];
+
+  private fieldMasterCache: FieldMaster | null = null;
+  public getFieldMaster(): FieldMaster | null {
+    return this.fieldMasterCache;
+  }
+
   /**
    * AIWaveMaster をキャッシュするための Map
    */
@@ -70,6 +75,14 @@ export default class BattleManager {
    * UnitMaster をキャッシュするための Map
    */
   private unitMasterCache: Map<number, UnitMaster> = new Map();
+  public getUnitMaster(unitId: number): UnitMaster | null {
+    return this.unitMasterCache.get(unitId) || null;
+  }
+  /**
+   * BaseMaster をキャッシュするための Map
+   */
+  private baseMasterCache: Map<number, BaseMaster> = new Map();
+
   /**
    * 外部から生成をリクエストされたユニット情報を保持する配列
    */
@@ -79,43 +92,48 @@ export default class BattleManager {
    */
   private passedFrameCount: number = 0;
 
-  public init(
+  public init(params: {
+    delegator: BattleManagerDelegate,
     aiWaveMaster: AIWaveMaster,
-    unitMaster: UnitMaster[],
-    playerBaseMaster: BaseMaster,
-    aiBaseMaster: BaseMaster,
-    delegator?: BattleManagerDelegate
-  ): void {
+    fieldMaster: FieldMaster,
+    unitMasters: UnitMaster[],
+    baseMasterMap:{
+      player: BaseMaster,
+      ai: BaseMaster
+    }
+  }): void {
+    this.delegator = params.delegator;
+
     this.aiWaveMasterCache.clear();
+    this.baseMasterCache.clear();
     this.unitMasterCache.clear();
 
-    const waves = aiWaveMaster.waves;
+    this.fieldMasterCache = params.fieldMaster;
+
+    const waves = params.aiWaveMaster.waves;
     const keys = Object.keys(waves);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       this.aiWaveMasterCache.set(Number.parseInt(key), waves[key]);
     }
 
-    for (let i = 0; i < unitMaster.length; i++) {
-      const unit = unitMaster[i];
+    for (let i = 0; i < params.unitMasters.length; i++) {
+      const unit = params.unitMasters[i];
       this.unitMasterCache.set(unit.unitId, unit);
     }
 
-    const playerBase = this.delegator.spawnBase(playerBaseMaster.baseId);
-    const aiBase = this.delegator.spawnBase(aiBaseMaster.baseId);
+    this.baseMasterCache.set(params.baseMasterMap.player.baseId, params.baseMasterMap.player);
+    this.baseMasterCache.set(params.baseMasterMap.ai.baseId, params.baseMasterMap.ai);
+
+    const playerBase = this.delegator.spawnBaseEntity(params.baseMasterMap.player.baseId, true);
+    const aiBase = this.delegator.spawnBaseEntity(params.baseMasterMap.ai.baseId, false);
 
     if (!playerBase || !aiBase) {
       throw new Error('base could not be initialized');
     }
 
-    this.baseEntityMap = {
-      player: playerBase,
-      ai:     aiBase
-    };
-
-    if (delegator) {
-      this.delegator = delegator;
-    }
+    this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBase;
+    this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBase;
   }
 
   public setDelegator(delegator: BattleManagerDelegate): void {
@@ -144,31 +162,6 @@ export default class BattleManager {
   }
 
   /**
-   * コストを消費し、Unit 生成を試みる
-   * コストが足りなければ何もしない
-   */
-  public trySpawn(unitId: number, isPlayer: boolean): Unit | null {
-    const master = this.unitMasterCache.get(unitId);
-    if (!master) {
-      return null;
-    }
-
-    if (isPlayer) {
-      if (this.availableCost < master.cost) {
-        return null;
-      }
-      this.refreshAvailableCost(this.availableCost - master.cost);
-    }
-
-    const unit = new Unit(master, isPlayer);
-    unit.id = this.nextUnitId++;
-    unit.currentHealth = unit.maxHealth;
-    unit.state = UnitState.IDLE;
-    this.units.push(unit);
-    return unit;
-  }
-
-  /**
    * 渡された Unit が、ロジック上死亡扱いであるかどうかを返す
    */
   public isDied(unit: UnitEntity): boolean {
@@ -188,13 +181,13 @@ export default class BattleManager {
 
     this.updateParameter();
 
-    this.updateState();
+    this.updateUnitState();
 
     for (let i = 0; i < this.units.length; i++) {
       this.delegator.onUnitUpdated(this.units[i]);
     }
 
-    const activeUnits: Unit[] = [];
+    const activeUnits: UnitEntity[] = [];
     for (let i = 0; i < this.units.length; i++) {
       const unit = this.units[i];
       if (!this.isDied(unit)) {
@@ -222,7 +215,7 @@ export default class BattleManager {
    * Unit のステートを更新する
    * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
    */
-  private updateState(): void {
+  private updateUnitState(): void {
     // デリゲート処理のために古いステートを保持
     const unitStates = [];
     for (let i = 0; i < this.units.length; i++) {
@@ -232,20 +225,20 @@ export default class BattleManager {
     for (let i = 0; i < this.units.length; i++) {
       const unit = this.units[i];
       if (unit.state === UnitState.DEAD) {
-        this.updateDeadState(unit);
+        this.updateUnitDeadState(unit);
       }
     }
 
     for (let i = 0; i < this.units.length; i++) {
       const unit = this.units[i];
       if (unit.state === UnitState.LOCKED) {
-        this.updateLockedState(unit);
+        this.updateUnitLockedState(unit);
       }
     }
     for (let i = 0; i < this.units.length; i++) {
       const unit = this.units[i];
       if (unit.state === UnitState.IDLE) {
-        this.updateIdleState(unit);
+        this.updateUnitIdleState(unit);
       }
     }
 
@@ -258,28 +251,39 @@ export default class BattleManager {
     }
   }
 
-  private updateDamage(unit: Unit): void {
+  private updateDamage(unit: UnitEntity): void {
     if (!unit.lockedEntity) {
       return;
     }
 
-    if (this.delegator.shouldDamage(unit, unit.lockedEntity as Unit)) {
-      unit.lockedEntity.currentHealth -= unit.power;
+    const master = this.unitMasterCache.get(unit.unitId);
+    if (!master) {
+      return;
+    }
+
+    if (this.delegator.shouldDamage(unit, unit.lockedEntity)) {
+      unit.lockedEntity.currentHealth -= master.power;
     }
   }
-  private updateDistance(unit: Unit): void {
+  private updateDistance(unit: UnitEntity): void {
     if (unit.state !== UnitState.IDLE) {
       return;
     }
-    if (this.delegator.shouldWalk(unit)) {
-      unit.distance += unit.speed;
+
+    const master = this.unitMasterCache.get(unit.unitId);
+    if (!master) {
+      return;
+    }
+
+    if (this.delegator.shouldUnitWalk(unit)) {
+      unit.distance += master.speed;
     }
   }
 
-  private updateDeadState(_unit: Unit): void {
+  private updateUnitDeadState(_unit: UnitEntity): void {
     // NOOP
   }
-  private updateLockedState(unit: Unit): void {
+  private updateUnitLockedState(unit: UnitEntity): void {
     // ロック解除判定
     if (unit.lockedEntity && unit.lockedEntity.currentHealth <= 0) {
       unit.lockedEntity = null;
@@ -293,7 +297,7 @@ export default class BattleManager {
       unit.state        = UnitState.DEAD;
     }
   }
-  private updateIdleState(unit: Unit): void {
+  private updateUnitIdleState(unit: UnitEntity): void {
     // lock against foe unit first
     for (let i = 0; i < this.units.length; i++) {
       const target = this.units[i];
@@ -312,13 +316,19 @@ export default class BattleManager {
     }
 
     // the lock against base
-    if (!unit.lockedEntity&& this.baseEntityMap) {
-      if (unit.isPlayer && this.delegator.shouldLockBase(unit, this.baseEntityMap.ai)) {
-        unit.lockedEntity = this.baseEntityMap.ai;
-        unit.state = UnitState.LOCKED;
-      } else if (!unit.isPlayer && this.delegator.shouldLockBase(unit, this.baseEntityMap.player)) {
-        unit.lockedEntity = this.baseEntityMap.player;
-        unit.state = UnitState.LOCKED;
+    if (!unit.lockedEntity) {
+      if (unit.isPlayer) {
+        const baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
+        if (this.delegator.shouldLockBase(unit, baseEntity)) {
+          unit.lockedEntity = baseEntity;
+          unit.state = UnitState.LOCKED;
+        }
+      } else {
+        const baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
+        if (this.delegator.shouldLockBase(unit, baseEntity)) {
+          unit.lockedEntity = baseEntity;
+          unit.state = UnitState.LOCKED;
+        }
       }
     }
   }
@@ -337,28 +347,44 @@ export default class BattleManager {
 
   /**
    * 受け付けた Unit 生成リクエストを処理する
+   * プレイヤーユニットの場合はコストを消費し、Unit 生成を試みる
+   * コストが足りなければ何もしない
    */
   private updateSpawnRequest(): void {
     if (this.spawnRequestedUnitUnitIds.length === 0) {
       return;
     }
 
-    const spawnedUnits = [];
+    let tmpCost = this.availableCost;
+
     for (let i = 0; i < this.spawnRequestedUnitUnitIds.length; i++) {
       const reservedUnit = this.spawnRequestedUnitUnitIds[i];
-      const unit = this.trySpawn(reservedUnit.unitId, reservedUnit.isPlayer);
-      if (unit) {
-        spawnedUnits.push(unit);
+
+      const master = this.unitMasterCache.get(reservedUnit.unitId);
+      if (!master) {
+        continue;
+      }
+
+      if (reservedUnit.isPlayer) {
+        if ((tmpCost - master.cost) < 0) {
+          continue;
+        }
+
+        tmpCost -= master.cost;
+      }
+
+      const entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, reservedUnit.isPlayer);
+      if (entity) {
+        entity.id = this.nextUnitId++;
+        entity.currentHealth = master.maxHealth;
+        entity.state = UnitState.IDLE;
+        this.units.push(entity);
       }
     }
 
+    this.refreshAvailableCost(tmpCost);
+
     this.spawnRequestedUnitUnitIds = [];
-
-    if (spawnedUnits.length === 0) {
-      return;
-    }
-
-    this.delegator.onUnitsSpawned(spawnedUnits);
   }
 
   /**

@@ -1,25 +1,30 @@
-import Unit from 'display/battle/Unit';
+import AttackableEntity from 'entity/AttackableEntity';
+import UnitEntity from 'entity/UnitEntity';
 import BaseEntity from 'entity/BaseEntity';
 export default interface BattleManagerDelegate {
     /**
      * 拠点を生成する際のコールバック
      */
-    spawnBase(baseId: number): BaseEntity | null;
+    spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null;
+    /**
+     * ユニットを生成する際のコールバック
+     */
+    spawnUnitEntity(unitId: number, isPlayer: boolean): UnitEntity | null;
     /**
      * 拠点を生成する際のコールバック
      */
     /**
      * ユニットを生成する際のコールバック
      */
-    onUnitsSpawned(units: Unit[]): void;
+    onUnitsSpawned(units: UnitEntity[]): void;
     /**
      * ユニットのステートが変更した際のコールバック
      */
-    onUnitStateChanged(unit: Unit, oldState: number): void;
+    onUnitStateChanged(unit: UnitEntity, oldState: number): void;
     /**
      * ユニットが更新される際のコールバック
      */
-    onUnitUpdated(unit: Unit): void;
+    onUnitUpdated(unit: UnitEntity): void;
     /**
      * 利用可能コストが変動した際のコールバック
      */
@@ -27,17 +32,17 @@ export default interface BattleManagerDelegate {
     /**
      * 渡されたユニットが接敵可能か返す
      */
-    shouldLockUnit(attacker: Unit, target: Unit): boolean;
+    shouldLockUnit(attacker: AttackableEntity, target: UnitEntity): boolean;
     /**
      * 渡されたユニットが接敵可能か返す
      */
-    shouldLockBase(attacker: Unit, target: BaseEntity): boolean;
+    shouldLockBase(attacker: AttackableEntity, target: BaseEntity): boolean;
     /**
      * 渡されたユニットが攻撃可能か返す
      */
-    shouldDamage(attacker: Unit, target: Unit): boolean;
+    shouldDamage(attacker: AttackableEntity, target: AttackableEntity): boolean;
     /**
      * 渡されたユニットが移動可能か返す
      */
-    shouldWalk(unit: Unit): boolean;
+    shouldUnitWalk(unit: UnitEntity): boolean;
 }

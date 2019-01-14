@@ -1,7 +1,5 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
-import FieldMaster from 'interfaces/master/Field';
-import BaseMaster from 'interfaces/master/Base';
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import UnitState from 'enum/UnitState';
@@ -9,7 +7,9 @@ import BattleManager from 'managers/BattleManager';
 import Scene from 'scenes/Scene';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
+import AttackableEntity from 'entity/AttackableEntity';
 import BaseEntity from 'entity/BaseEntity';
+import UnitEntity from 'entity/UnitEntity';
 import UnitButton from 'display/battle/UnitButton';
 import Unit from 'display/battle/Unit';
 import Field from 'display/battle/Field';
@@ -27,11 +27,8 @@ const debugBaseIdMap = {
 const debugCostRecoveryPerFrame = 0.05;
 const debugMaxAvailableCost     = 100;
 
-class DefaultBase extends Base {
-  constructor() {
-    super({ baseId: -1, maxHealth: 0 }, false);
-  }
-}
+const BASES_PLAYER_INDEX = 0;
+const BASES_AI_INDEX = 1;
 
 /**
  * BattleScene のステートのリスト
@@ -52,18 +49,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * 最大ユニット編成数
    */
   private maxUnitSlotCount!: number;
-
-  /**
-   * Field マスタ
-   */
-  private fieldMaster: FieldMaster | null = null;
-  /**
-   * Base マスタ
-   */
-  private baseMasterMap: null | {
-    player: BaseMaster;
-    ai: BaseMaster;
-  } = null;
 
   /**
    * 利用するフィールドID
@@ -101,61 +86,74 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   /**
    * 拠点の PIXI.Container
    */
-  private bases: {
-    player: Base;
-    ai: Base;
-  } = {
-    player: new DefaultBase(),
-    ai: new DefaultBase()
-  };
+  private bases: Base[] = [];
 
   private destroyList: PIXI.Container[] = [];
 
   /**
-   * GameMasterDelegate 実装
-   * Base が発生したときのコールバック
+   * GameManagerDelegate 実装
+   * Base を発生させるときのコールバック
    * Field に Base のスプライトを追加する
    */
-  public spawnBase(baseId: number): BaseEntity | null {
-    let base = null;
-
-    if (!this.baseMasterMap || !this.fieldMaster) {
+  public spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null {
+    const fieldMaster = this.manager.getFieldMaster();
+    if (!fieldMaster) {
       return null;
     }
 
-    if (baseId === this.baseMasterMap.player.baseId) {
-      base = new Base(this.baseMasterMap.player, true);
-      this.bases.player = base;
-      this.bases.player.init({ x: this.fieldMaster.playerBase.position.x });
-      this.field.addChildAsForeBackgroundEffect(this.bases.player.sprite);
-    } else if (baseId === this.baseMasterMap.ai.baseId) {
-      base = new Base(this.baseMasterMap.ai, true);
-      this.bases.ai = base;
-      this.bases.ai.init({ x: this.fieldMaster.aiBase.position.x });
-      this.field.addChildAsForeBackgroundEffect(this.bases.ai.sprite);
+    const base = new Base(baseId, isPlayer);
+
+    if (isPlayer) {
+      base.init({ x: fieldMaster.playerBase.position.x });
+      this.bases[BASES_PLAYER_INDEX] = base;
     } else {
-      return null;
+      base.init({ x: fieldMaster.aiBase.position.x });
+      this.bases[BASES_AI_INDEX] = base;
     }
+
+    this.field.addChildAsForeBackgroundEffect(base.sprite);
 
     return base;
   };
 
   /**
-   * GameMasterDelegate 実装
+   * GameManagerDelegate 実装
+   * Unit を発生させるときのコールバック
+   * Field に Unit のスプライトを追加する
+   */
+  public spawnUnitEntity(unitId: number, isPlayer: boolean): UnitEntity | null {
+    const master = this.manager.getUnitMaster(unitId);
+    if (!master) {
+      return null;
+    }
+
+    const unit = new Unit(unitId, isPlayer, {
+      hitFrame: master.hitFrame,
+      animationMaxFrameIndexes: master.animationMaxFrameIndexes,
+      animationUpdateDurations: master.animationUpdateDurations
+    });
+
+    unit.sprite.position.x = (isPlayer)
+      ? this.bases[BASES_PLAYER_INDEX].sprite.position.x
+      : this.bases[BASES_AI_INDEX].sprite.position.x;
+
+    this.field.addChildToRandomZLine(unit.sprite);
+
+    return unit;
+  }
+
+  /**
+   * GameManagerDelegate 実装
    * Unit が発生したときのコールバック
    * Field に Unit のスプライトを追加する
    */
-  public onUnitsSpawned(units: Unit[]): void {
-    if (!this.bases.player || !this.bases.ai) {
-      return;
-    }
-
+  public onUnitsSpawned(units: UnitEntity[]): void {
     for (let i = 0; i < units.length; i++) {
-      const unit = units[i];
+      const unit = units[i] as Unit;
       if (unit.isPlayer) {
-        unit.sprite.position.x = this.bases.player.sprite.position.x;
+        unit.sprite.position.x = this.bases[BASES_PLAYER_INDEX].sprite.position.x;
       } else {
-        unit.sprite.position.x = this.bases.ai.sprite.position.x;
+        unit.sprite.position.x = this.bases[BASES_AI_INDEX].sprite.position.x;
       }
 
       this.field.addChildToRandomZLine(unit.sprite);
@@ -165,16 +163,18 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   /**
    * ユニットのステートが変更した際のコールバック
    */
-  public onUnitStateChanged(unit: Unit, _oldState: number): void {
-    unit.resetAnimation();
+  public onUnitStateChanged(entity: UnitEntity, _oldState: number): void {
+    (entity as Unit).resetAnimation();
   }
 
   /**
-   * GameMasterDelegate 実装
+   * GameManagerDelegate 実装
    * Unit が更新されたときのコールバック
    * Unit のアニメーションと PIXI による描画を更新する
    */
-  public onUnitUpdated(unit: Unit): void {
+  public onUnitUpdated(entity: UnitEntity): void {
+    const unit = entity as Unit;
+
     const animationTypes = ResourceMaster.Unit.AnimationTypes;
     let animationType = unit.getAnimationType();
 
@@ -186,12 +186,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
             unit.resetAnimation();
           }
         } else {
-          if (this.bases.player && this.bases.ai) {
-            if (unit.isPlayer) {
-              unit.sprite.position.x = this.bases.player.sprite.position.x + unit.distance;
-            } else {
-              unit.sprite.position.x = this.bases.ai.sprite.position.x - unit.distance;
-            }
+          if (unit.isPlayer) {
+            unit.sprite.position.x = this.bases[BASES_PLAYER_INDEX].sprite.position.x + unit.distance;
+          } else {
+            unit.sprite.position.x = this.bases[BASES_AI_INDEX].sprite.position.x - unit.distance;
           }
         }
         break;
@@ -219,7 +217,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     }
   }
   /**
-   * GameMasterDelegate 実装
+   * GameManagerDelegate 実装
    * 利用可能なコストの値が変動したときのコールバック
    */
   public onAvailableCostUpdated(cost: number): void {
@@ -227,29 +225,34 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   }
 
   /**
-   * GameMasterDelegate 実装
+   * GameManagerDelegate 実装
    * 渡されたユニット同士が接敵可能か返す
    */
-  public shouldLockUnit(attacker: Unit, target: Unit): boolean {
-    return attacker.isFoeContact(target.sprite);
+  public shouldLockUnit(attacker: AttackableEntity, target: UnitEntity): boolean {
+    return (attacker as Unit).isFoeContact((target as Unit).sprite);
   }
 
-  public shouldLockBase(attacker: Unit, target: BaseEntity): boolean {
-    return attacker.isFoeContact((target as Base).sprite);
+  public shouldLockBase(attacker: AttackableEntity, target: BaseEntity): boolean {
+    return (attacker as Unit).isFoeContact((target as Base).sprite);
   }
 
   /**
-   * GameMasterDelegate 実装
+   * GameManagerDelegate 実装
    * 渡されたユニット同士が攻撃可能か返す
    */
-  public shouldDamage(attacker: Unit, target: Unit): boolean {
+  public shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean {
+    const attacker = attackerEntity as Unit;
+    const target = targetEntity as Unit;
+
     if (!attacker.isHitFrame()) {
       return false;
     }
 
     return attacker.isFoeContact(target.sprite);
   }
-  public shouldWalk(unit: Unit): boolean {
+  public shouldUnitWalk(entity: UnitEntity): boolean {
+    const unit = entity as Unit;
+
     if (unit.getAnimationType() === ResourceMaster.Unit.AnimationTypes.WALK) {
       return true;
     }
@@ -262,7 +265,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
     // BattleManager インスタンスの作成とコールバックの登録
     this.manager = new BattleManager();
-    this.manager.setDelegator(this);
 
     // Background インスタンスの作成
     this.field = new Field();
@@ -346,11 +348,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     const sceneUiGraphName = ResourceMaster.SceneUiGraph.Api(this);
     this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
 
-    this.fieldMaster = resources[ResourceMaster.Field.ApiEntryPoint()].data;
-
-    const aiWaveMaster = resources[ResourceMaster.AiWave.ApiEntryPoint()];
-    const unitMaster = resources[ResourceMaster.Unit.ApiEntryPoint()];
-    this.baseMasterMap = resources[ResourceMaster.Base.ApiEntryPoint()].data;
+    const fieldMaster = resources[ResourceMaster.Field.ApiEntryPoint()].data;
+    const aiWaveMaster = resources[ResourceMaster.AiWave.ApiEntryPoint()].data;
+    const unitMasters  = resources[ResourceMaster.Unit.ApiEntryPoint()].data;
+    const baseMasterMap = resources[ResourceMaster.Base.ApiEntryPoint()].data;
 
     this.field.init();
 
@@ -366,8 +367,14 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
-    if (this.baseMasterMap) {
-      this.manager.init(aiWaveMaster.data, unitMaster.data, this.baseMasterMap.player, this.baseMasterMap.ai);
+    if (baseMasterMap) {
+      this.manager.init({
+        aiWaveMaster,
+        fieldMaster,
+        unitMasters,
+        baseMasterMap,
+        delegator: this
+      });
     }
 
     this.state = BattleState.READY;
@@ -401,10 +408,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       }
     }
 
-    if (this.bases.player && this.bases.ai) {
-      this.bases.player.updateAnimation();
-      this.bases.ai.updateAnimation();
-    }
+    this.bases[BASES_PLAYER_INDEX].updateAnimation();
+    this.bases[BASES_AI_INDEX].updateAnimation();
 
     this.updateRegisteredObjects(delta);
 

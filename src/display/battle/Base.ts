@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
-import BaseMaster from 'interfaces/master/Base';
 import BaseEntity from 'entity/BaseEntity';
 
 const baseId1SpawnFrameCount = 16;
@@ -28,10 +27,10 @@ export default class Base extends BaseEntity {
    */
   protected elapsedFrameCount: number = 0;
 
-  constructor(master: BaseMaster, isPlayer: boolean) {
-    super(master, isPlayer);
-    
-    this.sprite = new PIXI.Sprite(PIXI.utils.TextureCache[ResourceMaster.Base.TextureFrameName(master.baseId)]);
+  constructor(baseId: number, isPlayer: boolean) {
+    super(baseId, isPlayer);
+
+    this.sprite = new PIXI.Sprite(PIXI.utils.TextureCache[ResourceMaster.Base.TextureFrameName(baseId)]);
     if (!isPlayer) {
       this.sprite.scale.x  = -1.0;
     }
@@ -41,7 +40,7 @@ export default class Base extends BaseEntity {
   }
 
   public init(options?: any): void {
-    switch (this.master.baseId) {
+    switch (this.baseId) {
       case 1: this.sprite.position.y = 300; break;
       case 2:
       default: this.sprite.position.y = 200; break;
@@ -65,7 +64,7 @@ export default class Base extends BaseEntity {
       this.elapsedFrameCount = 0;
     }
 
-    if (this.master.baseId === 2) {
+    if (this.baseId === 2) {
       const r  = 20;  // range
       const t  = 400; // duration
 
@@ -75,11 +74,11 @@ export default class Base extends BaseEntity {
       let cacheName = "";
       switch (this.animationType) {
         case ResourceMaster.Base.AnimationTypes.SPAWN: {
-          cacheName = ResourceMaster.Base.TextureFrameName(this.master.baseId, 2);
+          cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 2);
         }
         case ResourceMaster.Base.AnimationTypes.IDLE:
         default: {
-          cacheName = ResourceMaster.Base.TextureFrameName(this.master.baseId, 1);
+          cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 1);
         }
       }
       this.sprite.texture = PIXI.utils.TextureCache[cacheName];

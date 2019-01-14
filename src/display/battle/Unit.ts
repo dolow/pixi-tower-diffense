@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import UnitMaster from 'interfaces/master/Unit';
 import UnitEntity from 'entity/UnitEntity';
 import ResourceMaster from 'ResourceMaster';
 
@@ -26,34 +25,16 @@ export default class Unit extends UnitEntity {
    */
   protected elapsedFrameCount: number = 0;
 
+  protected hitFrame: number = 0;
+  protected animationMaxFrameIndexes: { [key: string]: number } = {};
+  protected animationUpdateDurations: { [key: string]: number } = {}
+
   public isHitFrame(): boolean {
     if (this.animationFrameIndex !== this.hitFrame) {
       return false;
     }
     const updateDuration = this.getAnimationUpdateDuration(ResourceMaster.Unit.AnimationTypes.ATTACK);
     return (this.elapsedFrameCount % updateDuration) === 0;
-  }
-
-  public get unitId(): number {
-    return this.master.unitId;
-  }
-  public get cost(): number {
-    return this.master.cost;
-  }
-  public get maxHealth(): number {
-    return this.master.maxHealth;
-  }
-  public get power(): number {
-    return this.master.power;
-  }
-  public get speed(): number {
-    return this.master.speed;
-  }
-  public get wieldFrames(): number {
-    return this.master.wieldFrames;
-  }
-  public get hitFrame(): number {
-    return this.master.hitFrame;
   }
 
   public isAnimationLastFrameTime(type: string = this.animationType): boolean {
@@ -65,17 +46,30 @@ export default class Unit extends UnitEntity {
     return this.animationType;
   }
   public getAnimationMaxFrameIndex(type: string): number {
-    return this.master.animationMaxFrameIndexes[type] || 0;
+    return this.animationMaxFrameIndexes[type] || 0;
   }
   public getAnimationUpdateDuration(type: string): number {
-    return this.master.animationUpdateDurations[type] || 0;
+    return this.animationUpdateDurations[type] || 0;
   }
   public getAnimationMaxFrameTime(type: string): number {
     return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
   }
 
-  constructor(master: UnitMaster, isPlayer: boolean) {
-    super(master, isPlayer);
+  constructor(
+    unitId: number,
+    isPlayer: boolean,
+    animationParam: {
+      hitFrame: number,
+      animationMaxFrameIndexes: { [key: string]: number },
+      animationUpdateDurations: { [key: string]: number }
+    }
+  ) {
+    super(unitId, isPlayer);
+
+    this.hitFrame = animationParam.hitFrame;
+    this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
+    this.animationUpdateDurations = animationParam.animationUpdateDurations;
+
     this.sprite = new PIXI.Sprite();
     if (!this.isPlayer) {
       this.sprite.scale.x = -1;

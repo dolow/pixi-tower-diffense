@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import UnitMaster from 'interfaces/master/Unit';
 import UnitEntity from 'entity/UnitEntity';
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
@@ -22,20 +21,28 @@ export default class Unit extends UnitEntity {
      * 現在のアニメーション経過フレーム数
      */
     protected elapsedFrameCount: number;
+    protected hitFrame: number;
+    protected animationMaxFrameIndexes: {
+        [key: string]: number;
+    };
+    protected animationUpdateDurations: {
+        [key: string]: number;
+    };
     isHitFrame(): boolean;
-    readonly unitId: number;
-    readonly cost: number;
-    readonly maxHealth: number;
-    readonly power: number;
-    readonly speed: number;
-    readonly wieldFrames: number;
-    readonly hitFrame: number;
     isAnimationLastFrameTime(type?: string): boolean;
     getAnimationType(): string;
     getAnimationMaxFrameIndex(type: string): number;
     getAnimationUpdateDuration(type: string): number;
     getAnimationMaxFrameTime(type: string): number;
-    constructor(master: UnitMaster, isPlayer: boolean);
+    constructor(unitId: number, isPlayer: boolean, animationParam: {
+        hitFrame: number;
+        animationMaxFrameIndexes: {
+            [key: string]: number;
+        };
+        animationUpdateDurations: {
+            [key: string]: number;
+        };
+    });
     isFoeContact(target: PIXI.Container): boolean;
     resetAnimation(): void;
     updateAnimation(type?: string): void;

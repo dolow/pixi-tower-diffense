@@ -1,4 +1,3 @@
-import UnitMaster from 'interfaces/master/Unit';
 import AttackableEntity from 'entity/AttackableEntity';
 
 /**
@@ -10,6 +9,11 @@ export default class UnitEntity extends AttackableEntity {
    * ユニット生成順に動的に割り当てられる
    */
   public id: number  = 0;
+
+  /**
+   * ユニットID
+   */
+  public unitId: number  = 0;
   /**
    * ステート
    */
@@ -23,13 +27,9 @@ export default class UnitEntity extends AttackableEntity {
    */
   public lockedEntity: AttackableEntity | null = null;
 
-  /**
-   * ユニットマスターデータ
-   */
-  protected master!: UnitMaster;
-
-  constructor(master: UnitMaster, isPlayer: boolean) {
+  constructor(unitId: number, isPlayer: boolean) {
     super(isPlayer);
-    this.master = master;
+
+    this.unitId = unitId;
   }
 }
