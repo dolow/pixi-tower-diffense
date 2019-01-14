@@ -53,5 +53,18 @@ declare const ResourceMaster: Readonly<{
         Bucket: () => string;
         Spirit: () => string;
     };
+    CollapseExplode: {
+        MaxFrameIndex: number;
+        Api: () => string;
+        TextureFrameName: (index?: number) => string;
+    };
+    BattleResult: {
+        Win: {
+            Api: () => string;
+        };
+        Lose: {
+            Api: () => string;
+        };
+    };
 }>;
 export default ResourceMaster;

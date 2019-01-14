@@ -10,6 +10,10 @@ export default class Base extends BaseEntity {
      */
     sprite: PIXI.Sprite;
     /**
+     * 爆発エフェクト用コンテナ
+     */
+    explodeContainer: PIXI.Container;
+    /**
      * 初期座標、アニメーションなどで更新されるため覚えておく
      */
     protected originalPositon: PIXI.Point;
@@ -26,4 +30,5 @@ export default class Base extends BaseEntity {
     resetAnimation(): void;
     setAnimation(type: string): void;
     updateAnimation(type?: string): void;
+    private spawnCollapseExplode;
 }

@@ -2,9 +2,12 @@ import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
+import BaseState from 'enum/BaseState';
 import UnitState from 'enum/UnitState';
+import GameManager from 'managers/GameManager';
 import BattleManager from 'managers/BattleManager';
 import Scene from 'scenes/Scene';
+import TitleScene from 'scenes/TitleScene';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
 import AttackableEntity from 'entity/AttackableEntity';
@@ -15,6 +18,8 @@ import Unit from 'display/battle/Unit';
 import Field from 'display/battle/Field';
 import Base from 'display/battle/Base';
 import Dead from 'display/battle/effect/Dead';
+import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
+import BattleResult from 'display/battle/effect/BattleResult';
 
 const debugMaxUnitCount = 5;
 const debugField: number = 1;
@@ -23,6 +28,9 @@ const debugUnits: number[] = [1, -1, 3, -1, 5];
 const debugBaseIdMap = {
   player: 1,
   ai: 2
+};
+const debugPlayerBaseParams = {
+  maxHealth: 100
 };
 const debugCostRecoveryPerFrame = 0.05;
 const debugMaxAvailableCost     = 100;
@@ -56,6 +64,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    */
   private stageId!: number;
   /**
+   * 編成した拠点パラメータ
+   */
+  private playerBaseParams!: { maxHealth: number; };
+  /**
    * 編成したユニットID配列
    */
   private unitIds!: number[];
@@ -80,6 +92,9 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    */
   private field!: Field;
 
+  /**
+   * 削除予定のコンテナ
+   */
   private destroyList: PIXI.Container[] = [];
 
   /**
@@ -135,7 +150,20 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   }
 
   /**
-   * ユニットのステートが変更した際のコールバック
+   * GameManagerDelegate 実装
+   * 拠点のステートが変更された際のコールバック
+   */
+  public onBaseStateChanged(entity: BaseEntity, _oldState: number): void {
+    if (entity.state === BaseState.DEAD) {
+      const base = (entity as Base)
+      base.setAnimation(ResourceMaster.Base.AnimationTypes.COLLAPSE);
+      this.field.addChildAsForeForegroundEffect(base.explodeContainer);
+    }
+  }
+
+  /**
+  * GameManagerDelegate 実装
+   * ユニットのステートが変更された際のコールバック
    */
   public onUnitStateChanged(entity: UnitEntity, _oldState: number): void {
     (entity as Unit).resetAnimation();
@@ -205,6 +233,20 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
   /**
    * GameManagerDelegate 実装
+   * 勝敗が決定したときのコールバック
+   */
+  public onGameOver(isPlayerWon: boolean): void {
+    this.state = BattleState.FINISHED;
+
+    const result = new BattleResult(isPlayerWon);
+    result.onAnimationEnded = this.enableBackToTitle.bind(this);
+    this.uiGraphContainer.addChild(result);
+
+    this.registerUpdatingObject(result);
+  }
+
+  /**
+   * GameManagerDelegate 実装
    * 渡されたユニット同士が接敵可能か返す
    */
   public shouldLockUnit(attacker: AttackableEntity, target: UnitEntity): boolean {
@@ -256,6 +298,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       this.stageId   = debugStage;
       this.unitIds   = debugUnits;
       this.baseIdMap = debugBaseIdMap;
+      this.playerBaseParams = debugPlayerBaseParams;
       this.manager.costRecoveryPerFrame = debugCostRecoveryPerFrame;
       this.manager.maxAvailableCost     = debugMaxAvailableCost;
     }
@@ -314,6 +357,18 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       assets.push({ name: deadResourceUrl, url: deadResourceUrl });
     }
 
+    const collapseExplodeResources = CollapseExplodeEffect.resourceList
+    for (let i = 0; i < collapseExplodeResources.length; i++) {
+      const collapseExplodeResourceUrl = collapseExplodeResources[i];
+      assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
+    }
+
+    const battleResultResources = BattleResult.resourceList;
+    for (let i = 0; i < battleResultResources.length; i++) {
+      const battleResultResourceUrl = battleResultResources[i];
+      assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
+    }
+
     return assets;
   }
 
@@ -327,9 +382,9 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     const sceneUiGraphName = ResourceMaster.SceneUiGraph.Api(this);
     this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
 
-    const fieldMaster = resources[ResourceMaster.Field.ApiEntryPoint()].data;
-    const aiWaveMaster = resources[ResourceMaster.AiWave.ApiEntryPoint()].data;
-    const unitMasters  = resources[ResourceMaster.Unit.ApiEntryPoint()].data;
+    const fieldMaster   = resources[ResourceMaster.Field.ApiEntryPoint()].data;
+    const aiWaveMaster  = resources[ResourceMaster.AiWave.ApiEntryPoint()].data;
+    const unitMasters   = resources[ResourceMaster.Unit.ApiEntryPoint()].data;
     const baseMasterMap = resources[ResourceMaster.Base.ApiEntryPoint()].data;
 
     this.field.init();
@@ -343,18 +398,18 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       unitButton.init(index, this.unitIds[index]);
     }
 
+    baseMasterMap.player.maxHealth = this.playerBaseParams.maxHealth;
+
+    this.manager.init({
+      aiWaveMaster,
+      fieldMaster,
+      unitMasters,
+      baseMasterMap,
+      delegator: this
+    });
+
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
-
-    if (baseMasterMap) {
-      this.manager.init({
-        aiWaveMaster,
-        fieldMaster,
-        unitMasters,
-        baseMasterMap,
-        delegator: this
-      });
-    }
 
     this.state = BattleState.READY;
   }
@@ -382,6 +437,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
         break;
       }
       case BattleState.INGAME: {
+        this.manager.update(delta);
+        break;
+      }
+      case BattleState.FINISHED: {
         this.manager.update(delta);
         break;
       }
@@ -417,5 +476,14 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   private getUiGraphUnitButton(index: number): UnitButton | undefined {
     const uiGraphUnitButtonName = `unit_button_${index+1}`;
     return this.uiGraph[uiGraphUnitButtonName] as UnitButton;
+  }
+
+  private enableBackToTitle(): void {
+    this.interactive = true;
+    this.on('pointerdown', (_e: PIXI.interaction.InteractionEvent) => this.returnToTitle());
+  }
+
+  private returnToTitle(): void {
+    GameManager.loadScene(new TitleScene());
   }
 }

@@ -23,6 +23,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      */
     private stageId;
     /**
+     * 編成した拠点パラメータ
+     */
+    private playerBaseParams;
+    /**
      * 編成したユニットID配列
      */
     private unitIds;
@@ -42,6 +46,9 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 背景の PIXI.Container
      */
     private field;
+    /**
+     * 削除予定のコンテナ
+     */
     private destroyList;
     /**
      * GameManagerDelegate 実装
@@ -56,7 +63,13 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      */
     spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null;
     /**
-     * ユニットのステートが変更した際のコールバック
+     * GameManagerDelegate 実装
+     * 拠点のステートが変更された際のコールバック
+     */
+    onBaseStateChanged(entity: BaseEntity, _oldState: number): void;
+    /**
+    * GameManagerDelegate 実装
+     * ユニットのステートが変更された際のコールバック
      */
     onUnitStateChanged(entity: UnitEntity, _oldState: number): void;
     /**
@@ -76,6 +89,11 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 利用可能なコストの値が変動したときのコールバック
      */
     onAvailableCostUpdated(cost: number): void;
+    /**
+     * GameManagerDelegate 実装
+     * 勝敗が決定したときのコールバック
+     */
+    onGameOver(isPlayerWon: boolean): void;
     /**
      * GameManagerDelegate 実装
      * 渡されたユニット同士が接敵可能か返す
@@ -118,4 +136,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * ボタンインデックスから UnitButton インスタンスを返す
      */
     private getUiGraphUnitButton;
+    private enableBackToTitle;
+    private returnToTitle;
 }

@@ -11,6 +11,7 @@ export default class Field extends PIXI.Container {
     constructor();
     init(options?: any): void;
     addChildAsForeBackgroundEffect(container: PIXI.Container): void;
+    addChildAsForeForegroundEffect(container: PIXI.Container): void;
     addChildToRandomZLine(container: PIXI.Container): void;
     private onPointerDown;
     private onPointerMove;

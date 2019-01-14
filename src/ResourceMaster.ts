@@ -122,6 +122,27 @@ const ResourceMaster = Object.freeze({
     Spirit: () => {
       return `${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png`;
     }
+  },
+  CollapseExplode: {
+    MaxFrameIndex: 5,
+    Api: (): string => {
+      return `${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json`;
+    },
+    TextureFrameName: (index: number = 1): string => {
+      return `effect_1_${index}.png`;
+    }
+  },
+  BattleResult: {
+    Win: {
+      Api: (): string => {
+        return `${Config.ResourceBaseUrl}/ui/battle_win.png`;
+      }
+    },
+    Lose: {
+      Api: (): string => {
+        return `${Config.ResourceBaseUrl}/ui/battle_lose.png`;
+      }
+    }
   }
 });
 

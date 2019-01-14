@@ -102,9 +102,11 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="base.html#baseid" class="tsd-kind-icon">base<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="base.html#currenthealth" class="tsd-kind-icon">current<wbr>Health</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="base.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="base.html#explodecontainer" class="tsd-kind-icon">explode<wbr>Container</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="base.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="base.html#originalpositon" class="tsd-kind-icon">original<wbr>Positon</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="base.html#sprite" class="tsd-kind-icon">sprite</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="base.html#state" class="tsd-kind-icon">state</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -116,6 +118,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="base.html#isfoe" class="tsd-kind-icon">is<wbr>Foe</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="base.html#resetanimation" class="tsd-kind-icon">reset<wbr>Animation</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="base.html#setanimation" class="tsd-kind-icon">set<wbr>Animation</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="base.html#spawncollapseexplode" class="tsd-kind-icon">spawn<wbr>Collapse<wbr>Explode</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="base.html#updateanimation" class="tsd-kind-icon">update<wbr>Animation</a></li>
 							</ul>
 						</section>
@@ -135,7 +138,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="baseentity.html">BaseEntity</a>.<a href="baseentity.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in display/battle/Base.ts:28</li>
+									<li>Defined in display/battle/Base.ts:33</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -160,7 +163,7 @@
 					<div class="tsd-signature tsd-kind-icon">animation<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;ResourceMaster.Base.AnimationTypes.IDLE</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in display/battle/Base.ts:24</li>
+							<li>Defined in display/battle/Base.ts:29</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -172,7 +175,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="baseid" class="tsd-anchor"></a>
 					<h3>base<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">base<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="baseentity.html">BaseEntity</a>.<a href="baseentity.html#baseid">baseId</a></p>
 						<ul>
@@ -202,12 +205,27 @@
 					<div class="tsd-signature tsd-kind-icon">elapsed<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in display/battle/Base.ts:28</li>
+							<li>Defined in display/battle/Base.ts:33</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>現在の経過フレーム数</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="explodecontainer" class="tsd-anchor"></a>
+					<h3>explode<wbr>Container</h3>
+					<div class="tsd-signature tsd-kind-icon">explode<wbr>Container<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol"> =&nbsp;new PIXI.Container()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in display/battle/Base.ts:20</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>爆発エフェクト用コンテナ</p>
 						</div>
 					</div>
 				</section>
@@ -233,7 +251,7 @@
 					<div class="tsd-signature tsd-kind-icon">original<wbr>Positon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span><span class="tsd-signature-symbol"> =&nbsp;new PIXI.Point()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in display/battle/Base.ts:20</li>
+							<li>Defined in display/battle/Base.ts:25</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -248,7 +266,7 @@
 					<div class="tsd-signature tsd-kind-icon">sprite<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Sprite</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in display/battle/Base.ts:15</li>
+							<li>Defined in display/battle/Base.ts:16</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -256,6 +274,17 @@
 							<p>PIXI スプライト</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="state" class="tsd-anchor"></a>
+					<h3>state</h3>
+					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="baseentity.html">BaseEntity</a>.<a href="baseentity.html#state">state</a></p>
+						<ul>
+							<li>Defined in entity/BaseEntity.ts:8</li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -294,7 +323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Base.ts:42</li>
+									<li>Defined in display/battle/Base.ts:47</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -365,7 +394,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Base.ts:56</li>
+									<li>Defined in display/battle/Base.ts:61</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -382,7 +411,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Base.ts:60</li>
+									<li>Defined in display/battle/Base.ts:65</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -391,6 +420,23 @@
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="spawncollapseexplode" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> spawn<wbr>Collapse<wbr>Explode</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Collapse<wbr>Explode<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in display/battle/Base.ts:121</li>
+								</ul>
+							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -405,7 +451,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Base.ts:65</li>
+									<li>Defined in display/battle/Base.ts:70</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -450,6 +496,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="base.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="base.html#explodecontainer" class="tsd-kind-icon">explode<wbr>Container</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="base.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a>
 							</li>
@@ -458,6 +507,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="base.html#sprite" class="tsd-kind-icon">sprite</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="base.html#state" class="tsd-kind-icon">state</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="base.html#damage" class="tsd-kind-icon">damage</a>
@@ -476,6 +528,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="base.html#setanimation" class="tsd-kind-icon">set<wbr>Animation</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="base.html#spawncollapseexplode" class="tsd-kind-icon">spawn<wbr>Collapse<wbr>Explode</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="base.html#updateanimation" class="tsd-kind-icon">update<wbr>Animation</a>

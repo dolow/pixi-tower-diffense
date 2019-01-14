@@ -12,6 +12,10 @@ export default interface BattleManagerDelegate {
    */
   spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null;
   /**
+   * 拠点のステートが変更した際のコールバック
+   */
+  onBaseStateChanged(base: BaseEntity, oldState: number): void;
+  /**
    * ユニットのステートが変更した際のコールバック
    */
   onUnitStateChanged(unit: UnitEntity, oldState: number): void;
@@ -27,6 +31,10 @@ export default interface BattleManagerDelegate {
    * 利用可能コストが変動した際のコールバック
    */
   onAvailableCostUpdated(cost: number): void;
+  /**
+   * ゲームが終了した際のコールバック
+   */
+  onGameOver(isPlayerWon: boolean): void;
   /**
    * 渡されたユニットが接敵可能か返す
    */

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import BaseEntity from 'entity/BaseEntity';
+import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
 
 const baseId1SpawnFrameCount = 16;
 
@@ -13,6 +14,10 @@ export default class Base extends BaseEntity {
    * PIXI スプライト
    */
   public sprite!: PIXI.Sprite;
+  /**
+   * 爆発エフェクト用コンテナ
+   */
+  public explodeContainer: PIXI.Container = new PIXI.Container();
 
   /**
    * 初期座標、アニメーションなどで更新されるため覚えておく
@@ -65,36 +70,64 @@ export default class Base extends BaseEntity {
   public updateAnimation(type?: string): void {
     if (type) {
       this.animationType = type;
-      this.elapsedFrameCount = 0;
     }
 
-    if (this.baseId === 2) {
-      const r  = 20;  // range
-      const t  = 400; // duration
-
-      this.sprite.position.y = this.originalPositon.y + -r * Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
-      this.elapsedFrameCount++;
-    } else {
-      let cacheName = "";
-      switch (this.animationType) {
-        case ResourceMaster.Base.AnimationTypes.SPAWN: {
-          cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 2);
-          break;
+    switch (this.animationType) {
+      case ResourceMaster.Base.AnimationTypes.COLLAPSE: {
+        this.explodeContainer.position.set(this.sprite.position.x, this.sprite.position.y);
+        if ((this.elapsedFrameCount % 10) === 0) {
+          this.spawnCollapseExplode();
         }
-        case ResourceMaster.Base.AnimationTypes.IDLE:
-        default: {
-          cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 1);
-          break;
-        }
+        this.sprite.position.x = this.sprite.position.x + 4 * ((this.elapsedFrameCount % 2 === 0) ? 1 : -1);
+        break;
       }
-      this.sprite.texture = PIXI.utils.TextureCache[cacheName];
+      case ResourceMaster.Base.AnimationTypes.SPAWN: {
+        if (this.baseId === 1) {
+          const cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 2);
+          this.sprite.texture = PIXI.utils.TextureCache[cacheName];
 
-      if (this.animationType === ResourceMaster.Base.AnimationTypes.SPAWN &&
-        this.elapsedFrameCount >= baseId1SpawnFrameCount) {
-          this.resetAnimation();
-      } else {
-        this.elapsedFrameCount++;
+          if (this.elapsedFrameCount >= baseId1SpawnFrameCount) {
+            this.resetAnimation();
+          }
+        } else {
+          this.animationType = ResourceMaster.Base.AnimationTypes.IDLE;
+        }
+        break;
+      }
+      case ResourceMaster.Base.AnimationTypes.IDLE:
+      default: {
+        if (this.baseId === 1) {
+          const cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 1);
+          this.sprite.texture = PIXI.utils.TextureCache[cacheName];
+        } else if (this.baseId === 2) {
+          const r  = 20;  // range
+          const t  = 400; // duration
+
+          this.sprite.position.y = this.originalPositon.y + -r * Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
+        }
+
+        break;
       }
     }
+
+    for (let i = 0; i < this.explodeContainer.children.length; i++) {
+      const effect = this.explodeContainer.children[i];
+      (effect as CollapseExplodeEffect).update(1);
+    }
+
+    this.elapsedFrameCount++;
+  }
+
+  private spawnCollapseExplode(): void {
+    const scale = 1.0 + Math.random() % 0.8 - 0.4;
+
+    const effect = new CollapseExplodeEffect();
+    effect.position.x = (Math.random() * this.sprite.width - this.sprite.width * 0.5);
+    effect.position.y = (Math.random() * this.sprite.height - this.sprite.height * 0.5);
+    effect.anchor.x = this.sprite.anchor.x;
+    effect.anchor.y = this.sprite.anchor.y;
+    effect.scale.set(scale);
+
+    this.explodeContainer.addChild(effect);
   }
 }

@@ -34,7 +34,7 @@ export default class BattleManager {
     /**
      * 生成済みの Unit インスタンスを保持する配列
      */
-    private units;
+    private unitEntities;
     /**
      * 生成済みの Base インスタンスを保持する配列
      */
@@ -62,6 +62,10 @@ export default class BattleManager {
      * 経過フレーム数
      */
     private passedFrameCount;
+    /**
+     * 勝敗が決まっているかどうか
+     */
+    private isGameOver;
     init(params: {
         delegator: BattleManagerDelegate;
         aiWaveMaster: AIWaveMaster;
@@ -106,11 +110,16 @@ export default class BattleManager {
      * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
      */
     private updateUnitState;
+    /**
+     * BaseEntity のステートを更新する
+     */
+    private updateBaseState;
     private updateDamage;
     private updateDistance;
     private updateUnitDeadState;
     private updateUnitLockedState;
     private updateUnitIdleState;
+    private updateGameOver;
     private requestAISpawn;
     /**
      * 受け付けた Unit 生成リクエストを処理する

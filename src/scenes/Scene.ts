@@ -95,7 +95,14 @@ export default abstract class Scene extends PIXI.Container {
     if (assets.length <= 0) {
       pixiLoaderOnLoaded();
     } else {
-      PIXI.loader.add(assets).load(pixiLoaderOnLoaded);
+      const newAssets = [];
+      for (let i = 0; i < assets.length; i++) {
+        const asset = assets[i];
+        if (!PIXI.loader.resources[asset.name]) {
+          newAssets.push(asset);
+        }
+      }
+      PIXI.loader.add(newAssets).load(pixiLoaderOnLoaded);
     }
   }
 

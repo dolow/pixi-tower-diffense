@@ -4,5 +4,6 @@ import AttackableEntity from 'entity/AttackableEntity';
  */
 export default class BaseEntity extends AttackableEntity {
     baseId: number;
+    state: number;
     constructor(baseId: number, isPlayer: boolean);
 }
