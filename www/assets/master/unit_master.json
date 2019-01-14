@@ -1,0 +1,107 @@
+[
+  {
+    "unitId":      1,
+    "cost":        10,
+    "maxHealth":   20,
+    "power":       10,
+    "speed":       2,
+    "wieldFrames": 10,
+    "hitFrame":    4,
+    "animationMaxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 8,
+      "damage": 1
+    },
+    "animationUpdateDurations": {
+      "wait": 12,
+      "walk": 8,
+      "attack": 4,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      2,
+    "cost":        20,
+    "maxHealth":   20,
+    "power":       20,
+    "speed":       20,
+    "wieldFrames": 10,
+    "hitFrame":    2,
+    "animationMaxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 6,
+      "damage": 1
+    },
+    "animationUpdateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      3,
+    "cost":        30,
+    "maxHealth":   30,
+    "power":       30,
+    "speed":       30,
+    "wieldFrames": 10,
+    "hitFrame":    3,
+    "animationMaxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 7,
+      "damage": 1
+    },
+    "animationUpdateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      4,
+    "cost":        40,
+    "maxHealth":   40,
+    "power":       40,
+    "speed":       40,
+    "wieldFrames": 10,
+    "hitFrame":    4,
+    "animationMaxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 11,
+      "damage": 1
+    },
+    "animationUpdateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      5,
+    "cost":        50,
+    "maxHealth":   50,
+    "power":       50,
+    "speed":       50,
+    "wieldFrames": 10,
+    "hitFrame":    5,
+    "animationMaxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 9,
+      "damage": 1
+    },
+    "animationUpdateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  }
+]

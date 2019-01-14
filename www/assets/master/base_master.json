@@ -1,0 +1,10 @@
+{
+  "player": {
+    "baseId": 1,
+    "maxHealth": 100
+  },
+  "ai": {
+    "baseId": 2,
+    "maxHealth": 200
+  }
+}

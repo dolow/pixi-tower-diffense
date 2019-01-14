@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "length": 2000,
+  "playerBase": {
+    "position": {
+      "x": 200
+    }
+  },
+  "aiBase": {
+    "position": {
+      "x": 2000
+    },
+    "health": 200
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "nodes": [
+    {
+      "id": "title_text",
+      "type": "text",
+      "position": [390, 320],
+      "params": {
+        "text": "GAME START",
+        "size": 48,
+        "color": "0xffffff"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onGameStartTapped"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "screen": {
+      "width": 640,
+      "height": 1136
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {
+      "id": "unit_button_1",
+      "type": "unit_button",
+      "position": [120, 500],
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitButtonTapped",
+          "arguments": [0]
+        }
+      ]
+    },
+    {
+      "id": "unit_button_2",
+      "type": "unit_button",
+      "position": [260, 500],
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitButtonTapped",
+          "arguments": [1]
+        }
+      ]
+    },
+    {
+      "id": "unit_button_3",
+      "type": "unit_button",
+      "position": [400, 500],
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitButtonTapped",
+          "arguments": [2]
+        }
+      ]
+    },
+    {
+      "id": "unit_button_4",
+      "type": "unit_button",
+      "position": [540, 500],
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitButtonTapped",
+          "arguments": [3]
+        }
+      ]
+    },
+    {
+      "id": "unit_button_5",
+      "type": "unit_button",
+      "position": [680, 500],
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitButtonTapped",
+          "arguments": [4]
+        }
+      ]
+    },
+    {
+      "id": "cost_text",
+      "type": "text",
+      "position": [860, 540],
+      "params": {
+        "text": "0",
+        "size": 48,
+        "color": "0xffffff"
+      }
+    }
+  ],
+  "metadata": {
+    "screen": {
+      "width": 640,
+      "height": 1136
+    }
+  }
+}
