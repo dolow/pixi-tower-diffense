@@ -32,6 +32,7 @@ declare const ResourceMaster: Readonly<{
         AnimationTypes: Readonly<{
             IDLE: string;
             SPAWN: string;
+            COLLAPSE: string;
         }>;
         ApiEntryPoint: () => string;
         Api: (playerBaseId: number, aiBaseId: number) => string;

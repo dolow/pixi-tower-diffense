@@ -44190,7 +44190,8 @@ var ResourceMaster = Object.freeze({
     Base: {
         AnimationTypes: Object.freeze({
             IDLE: 'idle',
-            SPAWN: 'spawn'
+            SPAWN: 'spawn',
+            COLLAPSE: 'collapse'
         }),
         ApiEntryPoint: function () {
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master";
@@ -44325,6 +44326,10 @@ var Base = /** @class */ (function (_super) {
         this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE;
         this.elapsedFrameCount = 0;
     };
+    Base.prototype.setAnimation = function (type) {
+        this.animationType = type;
+        this.elapsedFrameCount = 0;
+    };
     Base.prototype.updateAnimation = function (type) {
         if (type) {
             this.animationType = type;
@@ -44341,16 +44346,18 @@ var Base = /** @class */ (function (_super) {
             switch (this.animationType) {
                 case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN: {
                     cacheName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(this.baseId, 2);
+                    break;
                 }
                 case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE:
                 default: {
                     cacheName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(this.baseId, 1);
+                    break;
                 }
             }
             this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[cacheName];
             if (this.animationType === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN &&
                 this.elapsedFrameCount >= baseId1SpawnFrameCount) {
-                this.resetAnimation;
+                this.resetAnimation();
             }
             else {
                 this.elapsedFrameCount++;
@@ -45904,6 +45911,7 @@ var BattleScene = /** @class */ (function (_super) {
         unit.sprite.position.x = baseEntity.sprite.position.x;
         this.field.addChildToRandomZLine(unit.sprite);
         unit.saveSpawnedPosition();
+        baseEntity.setAnimation(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN);
         return unit;
     };
     /**

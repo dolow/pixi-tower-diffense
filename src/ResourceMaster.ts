@@ -68,7 +68,8 @@ const ResourceMaster = Object.freeze({
   Base: {
     AnimationTypes: Object.freeze({
       IDLE: 'idle',
-      SPAWN: 'spawn'
+      SPAWN: 'spawn',
+      COLLAPSE: 'collapse'
     }),
 
     ApiEntryPoint: (): string => {

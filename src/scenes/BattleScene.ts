@@ -129,6 +129,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
     unit.saveSpawnedPosition();
 
+    (baseEntity as Base).setAnimation(ResourceMaster.Base.AnimationTypes.SPAWN);
+
     return unit;
   }
 

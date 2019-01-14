@@ -57,6 +57,10 @@ export default class Base extends BaseEntity {
     this.animationType = ResourceMaster.Base.AnimationTypes.IDLE;
     this.elapsedFrameCount = 0;
   }
+  public setAnimation(type: string): void {
+    this.animationType = type;
+    this.elapsedFrameCount = 0;
+  }
 
   public updateAnimation(type?: string): void {
     if (type) {
@@ -75,17 +79,19 @@ export default class Base extends BaseEntity {
       switch (this.animationType) {
         case ResourceMaster.Base.AnimationTypes.SPAWN: {
           cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 2);
+          break;
         }
         case ResourceMaster.Base.AnimationTypes.IDLE:
         default: {
           cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 1);
+          break;
         }
       }
       this.sprite.texture = PIXI.utils.TextureCache[cacheName];
 
       if (this.animationType === ResourceMaster.Base.AnimationTypes.SPAWN &&
         this.elapsedFrameCount >= baseId1SpawnFrameCount) {
-          this.resetAnimation;
+          this.resetAnimation();
       } else {
         this.elapsedFrameCount++;
       }

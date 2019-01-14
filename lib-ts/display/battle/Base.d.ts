@@ -24,5 +24,6 @@ export default class Base extends BaseEntity {
     constructor(baseId: number, isPlayer: boolean);
     init(options?: any): void;
     resetAnimation(): void;
+    setAnimation(type: string): void;
     updateAnimation(type?: string): void;
 }
