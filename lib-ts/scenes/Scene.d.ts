@@ -55,6 +55,11 @@ export default abstract class Scene extends PIXI.Container {
      * デフォルトでは UiGraph 用の情報が取得される
      */
     loadResource(onResourceLoaded: () => void): void;
+    protected loadUiGraph(onLoaded: () => void): void;
+    /**
+     * loadResource 完了時のコールバックメソッド
+     */
+    protected onUiGraphLoaded(onLoaded: () => void): void;
     /**
      * loadResource 完了時のコールバックメソッド
      */

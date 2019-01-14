@@ -1,18 +1,113 @@
 {
   "nodes": [
     {
-      "id": "title_text",
-      "type": "text",
-      "position": [390, 320],
+      "id": "bg_3_1",
+      "type": "sprite",
+      "position": [0, 0],
       "params": {
-        "text": "GAME START",
-        "size": 48,
-        "color": "0xffffff"
+        "textureName": "/assets/battle/bg_3_1.png",
+        "url": "/assets/battle/bg_3_1.png"
+      }
+    },
+    {
+      "id": "bg_3_2",
+      "type": "sprite",
+      "position": [600, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_3_2.png",
+        "url": "/assets/battle/bg_3_2.png"
+      }
+    },
+    {
+      "id": "bg_3_3",
+      "type": "sprite",
+      "position": [1200, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_3_3.png",
+        "url": "/assets/battle/bg_3_3.png"
+      }
+    },
+    {
+      "id": "bg_2_1",
+      "type": "sprite",
+      "position": [0, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_2_1.png",
+        "url": "/assets/battle/bg_2_1.png"
+      }
+    },
+    {
+      "id": "bg_2_2",
+      "type": "sprite",
+      "position": [600, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_2_2.png",
+        "url": "/assets/battle/bg_2_2.png"
+      }
+    },
+    {
+      "id": "bg_2_3",
+      "type": "sprite",
+      "position": [1200, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_2_3.png",
+        "url": "/assets/battle/bg_2_3.png"
+      }
+    },
+    {
+      "id": "bg_1_5",
+      "type": "sprite",
+      "position": [0, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_1_5.png",
+        "url": "/assets/battle/bg_1_5.png"
+      }
+    },
+    {
+      "id": "bg_1_6",
+      "type": "sprite",
+      "position": [600, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_1_6.png",
+        "url": "/assets/battle/bg_1_6.png"
+      }
+    },
+    {
+      "id": "bg_1_7",
+      "type": "sprite",
+      "position": [1200, 0],
+      "params": {
+        "textureName": "/assets/battle/bg_1_7.png",
+        "url": "/assets/battle/bg_1_7.png"
+      }
+    },
+    {
+      "id": "title_on",
+      "type": "sprite",
+      "position": [568, 320],
+      "params": {
+        "textureName": "/assets/ui/title_button_start_on.png",
+        "url": "/assets/ui/title_button_start_on.png",
+        "anchor": [0.5, 0.5]
+      }
+    },
+    {
+      "id": "title_off",
+      "type": "sprite",
+      "position": [568, 320],
+      "params": {
+        "textureName": "/assets/ui/title_button_start_off.png",
+        "url": "/assets/ui/title_button_start_off.png",
+        "anchor": [0.5, 0.5]
       },
       "events": [
         {
           "type": "pointerdown",
-          "callback": "onGameStartTapped"
+          "callback": "onGameStartTappedDown"
+        },
+        {
+          "type": "pointerup",
+          "callback": "onGameStartTappedUp"
         }
       ]
     }

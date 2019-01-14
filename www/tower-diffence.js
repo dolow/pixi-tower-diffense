@@ -45872,13 +45872,18 @@ var SpriteFactory = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     SpriteFactory.prototype.createUiNode = function (nodeParams) {
-        var texture = undefined;
+        var sprite = new PIXI.Sprite();
         if (nodeParams) {
             if (nodeParams.textureName && PIXI.utils.TextureCache[nodeParams.textureName]) {
-                texture = PIXI.utils.TextureCache[nodeParams.textureName];
+                sprite.texture = PIXI.utils.TextureCache[nodeParams.textureName];
+            }
+            if (nodeParams.anchor) {
+                sprite.anchor.x = nodeParams.anchor[0];
+                sprite.anchor.y = nodeParams.anchor[1];
+                console.log(sprite.anchor.x, sprite.anchor.y);
             }
         }
-        return new PIXI.Sprite(texture);
+        return sprite;
     };
     return SpriteFactory;
 }(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
@@ -46571,12 +46576,6 @@ var Scene = /** @class */ (function (_super) {
      * デフォルトでは UiGraph のリソースリストを作成する
      */
     Scene.prototype.createResourceList = function () {
-        if (this.hasSceneUiGraph) {
-            var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
-            return [
-                { name: name_1, url: name_1 }
-            ];
-        }
         return [];
     };
     /**
@@ -46585,13 +46584,37 @@ var Scene = /** @class */ (function (_super) {
      */
     Scene.prototype.loadResource = function (onResourceLoaded) {
         var _this = this;
+        new Promise(function (resolve) { return _this.loadUiGraph(function () { return resolve(); }); })
+            .then(function () { return new Promise(function (resolve) { return _this.onUiGraphLoaded(function () { return resolve(); }); }); })
+            .then(function () { return onResourceLoaded(); })
+            .then(function () { return _this.onResourceLoaded(); });
+    };
+    Scene.prototype.loadUiGraph = function (onLoaded) {
+        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
+        if (this.hasSceneUiGraph && !pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name]) {
+            pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add([{ name: name, url: name }]).load(function () { return onLoaded(); });
+        }
+        else {
+            onLoaded();
+        }
+    };
+    /**
+     * loadResource 完了時のコールバックメソッド
+     */
+    Scene.prototype.onUiGraphLoaded = function (onLoaded) {
         var assets = this.createResourceList();
-        var pixiLoaderOnLoaded = function () {
-            onResourceLoaded();
-            _this.onResourceLoaded();
-        };
+        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
+        var uiGraph = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name];
+        if (uiGraph) {
+            for (var i = 0; i < uiGraph.data.nodes.length; i++) {
+                var node = uiGraph.data.nodes[i];
+                if (node.type === 'sprite') {
+                    assets.push({ name: node.params.textureName, url: node.params.url });
+                }
+            }
+        }
         if (assets.length <= 0) {
-            pixiLoaderOnLoaded();
+            onLoaded();
         }
         else {
             var newAssets = [];
@@ -46601,7 +46624,12 @@ var Scene = /** @class */ (function (_super) {
                     newAssets.push(asset);
                 }
             }
-            pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(newAssets).load(pixiLoaderOnLoaded);
+            if (newAssets.length > 0) {
+                pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(newAssets).load(function () { return onLoaded(); });
+            }
+            else {
+                onLoaded();
+            }
         }
     };
     /**
@@ -46687,10 +46715,14 @@ var TitleScene = /** @class */ (function (_super) {
     function TitleScene() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    TitleScene.prototype.onGameStartTappedDown = function () {
+        this.uiGraph.title_off.alpha = 0;
+    };
     /**
      * ゲーム開始ボタンが押下されたときのコールバック
      */
-    TitleScene.prototype.onGameStartTapped = function () {
+    TitleScene.prototype.onGameStartTappedUp = function () {
+        this.uiGraph.title_off.alpha = 1;
         managers_GameManager__WEBPACK_IMPORTED_MODULE_0__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__["default"]());
     };
     return TitleScene;

@@ -72,12 +72,6 @@ export default abstract class Scene extends PIXI.Container {
    * デフォルトでは UiGraph のリソースリストを作成する
    */
   protected createResourceList(): LoaderAddParam[] {
-    if (this.hasSceneUiGraph) {
-      const name = ResourceMaster.SceneUiGraph.Api(this);
-      return [
-        { name: name, url:  name }
-      ];
-    }
     return [];
   }
 
@@ -86,14 +80,40 @@ export default abstract class Scene extends PIXI.Container {
    * デフォルトでは UiGraph 用の情報が取得される
    */
   public loadResource(onResourceLoaded: () => void): void {
+    new Promise((resolve) => this.loadUiGraph(() => resolve()))
+      .then(() => new Promise((resolve) => this.onUiGraphLoaded(() => resolve())))
+      .then(() => onResourceLoaded())
+      .then(() => this.onResourceLoaded());
+  }
+
+  protected loadUiGraph(onLoaded: () => void): void {
+    const name = ResourceMaster.SceneUiGraph.Api(this);
+    if (this.hasSceneUiGraph && !PIXI.loader.resources[name]) {
+      PIXI.loader.add([{ name: name, url: name }]).load(() => onLoaded());
+    } else {
+      onLoaded();
+    }
+  }
+
+  /**
+   * loadResource 完了時のコールバックメソッド
+   */
+  protected onUiGraphLoaded(onLoaded: () => void): void {
     const assets = this.createResourceList();
-    const pixiLoaderOnLoaded = () => {
-      onResourceLoaded();
-      this.onResourceLoaded();
-    };
+
+    const name = ResourceMaster.SceneUiGraph.Api(this);
+    const uiGraph = PIXI.loader.resources[name];
+    if (uiGraph) {
+      for (let i = 0; i < uiGraph.data.nodes.length; i++) {
+        const node = uiGraph.data.nodes[i];
+        if (node.type === 'sprite') {
+          assets.push({ name: node.params.textureName, url: node.params.url });
+        }
+      }
+    }
 
     if (assets.length <= 0) {
-      pixiLoaderOnLoaded();
+      onLoaded();
     } else {
       const newAssets = [];
       for (let i = 0; i < assets.length; i++) {
@@ -102,9 +122,14 @@ export default abstract class Scene extends PIXI.Container {
           newAssets.push(asset);
         }
       }
-      PIXI.loader.add(newAssets).load(pixiLoaderOnLoaded);
+      if (newAssets.length > 0) {
+        PIXI.loader.add(newAssets).load(() => onLoaded());
+      } else {
+        onLoaded();
+      }
     }
   }
+
 
   /**
    * loadResource 完了時のコールバックメソッド

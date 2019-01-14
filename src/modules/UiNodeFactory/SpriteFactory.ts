@@ -7,14 +7,19 @@ import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
  */
 export default class SpriteFactory extends UiNodeFactory {
   public createUiNode(nodeParams?: UI.SpriteNodeParams): PIXI.Container | null {
-    let texture = undefined;
+    const sprite = new PIXI.Sprite();
 
     if (nodeParams) {
       if (nodeParams.textureName && PIXI.utils.TextureCache[nodeParams.textureName]) {
-        texture = PIXI.utils.TextureCache[nodeParams.textureName];
+        sprite.texture = PIXI.utils.TextureCache[nodeParams.textureName];
+      }
+      if (nodeParams.anchor) {
+        sprite.anchor.x = nodeParams.anchor[0];
+        sprite.anchor.y = nodeParams.anchor[1];
+        console.log(sprite.anchor.x, sprite.anchor.y);
       }
     }
 
-    return new PIXI.Sprite(texture);
+    return sprite;
   }
 }
