@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import SoundManager from 'managers/SoundManager';
 import Scene from 'scenes/Scene';
 
 /**
@@ -42,6 +43,8 @@ export default class GameManager {
     }
 
     this.game = app;
+
+    SoundManager.init();
   }
 
   /**

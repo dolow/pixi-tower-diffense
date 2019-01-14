@@ -66,5 +66,9 @@ declare const ResourceMaster: Readonly<{
             Api: () => string;
         };
     };
+    Audio: {
+        TitleBgm: string;
+        BattleBgm: string;
+    };
 }>;
 export default ResourceMaster;

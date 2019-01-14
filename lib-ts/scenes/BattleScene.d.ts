@@ -50,6 +50,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 削除予定のコンテナ
      */
     private destroyList;
+    private bgm;
     /**
      * GameManagerDelegate 実装
      * Base を発生させるときのコールバック

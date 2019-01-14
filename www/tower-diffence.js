@@ -312,6 +312,169 @@ exports.nextCombination = function(v) {
 
 /***/ }),
 
+/***/ "./node_modules/detect-browser/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/detect-browser/index.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var BrowserInfo = /** @class */ (function () {
+    function BrowserInfo(name, version, os) {
+        this.name = name;
+        this.version = version;
+        this.os = os;
+    }
+    return BrowserInfo;
+}());
+exports.BrowserInfo = BrowserInfo;
+var NodeInfo = /** @class */ (function () {
+    function NodeInfo(version) {
+        this.version = version;
+        this.name = 'node';
+        this.os = process.platform;
+    }
+    return NodeInfo;
+}());
+exports.NodeInfo = NodeInfo;
+var BotInfo = /** @class */ (function () {
+    function BotInfo() {
+        this.bot = true; // NOTE: deprecated test name instead
+        this.name = 'bot';
+        this.version = null;
+        this.os = null;
+    }
+    return BotInfo;
+}());
+exports.BotInfo = BotInfo;
+// tslint:disable-next-line:max-line-length
+var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
+var SEARCHBOT_OS_REGEX = /(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/;
+var REQUIRED_VERSION_PARTS = 3;
+var userAgentRules = [
+    ['aol', /AOLShield\/([0-9\._]+)/],
+    ['edge', /Edge\/([0-9\._]+)/],
+    ['yandexbrowser', /YaBrowser\/([0-9\._]+)/],
+    ['vivaldi', /Vivaldi\/([0-9\.]+)/],
+    ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/],
+    ['samsung', /SamsungBrowser\/([0-9\.]+)/],
+    ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],
+    ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/],
+    ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/],
+    ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/],
+    ['fxios', /FxiOS\/([0-9\.]+)/],
+    ['opera', /Opera\/([0-9\.]+)(?:\s|$)/],
+    ['opera', /OPR\/([0-9\.]+)(:?\s|$)$/],
+    ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/],
+    ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/],
+    ['ie', /MSIE\s(7\.0)/],
+    ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/],
+    ['android', /Android\s([0-9\.]+)/],
+    ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/],
+    ['safari', /Version\/([0-9\._]+).*Safari/],
+    ['facebook', /FBAV\/([0-9\.]+)/],
+    ['instagram', /Instagram\s([0-9\.]+)/],
+    ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/],
+    ['searchbot', SEARCHBOX_UA_REGEX],
+];
+var operatingSystemRules = [
+    ['iOS', /iP(hone|od|ad)/],
+    ['Android OS', /Android/],
+    ['BlackBerry OS', /BlackBerry|BB10/],
+    ['Windows Mobile', /IEMobile/],
+    ['Amazon OS', /Kindle/],
+    ['Windows 3.11', /Win16/],
+    ['Windows 95', /(Windows 95)|(Win95)|(Windows_95)/],
+    ['Windows 98', /(Windows 98)|(Win98)/],
+    ['Windows 2000', /(Windows NT 5.0)|(Windows 2000)/],
+    ['Windows XP', /(Windows NT 5.1)|(Windows XP)/],
+    ['Windows Server 2003', /(Windows NT 5.2)/],
+    ['Windows Vista', /(Windows NT 6.0)/],
+    ['Windows 7', /(Windows NT 6.1)/],
+    ['Windows 8', /(Windows NT 6.2)/],
+    ['Windows 8.1', /(Windows NT 6.3)/],
+    ['Windows 10', /(Windows NT 10.0)/],
+    ['Windows ME', /Windows ME/],
+    ['Open BSD', /OpenBSD/],
+    ['Sun OS', /SunOS/],
+    ['Linux', /(Linux)|(X11)/],
+    ['Mac OS', /(Mac_PowerPC)|(Macintosh)/],
+    ['QNX', /QNX/],
+    ['BeOS', /BeOS/],
+    ['OS/2', /OS\/2/],
+    ['Search Bot', SEARCHBOT_OS_REGEX],
+];
+function detect() {
+    if (typeof navigator !== 'undefined') {
+        return parseUserAgent(navigator.userAgent);
+    }
+    return getNodeVersion();
+}
+exports.detect = detect;
+function parseUserAgent(ua) {
+    // opted for using reduce here rather than Array#first with a regex.test call
+    // this is primarily because using the reduce we only perform the regex
+    // execution once rather than once for the test and for the exec again below
+    // probably something that needs to be benchmarked though
+    var matchedRule = ua !== '' &&
+        userAgentRules.reduce(function (matched, _a) {
+            var browser = _a[0], regex = _a[1];
+            if (matched) {
+                return matched;
+            }
+            var uaMatch = regex.exec(ua);
+            return !!uaMatch && [browser, uaMatch];
+        }, false);
+    if (!matchedRule) {
+        return null;
+    }
+    var name = matchedRule[0], match = matchedRule[1];
+    if (name === 'searchbot') {
+        return new BotInfo();
+    }
+    var versionParts = match[1] && match[1].split(/[._]/).slice(0, 3);
+    if (versionParts) {
+        if (versionParts.length < REQUIRED_VERSION_PARTS) {
+            versionParts = versionParts.concat(createVersionParts(REQUIRED_VERSION_PARTS - versionParts.length));
+        }
+    }
+    else {
+        versionParts = [];
+    }
+    return new BrowserInfo(name, versionParts.join('.'), detectOS(ua));
+}
+exports.parseUserAgent = parseUserAgent;
+function detectOS(ua) {
+    for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
+        var _a = operatingSystemRules[ii], os = _a[0], regex = _a[1];
+        var match = regex.test(ua);
+        if (match) {
+            return os;
+        }
+    }
+    return null;
+}
+exports.detectOS = detectOS;
+function getNodeVersion() {
+    var isNode = typeof process !== 'undefined' && process.version;
+    return isNode ? new NodeInfo(process.version.slice(1)) : null;
+}
+exports.getNodeVersion = getNodeVersion;
+function createVersionParts(count) {
+    var output = [];
+    for (var ii = 0; ii < count; ii++) {
+        output.push('0');
+    }
+    return output;
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
 /***/ "./node_modules/earcut/src/earcut.js":
 /*!*******************************************!*\
   !*** ./node_modules/earcut/src/earcut.js ***!
@@ -44293,6 +44456,10 @@ var ResourceMaster = Object.freeze({
                 return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_lose.png";
             }
         }
+    },
+    Audio: {
+        TitleBgm: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_title.mp3",
+        BattleBgm: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_battle.mp3"
     }
 });
 /* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
@@ -45737,6 +45904,8 @@ var DefaultDelegator = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+
 
 /**
  * ゲーム全体のマネージャ
@@ -45752,6 +45921,7 @@ var GameManager = /** @class */ (function () {
             throw new Error('GameManager can be instantiate only once');
         }
         this.game = app;
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_1__["default"].init();
     }
     /**
      * ゲームを起動する
@@ -45837,6 +46007,225 @@ var GameManager = /** @class */ (function () {
     return GameManager;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (GameManager);
+
+
+/***/ }),
+
+/***/ "./src/managers/SoundManager.ts":
+/*!**************************************!*\
+  !*** ./src/managers/SoundManager.ts ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/index.js");
+/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(detect_browser__WEBPACK_IMPORTED_MODULE_0__);
+
+var SUPPORTED_EXTENSIONS = ['mp3'];
+var SoundManager = /** @class */ (function () {
+    function SoundManager() {
+        this.soundsKillingAfterFade = [];
+        if (SoundManager.instance) {
+            throw new Error('soSoundManager can not be initialized twice');
+        }
+    }
+    Object.defineProperty(SoundManager, "sharedContext", {
+        get: function () {
+            return SoundManager.context;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SoundManager.init = function (ctx) {
+        if (SoundManager.instance) {
+            return;
+        }
+        SoundManager.instance = new SoundManager();
+        SoundManager.context = (ctx) ? ctx : new (window.AudioContext || window.webkitAudioContext)();
+        var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_0__["detect"])();
+        if (!browser) {
+            return;
+        }
+        SoundManager.addLoaderMiddleware(browser);
+        SoundManager.setSoundInitializeEvent(browser);
+    };
+    SoundManager.addLoaderMiddleware = function (browser) {
+        if (SoundManager.loaderMiddlewareAdded) {
+            return;
+        }
+        for (var i = 0; i < SUPPORTED_EXTENSIONS.length; i++) {
+            var extension = SUPPORTED_EXTENSIONS[i];
+            var Resource = PIXI.loaders.Loader.Resource;
+            Resource.setExtensionXhrType(extension, Resource.XHR_RESPONSE_TYPE.BUFFER);
+            Resource.setExtensionLoadType(extension, Resource.LOAD_TYPE.XHR);
+        }
+        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+        var methodName = 'decodeAudio';
+        if (browser.name === 'chrome' && Number.parseInt(majorVersion) === 64) {
+            methodName = 'decodeAudioWithPromise';
+        }
+        PIXI.loader.use(function (resource, next) {
+            var extension = resource.url.split('?')[0].split('.')[1];
+            if (extension && SUPPORTED_EXTENSIONS.indexOf(extension) !== -1) {
+                SoundManager[methodName](resource.data, function (buf) {
+                    resource.buffer = buf;
+                    next();
+                });
+            }
+            else {
+                next();
+            }
+        });
+        SoundManager.loaderMiddlewareAdded = true;
+    };
+    SoundManager.decodeAudio = function (binary, callback) {
+        if (SoundManager.sharedContext) {
+            SoundManager.sharedContext.decodeAudioData(binary, callback);
+        }
+    };
+    SoundManager.decodeAudioWithPromise = function (binary, callback) {
+        if (SoundManager.sharedContext) {
+            SoundManager.sharedContext.decodeAudioData(binary).then(callback);
+        }
+    };
+    SoundManager.setSoundInitializeEvent = function (browser) {
+        var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+        var soundInitializer;
+        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+        if (browser.name === 'chrome' && Number.parseInt(majorVersion) >= 66) {
+            soundInitializer = function () {
+                if (SoundManager.sharedContext) {
+                    SoundManager.sharedContext.resume();
+                }
+                document.body.removeEventListener(eventName, soundInitializer);
+            };
+        }
+        else if (browser.name === 'safari') {
+            soundInitializer = function () {
+                if (SoundManager.sharedContext) {
+                    var silentSource = SoundManager.sharedContext.createBufferSource();
+                    silentSource.buffer = SoundManager.sharedContext.createBuffer(1, 1, 44100);
+                    silentSource.connect(SoundManager.sharedContext.destination);
+                    silentSource.start(0);
+                    silentSource.disconnect();
+                }
+                document.body.removeEventListener(eventName, soundInitializer);
+            };
+        }
+        else {
+            return;
+        }
+        document.body.addEventListener(eventName, soundInitializer);
+    };
+    SoundManager.prototype.fade = function (sound, targetVolume, seconds, stopOnEnd) {
+        if (stopOnEnd === void 0) { stopOnEnd = false; }
+        if (!sound.gainNode || !SoundManager.sharedContext) {
+            return;
+        }
+        console.log(targetVolume, SoundManager.sharedContext.currentTime + seconds);
+        sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, SoundManager.sharedContext.currentTime + seconds);
+        if (stopOnEnd) {
+            this.soundsKillingAfterFade.push({ sound: sound, targetVolume: targetVolume });
+        }
+    };
+    SoundManager.prototype.update = function (_dt) {
+        for (var i = 0; i < this.soundsKillingAfterFade.length; i++) {
+            var soundData = this.soundsKillingAfterFade[i];
+            if (!soundData.sound.gainNode) {
+                continue;
+            }
+            if (soundData.targetVolume === soundData.sound.gainNode.gain.value) {
+                soundData.sound.stop();
+            }
+        }
+    };
+    SoundManager.context = null;
+    SoundManager.loaderMiddlewareAdded = false;
+    return SoundManager;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (SoundManager);
+
+
+/***/ }),
+
+/***/ "./src/modules/Sound.ts":
+/*!******************************!*\
+  !*** ./src/modules/Sound.ts ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+
+var Sound = /** @class */ (function () {
+    function Sound(buf) {
+        var _this = this;
+        this.source = null;
+        this.gainNode = null;
+        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext) {
+            return;
+        }
+        this.source = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.createBufferSource();
+        this.source.loopStart = 0;
+        this.source.loopEnd = buf.duration;
+        this.source.buffer = buf;
+        this.source.onended = function () { return _this.stop(); };
+        this.gainNode = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.createGain();
+    }
+    Object.defineProperty(Sound.prototype, "loop", {
+        get: function () {
+            return this.source ? this.source.loop : false;
+        },
+        set: function (value) {
+            if (this.source) {
+                this.source.loop = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Sound.prototype, "volume", {
+        get: function () {
+            return this.gainNode ? this.gainNode.gain.value : -1;
+        },
+        set: function (value) {
+            if (this.gainNode) {
+                this.gainNode.gain.value = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Sound.prototype.play = function () {
+        if (!this.gainNode || !this.source || !managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext) {
+            return;
+        }
+        this.gainNode.connect(managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.destination);
+        this.source.connect(this.gainNode);
+        this.source.start(0, 0);
+    };
+    Sound.prototype.stop = function () {
+        if (!this.gainNode || !this.source) {
+            return;
+        }
+        this.source.disconnect();
+        try {
+            this.source.buffer = null;
+        }
+        catch (_e) {
+            // Pass through, Chrome <= 59 does not accept null
+        }
+        this.source.onended = null;
+        this.source = null;
+        this.gainNode = null;
+    };
+    return Sound;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (Sound);
 
 
 /***/ }),
@@ -46135,17 +46524,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 /* harmony import */ var managers_BattleManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! managers/BattleManager */ "./src/managers/BattleManager.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
-/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
-/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
-/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
-/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
-/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
-/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
-/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
-/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
+/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
+/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
+/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
+/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
+/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
+/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
+/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
+/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
+/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46159,6 +46550,8 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
+
 
 
 
@@ -46211,12 +46604,13 @@ var BattleScene = /** @class */ (function (_super) {
          * 削除予定のコンテナ
          */
         _this.destroyList = [];
-        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_8__["default"]();
-        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_9__["default"]();
+        _this.bgm = null;
+        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_9__["default"]();
+        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_10__["default"]();
         // BattleManager インスタンスの作成とコールバックの登録
         _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_5__["default"]();
         // Background インスタンスの作成
-        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_12__["default"]();
+        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_14__["default"]();
         // デフォルトのシーンステート
         _this.state = BattleState.LOADING_RESOURCES;
         Debug: {
@@ -46241,7 +46635,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (!fieldMaster) {
             return null;
         }
-        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_13__["default"](baseId, isPlayer);
+        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_15__["default"](baseId, isPlayer);
         if (isPlayer) {
             base.init({ x: fieldMaster.playerBase.position.x });
         }
@@ -46262,7 +46656,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (!master) {
             return null;
         }
-        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__["default"](unitId, isPlayer, {
+        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_13__["default"](unitId, isPlayer, {
             hitFrame: master.hitFrame,
             animationMaxFrameIndexes: master.animationMaxFrameIndexes,
             animationUpdateDurations: master.animationUpdateDurations
@@ -46327,7 +46721,7 @@ var BattleScene = /** @class */ (function (_super) {
                 break;
             }
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD: {
-                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_14__["default"](!unit.isPlayer);
+                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!unit.isPlayer);
                 effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
                 this.field.addChildAsForeBackgroundEffect(effect);
                 this.registerUpdatingObject(effect);
@@ -46355,7 +46749,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.onGameOver = function (isPlayerWon) {
         this.state = BattleState.FINISHED;
-        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_16__["default"](isPlayerWon);
+        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"](isPlayerWon);
         result.onAnimationEnded = this.enableBackToTitle.bind(this);
         this.uiGraphContainer.addChild(result);
         this.registerUpdatingObject(result);
@@ -46422,26 +46816,27 @@ var BattleScene = /** @class */ (function (_super) {
             var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(-1);
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
         }
-        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_12__["default"].resourceList;
+        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
         for (var i = 0; i < fieldResources.length; i++) {
             var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
         }
-        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
+        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
         for (var i = 0; i < deadResources.length; i++) {
             var deadResourceUrl = deadResources[i];
             assets.push({ name: deadResourceUrl, url: deadResourceUrl });
         }
-        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
+        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
         for (var i = 0; i < collapseExplodeResources.length; i++) {
             var collapseExplodeResourceUrl = collapseExplodeResources[i];
             assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
         }
-        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
+        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"].resourceList;
         for (var i = 0; i < battleResultResources.length; i++) {
             var battleResultResourceUrl = battleResultResources[i];
             assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
         }
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.BattleBgm, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.BattleBgm });
         return assets;
     };
     /**
@@ -46474,6 +46869,10 @@ var BattleScene = /** @class */ (function (_super) {
         });
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
+        var resource = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.BattleBgm];
+        this.bgm = new modules_Sound__WEBPACK_IMPORTED_MODULE_11__["default"](resource.buffer);
+        this.bgm.loop = true;
+        this.bgm.play();
         if (this.transitionIn.isFinished()) {
             this.state = BattleState.READY;
         }
@@ -46496,7 +46895,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.getCustomUiGraphFactory = function (type) {
         if (type === 'unit_button') {
-            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_10__["default"]();
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_12__["default"]();
         }
         return null;
     };
@@ -46558,10 +46957,13 @@ var BattleScene = /** @class */ (function (_super) {
         this.on('pointerdown', function (_e) { return _this.returnToTitle(); });
     };
     BattleScene.prototype.returnToTitle = function () {
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_7__["default"]());
+        if (this.bgm) {
+            managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.fade(this.bgm, 0.01, 0.5, true);
+        }
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__["default"]());
     };
     return BattleScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_6__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_7__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleScene);
 
 
@@ -46795,11 +47197,14 @@ var Scene = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
-/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
-/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
+/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
+/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46818,6 +47223,9 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+
+
+
 /**
  * タイトルシーン
  */
@@ -46825,10 +47233,23 @@ var TitleScene = /** @class */ (function (_super) {
     __extends(TitleScene, _super);
     function TitleScene() {
         var _this = _super.call(this) || this;
-        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_3__["default"]();
-        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_4__["default"]();
+        _this.bgm = null;
+        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_6__["default"]();
+        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_7__["default"]();
         return _this;
     }
+    TitleScene.prototype.createResourceList = function () {
+        var assets = _super.prototype.createResourceList.call(this);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.TitleBgm, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.TitleBgm });
+        return assets;
+    };
+    TitleScene.prototype.onResourceLoaded = function () {
+        _super.prototype.onResourceLoaded.call(this);
+        var resource = PIXI.loader.resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.TitleBgm];
+        this.bgm = new modules_Sound__WEBPACK_IMPORTED_MODULE_3__["default"](resource.buffer);
+        this.bgm.loop = true;
+        this.bgm.play();
+    };
     /**
      * ゲーム開始ボタンが押下されたときのコールバック
      */
@@ -46846,10 +47267,13 @@ var TitleScene = /** @class */ (function (_super) {
             return;
         }
         this.uiGraph.title_off.alpha = 1;
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_0__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__["default"]());
+        if (this.bgm) {
+            managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.fade(this.bgm, 0.01, 0.5, true);
+        }
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_5__["default"]());
     };
     return TitleScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_1__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_4__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (TitleScene);
 
 

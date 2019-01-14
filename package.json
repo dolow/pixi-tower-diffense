@@ -35,6 +35,7 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
+    "detect-browser": "^4.0.3",
     "pixi.js": "^4.8.3",
     "webfontloader": "^1.6.28"
   }

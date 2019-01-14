@@ -143,6 +143,11 @@ const ResourceMaster = Object.freeze({
         return `${Config.ResourceBaseUrl}/ui/battle_lose.png`;
       }
     }
+  },
+
+  Audio: {
+    TitleBgm: `${Config.ResourceBaseUrl}/audio/bgm_title.mp3`,
+    BattleBgm: `${Config.ResourceBaseUrl}/audio/bgm_battle.mp3`
   }
 });
 

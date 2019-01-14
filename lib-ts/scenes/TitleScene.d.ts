@@ -1,9 +1,13 @@
+import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'scenes/Scene';
 /**
  * タイトルシーン
  */
 export default class TitleScene extends Scene {
+    private bgm;
     constructor();
+    protected createResourceList(): LoaderAddParam[];
+    protected onResourceLoaded(): void;
     /**
      * ゲーム開始ボタンが押下されたときのコールバック
      */
