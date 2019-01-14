@@ -77,8 +77,10 @@
 								<li class="tsd-kind-class"><a href="classes/collapseexplodeeffect.html" class="tsd-kind-icon">Collapse<wbr>Explode<wbr>Effect</a></li>
 								<li class="tsd-kind-class"><a href="classes/dead.html" class="tsd-kind-icon">Dead</a></li>
 								<li class="tsd-kind-class"><a href="classes/defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a></li>
+								<li class="tsd-kind-class"><a href="classes/fadeout.html" class="tsd-kind-icon">Fade<wbr>Out</a></li>
 								<li class="tsd-kind-class"><a href="classes/field.html" class="tsd-kind-icon">Field</a></li>
 								<li class="tsd-kind-class"><a href="classes/gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/immediate.html" class="tsd-kind-icon">Immediate</a></li>
 								<li class="tsd-kind-class"><a href="classes/scene.html" class="tsd-kind-icon">Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/spritefactory.html" class="tsd-kind-icon">Sprite<wbr>Factory</a></li>
 								<li class="tsd-kind-class"><a href="classes/textfactory.html" class="tsd-kind-icon">Text<wbr>Factory</a></li>
@@ -108,6 +110,7 @@
 								<li class="tsd-kind-interface"><a href="interfaces/spritenodeparams.html" class="tsd-kind-icon">Sprite<wbr>Node<wbr>Params</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/textnode.html" class="tsd-kind-icon">Text<wbr>Node</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/textnodeparams.html" class="tsd-kind-icon">Text<wbr>Node<wbr>Params</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/transition.html" class="tsd-kind-icon">Transition</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/unitmaster.html" class="tsd-kind-icon">Unit<wbr>Master</a></li>
 							</ul>
 						</section>
@@ -196,10 +199,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
 					<a name="battlestate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Battle<wbr>State</h3>
-					<div class="tsd-signature tsd-kind-icon">Battle<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({LOADING_RESOURCES: 1,READY: 2,INGAME: 3,FINISHED: 4})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Battle<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({LOADING_RESOURCES: 1,RESOURCE_LOADED: 2,READY: 3,INGAME: 4,FINISHED: 5})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L41">scenes/BattleScene.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L43">scenes/BattleScene.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -309,7 +312,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Cost<wbr>Recovery<wbr>Per<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0.05</span><span class="tsd-signature-symbol"> =&nbsp;0.05</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L35">scenes/BattleScene.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L37">scenes/BattleScene.ts:37</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -319,7 +322,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L25">scenes/BattleScene.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L27">scenes/BattleScene.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -329,7 +332,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Max<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">100</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L36">scenes/BattleScene.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L38">scenes/BattleScene.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -339,7 +342,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">5</span><span class="tsd-signature-symbol"> =&nbsp;5</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L24">scenes/BattleScene.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L26">scenes/BattleScene.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -349,7 +352,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Stage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L26">scenes/BattleScene.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L28">scenes/BattleScene.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -359,7 +362,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[1, -1, 3, -1, 5]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L27">scenes/BattleScene.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L29">scenes/BattleScene.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -460,7 +463,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Base<wbr>IdMap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L28">scenes/BattleScene.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L30">scenes/BattleScene.ts:30</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -469,7 +472,7 @@
 						<div class="tsd-signature tsd-kind-icon">ai<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L30">scenes/BattleScene.ts:30</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L32">scenes/BattleScene.ts:32</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -479,7 +482,7 @@
 						<div class="tsd-signature tsd-kind-icon">player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L29">scenes/BattleScene.ts:29</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L31">scenes/BattleScene.ts:31</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -490,7 +493,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Player<wbr>Base<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L32">scenes/BattleScene.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L34">scenes/BattleScene.ts:34</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -499,7 +502,7 @@
 						<div class="tsd-signature tsd-kind-icon">max<wbr>Health<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L33">scenes/BattleScene.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L35">scenes/BattleScene.ts:35</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -544,10 +547,16 @@
 						<a href="classes/defaultdelegator.html" class="tsd-kind-icon">Default<wbr>Delegator</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/fadeout.html" class="tsd-kind-icon">Fade<wbr>Out</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/field.html" class="tsd-kind-icon">Field</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/immediate.html" class="tsd-kind-icon">Immediate</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/scene.html" class="tsd-kind-icon">Scene</a>
@@ -620,6 +629,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/textnodeparams.html" class="tsd-kind-icon">Text<wbr>Node<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/transition.html" class="tsd-kind-icon">Transition</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/unitmaster.html" class="tsd-kind-icon">Unit<wbr>Master</a>

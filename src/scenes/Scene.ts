@@ -2,8 +2,10 @@ import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import * as UI from 'interfaces/UiGraph/index';
+import Transition from 'interfaces/Transition';
 import UiGraph from 'modules/UiGraph';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
+import Immediate from 'scenes/transition/Immediate';
 
 /**
  * ゲームシーンの抽象クラス
@@ -28,11 +30,20 @@ export default abstract class Scene extends PIXI.Container {
 
   protected objectsToUpdate: { update: (delta: number) => void }[] = [];
 
+  protected transitionIn:  Transition = new Immediate();
+  protected transitionOut: Transition = new Immediate();
+
   /**
    * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
    */
   public update(delta: number): void {
     this.updateRegisteredObjects(delta);
+
+    if (this.transitionIn.isActive()) {
+      this.transitionIn.update(delta);
+    } else if (this.transitionOut.isActive()) {
+      this.transitionOut.update(delta);
+    }
   }
 
   protected registerUpdatingObject(object: { update: (delta: number) => void }): void {
@@ -56,7 +67,14 @@ export default abstract class Scene extends PIXI.Container {
    * 引数でトランジション終了時のコールバックを指定できる
    */
   public beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void {
-    onTransitionFinished(this);
+    this.transitionIn.setCallback(() => onTransitionFinished(this));
+
+    const container = this.transitionIn.getContainer();
+    if (container) {
+      this.addChild(container);
+    }
+
+    this.transitionIn.begin();
   }
 
   /**
@@ -64,7 +82,14 @@ export default abstract class Scene extends PIXI.Container {
    * 引数でトランジション終了時のコールバックを指定できる
    */
   public beginTransitionOut(onTransitionFinished: (scene: Scene) => void): void {
-    onTransitionFinished(this);
+    this.transitionOut.setCallback(() => onTransitionFinished(this));
+
+    const container = this.transitionOut.getContainer();
+    if (container) {
+      this.addChild(container);
+    }
+
+    this.transitionOut.begin();
   }
 
   /**

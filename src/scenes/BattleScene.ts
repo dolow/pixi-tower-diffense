@@ -8,6 +8,8 @@ import GameManager from 'managers/GameManager';
 import BattleManager from 'managers/BattleManager';
 import Scene from 'scenes/Scene';
 import TitleScene from 'scenes/TitleScene';
+import FadeIn from 'scenes/transition/FadeIn';
+import FadeOut from 'scenes/transition/FadeOut';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
 import AttackableEntity from 'entity/AttackableEntity';
@@ -40,9 +42,10 @@ const debugMaxAvailableCost     = 100;
  */
 const BattleState = Object.freeze({
   LOADING_RESOURCES: 1,
-  READY: 2,
-  INGAME: 3,
-  FINISHED: 4
+  RESOURCE_LOADED: 2,
+  READY: 3,
+  INGAME: 4,
+  FINISHED: 5
 });
 
 /**
@@ -284,6 +287,9 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   constructor() {
     super();
 
+    this.transitionIn  = new FadeIn();
+    this.transitionOut = new FadeOut();
+
     // BattleManager インスタンスの作成とコールバックの登録
     this.manager = new BattleManager();
 
@@ -411,7 +417,20 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
-    this.state = BattleState.READY;
+    if (this.transitionIn.isFinished()) {
+      this.state = BattleState.READY;
+    } else {
+      this.state = BattleState.RESOURCE_LOADED;
+    }
+  }
+
+  public beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void {
+    super.beginTransitionIn(() => {
+      if (this.state === BattleState.RESOURCE_LOADED) {
+        this.state = BattleState.READY;
+        onTransitionFinished(this);
+      }
+    })
   }
 
   /**
@@ -447,6 +466,12 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     }
 
     this.updateRegisteredObjects(delta);
+
+    if (this.transitionIn.isActive()) {
+      this.transitionIn.update(delta);
+    } else if (this.transitionOut.isActive()) {
+      this.transitionOut.update(delta);
+    }
 
     for (let i = 0; i < this.destroyList.length; i++) {
       this.destroyList[i].destroy();

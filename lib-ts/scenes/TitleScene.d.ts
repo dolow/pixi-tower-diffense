@@ -3,9 +3,13 @@ import Scene from 'scenes/Scene';
  * タイトルシーン
  */
 export default class TitleScene extends Scene {
-    onGameStartTappedDown(): void;
+    constructor();
     /**
      * ゲーム開始ボタンが押下されたときのコールバック
+     */
+    onGameStartTappedDown(): void;
+    /**
+     * ゲーム開始ボタン押下が離されたされたときのコールバック
      */
     onGameStartTappedUp(): void;
 }

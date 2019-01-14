@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import * as UI from 'interfaces/UiGraph/index';
+import Transition from 'interfaces/Transition';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 /**
  * ゲームシーンの抽象クラス
@@ -27,6 +28,8 @@ export default abstract class Scene extends PIXI.Container {
     protected objectsToUpdate: {
         update: (delta: number) => void;
     }[];
+    protected transitionIn: Transition;
+    protected transitionOut: Transition;
     /**
      * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
      */

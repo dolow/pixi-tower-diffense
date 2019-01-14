@@ -46079,13 +46079,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var managers_BattleManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! managers/BattleManager */ "./src/managers/BattleManager.ts");
 /* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 /* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
-/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
-/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
-/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
-/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
-/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
-/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
+/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
+/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
+/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
+/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
+/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
+/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
+/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
+/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46099,6 +46101,8 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
+
 
 
 
@@ -46132,9 +46136,10 @@ var debugMaxAvailableCost = 100;
  */
 var BattleState = Object.freeze({
     LOADING_RESOURCES: 1,
-    READY: 2,
-    INGAME: 3,
-    FINISHED: 4
+    RESOURCE_LOADED: 2,
+    READY: 3,
+    INGAME: 4,
+    FINISHED: 5
 });
 /**
  * メインのゲーム部分のシーン
@@ -46148,10 +46153,12 @@ var BattleScene = /** @class */ (function (_super) {
          * 削除予定のコンテナ
          */
         _this.destroyList = [];
+        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_8__["default"]();
+        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_9__["default"]();
         // BattleManager インスタンスの作成とコールバックの登録
         _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_5__["default"]();
         // Background インスタンスの作成
-        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_10__["default"]();
+        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_12__["default"]();
         // デフォルトのシーンステート
         _this.state = BattleState.LOADING_RESOURCES;
         Debug: {
@@ -46176,7 +46183,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (!fieldMaster) {
             return null;
         }
-        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_11__["default"](baseId, isPlayer);
+        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_13__["default"](baseId, isPlayer);
         if (isPlayer) {
             base.init({ x: fieldMaster.playerBase.position.x });
         }
@@ -46197,7 +46204,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (!master) {
             return null;
         }
-        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_9__["default"](unitId, isPlayer, {
+        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__["default"](unitId, isPlayer, {
             hitFrame: master.hitFrame,
             animationMaxFrameIndexes: master.animationMaxFrameIndexes,
             animationUpdateDurations: master.animationUpdateDurations
@@ -46262,7 +46269,7 @@ var BattleScene = /** @class */ (function (_super) {
                 break;
             }
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD: {
-                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_12__["default"](!unit.isPlayer);
+                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_14__["default"](!unit.isPlayer);
                 effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
                 this.field.addChildAsForeBackgroundEffect(effect);
                 this.registerUpdatingObject(effect);
@@ -46290,7 +46297,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.onGameOver = function (isPlayerWon) {
         this.state = BattleState.FINISHED;
-        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_14__["default"](isPlayerWon);
+        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_16__["default"](isPlayerWon);
         result.onAnimationEnded = this.enableBackToTitle.bind(this);
         this.uiGraphContainer.addChild(result);
         this.registerUpdatingObject(result);
@@ -46357,22 +46364,22 @@ var BattleScene = /** @class */ (function (_super) {
             var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(-1);
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
         }
-        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_10__["default"].resourceList;
+        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_12__["default"].resourceList;
         for (var i = 0; i < fieldResources.length; i++) {
             var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
         }
-        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_12__["default"].resourceList;
+        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
         for (var i = 0; i < deadResources.length; i++) {
             var deadResourceUrl = deadResources[i];
             assets.push({ name: deadResourceUrl, url: deadResourceUrl });
         }
-        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_13__["default"].resourceList;
+        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
         for (var i = 0; i < collapseExplodeResources.length; i++) {
             var collapseExplodeResourceUrl = collapseExplodeResources[i];
             assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
         }
-        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
+        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
         for (var i = 0; i < battleResultResources.length; i++) {
             var battleResultResourceUrl = battleResultResources[i];
             assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
@@ -46409,7 +46416,21 @@ var BattleScene = /** @class */ (function (_super) {
         });
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
-        this.state = BattleState.READY;
+        if (this.transitionIn.isFinished()) {
+            this.state = BattleState.READY;
+        }
+        else {
+            this.state = BattleState.RESOURCE_LOADED;
+        }
+    };
+    BattleScene.prototype.beginTransitionIn = function (onTransitionFinished) {
+        var _this = this;
+        _super.prototype.beginTransitionIn.call(this, function () {
+            if (_this.state === BattleState.RESOURCE_LOADED) {
+                _this.state = BattleState.READY;
+                onTransitionFinished(_this);
+            }
+        });
     };
     /**
      * 独自 UiGraph 要素のファクトリを返す
@@ -46417,7 +46438,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.getCustomUiGraphFactory = function (type) {
         if (type === 'unit_button') {
-            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_8__["default"]();
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_10__["default"]();
         }
         return null;
     };
@@ -46442,6 +46463,12 @@ var BattleScene = /** @class */ (function (_super) {
             }
         }
         this.updateRegisteredObjects(delta);
+        if (this.transitionIn.isActive()) {
+            this.transitionIn.update(delta);
+        }
+        else if (this.transitionOut.isActive()) {
+            this.transitionOut.update(delta);
+        }
         for (var i = 0; i < this.destroyList.length; i++) {
             this.destroyList[i].destroy();
         }
@@ -46495,6 +46522,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
 /* harmony import */ var modules_UiGraph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! modules/UiGraph */ "./src/modules/UiGraph.ts");
+/* harmony import */ var scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! scenes/transition/Immediate */ "./src/scenes/transition/Immediate.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46508,6 +46536,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -46535,6 +46564,8 @@ var Scene = /** @class */ (function (_super) {
          */
         _this.uiGraphContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
         _this.objectsToUpdate = [];
+        _this.transitionIn = new scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        _this.transitionOut = new scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__["default"]();
         return _this;
     }
     /**
@@ -46542,6 +46573,12 @@ var Scene = /** @class */ (function (_super) {
      */
     Scene.prototype.update = function (delta) {
         this.updateRegisteredObjects(delta);
+        if (this.transitionIn.isActive()) {
+            this.transitionIn.update(delta);
+        }
+        else if (this.transitionOut.isActive()) {
+            this.transitionOut.update(delta);
+        }
     };
     Scene.prototype.registerUpdatingObject = function (object) {
         this.objectsToUpdate.push(object);
@@ -46562,14 +46599,26 @@ var Scene = /** @class */ (function (_super) {
      * 引数でトランジション終了時のコールバックを指定できる
      */
     Scene.prototype.beginTransitionIn = function (onTransitionFinished) {
-        onTransitionFinished(this);
+        var _this = this;
+        this.transitionIn.setCallback(function () { return onTransitionFinished(_this); });
+        var container = this.transitionIn.getContainer();
+        if (container) {
+            this.addChild(container);
+        }
+        this.transitionIn.begin();
     };
     /**
      * シーン削除トランジション開始
      * 引数でトランジション終了時のコールバックを指定できる
      */
     Scene.prototype.beginTransitionOut = function (onTransitionFinished) {
-        onTransitionFinished(this);
+        var _this = this;
+        this.transitionOut.setCallback(function () { return onTransitionFinished(_this); });
+        var container = this.transitionOut.getContainer();
+        if (container) {
+            this.addChild(container);
+        }
+        this.transitionOut.begin();
     };
     /**
      * loadResource に用いるリソースリストを作成するメソッド
@@ -46691,6 +46740,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 /* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 /* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
+/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
+/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46707,27 +46758,228 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+
+
 /**
  * タイトルシーン
  */
 var TitleScene = /** @class */ (function (_super) {
     __extends(TitleScene, _super);
     function TitleScene() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_4__["default"]();
+        return _this;
     }
-    TitleScene.prototype.onGameStartTappedDown = function () {
-        this.uiGraph.title_off.alpha = 0;
-    };
     /**
      * ゲーム開始ボタンが押下されたときのコールバック
      */
+    TitleScene.prototype.onGameStartTappedDown = function () {
+        if (!this.transitionIn.isFinished()) {
+            return;
+        }
+        this.uiGraph.title_off.alpha = 0;
+    };
+    /**
+     * ゲーム開始ボタン押下が離されたされたときのコールバック
+     */
     TitleScene.prototype.onGameStartTappedUp = function () {
+        if (!this.transitionIn.isFinished()) {
+            return;
+        }
         this.uiGraph.title_off.alpha = 1;
         managers_GameManager__WEBPACK_IMPORTED_MODULE_0__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_2__["default"]());
     };
     return TitleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (TitleScene);
+
+
+/***/ }),
+
+/***/ "./src/scenes/transition/FadeIn.ts":
+/*!*****************************************!*\
+  !*** ./src/scenes/transition/FadeIn.ts ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+
+
+var FadeOut = /** @class */ (function () {
+    function FadeOut() {
+        this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        this.overlay = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Graphics"]();
+        this.transitionBegan = false;
+        this.transitionFinished = false;
+        this.onTransitionFinished = function () { };
+        var width = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.width;
+        var height = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.height;
+        this.container.addChild(this.overlay);
+        this.overlay.beginFill(0x000000);
+        this.overlay.moveTo(0, 0);
+        this.overlay.lineTo(width, 0);
+        this.overlay.lineTo(width, height);
+        this.overlay.lineTo(0, height);
+        this.overlay.endFill();
+        this.overlay.alpha = 1;
+        this.container.addChild(this.overlay);
+    }
+    FadeOut.prototype.getContainer = function () {
+        return this.container;
+    };
+    FadeOut.prototype.begin = function () {
+        this.transitionBegan = true;
+    };
+    FadeOut.prototype.isBegan = function () {
+        return this.transitionBegan;
+    };
+    FadeOut.prototype.isFinished = function () {
+        return this.transitionFinished;
+    };
+    FadeOut.prototype.isActive = function () {
+        return this.isBegan() && !this.isFinished();
+    };
+    FadeOut.prototype.update = function (_dt) {
+        if (!this.transitionBegan) {
+            return;
+        }
+        if (this.transitionFinished) {
+            return;
+        }
+        if (this.overlay.alpha <= 0.0) {
+            this.onTransitionFinished();
+            this.transitionFinished = true;
+        }
+        else {
+            this.overlay.alpha -= 0.02;
+        }
+    };
+    FadeOut.prototype.setCallback = function (callback) {
+        this.onTransitionFinished = callback;
+    };
+    return FadeOut;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (FadeOut);
+
+
+/***/ }),
+
+/***/ "./src/scenes/transition/FadeOut.ts":
+/*!******************************************!*\
+  !*** ./src/scenes/transition/FadeOut.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+
+
+var FadeOut = /** @class */ (function () {
+    function FadeOut() {
+        this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        this.overlay = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Graphics"]();
+        this.transitionBegan = false;
+        this.transitionFinished = false;
+        this.onTransitionFinished = function () { };
+        var width = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.width;
+        var height = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.height;
+        this.container.addChild(this.overlay);
+        this.overlay.beginFill(0x000000);
+        this.overlay.moveTo(0, 0);
+        this.overlay.lineTo(width, 0);
+        this.overlay.lineTo(width, height);
+        this.overlay.lineTo(0, height);
+        this.overlay.endFill();
+        this.overlay.alpha = 0;
+        this.container.addChild(this.overlay);
+    }
+    FadeOut.prototype.getContainer = function () {
+        return this.container;
+    };
+    FadeOut.prototype.begin = function () {
+        this.transitionBegan = true;
+    };
+    FadeOut.prototype.isBegan = function () {
+        return this.transitionBegan;
+    };
+    FadeOut.prototype.isFinished = function () {
+        return this.transitionFinished;
+    };
+    FadeOut.prototype.isActive = function () {
+        return this.isBegan() && !this.isFinished();
+    };
+    FadeOut.prototype.update = function (_dt) {
+        if (!this.transitionBegan) {
+            return;
+        }
+        if (this.transitionFinished) {
+            return;
+        }
+        if (this.overlay.alpha >= 1.0) {
+            this.onTransitionFinished();
+            this.transitionFinished = true;
+        }
+        else {
+            this.overlay.alpha += 0.02;
+        }
+    };
+    FadeOut.prototype.setCallback = function (callback) {
+        this.onTransitionFinished = callback;
+    };
+    return FadeOut;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (FadeOut);
+
+
+/***/ }),
+
+/***/ "./src/scenes/transition/Immediate.ts":
+/*!********************************************!*\
+  !*** ./src/scenes/transition/Immediate.ts ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var Immediate = /** @class */ (function () {
+    function Immediate() {
+        this.onTransitionFinished = function () { };
+    }
+    Immediate.prototype.getContainer = function () {
+        return null;
+    };
+    Immediate.prototype.begin = function () {
+        this.onTransitionFinished();
+    };
+    Immediate.prototype.isBegan = function () {
+        return false;
+    };
+    Immediate.prototype.isFinished = function () {
+        return false;
+    };
+    Immediate.prototype.isActive = function () {
+        return false;
+    };
+    Immediate.prototype.update = function (_dt) {
+        return;
+    };
+    Immediate.prototype.setCallback = function (callback) {
+        this.onTransitionFinished = callback;
+    };
+    return Immediate;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (Immediate);
 
 
 /***/ })

@@ -117,6 +117,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * BattleManager にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
      */
     protected onResourceLoaded(): void;
+    beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void;
     /**
      * 独自 UiGraph 要素のファクトリを返す
      * BattleScene は UnitButton を独自で定義している
