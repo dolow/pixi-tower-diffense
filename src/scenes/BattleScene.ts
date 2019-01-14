@@ -387,7 +387,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     const unitMasters   = resources[ResourceMaster.Unit.ApiEntryPoint()].data;
     const baseMasterMap = resources[ResourceMaster.Base.ApiEntryPoint()].data;
 
-    this.field.init();
+    this.field.init({ fieldLength: fieldMaster.length, zLines: 10 });
 
     for (let index = 0; index < this.maxUnitSlotCount; index++) {
       const unitButton = this.getUiGraphUnitButton(index);

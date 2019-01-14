@@ -45,7 +45,7 @@ export default class Field extends PIXI.Container {
     this.on('pointerout',    (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
   }
 
-  public init(options: any = { zLines: 8 }): void {
+  public init(options: any = { fieldLength: 3000, zLines: 8 }): void {
     const tiles: { [key: string]: string[] } = {
       fore:   ResourceMaster.BattleBg.Fore(),
       middle: ResourceMaster.BattleBg.Middle(),
@@ -80,8 +80,7 @@ export default class Field extends PIXI.Container {
       this.containers.fore.addChild(line);
     }
 
-    const screenWidth = GameManager.instance.game.screen.width;
-    this.foregroundScrollLimit = -(this.width - screenWidth);
+    this.foregroundScrollLimit = -(options.fieldLength - GameManager.instance.game.view.width * 0.75);
   }
 
   public addChildAsForeBackgroundEffect(container: PIXI.Container): void {

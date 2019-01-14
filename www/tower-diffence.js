@@ -44491,7 +44491,7 @@ var Field = /** @class */ (function (_super) {
         configurable: true
     });
     Field.prototype.init = function (options) {
-        if (options === void 0) { options = { zLines: 8 }; }
+        if (options === void 0) { options = { fieldLength: 3000, zLines: 8 }; }
         var tiles = {
             fore: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Fore(),
             middle: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Middle(),
@@ -44522,8 +44522,7 @@ var Field = /** @class */ (function (_super) {
             this.foreZLines.push(line);
             this.containers.fore.addChild(line);
         }
-        var screenWidth = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.screen.width;
-        this.foregroundScrollLimit = -(this.width - screenWidth);
+        this.foregroundScrollLimit = -(options.fieldLength - managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.75);
     };
     Field.prototype.addChildAsForeBackgroundEffect = function (container) {
         this.containers.foreBackgroundEffect.addChild(container);
@@ -46387,7 +46386,7 @@ var BattleScene = /** @class */ (function (_super) {
         var aiWaveMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AiWave.ApiEntryPoint()].data;
         var unitMasters = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.ApiEntryPoint()].data;
         var baseMasterMap = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.ApiEntryPoint()].data;
-        this.field.init();
+        this.field.init({ fieldLength: fieldMaster.length, zLines: 10 });
         for (var index = 0; index < this.maxUnitSlotCount; index++) {
             var unitButton = this.getUiGraphUnitButton(index);
             if (!unitButton) {
