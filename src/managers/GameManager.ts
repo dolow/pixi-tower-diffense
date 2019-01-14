@@ -48,10 +48,18 @@ export default class GameManager {
    * ゲームを起動する
    * 画面サイズや PIXI.ApplicationOptions を渡すことができる
    */
-  public static start(params: { width: number, height: number, option?: PIXI.ApplicationOptions }): void {
-    const game = new PIXI.Application(params.width, params.height, params.option);
+  public static start(params: {
+    glWidth: number,
+    glHeight: number,
+    canvasWidth: number,
+    canvasHeight: number,
+    option?: PIXI.ApplicationOptions
+  }): void {
+    const game = new PIXI.Application(params.glWidth, params.glHeight, params.option);
     GameManager.instance = new GameManager(game);
     document.body.appendChild(GameManager.instance.game.view);
+    GameManager.instance.game.view.style.width  = `${params.canvasWidth}px`;
+    GameManager.instance.game.view.style.height = `${params.canvasHeight}px`;
 
     GameManager.instance.game.ticker.add((delta: number) => {
       if (GameManager.instance.currentScene) {

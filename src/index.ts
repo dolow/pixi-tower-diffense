@@ -7,8 +7,10 @@ import GameManager from 'managers/GameManager';
  */
 window.onload = () => {
   GameManager.start({
-    width: 1136,
-    height: 640,
+    glWidth: 1136,
+    glHeight: 640,
+    canvasWidth: window.innerWidth,
+    canvasHeight: window.innerWidth * (640 / 1136),
     option: {
       backgroundColor: 0x222222
     }

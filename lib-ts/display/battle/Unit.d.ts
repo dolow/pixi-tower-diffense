@@ -35,8 +35,8 @@ export default class Unit extends UnitEntity {
     getAnimationMaxFrameIndex(type: string): number;
     getAnimationUpdateDuration(type: string): number;
     getAnimationMaxFrameTime(type: string): number;
-    constructor(master: UnitMaster, ally: boolean);
-    isFoeContact(target: Unit): boolean;
+    constructor(master: UnitMaster, isPlayer: boolean);
+    isFoeContact(target: PIXI.Container): boolean;
     resetAnimation(): void;
-    updateAnimation(type: string): void;
+    updateAnimation(type?: string): void;
 }

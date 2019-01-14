@@ -44135,70 +44135,104 @@ __webpack_require__.r(__webpack_exports__);
  * リソースの URL や命名規則のマスタ
  */
 var ResourceMaster = Object.freeze({
-    UnitAnimationTypes: Object.freeze({
-        WAIT: 'wait',
-        WALK: 'walk',
-        ATTACK: 'attack',
-        DAMAGE: 'damage'
-    }),
-    SceneUiGraph: function (scene) {
-        var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
-    },
-    FieldEntryPoint: function () {
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json";
-    },
-    Field: function (fieldId) {
-        return ResourceMaster.FieldEntryPoint() + "?fieldId=" + fieldId;
-    },
-    AIWaveEntryPoint: function () {
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json";
-    },
-    AIWave: function (stageId) {
-        return ResourceMaster.AIWaveEntryPoint() + "?stageId=" + stageId;
-    },
-    UnitEntryPoint: function () {
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json";
-    },
-    Unit: function (unitIds) {
-        var joinedUnitIds = unitIds.join('&unitId[]=');
-        return ResourceMaster.UnitEntryPoint() + "?unitId[]=" + joinedUnitIds;
-    },
-    UnitTexture: function (unitId) {
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
-    },
-    UnitPanelTexture: function (unitId) {
-        if (unitId <= 0) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_empty.png";
+    SceneUiGraph: {
+        ApiEntryPoint: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph";
+        },
+        Api: function (scene) {
+            var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
+            return ResourceMaster.SceneUiGraph.ApiEntryPoint() + "/" + snake_case + ".json";
         }
-        return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + unitId + ".png";
     },
-    BattleBgForeTileCount: 10,
-    BattleBgMiddleTileCount: 6,
-    BattleBgBackTileCount: 3,
-    BattleBgFore: function () {
-        var list = [];
-        for (var i = 1; i <= ResourceMaster.BattleBgForeTileCount; i++) {
-            list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_" + i + ".png");
+    Field: {
+        ApiEntryPoint: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json";
+        },
+        Api: function (fieldId) {
+            return ResourceMaster.Field.ApiEntryPoint() + "?fieldId=" + fieldId;
         }
-        return list;
     },
-    BattleBgMiddle: function () {
-        var list = [];
-        for (var i = 1; i <= ResourceMaster.BattleBgMiddleTileCount; i++) {
-            list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_" + i + ".png");
+    AiWave: {
+        ApiEntryPoint: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json";
+        },
+        Api: function (stageId) {
+            return ResourceMaster.AiWave.ApiEntryPoint() + "?stageId=" + stageId;
         }
-        return list;
     },
-    BattleBgBack: function () {
-        var list = [];
-        for (var i = 1; i <= ResourceMaster.BattleBgBackTileCount; i++) {
-            list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_" + i + ".png");
+    Unit: {
+        AnimationTypes: Object.freeze({
+            WAIT: 'wait',
+            WALK: 'walk',
+            ATTACK: 'attack',
+            DAMAGE: 'damage'
+        }),
+        ApiEntryPoint: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json";
+        },
+        Api: function (unitIds) {
+            var joinedUnitIds = unitIds.join('&unitId[]=');
+            return ResourceMaster.Unit.ApiEntryPoint() + "?unitId[]=" + joinedUnitIds;
+        },
+        Texture: function (unitId) {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
+        },
+        PanelTexture: function (unitId) {
+            if (unitId <= 0) {
+                return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_empty.png";
+            }
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + unitId + ".png";
+        },
+        TextureFrameName: function (unitActionType, unitId, index) {
+            return "unit_" + unitId + "_" + unitActionType + "_" + index + ".png";
         }
-        return list;
     },
-    UnitTextureFrameName: function (unitActionType, unitId, index) {
-        return "unit_" + unitId + "_" + unitActionType + "_" + index + ".png";
+    Base: {
+        AnimationTypes: Object.freeze({
+            IDLE: 'idle',
+            SPAWN: 'spawn'
+        }),
+        ApiEntryPoint: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master";
+        },
+        Api: function (playerBaseId, aiBaseId) {
+            return ResourceMaster.Base.ApiEntryPoint() + "/base_master.json?playerBaseId=" + playerBaseId + "&aiBaseId=" + aiBaseId;
+        },
+        Texture: function (baseId) {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/base/" + baseId + ".json";
+        },
+        TextureFrameName: function (baseId, index) {
+            if (index === void 0) { index = 1; }
+            return "base_" + baseId + "_" + index + ".png";
+        }
+    },
+    BattleBg: {
+        TileCount: {
+            Fore: 10,
+            Middle: 6,
+            Back: 3
+        },
+        Fore: function () {
+            var list = [];
+            for (var i = 1; i <= ResourceMaster.BattleBg.TileCount.Fore; i++) {
+                list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_" + i + ".png");
+            }
+            return list;
+        },
+        Middle: function () {
+            var list = [];
+            for (var i = 1; i <= ResourceMaster.BattleBg.TileCount.Middle; i++) {
+                list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_" + i + ".png");
+            }
+            return list;
+        },
+        Back: function () {
+            var list = [];
+            for (var i = 1; i <= ResourceMaster.BattleBg.TileCount.Back; i++) {
+                list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_" + i + ".png");
+            }
+            return list;
+        }
     },
     Dead: {
         Bucket: function () {
@@ -44210,6 +44244,122 @@ var ResourceMaster = Object.freeze({
     }
 });
 /* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/Base.ts":
+/*!************************************!*\
+  !*** ./src/display/battle/Base.ts ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var entity_BaseEntity__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! entity/BaseEntity */ "./src/entity/BaseEntity.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+var baseId1SpawnFrameCount = 16;
+/**
+ * ユニットの振舞い、及び見た目に関する処理を行う
+ * UnitEntity を継承する
+ */
+var Base = /** @class */ (function (_super) {
+    __extends(Base, _super);
+    function Base(master, isPlayer) {
+        var _this = _super.call(this, master, isPlayer) || this;
+        /**
+         * 初期座標、アニメーションなどで更新されるため覚えておく
+         */
+        _this.originalPositon = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Point"]();
+        /**
+         * 現在のアニメーション種別
+         */
+        _this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE;
+        /**
+         * 現在の経過フレーム数
+         */
+        _this.elapsedFrameCount = 0;
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(master.baseId)]);
+        if (!isPlayer) {
+            _this.sprite.scale.x = -1.0;
+        }
+        _this.sprite.anchor.x = 0.5;
+        _this.sprite.anchor.y = 1.0;
+        return _this;
+    }
+    Base.prototype.init = function (options) {
+        switch (this.master.baseId) {
+            case 1:
+                this.sprite.position.y = 300;
+                break;
+            case 2:
+            default:
+                this.sprite.position.y = 200;
+                break;
+        }
+        if (options && options.x) {
+            this.sprite.position.x = options.x;
+        }
+        this.originalPositon.set(this.sprite.position.x, this.sprite.position.y);
+    };
+    Base.prototype.resetAnimation = function () {
+        this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE;
+        this.elapsedFrameCount = 0;
+    };
+    Base.prototype.updateAnimation = function (type) {
+        if (type) {
+            this.animationType = type;
+            this.elapsedFrameCount = 0;
+        }
+        if (this.master.baseId === 2) {
+            var r = 20; // range
+            var t = 400; // duration
+            this.sprite.position.y = this.originalPositon.y + -r * Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
+            this.elapsedFrameCount++;
+        }
+        else {
+            var cacheName = "";
+            switch (this.animationType) {
+                case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN: {
+                    cacheName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(this.master.baseId, 2);
+                }
+                case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE:
+                default: {
+                    cacheName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(this.master.baseId, 1);
+                }
+            }
+            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[cacheName];
+            if (this.animationType === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN &&
+                this.elapsedFrameCount >= baseId1SpawnFrameCount) {
+                this.resetAnimation;
+            }
+            else {
+                this.elapsedFrameCount++;
+            }
+        }
+    };
+    return Base;
+}(entity_BaseEntity__WEBPACK_IMPORTED_MODULE_2__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Base);
 
 
 /***/ }),
@@ -44251,6 +44401,7 @@ var Field = /** @class */ (function (_super) {
         _this.lastPointerPositionX = 0;
         _this.foregroundScrollLimit = -1;
         _this.containers = {
+            foreBackgroundEffect: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             fore: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             middle: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             back: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]()
@@ -44269,9 +44420,9 @@ var Field = /** @class */ (function (_super) {
     Object.defineProperty(Field, "resourceList", {
         get: function () {
             if (Field.resourceListCache.length === 0) {
-                var foreTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgFore();
-                var middleTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgMiddle();
-                var backTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgBack();
+                var foreTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Fore();
+                var middleTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Middle();
+                var backTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Back();
                 Field.resourceListCache = Field.resourceListCache.concat(foreTiles);
                 Field.resourceListCache = Field.resourceListCache.concat(middleTiles);
                 Field.resourceListCache = Field.resourceListCache.concat(backTiles);
@@ -44281,12 +44432,12 @@ var Field = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Field.prototype.init = function (zLines) {
-        if (zLines === void 0) { zLines = 8; }
+    Field.prototype.init = function (options) {
+        if (options === void 0) { options = { zLines: 8 }; }
         var tiles = {
-            fore: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgFore(),
-            middle: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgMiddle(),
-            back: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBgBack()
+            fore: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Fore(),
+            middle: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Middle(),
+            back: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Back()
         };
         var layers = Object.keys(tiles);
         for (var i = 0; i < layers.length; i++) {
@@ -44304,15 +44455,19 @@ var Field = /** @class */ (function (_super) {
         this.addChild(this.containers.back);
         this.addChild(this.containers.middle);
         this.addChild(this.containers.fore);
+        this.containers.fore.addChild(this.containers.foreBackgroundEffect);
         // フィールドに奥行きを出すためにユニットを前後に配置できるようにする
         // z-index の後からの制御はコストが高いため、予め PIXI.Container を割り当てておく
-        for (var i = 0; i < zLines; i++) {
+        for (var i = 0; i < options.zLines; i++) {
             var line = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
             this.foreZLines.push(line);
             this.containers.fore.addChild(line);
         }
         var screenWidth = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.screen.width;
         this.foregroundScrollLimit = -(this.width - screenWidth);
+    };
+    Field.prototype.addChildAsForeBackgroundEffect = function (container) {
+        this.containers.foreBackgroundEffect.addChild(container);
     };
     Field.prototype.addChildToRandomZLine = function (container) {
         var index = Math.floor(Math.random() * this.foreZLines.length);
@@ -44322,7 +44477,7 @@ var Field = /** @class */ (function (_super) {
                 index = 0;
             }
         }
-        container.position.y = 200 + index * 16;
+        container.position.y = 260 + index * 16;
         this.foreZLines[index].addChild(container);
         // 重なって表示されないようにする
         this.lastAddedZLineIndex = index;
@@ -44401,8 +44556,8 @@ var __extends = (undefined && undefined.__extends) || (function () {
  */
 var Unit = /** @class */ (function (_super) {
     __extends(Unit, _super);
-    function Unit(master, ally) {
-        var _this = _super.call(this, master, ally) || this;
+    function Unit(master, isPlayer) {
+        var _this = _super.call(this, master, isPlayer) || this;
         /**
          * 現在のアニメーション種別
          */
@@ -44419,13 +44574,14 @@ var Unit = /** @class */ (function (_super) {
         if (!_this.isPlayer) {
             _this.sprite.scale.x = -1;
         }
+        _this.sprite.anchor.x = 0.5;
         return _this;
     }
     Unit.prototype.isHitFrame = function () {
         if (this.animationFrameIndex !== this.hitFrame) {
             return false;
         }
-        var updateDuration = this.getAnimationUpdateDuration(ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].UnitAnimationTypes.ATTACK);
+        var updateDuration = this.getAnimationUpdateDuration(ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].Unit.AnimationTypes.ATTACK);
         return (this.elapsedFrameCount % updateDuration) === 0;
     };
     Object.defineProperty(Unit.prototype, "unitId", {
@@ -44495,22 +44651,25 @@ var Unit = /** @class */ (function (_super) {
         return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
     };
     Unit.prototype.isFoeContact = function (target) {
+        var rangeDistance = this.sprite.width * 0.5 + target.width * 0.5;
         return (this.isPlayer)
-            ? (this.sprite.position.x + this.sprite.width + target.sprite.width) >= target.sprite.position.x
-            : (target.sprite.position.x + target.sprite.width + this.sprite.width) >= this.sprite.position.x;
+            ? (this.sprite.position.x + rangeDistance) >= target.position.x
+            : (target.position.x + rangeDistance) >= this.sprite.position.x;
     };
     Unit.prototype.resetAnimation = function () {
         this.elapsedFrameCount = 0;
         this.animationFrameIndex = 1;
     };
     Unit.prototype.updateAnimation = function (type) {
-        this.animationType = type;
+        if (type) {
+            this.animationType = type;
+        }
         var animationUpdateDuration = this.getAnimationUpdateDuration(this.animationType);
         if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
             if (this.isAnimationLastFrameTime()) {
                 this.resetAnimation();
             }
-            var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].UnitTextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
+            var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].Unit.TextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
             this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[name_1];
             this.animationFrameIndex++;
         }
@@ -44559,7 +44718,7 @@ var UnitButton = /** @class */ (function (_super) {
         return _this;
     }
     UnitButton.prototype.init = function (slotIndex, unitId) {
-        var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(unitId);
+        var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(unitId);
         var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId].texture;
         if (!texture) {
             return;
@@ -44684,6 +44843,94 @@ var Dead = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/entity/AttackableEntity.ts":
+/*!****************************************!*\
+  !*** ./src/entity/AttackableEntity.ts ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * 拠点のパラメータ
+ */
+var AttackableEntity = /** @class */ (function () {
+    function AttackableEntity(isPlayer) {
+        /**
+         * プレイヤー側のユニットかどうか
+         */
+        this.isPlayer = true;
+        /**
+         * 現在のヒットポイント
+         */
+        this.currentHealth = 0;
+        this.isPlayer = isPlayer;
+    }
+    AttackableEntity.prototype.isAlly = function (target) {
+        return ((this.isPlayer && target.isPlayer) ||
+            (!this.isPlayer && !target.isPlayer));
+    };
+    AttackableEntity.prototype.isFoe = function (target) {
+        return ((this.isPlayer && !target.isPlayer) ||
+            (!this.isPlayer && target.isPlayer));
+    };
+    AttackableEntity.prototype.damage = function (value) {
+        this.currentHealth -= value;
+        return this.currentHealth;
+    };
+    return AttackableEntity;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (AttackableEntity);
+
+
+/***/ }),
+
+/***/ "./src/entity/BaseEntity.ts":
+/*!**********************************!*\
+  !*** ./src/entity/BaseEntity.ts ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var entity_AttackableEntity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! entity/AttackableEntity */ "./src/entity/AttackableEntity.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+/**
+ * 拠点のパラメータ
+ */
+var BaseEntity = /** @class */ (function (_super) {
+    __extends(BaseEntity, _super);
+    function BaseEntity(master, isPlayer) {
+        var _this = _super.call(this, isPlayer) || this;
+        /**
+         * プレイヤー拠点からの距離
+         */
+        _this.distanceFromPlayerBase = 0;
+        _this.master = master;
+        return _this;
+    }
+    return BaseEntity;
+}(entity_AttackableEntity__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (BaseEntity);
+
+
+/***/ }),
+
 /***/ "./src/entity/UnitEntity.ts":
 /*!**********************************!*\
   !*** ./src/entity/UnitEntity.ts ***!
@@ -44693,53 +44940,50 @@ var Dead = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var entity_AttackableEntity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! entity/AttackableEntity */ "./src/entity/AttackableEntity.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
 /**
  * ユニットのパラメータ
  */
-var UnitEntity = /** @class */ (function () {
+var UnitEntity = /** @class */ (function (_super) {
+    __extends(UnitEntity, _super);
     function UnitEntity(master, isPlayer) {
+        var _this = _super.call(this, isPlayer) || this;
         /**
          * 一意の ID
          * ユニット生成順に動的に割り当てられる
          */
-        this.id = 0;
-        /**
-         * プレイヤー側のユニットかどうか
-         */
-        this.isPlayer = true;
-        /**
-         * 現在のヒットポイント
-         */
-        this.currentHealth = 0;
+        _this.id = 0;
         /**
          * ステート
          */
-        this.state = 0;
+        _this.state = 0;
         /**
          * 拠点からの距離
          */
-        this.distance = 0;
+        _this.distance = 0;
         /**
          * ロック中のユニット
          */
-        this.lockedUnit = null;
-        this.master = master;
-        this.isPlayer = isPlayer;
+        _this.lockedEntity = null;
+        _this.master = master;
+        return _this;
     }
-    UnitEntity.prototype.isAlly = function (target) {
-        return ((this.isPlayer && target.isPlayer) ||
-            (!this.isPlayer && !target.isPlayer));
-    };
-    UnitEntity.prototype.isFoe = function (target) {
-        return ((this.isPlayer && !target.isPlayer) ||
-            (!this.isPlayer && target.isPlayer));
-    };
-    UnitEntity.prototype.damage = function (value) {
-        this.currentHealth -= value;
-        return this.currentHealth;
-    };
     return UnitEntity;
-}());
+}(entity_AttackableEntity__WEBPACK_IMPORTED_MODULE_0__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (UnitEntity);
 
 
@@ -44786,8 +45030,10 @@ __webpack_require__.r(__webpack_exports__);
  */
 window.onload = function () {
     managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].start({
-        width: 1136,
-        height: 640,
+        glWidth: 1136,
+        glHeight: 640,
+        canvasWidth: window.innerWidth,
+        canvasHeight: window.innerWidth * (640 / 1136),
         option: {
             backgroundColor: 0x222222
         }
@@ -44819,11 +45065,14 @@ var INVALID_UNIT_ID = -1;
 var DefaultDelegator = /** @class */ (function () {
     function DefaultDelegator() {
     }
+    DefaultDelegator.prototype.spawnBase = function (_baseId) { return null; };
+    ;
     DefaultDelegator.prototype.onUnitsSpawned = function (_units) { };
     DefaultDelegator.prototype.onUnitStateChanged = function (_unit, _oldState) { };
     DefaultDelegator.prototype.onUnitUpdated = function (_unit) { };
     DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
-    DefaultDelegator.prototype.shouldLock = function (_attacker, _target) { return true; };
+    DefaultDelegator.prototype.shouldLockUnit = function (_attacker, _target) { return true; };
+    DefaultDelegator.prototype.shouldLockBase = function (_attacker, _target) { return true; };
     DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) { return true; };
     DefaultDelegator.prototype.shouldWalk = function (_unit) { return true; };
     return DefaultDelegator;
@@ -44861,6 +45110,10 @@ var BattleManager = /** @class */ (function () {
          */
         this.units = [];
         /**
+         * 生成済みの Base インスタンスを保持する配列
+         */
+        this.baseEntityMap = null;
+        /**
          * AIWaveMaster をキャッシュするための Map
          */
         this.aiWaveMasterCache = new Map();
@@ -44877,7 +45130,7 @@ var BattleManager = /** @class */ (function () {
          */
         this.passedFrameCount = 0;
     }
-    BattleManager.prototype.init = function (aiWaveMaster, unitMaster, delegator) {
+    BattleManager.prototype.init = function (aiWaveMaster, unitMaster, playerBaseMaster, aiBaseMaster, delegator) {
         this.aiWaveMasterCache.clear();
         this.unitMasterCache.clear();
         var waves = aiWaveMaster.waves;
@@ -44890,6 +45143,15 @@ var BattleManager = /** @class */ (function () {
             var unit = unitMaster[i];
             this.unitMasterCache.set(unit.unitId, unit);
         }
+        var playerBase = this.delegator.spawnBase(playerBaseMaster.baseId);
+        var aiBase = this.delegator.spawnBase(aiBaseMaster.baseId);
+        if (!playerBase || !aiBase) {
+            throw new Error('base could not be initialized');
+        }
+        this.baseEntityMap = {
+            player: playerBase,
+            ai: aiBase
+        };
         if (delegator) {
             this.delegator = delegator;
         }
@@ -45015,11 +45277,11 @@ var BattleManager = /** @class */ (function () {
         }
     };
     BattleManager.prototype.updateDamage = function (unit) {
-        if (!unit.lockedUnit) {
+        if (!unit.lockedEntity) {
             return;
         }
-        if (this.delegator.shouldDamage(unit, unit.lockedUnit)) {
-            unit.lockedUnit.currentHealth -= unit.power;
+        if (this.delegator.shouldDamage(unit, unit.lockedEntity)) {
+            unit.lockedEntity.currentHealth -= unit.power;
         }
     };
     BattleManager.prototype.updateDistance = function (unit) {
@@ -45035,18 +45297,19 @@ var BattleManager = /** @class */ (function () {
     };
     BattleManager.prototype.updateLockedState = function (unit) {
         // ロック解除判定
-        if (unit.lockedUnit && unit.lockedUnit.currentHealth <= 0) {
-            unit.lockedUnit = null;
+        if (unit.lockedEntity && unit.lockedEntity.currentHealth <= 0) {
+            unit.lockedEntity = null;
             unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
         }
         // 自身の DEAD 判定
         if (unit.currentHealth <= 0) {
             unit.id = INVALID_UNIT_ID;
-            unit.lockedUnit = null;
+            unit.lockedEntity = null;
             unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
         }
     };
     BattleManager.prototype.updateIdleState = function (unit) {
+        // lock against foe unit first
         for (var i = 0; i < this.units.length; i++) {
             var target = this.units[i];
             if (unit.isAlly(target)) {
@@ -45055,10 +45318,21 @@ var BattleManager = /** @class */ (function () {
             if (target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE && target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
                 continue;
             }
-            if (this.delegator.shouldLock(unit, target)) {
-                unit.lockedUnit = target;
+            if (this.delegator.shouldLockUnit(unit, target)) {
+                unit.lockedEntity = target;
                 unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
                 break;
+            }
+        }
+        // the lock against base
+        if (!unit.lockedEntity && this.baseEntityMap) {
+            if (unit.isPlayer && this.delegator.shouldLockBase(unit, this.baseEntityMap.ai)) {
+                unit.lockedEntity = this.baseEntityMap.ai;
+                unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
+            }
+            else if (!unit.isPlayer && this.delegator.shouldLockBase(unit, this.baseEntityMap.player)) {
+                unit.lockedEntity = this.baseEntityMap.player;
+                unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
             }
         }
     };
@@ -45143,9 +45417,11 @@ var GameManager = /** @class */ (function () {
      * 画面サイズや PIXI.ApplicationOptions を渡すことができる
      */
     GameManager.start = function (params) {
-        var game = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"](params.width, params.height, params.option);
+        var game = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"](params.glWidth, params.glHeight, params.option);
         GameManager.instance = new GameManager(game);
         document.body.appendChild(GameManager.instance.game.view);
+        GameManager.instance.game.view.style.width = params.canvasWidth + "px";
+        GameManager.instance.game.view.style.height = params.canvasHeight + "px";
         GameManager.instance.game.ticker.add(function (delta) {
             if (GameManager.instance.currentScene) {
                 GameManager.instance.currentScene.update(delta);
@@ -45512,7 +45788,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 /* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
 /* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
-/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
+/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
+/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45534,12 +45811,24 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+
 var debugMaxUnitCount = 5;
 var debugField = 1;
 var debugStage = 1;
 var debugUnits = [1, -1, 3, -1, 5];
+var debugBaseIdMap = {
+    player: 1,
+    ai: 2
+};
 var debugCostRecoveryPerFrame = 0.05;
 var debugMaxAvailableCost = 100;
+var DefaultBase = /** @class */ (function (_super) {
+    __extends(DefaultBase, _super);
+    function DefaultBase() {
+        return _super.call(this, { baseId: -1, maxHealth: 0 }, false) || this;
+    }
+    return DefaultBase;
+}(display_battle_Base__WEBPACK_IMPORTED_MODULE_7__["default"]));
 /**
  * BattleScene のステートのリスト
  */
@@ -45557,14 +45846,22 @@ var BattleScene = /** @class */ (function (_super) {
     __extends(BattleScene, _super);
     function BattleScene() {
         var _this = _super.call(this) || this;
-        _this.destroyList = [];
         /**
-         * 拠点の座標
+         * Field マスタ
          */
-        _this.basePos = {
-            player: 0,
-            ai: 0
+        _this.fieldMaster = null;
+        /**
+         * Base マスタ
+         */
+        _this.baseMasterMap = null;
+        /**
+         * 拠点の PIXI.Container
+         */
+        _this.bases = {
+            player: new DefaultBase(),
+            ai: new DefaultBase()
         };
+        _this.destroyList = [];
         // BattleManager インスタンスの作成とコールバックの登録
         _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_3__["default"]();
         _this.manager.setDelegator(_this);
@@ -45577,6 +45874,7 @@ var BattleScene = /** @class */ (function (_super) {
             _this.fieldId = debugField;
             _this.stageId = debugStage;
             _this.unitIds = debugUnits;
+            _this.baseIdMap = debugBaseIdMap;
             _this.manager.costRecoveryPerFrame = debugCostRecoveryPerFrame;
             _this.manager.maxAvailableCost = debugMaxAvailableCost;
         }
@@ -45584,17 +45882,48 @@ var BattleScene = /** @class */ (function (_super) {
     }
     /**
      * GameMasterDelegate 実装
+     * Base が発生したときのコールバック
+     * Field に Base のスプライトを追加する
+     */
+    BattleScene.prototype.spawnBase = function (baseId) {
+        var base = null;
+        if (!this.baseMasterMap || !this.fieldMaster) {
+            return null;
+        }
+        if (baseId === this.baseMasterMap.player.baseId) {
+            base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_7__["default"](this.baseMasterMap.player, true);
+            this.bases.player = base;
+            this.bases.player.init({ x: this.fieldMaster.playerBase.position.x });
+            this.field.addChildAsForeBackgroundEffect(this.bases.player.sprite);
+        }
+        else if (baseId === this.baseMasterMap.ai.baseId) {
+            base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_7__["default"](this.baseMasterMap.ai, true);
+            this.bases.ai = base;
+            this.bases.ai.init({ x: this.fieldMaster.aiBase.position.x });
+            this.field.addChildAsForeBackgroundEffect(this.bases.ai.sprite);
+        }
+        else {
+            return null;
+        }
+        return base;
+    };
+    ;
+    /**
+     * GameMasterDelegate 実装
      * Unit が発生したときのコールバック
      * Field に Unit のスプライトを追加する
      */
     BattleScene.prototype.onUnitsSpawned = function (units) {
+        if (!this.bases.player || !this.bases.ai) {
+            return;
+        }
         for (var i = 0; i < units.length; i++) {
             var unit = units[i];
             if (unit.isPlayer) {
-                unit.sprite.position.x = this.basePos.player;
+                unit.sprite.position.x = this.bases.player.sprite.position.x;
             }
             else {
-                unit.sprite.position.x = this.basePos.ai;
+                unit.sprite.position.x = this.bases.ai.sprite.position.x;
             }
             this.field.addChildToRandomZLine(unit.sprite);
         }
@@ -45611,7 +45940,7 @@ var BattleScene = /** @class */ (function (_super) {
      * Unit のアニメーションと PIXI による描画を更新する
      */
     BattleScene.prototype.onUnitUpdated = function (unit) {
-        var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes;
+        var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.AnimationTypes;
         var animationType = unit.getAnimationType();
         switch (unit.state) {
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_2__["default"].IDLE: {
@@ -45622,11 +45951,13 @@ var BattleScene = /** @class */ (function (_super) {
                     }
                 }
                 else {
-                    if (unit.isPlayer) {
-                        unit.sprite.position.x = this.basePos.player + unit.distance;
-                    }
-                    else {
-                        unit.sprite.position.x = this.basePos.ai - unit.distance;
+                    if (this.bases.player && this.bases.ai) {
+                        if (unit.isPlayer) {
+                            unit.sprite.position.x = this.bases.player.sprite.position.x + unit.distance;
+                        }
+                        else {
+                            unit.sprite.position.x = this.bases.ai.sprite.position.x - unit.distance;
+                        }
                     }
                 }
                 break;
@@ -45636,9 +45967,9 @@ var BattleScene = /** @class */ (function (_super) {
                 break;
             }
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD: {
-                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_7__["default"](!unit.isPlayer);
+                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_8__["default"](!unit.isPlayer);
                 effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
-                this.field.addChild(effect);
+                this.field.addChildAsForeBackgroundEffect(effect);
                 this.registerUpdatingObject(effect);
                 if (unit.sprite) {
                     this.destroyList.push(unit.sprite);
@@ -45662,8 +45993,11 @@ var BattleScene = /** @class */ (function (_super) {
      * GameMasterDelegate 実装
      * 渡されたユニット同士が接敵可能か返す
      */
-    BattleScene.prototype.shouldLock = function (attacker, target) {
-        return attacker.isFoeContact(target);
+    BattleScene.prototype.shouldLockUnit = function (attacker, target) {
+        return attacker.isFoeContact(target.sprite);
+    };
+    BattleScene.prototype.shouldLockBase = function (attacker, target) {
+        return attacker.isFoeContact(target.sprite);
     };
     /**
      * GameMasterDelegate 実装
@@ -45673,10 +46007,10 @@ var BattleScene = /** @class */ (function (_super) {
         if (!attacker.isHitFrame()) {
             return false;
         }
-        return attacker.isFoeContact(target);
+        return attacker.isFoeContact(target.sprite);
     };
     BattleScene.prototype.shouldWalk = function (unit) {
-        if (unit.getAnimationType() === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitAnimationTypes.WALK) {
+        if (unit.getAnimationType() === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.AnimationTypes.WALK) {
             return true;
         }
         return unit.isAnimationLastFrameTime();
@@ -45690,20 +46024,28 @@ var BattleScene = /** @class */ (function (_super) {
         for (var i = 0; i < this.unitIds.length; i++) {
             var unitId = this.unitIds[i];
             if (unitId >= 0) {
-                var unitUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitTexture(unitId);
-                var unitPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(unitId);
+                var unitUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.Texture(unitId);
+                var unitPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(unitId);
                 assets.push({ name: unitUrl, url: unitUrl });
                 assets.push({ name: unitPanelUrl, url: unitPanelUrl });
             }
         }
-        var fieldMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field(this.fieldId);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].FieldEntryPoint(), url: fieldMasterUrl });
-        var aiWaveMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AIWave(this.stageId);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AIWaveEntryPoint(), url: aiWaveMasterUrl });
-        var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit(this.unitIds);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitEntryPoint(), url: unitMasterUrl });
+        var fieldMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field.Api(this.fieldId);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field.ApiEntryPoint(), url: fieldMasterUrl });
+        var aiWaveMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AiWave.Api(this.stageId);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AiWave.ApiEntryPoint(), url: aiWaveMasterUrl });
+        var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.Api(this.unitIds);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.ApiEntryPoint(), url: unitMasterUrl });
+        var baseMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.Api(this.baseIdMap.player, this.baseIdMap.ai);
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.ApiEntryPoint(), url: baseMasterUrl });
+        var playerBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.Texture(this.baseIdMap.player);
+        assets.push({ name: playerBaseTextureUrl, url: playerBaseTextureUrl });
+        if (this.baseIdMap.player !== this.baseIdMap.ai) {
+            var aiBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.Texture(this.baseIdMap.ai);
+            assets.push({ name: aiBaseTextureUrl, url: aiBaseTextureUrl });
+        }
         if (this.unitIds.indexOf(-1) >= 0) {
-            var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitPanelTexture(-1);
+            var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(-1);
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
         }
         var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_6__["default"].resourceList;
@@ -45711,7 +46053,7 @@ var BattleScene = /** @class */ (function (_super) {
             var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
         }
-        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_7__["default"].resourceList;
+        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_8__["default"].resourceList;
         for (var i = 0; i < deadResources.length; i++) {
             var deadResourceUrl = deadResources[i];
             assets.push({ name: deadResourceUrl, url: deadResourceUrl });
@@ -45724,14 +46066,12 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.onResourceLoaded = function () {
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
-        var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+        var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
         this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
-        var fieldMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].FieldEntryPoint()];
-        this.basePos.player = fieldMaster.data.playerBasePosition;
-        this.basePos.ai = fieldMaster.data.aiBasePosition;
-        var aiWaveMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AIWaveEntryPoint()];
-        var unitMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].UnitEntryPoint()];
-        this.manager.init(aiWaveMaster.data, unitMaster.data);
+        this.fieldMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field.ApiEntryPoint()].data;
+        var aiWaveMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AiWave.ApiEntryPoint()];
+        var unitMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.ApiEntryPoint()];
+        this.baseMasterMap = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.ApiEntryPoint()].data;
         this.field.init();
         for (var index = 0; index < this.maxUnitSlotCount; index++) {
             var unitButton = this.getUiGraphUnitButton(index);
@@ -45742,6 +46082,9 @@ var BattleScene = /** @class */ (function (_super) {
         }
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
+        if (this.baseMasterMap) {
+            this.manager.init(aiWaveMaster.data, unitMaster.data, this.baseMasterMap.player, this.baseMasterMap.ai);
+        }
         this.state = BattleState.READY;
     };
     /**
@@ -45769,6 +46112,10 @@ var BattleScene = /** @class */ (function (_super) {
                 this.manager.update(delta);
                 break;
             }
+        }
+        if (this.bases.player && this.bases.ai) {
+            this.bases.player.updateAnimation();
+            this.bases.ai.updateAnimation();
         }
         this.updateRegisteredObjects(delta);
         for (var i = 0; i < this.destroyList.length; i++) {
@@ -45898,7 +46245,7 @@ var Scene = /** @class */ (function (_super) {
      */
     Scene.prototype.createResourceList = function () {
         if (this.hasSceneUiGraph) {
-            var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+            var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
             return [
                 { name: name_1, url: name_1 }
             ];
@@ -45928,7 +46275,7 @@ var Scene = /** @class */ (function (_super) {
      */
     Scene.prototype.onResourceLoaded = function () {
         if (this.hasSceneUiGraph) {
-            var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+            var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
             this.prepareUiGraphContainer(pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[sceneUiGraphName].data);
             this.addChild(this.uiGraphContainer);
         }

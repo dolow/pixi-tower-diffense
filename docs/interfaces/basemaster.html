@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FieldMaster | tower-diffence</title>
+	<title>BaseMaster | tower-diffence</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="fieldmaster.html">FieldMaster</a>
+					<a href="basemaster.html">BaseMaster</a>
 				</li>
 			</ul>
-			<h1>Interface FieldMaster</h1>
+			<h1>Interface BaseMaster</h1>
 		</div>
 	</div>
 </header>
@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>フィールド情報</p>
+						<p>拠点パラメータマスターのスキーマ定義</p>
 					</div>
 				</div>
 			</section>
@@ -75,7 +75,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">FieldMaster</span>
+						<span class="target">BaseMaster</span>
 					</li>
 				</ul>
 			</section>
@@ -86,10 +86,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fieldmaster.html#aibase" class="tsd-kind-icon">ai<wbr>Base</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fieldmaster.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fieldmaster.html#length" class="tsd-kind-icon">length</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fieldmaster.html#playerbase" class="tsd-kind-icon">player<wbr>Base</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="basemaster.html#baseid" class="tsd-kind-icon">base<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="basemaster.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,73 +96,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="aibase" class="tsd-anchor"></a>
-					<h3>ai<wbr>Base</h3>
-					<div class="tsd-signature tsd-kind-icon">ai<wbr>Base<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="baseid" class="tsd-anchor"></a>
+					<h3>base<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in interfaces/master/Field.ts:12</li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>health<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in interfaces/master/Field.ts:5</li>
+							<li>Defined in interfaces/master/Base.ts:6</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="length" class="tsd-anchor"></a>
-					<h3>length</h3>
-					<div class="tsd-signature tsd-kind-icon">length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="maxhealth" class="tsd-anchor"></a>
+					<h3>max<wbr>Health</h3>
+					<div class="tsd-signature tsd-kind-icon">max<wbr>Health<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in interfaces/master/Field.ts:6</li>
+							<li>Defined in interfaces/master/Base.ts:7</li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="playerbase" class="tsd-anchor"></a>
-					<h3>player<wbr>Base</h3>
-					<div class="tsd-signature tsd-kind-icon">player<wbr>Base<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in interfaces/master/Field.ts:7</li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -181,19 +130,13 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="fieldmaster.html" class="tsd-kind-icon">Field<wbr>Master</a>
+						<a href="basemaster.html" class="tsd-kind-icon">Base<wbr>Master</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="fieldmaster.html#aibase" class="tsd-kind-icon">ai<wbr>Base</a>
+								<a href="basemaster.html#baseid" class="tsd-kind-icon">base<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="fieldmaster.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="fieldmaster.html#length" class="tsd-kind-icon">length</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="fieldmaster.html#playerbase" class="tsd-kind-icon">player<wbr>Base</a>
+								<a href="basemaster.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a>
 							</li>
 						</ul>
 					</li>

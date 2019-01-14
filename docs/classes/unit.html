@@ -105,7 +105,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#lockedunit" class="tsd-kind-icon">locked<wbr>Unit</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#lockedentity" class="tsd-kind-icon">locked<wbr>Entity</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="unit.html#master" class="tsd-kind-icon">master</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="unit.html#sprite" class="tsd-kind-icon">sprite</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#state" class="tsd-kind-icon">state</a></li>
@@ -149,7 +149,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Unit<span class="tsd-signature-symbol">(</span>master<span class="tsd-signature-symbol">: </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a>, ally<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Unit<span class="tsd-signature-symbol">(</span>master<span class="tsd-signature-symbol">: </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -165,7 +165,7 @@
 									<h5>master: <a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a></h5>
 								</li>
 								<li>
-									<h5>ally: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
@@ -210,9 +210,9 @@
 					<h3>current<wbr>Health</h3>
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Health<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#currenthealth">currentHealth</a></p>
+						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#currenthealth">currentHealth</a></p>
 						<ul>
-							<li>Defined in entity/UnitEntity.ts:19</li>
+							<li>Defined in entity/AttackableEntity.ts:12</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -228,7 +228,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#distance">distance</a></p>
 						<ul>
-							<li>Defined in entity/UnitEntity.ts:27</li>
+							<li>Defined in entity/UnitEntity.ts:20</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -259,7 +259,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#id">id</a></p>
 						<ul>
-							<li>Defined in entity/UnitEntity.ts:11</li>
+							<li>Defined in entity/UnitEntity.ts:12</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -274,9 +274,9 @@
 					<h3>is<wbr>Player</h3>
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#isplayer">isPlayer</a></p>
+						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#isplayer">isPlayer</a></p>
 						<ul>
-							<li>Defined in entity/UnitEntity.ts:15</li>
+							<li>Defined in entity/AttackableEntity.ts:8</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -286,13 +286,13 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="lockedunit" class="tsd-anchor"></a>
-					<h3>locked<wbr>Unit</h3>
-					<div class="tsd-signature tsd-kind-icon">locked<wbr>Unit<span class="tsd-signature-symbol">:</span> <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
+					<a name="lockedentity" class="tsd-anchor"></a>
+					<h3>locked<wbr>Entity</h3>
+					<div class="tsd-signature tsd-kind-icon">locked<wbr>Entity<span class="tsd-signature-symbol">:</span> <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#lockedunit">lockedUnit</a></p>
+						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#lockedentity">lockedEntity</a></p>
 						<ul>
-							<li>Defined in entity/UnitEntity.ts:31</li>
+							<li>Defined in entity/UnitEntity.ts:24</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -308,7 +308,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#master">master</a></p>
 						<ul>
-							<li>Defined in entity/UnitEntity.ts:36</li>
+							<li>Defined in entity/UnitEntity.ts:29</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -339,7 +339,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#state">state</a></p>
 						<ul>
-							<li>Defined in entity/UnitEntity.ts:23</li>
+							<li>Defined in entity/UnitEntity.ts:16</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -482,9 +482,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#damage">damage</a></p>
+								<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#damage">damage</a></p>
 								<ul>
-									<li>Defined in entity/UnitEntity.ts:57</li>
+									<li>Defined in entity/AttackableEntity.ts:32</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -587,20 +587,20 @@
 					<a name="isally" class="tsd-anchor"></a>
 					<h3>is<wbr>Ally</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Ally<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Ally<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#isally">isAlly</a></p>
+								<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#isally">isAlly</a></p>
 								<ul>
-									<li>Defined in entity/UnitEntity.ts:43</li>
+									<li>Defined in entity/AttackableEntity.ts:18</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>target: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
+									<h5>target: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -634,20 +634,20 @@
 					<a name="isfoe" class="tsd-anchor"></a>
 					<h3>is<wbr>Foe</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Foe<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Foe<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#isfoe">isFoe</a></p>
+								<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#isfoe">isFoe</a></p>
 								<ul>
-									<li>Defined in entity/UnitEntity.ts:50</li>
+									<li>Defined in entity/AttackableEntity.ts:25</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>target: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
+									<h5>target: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -658,19 +658,19 @@
 					<a name="isfoecontact" class="tsd-anchor"></a>
 					<h3>is<wbr>Foe<wbr>Contact</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Foe<wbr>Contact<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Foe<wbr>Contact<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Unit.ts:85</li>
+									<li>Defined in display/battle/Unit.ts:87</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>target: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
+									<h5>target: <span class="tsd-signature-type">Container</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -704,7 +704,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Unit.ts:91</li>
+									<li>Defined in display/battle/Unit.ts:94</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -715,19 +715,19 @@
 					<a name="updateanimation" class="tsd-anchor"></a>
 					<h3>update<wbr>Animation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Animation<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Animation<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in display/battle/Unit.ts:96</li>
+									<li>Defined in display/battle/Unit.ts:99</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> type: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -776,7 +776,7 @@
 								<a href="unit.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="unit.html#lockedunit" class="tsd-kind-icon">locked<wbr>Unit</a>
+								<a href="unit.html#lockedentity" class="tsd-kind-icon">locked<wbr>Entity</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="unit.html#master" class="tsd-kind-icon">master</a>

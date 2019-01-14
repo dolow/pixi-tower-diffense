@@ -11,6 +11,7 @@ export default class Field extends PIXI.Container {
   private foregroundScrollLimit: number = -1;
 
   private containers: { [key: string]: PIXI.Container } = {
+    foreBackgroundEffect: new PIXI.Container(),
     fore: new PIXI.Container(),
     middle: new PIXI.Container(),
     back: new PIXI.Container()
@@ -21,9 +22,9 @@ export default class Field extends PIXI.Container {
 
   public static get resourceList(): string[] {
     if (Field.resourceListCache.length === 0) {
-      const foreTiles   = ResourceMaster.BattleBgFore();
-      const middleTiles = ResourceMaster.BattleBgMiddle();
-      const backTiles   = ResourceMaster.BattleBgBack();
+      const foreTiles   = ResourceMaster.BattleBg.Fore();
+      const middleTiles = ResourceMaster.BattleBg.Middle();
+      const backTiles   = ResourceMaster.BattleBg.Back();
       Field.resourceListCache = Field.resourceListCache.concat(foreTiles);
       Field.resourceListCache = Field.resourceListCache.concat(middleTiles);
       Field.resourceListCache = Field.resourceListCache.concat(backTiles);
@@ -43,11 +44,11 @@ export default class Field extends PIXI.Container {
     this.on('pointerout',    (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
   }
 
-  public init(zLines: number = 8): void {
+  public init(options: any = { zLines: 8 }): void {
     const tiles: { [key: string]: string[] } = {
-      fore:   ResourceMaster.BattleBgFore(),
-      middle: ResourceMaster.BattleBgMiddle(),
-      back:   ResourceMaster.BattleBgBack()
+      fore:   ResourceMaster.BattleBg.Fore(),
+      middle: ResourceMaster.BattleBg.Middle(),
+      back:   ResourceMaster.BattleBg.Back()
     };
 
     const layers = Object.keys(tiles);
@@ -67,10 +68,11 @@ export default class Field extends PIXI.Container {
     this.addChild(this.containers.back);
     this.addChild(this.containers.middle);
     this.addChild(this.containers.fore);
+    this.containers.fore.addChild(this.containers.foreBackgroundEffect);
 
     // フィールドに奥行きを出すためにユニットを前後に配置できるようにする
     // z-index の後からの制御はコストが高いため、予め PIXI.Container を割り当てておく
-    for (let i = 0; i < zLines; i++) {
+    for (let i = 0; i < options.zLines; i++) {
       const line = new PIXI.Container();
       this.foreZLines.push(line);
       this.containers.fore.addChild(line);
@@ -78,6 +80,10 @@ export default class Field extends PIXI.Container {
 
     const screenWidth = GameManager.instance.game.screen.width;
     this.foregroundScrollLimit = -(this.width - screenWidth);
+  }
+
+  public addChildAsForeBackgroundEffect(container: PIXI.Container): void {
+    this.containers.foreBackgroundEffect.addChild(container);
   }
 
   public addChildToRandomZLine(container: PIXI.Container): void {
@@ -88,7 +94,7 @@ export default class Field extends PIXI.Container {
         index = 0;
       }
     }
-    container.position.y = 200 + index * 16;
+    container.position.y = 260 + index * 16;
     this.foreZLines[index].addChild(container);
 
     // 重なって表示されないようにする

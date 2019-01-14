@@ -9,7 +9,8 @@ export default class Field extends PIXI.Container {
     private lastAddedZLineIndex;
     static readonly resourceList: string[];
     constructor();
-    init(zLines?: number): void;
+    init(options?: any): void;
+    addChildAsForeBackgroundEffect(container: PIXI.Container): void;
     addChildToRandomZLine(container: PIXI.Container): void;
     private onPointerDown;
     private onPointerMove;

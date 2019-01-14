@@ -1,21 +1,14 @@
 import UnitMaster from 'interfaces/master/Unit';
+import AttackableEntity from 'entity/AttackableEntity';
 /**
  * ユニットのパラメータ
  */
-export default class UnitEntity {
+export default class UnitEntity extends AttackableEntity {
     /**
      * 一意の ID
      * ユニット生成順に動的に割り当てられる
      */
     id: number;
-    /**
-     * プレイヤー側のユニットかどうか
-     */
-    isPlayer: boolean;
-    /**
-     * 現在のヒットポイント
-     */
-    currentHealth: number;
     /**
      * ステート
      */
@@ -27,13 +20,10 @@ export default class UnitEntity {
     /**
      * ロック中のユニット
      */
-    lockedUnit: UnitEntity | null;
+    lockedEntity: AttackableEntity | null;
     /**
      * ユニットマスターデータ
      */
     protected master: UnitMaster;
     constructor(master: UnitMaster, isPlayer: boolean);
-    isAlly(target: UnitEntity): boolean;
-    isFoe(target: UnitEntity): boolean;
-    damage(value: number): number;
 }

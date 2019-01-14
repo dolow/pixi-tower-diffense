@@ -30,7 +30,7 @@ export default class Unit extends UnitEntity {
     if (this.animationFrameIndex !== this.hitFrame) {
       return false;
     }
-    const updateDuration = this.getAnimationUpdateDuration(ResourceMaster.UnitAnimationTypes.ATTACK);
+    const updateDuration = this.getAnimationUpdateDuration(ResourceMaster.Unit.AnimationTypes.ATTACK);
     return (this.elapsedFrameCount % updateDuration) === 0;
   }
 
@@ -74,18 +74,21 @@ export default class Unit extends UnitEntity {
     return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
   }
 
-  constructor(master: UnitMaster, ally: boolean) {
-    super(master, ally);
+  constructor(master: UnitMaster, isPlayer: boolean) {
+    super(master, isPlayer);
     this.sprite = new PIXI.Sprite();
     if (!this.isPlayer) {
       this.sprite.scale.x = -1;
     }
+
+    this.sprite.anchor.x = 0.5;
   }
 
-  public isFoeContact(target: Unit): boolean {
+  public isFoeContact(target: PIXI.Container): boolean {
+    const rangeDistance = this.sprite.width * 0.5 + target.width * 0.5;
     return (this.isPlayer)
-      ? (this.sprite.position.x + this.sprite.width + target.sprite.width) >= target.sprite.position.x
-      : (target.sprite.position.x + target.sprite.width + this.sprite.width) >= this.sprite.position.x;
+      ? (this.sprite.position.x + rangeDistance) >= target.position.x
+      : (target.position.x + rangeDistance) >= this.sprite.position.x;
   }
 
   public resetAnimation(): void {
@@ -93,8 +96,10 @@ export default class Unit extends UnitEntity {
     this.animationFrameIndex = 1;
   }
 
-  public updateAnimation(type: string): void {
-    this.animationType = type;
+  public updateAnimation(type?: string): void {
+    if (type) {
+      this.animationType = type;
+    }
 
     const animationUpdateDuration = this.getAnimationUpdateDuration(this.animationType);
     if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
@@ -102,7 +107,7 @@ export default class Unit extends UnitEntity {
         this.resetAnimation();
       }
 
-      const name = ResourceMaster.UnitTextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
+      const name = ResourceMaster.Unit.TextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
       this.sprite.texture = PIXI.utils.TextureCache[name];
 
       this.animationFrameIndex++;

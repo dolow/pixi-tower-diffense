@@ -73,7 +73,7 @@ export default abstract class Scene extends PIXI.Container {
    */
   protected createResourceList(): LoaderAddParam[] {
     if (this.hasSceneUiGraph) {
-      const name = ResourceMaster.SceneUiGraph(this);
+      const name = ResourceMaster.SceneUiGraph.Api(this);
       return [
         { name: name, url:  name }
       ];
@@ -104,7 +104,7 @@ export default abstract class Scene extends PIXI.Container {
    */
   protected onResourceLoaded(): void {
     if (this.hasSceneUiGraph) {
-      const sceneUiGraphName = ResourceMaster.SceneUiGraph(this);
+      const sceneUiGraphName = ResourceMaster.SceneUiGraph.Api(this);
       this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
       this.addChild(this.uiGraphContainer);
     }

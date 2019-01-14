@@ -2,6 +2,7 @@ import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'scenes/Scene';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
+import BaseEntity from 'entity/BaseEntity';
 import Unit from 'display/battle/Unit';
 /**
  * メインのゲーム部分のシーン
@@ -12,6 +13,14 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 最大ユニット編成数
      */
     private maxUnitSlotCount;
+    /**
+     * Field マスタ
+     */
+    private fieldMaster;
+    /**
+     * Base マスタ
+     */
+    private baseMasterMap;
     /**
      * 利用するフィールドID
      */
@@ -25,6 +34,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      */
     private unitIds;
     /**
+     * 指定された拠点ID
+     */
+    private baseIdMap;
+    /**
      * このシーンのステート
      */
     private state;
@@ -36,11 +49,17 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 背景の PIXI.Container
      */
     private field;
+    /**
+     * 拠点の PIXI.Container
+     */
+    private bases;
     private destroyList;
     /**
-     * 拠点の座標
+     * GameMasterDelegate 実装
+     * Base が発生したときのコールバック
+     * Field に Base のスプライトを追加する
      */
-    private basePos;
+    spawnBase(baseId: number): BaseEntity | null;
     /**
      * GameMasterDelegate 実装
      * Unit が発生したときのコールバック
@@ -66,7 +85,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * GameMasterDelegate 実装
      * 渡されたユニット同士が接敵可能か返す
      */
-    shouldLock(attacker: Unit, target: Unit): boolean;
+    shouldLockUnit(attacker: Unit, target: Unit): boolean;
+    shouldLockBase(attacker: Unit, target: BaseEntity): boolean;
     /**
      * GameMasterDelegate 実装
      * 渡されたユニット同士が攻撃可能か返す

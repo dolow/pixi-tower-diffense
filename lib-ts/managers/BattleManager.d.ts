@@ -1,5 +1,6 @@
 import AIWaveMaster from 'interfaces/master/AIWave';
 import UnitMaster from 'interfaces/master/Unit';
+import BaseMaster from 'interfaces/master/Base';
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import UnitEntity from 'entity/UnitEntity';
 import Unit from 'display/battle/Unit';
@@ -35,6 +36,10 @@ export default class BattleManager {
      */
     private units;
     /**
+     * 生成済みの Base インスタンスを保持する配列
+     */
+    private baseEntityMap;
+    /**
      * AIWaveMaster をキャッシュするための Map
      */
     private aiWaveMasterCache;
@@ -50,7 +55,7 @@ export default class BattleManager {
      * 経過フレーム数
      */
     private passedFrameCount;
-    init(aiWaveMaster: AIWaveMaster, unitMaster: UnitMaster[], delegator?: BattleManagerDelegate): void;
+    init(aiWaveMaster: AIWaveMaster, unitMaster: UnitMaster[], playerBaseMaster: BaseMaster, aiBaseMaster: BaseMaster, delegator?: BattleManagerDelegate): void;
     setDelegator(delegator: BattleManagerDelegate): void;
     /**
      * Unit 生成をリクエストする

@@ -6,7 +6,7 @@ export default class UnitButton extends PIXI.Sprite {
   public unitId:    number = -1;
 
   public init(slotIndex: number, unitId: number): void {
-    const resourceId = ResourceMaster.UnitPanelTexture(unitId);
+    const resourceId = ResourceMaster.Unit.PanelTexture(unitId);
     const texture = PIXI.loader.resources[resourceId].texture;
     if (!texture) {
       return;

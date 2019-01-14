@@ -4,7 +4,15 @@
 export default interface FieldMaster {
   id: number;
   length: number;
-  playerBasePosition: number;
-  aiBasePosition: number;
-  aiBaseHealth: number;
+  playerBase: {
+    position: {
+      x: number;
+    };
+  };
+  aiBase: {
+    position: {
+      x: number;
+    };
+    health: number;
+  };
 }

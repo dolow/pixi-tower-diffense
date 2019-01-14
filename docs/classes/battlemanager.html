@@ -91,6 +91,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#aiwavemastercache" class="tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#baseentitymap" class="tsd-kind-icon">base<wbr>Entity<wbr>Map</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlemanager.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#delegator" class="tsd-kind-icon">delegator</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlemanager.html#maxavailablecost" class="tsd-kind-icon">max<wbr>Available<wbr>Cost</a></li>
@@ -135,7 +136,7 @@
 					<div class="tsd-signature tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:57</li>
+							<li>Defined in managers/BattleManager.ts:68</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -150,12 +151,27 @@
 					<div class="tsd-signature tsd-kind-icon">available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:45</li>
+							<li>Defined in managers/BattleManager.ts:49</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>現在の利用可能なコスト</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="baseentitymap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> base<wbr>Entity<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Entity<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in managers/BattleManager.ts:61</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>生成済みの Base インスタンスを保持する配列</p>
 						</div>
 					</div>
 				</section>
@@ -165,7 +181,7 @@
 					<div class="tsd-signature tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:31</li>
+							<li>Defined in managers/BattleManager.ts:35</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -180,7 +196,7 @@
 					<div class="tsd-signature tsd-kind-icon">delegator<span class="tsd-signature-symbol">:</span> <a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol"> =&nbsp;new DefaultDelegator()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:40</li>
+							<li>Defined in managers/BattleManager.ts:44</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -195,7 +211,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:35</li>
+							<li>Defined in managers/BattleManager.ts:39</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -210,7 +226,7 @@
 					<div class="tsd-signature tsd-kind-icon">next<wbr>Unit<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:49</li>
+							<li>Defined in managers/BattleManager.ts:53</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -225,7 +241,7 @@
 					<div class="tsd-signature tsd-kind-icon">passed<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:69</li>
+							<li>Defined in managers/BattleManager.ts:80</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -240,7 +256,7 @@
 					<div class="tsd-signature tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:65</li>
+							<li>Defined in managers/BattleManager.ts:76</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -255,7 +271,7 @@
 					<div class="tsd-signature tsd-kind-icon">unit<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:61</li>
+							<li>Defined in managers/BattleManager.ts:72</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -270,7 +286,7 @@
 					<div class="tsd-signature tsd-kind-icon">units<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in managers/BattleManager.ts:53</li>
+							<li>Defined in managers/BattleManager.ts:57</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -286,13 +302,13 @@
 					<a name="init" class="tsd-anchor"></a>
 					<h3>init</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>aiWaveMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/aiwavemaster.html" class="tsd-signature-type">AIWaveMaster</a>, unitMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">[]</span>, delegator<span class="tsd-signature-symbol">?: </span><a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>aiWaveMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/aiwavemaster.html" class="tsd-signature-type">AIWaveMaster</a>, unitMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">[]</span>, playerBaseMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/basemaster.html" class="tsd-signature-type">BaseMaster</a>, aiBaseMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/basemaster.html" class="tsd-signature-type">BaseMaster</a>, delegator<span class="tsd-signature-symbol">?: </span><a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:71</li>
+									<li>Defined in managers/BattleManager.ts:82</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -302,6 +318,12 @@
 								</li>
 								<li>
 									<h5>unitMaster: <a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>playerBaseMaster: <a href="../interfaces/basemaster.html" class="tsd-signature-type">BaseMaster</a></h5>
+								</li>
+								<li>
+									<h5>aiBaseMaster: <a href="../interfaces/basemaster.html" class="tsd-signature-type">BaseMaster</a></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> delegator: <a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a></h5>
@@ -321,7 +343,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:145</li>
+									<li>Defined in managers/BattleManager.ts:174</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -349,7 +371,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:326</li>
+									<li>Defined in managers/BattleManager.ts:367</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -377,7 +399,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:285</li>
+									<li>Defined in managers/BattleManager.ts:326</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -400,7 +422,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:99</li>
+									<li>Defined in managers/BattleManager.ts:128</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -431,7 +453,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:113</li>
+									<li>Defined in managers/BattleManager.ts:142</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -460,7 +482,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:106</li>
+									<li>Defined in managers/BattleManager.ts:135</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -489,7 +511,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:92</li>
+									<li>Defined in managers/BattleManager.ts:121</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -512,7 +534,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:121</li>
+									<li>Defined in managers/BattleManager.ts:150</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -547,7 +569,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:153</li>
+									<li>Defined in managers/BattleManager.ts:182</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -576,7 +598,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:232</li>
+									<li>Defined in managers/BattleManager.ts:261</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -599,7 +621,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:250</li>
+									<li>Defined in managers/BattleManager.ts:279</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -622,7 +644,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:241</li>
+									<li>Defined in managers/BattleManager.ts:270</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -645,7 +667,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:267</li>
+									<li>Defined in managers/BattleManager.ts:296</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -668,7 +690,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:253</li>
+									<li>Defined in managers/BattleManager.ts:282</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -691,7 +713,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:185</li>
+									<li>Defined in managers/BattleManager.ts:214</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -714,7 +736,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:300</li>
+									<li>Defined in managers/BattleManager.ts:341</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -736,7 +758,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in managers/BattleManager.ts:196</li>
+									<li>Defined in managers/BattleManager.ts:225</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -771,6 +793,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="battlemanager.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="battlemanager.html#baseentitymap" class="tsd-kind-icon">base<wbr>Entity<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="battlemanager.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a>

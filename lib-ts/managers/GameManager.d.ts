@@ -38,8 +38,10 @@ export default class GameManager {
      * 画面サイズや PIXI.ApplicationOptions を渡すことができる
      */
     static start(params: {
-        width: number;
-        height: number;
+        glWidth: number;
+        glHeight: number;
+        canvasWidth: number;
+        canvasHeight: number;
         option?: PIXI.ApplicationOptions;
     }): void;
     /**
