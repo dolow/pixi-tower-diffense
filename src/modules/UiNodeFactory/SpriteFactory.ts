@@ -16,7 +16,6 @@ export default class SpriteFactory extends UiNodeFactory {
       if (nodeParams.anchor) {
         sprite.anchor.x = nodeParams.anchor[0];
         sprite.anchor.y = nodeParams.anchor[1];
-        console.log(sprite.anchor.x, sprite.anchor.y);
       }
     }
 

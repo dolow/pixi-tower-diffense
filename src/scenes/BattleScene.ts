@@ -231,7 +231,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * 利用可能なコストの値が変動したときのコールバック
    */
   public onAvailableCostUpdated(cost: number): void {
-    (this.uiGraph.cost_text as PIXI.Text).text = `${Math.floor(cost)}`;
+    (this.uiGraph.cost_text as PIXI.Text).text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
   }
 
   /**

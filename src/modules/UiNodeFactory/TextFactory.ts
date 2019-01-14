@@ -11,6 +11,9 @@ export default class TextFactory extends UiNodeFactory {
     let text = '';
 
     if (nodeParams) {
+      if (nodeParams.family !== undefined) {
+        textStyleParams.fontFamily = nodeParams.family;
+      }
       if (nodeParams.size !== undefined) {
         textStyleParams.fontSize = nodeParams.size;
       }

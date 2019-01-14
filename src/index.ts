@@ -1,11 +1,8 @@
+import * as WebFont from 'webfontloader';
 import TitleScene from 'scenes/TitleScene';
 import GameManager from 'managers/GameManager';
 
-/**
- * エントリーポイント
- * window.load のタイミングで GameManager を起動する
- */
-window.onload = () => {
+function initGame() {
   GameManager.start({
     glWidth: 1136,
     glHeight: 640,
@@ -15,10 +12,41 @@ window.onload = () => {
       backgroundColor: 0x222222
     }
   });
-  // 最初の新の読み込み
+  // 最初のシーンの読み込み
   GameManager.loadScene(new TitleScene());
 
   Debug: {
     (window as any).GameManager = GameManager;
+  }
+}
+
+let fontLoaded   = false;
+let windowLoaded = false;
+
+/**
+ * フォント読みこみ
+ * window 読み込みも完了していたらゲームを起動する
+ */
+WebFont.load({
+  custom: {
+    families: ['MisakiGothic'],
+    urls: ['font.css']
+  },
+  active: () => {
+    fontLoaded = true;
+    if (windowLoaded) {
+      initGame();
+    }
+  }
+});
+
+/**
+ * エントリーポイント
+ * フォント読み込みも完了していたらゲームを起動する
+ */
+window.onload = () => {
+  windowLoaded = true;
+  if (fontLoaded) {
+    initGame();
   }
 };

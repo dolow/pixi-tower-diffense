@@ -65,8 +65,9 @@
       "type": "text",
       "position": [860, 540],
       "params": {
-        "text": "0",
-        "size": 48,
+        "family": "MisakiGothic",
+        "text": "0/0",
+        "size": 64,
         "color": "0xffffff"
       }
     }
