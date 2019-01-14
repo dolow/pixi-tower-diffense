@@ -10,6 +10,10 @@ export default class Unit extends UnitEntity {
      */
     sprite: PIXI.Sprite;
     /**
+     * スポーンした座標
+     */
+    protected spawnedPosition: PIXI.Point;
+    /**
      * 現在のアニメーション種別
      */
     protected animationType: string;
@@ -21,13 +25,27 @@ export default class Unit extends UnitEntity {
      * 現在のアニメーション経過フレーム数
      */
     protected elapsedFrameCount: number;
+    /**
+     * 当たり判定が発生するフレームインデックス
+     * マスターデータの値
+     */
     protected hitFrame: number;
+    /**
+     * 最大のフレームインデックス
+     * マスターデータの値
+     */
     protected animationMaxFrameIndexes: {
         [key: string]: number;
     };
+    /**
+     * フレーム更新に必要なrequestAnimationFrame数
+     * マスターデータの値
+     */
     protected animationUpdateDurations: {
         [key: string]: number;
     };
+    saveSpawnedPosition(): PIXI.Point;
+    getSpawnedPosition(): PIXI.Point;
     isHitFrame(): boolean;
     isAnimationLastFrameTime(type?: string): boolean;
     getAnimationType(): string;

@@ -13,6 +13,11 @@ export default class Unit extends UnitEntity {
   public sprite!: PIXI.Sprite;
 
   /**
+   * スポーンした座標
+   */
+  protected spawnedPosition: PIXI.Point = new PIXI.Point(0, 0);
+
+  /**
    * 現在のアニメーション種別
    */
   protected animationType: string = '';
@@ -25,9 +30,30 @@ export default class Unit extends UnitEntity {
    */
   protected elapsedFrameCount: number = 0;
 
+  /**
+   * 当たり判定が発生するフレームインデックス
+   * マスターデータの値
+   */
   protected hitFrame: number = 0;
+  /**
+   * 最大のフレームインデックス
+   * マスターデータの値
+   */
   protected animationMaxFrameIndexes: { [key: string]: number } = {};
+  /**
+   * フレーム更新に必要なrequestAnimationFrame数
+   * マスターデータの値
+   */
   protected animationUpdateDurations: { [key: string]: number } = {}
+
+  public saveSpawnedPosition(): PIXI.Point {
+    this.spawnedPosition.x = this.sprite.position.x;
+    this.spawnedPosition.y = this.sprite.position.y;
+    return this.spawnedPosition;
+  }
+  public getSpawnedPosition(): PIXI.Point {
+    return this.spawnedPosition;
+  }
 
   public isHitFrame(): boolean {
     if (this.animationFrameIndex !== this.hitFrame) {

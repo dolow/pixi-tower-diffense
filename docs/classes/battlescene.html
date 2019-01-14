@@ -122,7 +122,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#alpha" class="tsd-kind-icon">alpha</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#baseidmap" class="tsd-kind-icon">base<wbr>IdMap</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#bases" class="tsd-kind-icon">bases</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#children" class="tsd-kind-icon">children</a></li>
@@ -211,11 +210,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#off" class="tsd-kind-icon">off</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onbaseupdated" class="tsd-kind-icon">on<wbr>Base<wbr>Updated</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="battlescene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onunitbuttontapped" class="tsd-kind-icon">on<wbr>Unit<wbr>Button<wbr>Tapped</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onunitstatechanged" class="tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onunitupdated" class="tsd-kind-icon">on<wbr>Unit<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onunitsspawned" class="tsd-kind-icon">on<wbr>Units<wbr>Spawned</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#once" class="tsd-kind-icon">once</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a></li>
@@ -261,7 +260,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:260</li>
+									<li>Defined in scenes/BattleScene.ts:237</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="battlescene.html" class="tsd-signature-type">BattleScene</a></h4>
@@ -442,7 +441,7 @@
 					<div class="tsd-signature tsd-kind-icon">base<wbr>IdMap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:69</li>
+							<li>Defined in scenes/BattleScene.ts:66</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -460,21 +459,6 @@
 								<h5>player<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 							</li>
 						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="bases" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> bases</h3>
-					<div class="tsd-signature tsd-kind-icon">bases<span class="tsd-signature-symbol">:</span> <a href="base.html" class="tsd-signature-type">Base</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in scenes/BattleScene.ts:89</li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>拠点の PIXI.Container</p>
-						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -538,7 +522,7 @@
 					<div class="tsd-signature tsd-kind-icon">destroy<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:91</li>
+							<li>Defined in scenes/BattleScene.ts:83</li>
 						</ul>
 					</aside>
 				</section>
@@ -548,7 +532,7 @@
 					<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <a href="field.html" class="tsd-signature-type">Field</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:84</li>
+							<li>Defined in scenes/BattleScene.ts:81</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -563,7 +547,7 @@
 					<div class="tsd-signature tsd-kind-icon">field<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:56</li>
+							<li>Defined in scenes/BattleScene.ts:53</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -671,7 +655,7 @@
 					<div class="tsd-signature tsd-kind-icon">manager<span class="tsd-signature-symbol">:</span> <a href="battlemanager.html" class="tsd-signature-type">BattleManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:80</li>
+							<li>Defined in scenes/BattleScene.ts:77</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -697,7 +681,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:51</li>
+							<li>Defined in scenes/BattleScene.ts:48</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -843,7 +827,7 @@
 					<div class="tsd-signature tsd-kind-icon">stage<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:60</li>
+							<li>Defined in scenes/BattleScene.ts:57</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -858,7 +842,7 @@
 					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:76</li>
+							<li>Defined in scenes/BattleScene.ts:73</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -955,7 +939,7 @@
 					<div class="tsd-signature tsd-kind-icon">unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in scenes/BattleScene.ts:64</li>
+							<li>Defined in scenes/BattleScene.ts:61</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1602,7 +1586,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#createresourcelist">createResourceList</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:289</li>
+									<li>Defined in scenes/BattleScene.ts:266</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1830,7 +1814,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#getcustomuigraphfactory">getCustomUiGraphFactory</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:387</li>
+									<li>Defined in scenes/BattleScene.ts:364</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1913,7 +1897,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:441</li>
+									<li>Defined in scenes/BattleScene.ts:415</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2153,7 +2137,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onavailablecostupdated">onAvailableCostUpdated</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:223</li>
+									<li>Defined in scenes/BattleScene.ts:200</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2172,6 +2156,37 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="onbaseupdated" class="tsd-anchor"></a>
+					<h3>on<wbr>Base<wbr>Updated</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Base<wbr>Updated<span class="tsd-signature-symbol">(</span>base<span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onbaseupdated">onBaseUpdated</a></p>
+								<ul>
+									<li>Defined in scenes/BattleScene.ts:147</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>GameManagerDelegate 実装
+										Base が更新されたときのコールバック
+									Base のアニメーションと PIXI による描画を更新する</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>base: <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="onresourceloaded" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Resource<wbr>Loaded</h3>
@@ -2183,7 +2198,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#onresourceloaded">onResourceLoaded</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:345</li>
+									<li>Defined in scenes/BattleScene.ts:322</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2206,7 +2221,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:427</li>
+									<li>Defined in scenes/BattleScene.ts:401</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2236,7 +2251,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onunitstatechanged">onUnitStateChanged</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:166</li>
+									<li>Defined in scenes/BattleScene.ts:138</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2268,7 +2283,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onunitupdated">onUnitUpdated</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:175</li>
+									<li>Defined in scenes/BattleScene.ts:156</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2282,37 +2297,6 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>entity: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onunitsspawned" class="tsd-anchor"></a>
-					<h3>on<wbr>Units<wbr>Spawned</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Units<wbr>Spawned<span class="tsd-signature-symbol">(</span>units<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onunitsspawned">onUnitsSpawned</a></p>
-								<ul>
-									<li>Defined in scenes/BattleScene.ts:150</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-										Unit が発生したときのコールバック
-									Field に Unit のスプライトを追加する</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>units: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2809,7 +2793,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shoulddamage">shouldDamage</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:243</li>
+									<li>Defined in scenes/BattleScene.ts:220</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2842,7 +2826,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldlockbase">shouldLockBase</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:235</li>
+									<li>Defined in scenes/BattleScene.ts:212</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2869,7 +2853,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldlockunit">shouldLockUnit</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:231</li>
+									<li>Defined in scenes/BattleScene.ts:208</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2902,7 +2886,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldunitwalk">shouldUnitWalk</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:253</li>
+									<li>Defined in scenes/BattleScene.ts:230</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2926,7 +2910,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#spawnbaseentity">spawnBaseEntity</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:98</li>
+									<li>Defined in scenes/BattleScene.ts:90</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2956,14 +2940,14 @@
 					<a name="spawnunitentity" class="tsd-anchor"></a>
 					<h3>spawn<wbr>Unit<wbr>Entity</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Unit<wbr>Entity<span class="tsd-signature-symbol">(</span>unitId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Unit<wbr>Entity<span class="tsd-signature-symbol">(</span>unitId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, baseEntity<span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#spawnunitentity">spawnUnitEntity</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:124</li>
+									<li>Defined in scenes/BattleScene.ts:114</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2977,6 +2961,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>unitId: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>baseEntity: <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
 								</li>
 								<li>
 									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
@@ -3137,7 +3124,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#update">update</a></p>
 								<ul>
-									<li>Defined in scenes/BattleScene.ts:398</li>
+									<li>Defined in scenes/BattleScene.ts:375</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3266,9 +3253,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="battlescene.html#baseidmap" class="tsd-kind-icon">base<wbr>IdMap</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#bases" class="tsd-kind-icon">bases</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="battlescene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a>
@@ -3519,6 +3503,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="battlescene.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="battlescene.html#onbaseupdated" class="tsd-kind-icon">on<wbr>Base<wbr>Updated</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 								<a href="battlescene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a>
 							</li>
@@ -3530,9 +3517,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="battlescene.html#onunitupdated" class="tsd-kind-icon">on<wbr>Unit<wbr>Updated</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onunitsspawned" class="tsd-kind-icon">on<wbr>Units<wbr>Spawned</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="battlescene.html#once" class="tsd-kind-icon">once</a>

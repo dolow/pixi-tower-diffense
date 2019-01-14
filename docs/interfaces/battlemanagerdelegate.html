@@ -87,9 +87,9 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onbaseupdated" class="tsd-kind-icon">on<wbr>Base<wbr>Updated</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onunitstatechanged" class="tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onunitupdated" class="tsd-kind-icon">on<wbr>Unit<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onunitsspawned" class="tsd-kind-icon">on<wbr>Units<wbr>Spawned</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shouldlockbase" class="tsd-kind-icon">should<wbr>Lock<wbr>Base</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#shouldlockunit" class="tsd-kind-icon">should<wbr>Lock<wbr>Unit</a></li>
@@ -113,7 +113,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:33</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:29</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -132,6 +132,34 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onbaseupdated" class="tsd-anchor"></a>
+					<h3>on<wbr>Base<wbr>Updated</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Base<wbr>Updated<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:21</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>拠点が更新される際のコールバック</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>unit: <a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="onunitstatechanged" class="tsd-anchor"></a>
 					<h3>on<wbr>Unit<wbr>State<wbr>Changed</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -141,7 +169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:25</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:17</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -172,7 +200,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:29</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:25</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -191,34 +219,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="onunitsspawned" class="tsd-anchor"></a>
-					<h3>on<wbr>Units<wbr>Spawned</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Units<wbr>Spawned<span class="tsd-signature-symbol">(</span>units<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:21</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>ユニットを生成する際のコールバック</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>units: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="shoulddamage" class="tsd-anchor"></a>
 					<h3>should<wbr>Damage</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -228,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:45</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:41</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -259,7 +259,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:41</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:37</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -290,7 +290,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:37</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:33</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -321,7 +321,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interfaces/BattleManagerDelegate.ts:49</li>
+									<li>Defined in interfaces/BattleManagerDelegate.ts:45</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -377,7 +377,7 @@
 					<a name="spawnunitentity" class="tsd-anchor"></a>
 					<h3>spawn<wbr>Unit<wbr>Entity</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Unit<wbr>Entity<span class="tsd-signature-symbol">(</span>unitId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Unit<wbr>Entity<span class="tsd-signature-symbol">(</span>unitId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, baseEntity<span class="tsd-signature-symbol">: </span><a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -395,6 +395,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>unitId: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>baseEntity: <a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
 								</li>
 								<li>
 									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
@@ -428,13 +431,13 @@
 								<a href="battlemanagerdelegate.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="battlemanagerdelegate.html#onbaseupdated" class="tsd-kind-icon">on<wbr>Base<wbr>Updated</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlemanagerdelegate.html#onunitstatechanged" class="tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlemanagerdelegate.html#onunitupdated" class="tsd-kind-icon">on<wbr>Unit<wbr>Updated</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="battlemanagerdelegate.html#onunitsspawned" class="tsd-kind-icon">on<wbr>Units<wbr>Spawned</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlemanagerdelegate.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a>

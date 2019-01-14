@@ -42,10 +42,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 背景の PIXI.Container
      */
     private field;
-    /**
-     * 拠点の PIXI.Container
-     */
-    private bases;
     private destroyList;
     /**
      * GameManagerDelegate 実装
@@ -58,17 +54,17 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * Unit を発生させるときのコールバック
      * Field に Unit のスプライトを追加する
      */
-    spawnUnitEntity(unitId: number, isPlayer: boolean): UnitEntity | null;
-    /**
-     * GameManagerDelegate 実装
-     * Unit が発生したときのコールバック
-     * Field に Unit のスプライトを追加する
-     */
-    onUnitsSpawned(units: UnitEntity[]): void;
+    spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null;
     /**
      * ユニットのステートが変更した際のコールバック
      */
     onUnitStateChanged(entity: UnitEntity, _oldState: number): void;
+    /**
+     * GameManagerDelegate 実装
+     * Base が更新されたときのコールバック
+     * Base のアニメーションと PIXI による描画を更新する
+     */
+    onBaseUpdated(base: BaseEntity): void;
     /**
      * GameManagerDelegate 実装
      * Unit が更新されたときのコールバック

@@ -9,18 +9,15 @@ export default interface BattleManagerDelegate {
     /**
      * ユニットを生成する際のコールバック
      */
-    spawnUnitEntity(unitId: number, isPlayer: boolean): UnitEntity | null;
-    /**
-     * 拠点を生成する際のコールバック
-     */
-    /**
-     * ユニットを生成する際のコールバック
-     */
-    onUnitsSpawned(units: UnitEntity[]): void;
+    spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null;
     /**
      * ユニットのステートが変更した際のコールバック
      */
     onUnitStateChanged(unit: UnitEntity, oldState: number): void;
+    /**
+     * 拠点が更新される際のコールバック
+     */
+    onBaseUpdated(unit: BaseEntity): void;
     /**
      * ユニットが更新される際のコールバック
      */

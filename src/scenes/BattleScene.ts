@@ -27,9 +27,6 @@ const debugBaseIdMap = {
 const debugCostRecoveryPerFrame = 0.05;
 const debugMaxAvailableCost     = 100;
 
-const BASES_PLAYER_INDEX = 0;
-const BASES_AI_INDEX = 1;
-
 /**
  * BattleScene のステートのリスト
  */
@@ -83,11 +80,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    */
   private field!: Field;
 
-  /**
-   * 拠点の PIXI.Container
-   */
-  private bases: Base[] = [];
-
   private destroyList: PIXI.Container[] = [];
 
   /**
@@ -105,10 +97,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
     if (isPlayer) {
       base.init({ x: fieldMaster.playerBase.position.x });
-      this.bases[BASES_PLAYER_INDEX] = base;
     } else {
       base.init({ x: fieldMaster.aiBase.position.x });
-      this.bases[BASES_AI_INDEX] = base;
     }
 
     this.field.addChildAsForeBackgroundEffect(base.sprite);
@@ -121,7 +111,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * Unit を発生させるときのコールバック
    * Field に Unit のスプライトを追加する
    */
-  public spawnUnitEntity(unitId: number, isPlayer: boolean): UnitEntity | null {
+  public spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null {
     const master = this.manager.getUnitMaster(unitId);
     if (!master) {
       return null;
@@ -133,31 +123,13 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       animationUpdateDurations: master.animationUpdateDurations
     });
 
-    unit.sprite.position.x = (isPlayer)
-      ? this.bases[BASES_PLAYER_INDEX].sprite.position.x
-      : this.bases[BASES_AI_INDEX].sprite.position.x;
+    unit.sprite.position.x = (baseEntity as Base).sprite.position.x;
 
     this.field.addChildToRandomZLine(unit.sprite);
 
+    unit.saveSpawnedPosition();
+
     return unit;
-  }
-
-  /**
-   * GameManagerDelegate 実装
-   * Unit が発生したときのコールバック
-   * Field に Unit のスプライトを追加する
-   */
-  public onUnitsSpawned(units: UnitEntity[]): void {
-    for (let i = 0; i < units.length; i++) {
-      const unit = units[i] as Unit;
-      if (unit.isPlayer) {
-        unit.sprite.position.x = this.bases[BASES_PLAYER_INDEX].sprite.position.x;
-      } else {
-        unit.sprite.position.x = this.bases[BASES_AI_INDEX].sprite.position.x;
-      }
-
-      this.field.addChildToRandomZLine(unit.sprite);
-    }
   }
 
   /**
@@ -166,6 +138,15 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   public onUnitStateChanged(entity: UnitEntity, _oldState: number): void {
     (entity as Unit).resetAnimation();
   }
+
+  /**
+   * GameManagerDelegate 実装
+   * Base が更新されたときのコールバック
+   * Base のアニメーションと PIXI による描画を更新する
+   */
+  public onBaseUpdated(base: BaseEntity): void {
+    (base as Base).updateAnimation();
+  };
 
   /**
    * GameManagerDelegate 実装
@@ -186,11 +167,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
             unit.resetAnimation();
           }
         } else {
-          if (unit.isPlayer) {
-            unit.sprite.position.x = this.bases[BASES_PLAYER_INDEX].sprite.position.x + unit.distance;
-          } else {
-            unit.sprite.position.x = this.bases[BASES_AI_INDEX].sprite.position.x - unit.distance;
-          }
+          unit.sprite.position.x = unit.getSpawnedPosition().x + unit.distance * (unit.isPlayer ? 1 : -1);
         }
         break;
       }
@@ -407,9 +384,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
         break;
       }
     }
-
-    this.bases[BASES_PLAYER_INDEX].updateAnimation();
-    this.bases[BASES_AI_INDEX].updateAnimation();
 
     this.updateRegisteredObjects(delta);
 

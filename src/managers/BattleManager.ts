@@ -13,9 +13,9 @@ const BASE_ENTITIES_AI_INDEX = 1;
 
 class DefaultDelegator implements BattleManagerDelegate {
   public spawnBaseEntity(_baseId: number, _isPlayer: boolean): BaseEntity | null { return null; };
-  public spawnUnitEntity(_unitId: number, _isPlayer: boolean): UnitEntity | null { return null; };
-  public onUnitsSpawned(_units: UnitEntity[]): void {}
+  public spawnUnitEntity(_unitId: number, _baseEntity: BaseEntity, _isPlayer: boolean): UnitEntity | null { return null; };
   public onUnitStateChanged(_unit: UnitEntity, _oldState: number): void {}
+  public onBaseUpdated(_base: BaseEntity): void {};
   public onUnitUpdated(_unit: UnitEntity): void {}
   public onAvailableCostUpdated(_cost: number): void {}
   public shouldLockUnit(_attacker: UnitEntity, _target: UnitEntity): boolean { return true; }
@@ -186,6 +186,9 @@ export default class BattleManager {
     for (let i = 0; i < this.units.length; i++) {
       this.delegator.onUnitUpdated(this.units[i]);
     }
+
+    this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_PLAYER_INDEX]);
+    this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_AI_INDEX]);
 
     const activeUnits: UnitEntity[] = [];
     for (let i = 0; i < this.units.length; i++) {
@@ -365,15 +368,20 @@ export default class BattleManager {
         continue;
       }
 
+      let baseEntity;
       if (reservedUnit.isPlayer) {
         if ((tmpCost - master.cost) < 0) {
           continue;
         }
 
         tmpCost -= master.cost;
+
+        baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
+      } else {
+        baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
       }
 
-      const entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, reservedUnit.isPlayer);
+      const entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, baseEntity, reservedUnit.isPlayer);
       if (entity) {
         entity.id = this.nextUnitId++;
         entity.currentHealth = master.maxHealth;

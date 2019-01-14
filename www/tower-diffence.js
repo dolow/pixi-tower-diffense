@@ -44559,6 +44559,10 @@ var Unit = /** @class */ (function (_super) {
     function Unit(unitId, isPlayer, animationParam) {
         var _this = _super.call(this, unitId, isPlayer) || this;
         /**
+         * スポーンした座標
+         */
+        _this.spawnedPosition = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Point"](0, 0);
+        /**
          * 現在のアニメーション種別
          */
         _this.animationType = '';
@@ -44570,8 +44574,20 @@ var Unit = /** @class */ (function (_super) {
          * 現在のアニメーション経過フレーム数
          */
         _this.elapsedFrameCount = 0;
+        /**
+         * 当たり判定が発生するフレームインデックス
+         * マスターデータの値
+         */
         _this.hitFrame = 0;
+        /**
+         * 最大のフレームインデックス
+         * マスターデータの値
+         */
         _this.animationMaxFrameIndexes = {};
+        /**
+         * フレーム更新に必要なrequestAnimationFrame数
+         * マスターデータの値
+         */
         _this.animationUpdateDurations = {};
         _this.hitFrame = animationParam.hitFrame;
         _this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
@@ -44583,6 +44599,14 @@ var Unit = /** @class */ (function (_super) {
         _this.sprite.anchor.x = 0.5;
         return _this;
     }
+    Unit.prototype.saveSpawnedPosition = function () {
+        this.spawnedPosition.x = this.sprite.position.x;
+        this.spawnedPosition.y = this.sprite.position.y;
+        return this.spawnedPosition;
+    };
+    Unit.prototype.getSpawnedPosition = function () {
+        return this.spawnedPosition;
+    };
     Unit.prototype.isHitFrame = function () {
         if (this.animationFrameIndex !== this.hitFrame) {
             return false;
@@ -45024,10 +45048,11 @@ var DefaultDelegator = /** @class */ (function () {
     }
     DefaultDelegator.prototype.spawnBaseEntity = function (_baseId, _isPlayer) { return null; };
     ;
-    DefaultDelegator.prototype.spawnUnitEntity = function (_unitId, _isPlayer) { return null; };
+    DefaultDelegator.prototype.spawnUnitEntity = function (_unitId, _baseEntity, _isPlayer) { return null; };
     ;
-    DefaultDelegator.prototype.onUnitsSpawned = function (_units) { };
     DefaultDelegator.prototype.onUnitStateChanged = function (_unit, _oldState) { };
+    DefaultDelegator.prototype.onBaseUpdated = function (_base) { };
+    ;
     DefaultDelegator.prototype.onUnitUpdated = function (_unit) { };
     DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
     DefaultDelegator.prototype.shouldLockUnit = function (_attacker, _target) { return true; };
@@ -45168,6 +45193,8 @@ var BattleManager = /** @class */ (function () {
         for (var i = 0; i < this.units.length; i++) {
             this.delegator.onUnitUpdated(this.units[i]);
         }
+        this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_PLAYER_INDEX]);
+        this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_AI_INDEX]);
         var activeUnits = [];
         for (var i = 0; i < this.units.length; i++) {
             var unit = this.units[i];
@@ -45324,13 +45351,18 @@ var BattleManager = /** @class */ (function () {
             if (!master) {
                 continue;
             }
+            var baseEntity = void 0;
             if (reservedUnit.isPlayer) {
                 if ((tmpCost - master.cost) < 0) {
                     continue;
                 }
                 tmpCost -= master.cost;
+                baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
             }
-            var entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, reservedUnit.isPlayer);
+            else {
+                baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
+            }
+            var entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, baseEntity, reservedUnit.isPlayer);
             if (entity) {
                 entity.id = this.nextUnitId++;
                 entity.currentHealth = master.maxHealth;
@@ -45798,8 +45830,6 @@ var debugBaseIdMap = {
 };
 var debugCostRecoveryPerFrame = 0.05;
 var debugMaxAvailableCost = 100;
-var BASES_PLAYER_INDEX = 0;
-var BASES_AI_INDEX = 1;
 /**
  * BattleScene のステートのリスト
  */
@@ -45817,10 +45847,6 @@ var BattleScene = /** @class */ (function (_super) {
     __extends(BattleScene, _super);
     function BattleScene() {
         var _this = _super.call(this) || this;
-        /**
-         * 拠点の PIXI.Container
-         */
-        _this.bases = [];
         _this.destroyList = [];
         // BattleManager インスタンスの作成とコールバックの登録
         _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_3__["default"]();
@@ -45852,11 +45878,9 @@ var BattleScene = /** @class */ (function (_super) {
         var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_8__["default"](baseId, isPlayer);
         if (isPlayer) {
             base.init({ x: fieldMaster.playerBase.position.x });
-            this.bases[BASES_PLAYER_INDEX] = base;
         }
         else {
             base.init({ x: fieldMaster.aiBase.position.x });
-            this.bases[BASES_AI_INDEX] = base;
         }
         this.field.addChildAsForeBackgroundEffect(base.sprite);
         return base;
@@ -45867,7 +45891,7 @@ var BattleScene = /** @class */ (function (_super) {
      * Unit を発生させるときのコールバック
      * Field に Unit のスプライトを追加する
      */
-    BattleScene.prototype.spawnUnitEntity = function (unitId, isPlayer) {
+    BattleScene.prototype.spawnUnitEntity = function (unitId, baseEntity, isPlayer) {
         var master = this.manager.getUnitMaster(unitId);
         if (!master) {
             return null;
@@ -45877,28 +45901,10 @@ var BattleScene = /** @class */ (function (_super) {
             animationMaxFrameIndexes: master.animationMaxFrameIndexes,
             animationUpdateDurations: master.animationUpdateDurations
         });
-        unit.sprite.position.x = (isPlayer)
-            ? this.bases[BASES_PLAYER_INDEX].sprite.position.x
-            : this.bases[BASES_AI_INDEX].sprite.position.x;
+        unit.sprite.position.x = baseEntity.sprite.position.x;
         this.field.addChildToRandomZLine(unit.sprite);
+        unit.saveSpawnedPosition();
         return unit;
-    };
-    /**
-     * GameManagerDelegate 実装
-     * Unit が発生したときのコールバック
-     * Field に Unit のスプライトを追加する
-     */
-    BattleScene.prototype.onUnitsSpawned = function (units) {
-        for (var i = 0; i < units.length; i++) {
-            var unit = units[i];
-            if (unit.isPlayer) {
-                unit.sprite.position.x = this.bases[BASES_PLAYER_INDEX].sprite.position.x;
-            }
-            else {
-                unit.sprite.position.x = this.bases[BASES_AI_INDEX].sprite.position.x;
-            }
-            this.field.addChildToRandomZLine(unit.sprite);
-        }
     };
     /**
      * ユニットのステートが変更した際のコールバック
@@ -45906,6 +45912,15 @@ var BattleScene = /** @class */ (function (_super) {
     BattleScene.prototype.onUnitStateChanged = function (entity, _oldState) {
         entity.resetAnimation();
     };
+    /**
+     * GameManagerDelegate 実装
+     * Base が更新されたときのコールバック
+     * Base のアニメーションと PIXI による描画を更新する
+     */
+    BattleScene.prototype.onBaseUpdated = function (base) {
+        base.updateAnimation();
+    };
+    ;
     /**
      * GameManagerDelegate 実装
      * Unit が更新されたときのコールバック
@@ -45924,12 +45939,7 @@ var BattleScene = /** @class */ (function (_super) {
                     }
                 }
                 else {
-                    if (unit.isPlayer) {
-                        unit.sprite.position.x = this.bases[BASES_PLAYER_INDEX].sprite.position.x + unit.distance;
-                    }
-                    else {
-                        unit.sprite.position.x = this.bases[BASES_AI_INDEX].sprite.position.x - unit.distance;
-                    }
+                    unit.sprite.position.x = unit.getSpawnedPosition().x + unit.distance * (unit.isPlayer ? 1 : -1);
                 }
                 break;
             }
@@ -46093,8 +46103,6 @@ var BattleScene = /** @class */ (function (_super) {
                 break;
             }
         }
-        this.bases[BASES_PLAYER_INDEX].updateAnimation();
-        this.bases[BASES_AI_INDEX].updateAnimation();
         this.updateRegisteredObjects(delta);
         for (var i = 0; i < this.destroyList.length; i++) {
             this.destroyList[i].destroy();
