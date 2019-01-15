@@ -4,7 +4,6 @@ import Scene from 'scenes/Scene';
  * タイトルシーン
  */
 export default class TitleScene extends Scene {
-    private static titleBgmKey;
     constructor();
     protected createResourceList(): LoaderAddParam[];
     protected onResourceLoaded(): void;

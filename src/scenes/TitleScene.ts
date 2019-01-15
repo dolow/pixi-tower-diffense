@@ -11,9 +11,6 @@ import FadeOut from 'scenes/transition/FadeOut';
  * タイトルシーン
  */
 export default class TitleScene extends Scene  {
-
-  private static titleBgmKey: string = 'title_bgm';
-
   constructor() {
     super();
     this.transitionIn  = new FadeIn();
@@ -22,15 +19,17 @@ export default class TitleScene extends Scene  {
 
   protected createResourceList(): LoaderAddParam[] {
     const assets = super.createResourceList();
-    assets.push({ name: ResourceMaster.Audio.TitleBgm, url: ResourceMaster.Audio.TitleBgm });
+    const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
+    assets.push({ name: bgmTitleName, url: bgmTitleName });
     return assets;
   }
 
   protected onResourceLoaded(): void {
     super.onResourceLoaded();
 
-    const resource: any = PIXI.loader.resources[ResourceMaster.Audio.TitleBgm];
-    const bgm = SoundManager.instance.createSound(TitleScene.titleBgmKey, resource.buffer);
+    const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
+    const resource = PIXI.loader.resources[bgmTitleName] as any;
+    const bgm = SoundManager.instance.createSound(bgmTitleName, resource.buffer);
     bgm.play(true);
   }
 
@@ -53,11 +52,13 @@ export default class TitleScene extends Scene  {
     this.uiGraph.title_off.alpha = 1;
 
     const soundManager = SoundManager.instance;
-    const bgm = soundManager.getSound(TitleScene.titleBgmKey);
+    const bgm = soundManager.getSound(ResourceMaster.Audio.Bgm.Title);
     if (bgm) {
-      soundManager.unregisterSound(TitleScene.titleBgmKey);
       soundManager.fade(bgm, 0.01, 0.5, true);
     }
+
+    soundManager.unregisterSound(ResourceMaster.Audio.Bgm.Title);
+
     GameManager.loadScene(new BattleScene());
   }
 }

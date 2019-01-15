@@ -67,8 +67,17 @@ declare const ResourceMaster: Readonly<{
         };
     };
     Audio: {
-        TitleBgm: string;
-        BattleBgm: string;
+        Bgm: {
+            Title: string;
+            Battle: string;
+        };
+        Se: {
+            Attack1: string;
+            Attack2: string;
+            UnitSpawn: string;
+            Win: string;
+            Lose: string;
+        };
     };
 }>;
 export default ResourceMaster;

@@ -5,6 +5,7 @@ export default class Sound {
     loop: boolean;
     private buffer;
     private source;
+    private played;
     private paused;
     private offset;
     private playedAt;

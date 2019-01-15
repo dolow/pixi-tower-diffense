@@ -55,8 +55,6 @@ const BattleState = Object.freeze({
  */
 export default class BattleScene extends Scene implements BattleManagerDelegate {
 
-  private static battleBgmKey: string = 'battle_bgm';
-
   /**
    * 最大ユニット編成数
    */
@@ -152,6 +150,13 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     unit.saveSpawnedPosition();
 
     (baseEntity as Base).setAnimation(ResourceMaster.Base.AnimationTypes.SPAWN);
+
+    if (isPlayer) {
+      const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.UnitSpawn);
+      if (sound) {
+        sound.play();
+      }
+    }
 
     return unit;
   }
@@ -249,6 +254,18 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     result.onAnimationEnded = this.enableBackToTitle.bind(this);
     this.uiGraphContainer.addChild(result);
 
+    const soundManager = SoundManager.instance;
+
+    const bgm = soundManager.getSound(ResourceMaster.Audio.Bgm.Battle);
+    if (bgm) {
+      bgm.stop();
+    }
+
+    const sound = soundManager.getSound(isPlayerWon ? ResourceMaster.Audio.Se.Win : ResourceMaster.Audio.Se.Lose);
+    if (sound) {
+      sound.play();
+    }
+
     this.registerUpdatingObject(result);
   }
 
@@ -276,7 +293,18 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       return false;
     }
 
-    return attacker.isFoeContact(target.sprite);
+    const contact = attacker.isFoeContact(target.sprite);
+    if (contact) {
+
+      const sound = SoundManager.instance.getSound((Math.random() >= 0.5)
+        ? ResourceMaster.Audio.Se.Attack1
+        : ResourceMaster.Audio.Se.Attack2
+      );
+      if (sound) {
+        sound.play();
+      }
+    }
+    return contact;
   }
   public shouldUnitWalk(entity: UnitEntity): boolean {
     const unit = entity as Unit;
@@ -379,7 +407,12 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
     }
 
-    assets.push({ name: ResourceMaster.Audio.BattleBgm, url: ResourceMaster.Audio.BattleBgm });
+    assets.push({ name: ResourceMaster.Audio.Bgm.Battle, url: ResourceMaster.Audio.Bgm.Battle });
+    assets.push({ name: ResourceMaster.Audio.Se.Attack1, url: ResourceMaster.Audio.Se.Attack1 });
+    assets.push({ name: ResourceMaster.Audio.Se.Attack2, url: ResourceMaster.Audio.Se.Attack2 });
+    assets.push({ name: ResourceMaster.Audio.Se.UnitSpawn, url: ResourceMaster.Audio.Se.UnitSpawn });
+    assets.push({ name: ResourceMaster.Audio.Se.Win, url: ResourceMaster.Audio.Se.Win });
+    assets.push({ name: ResourceMaster.Audio.Se.Lose, url: ResourceMaster.Audio.Se.Lose });
 
     return assets;
   }
@@ -389,7 +422,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * BattleManager にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
    */
   protected onResourceLoaded(): void {
-    const resources = PIXI.loader.resources;
+    const resources = PIXI.loader.resources as any;
 
     const sceneUiGraphName = ResourceMaster.SceneUiGraph.Api(this);
     this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
@@ -423,9 +456,16 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
-    const resource: any = PIXI.loader.resources[ResourceMaster.Audio.BattleBgm];
-    const bgm = SoundManager.instance.createSound(BattleScene.battleBgmKey, resource.buffer);
+    const soundManager = SoundManager.instance;
+    const bgm = soundManager.createSound(ResourceMaster.Audio.Bgm.Battle, resources[ResourceMaster.Audio.Bgm.Battle].buffer);
     bgm.play(true);
+
+    const se = ResourceMaster.Audio.Se;
+    soundManager.createSound(se.Attack1, resources[se.Attack1].buffer);
+    soundManager.createSound(se.Attack2, resources[se.Attack2].buffer);
+    soundManager.createSound(se.UnitSpawn, resources[se.UnitSpawn].buffer);
+    soundManager.createSound(se.Win, resources[se.Win].buffer);
+    soundManager.createSound(se.Lose, resources[se.Lose].buffer);
 
     if (this.transitionIn.isFinished()) {
       this.state = BattleState.READY;
@@ -520,11 +560,16 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
   private returnToTitle(): void {
     const soundManager = SoundManager.instance;
-    const bgm = soundManager.getSound(BattleScene.battleBgmKey);
-    if (bgm) {
-      soundManager.unregisterSound(BattleScene.battleBgmKey);
-      SoundManager.instance.fade(bgm, 0.01, 0.5, true);
-    }
+
+    soundManager.unregisterSound(ResourceMaster.Audio.Bgm.Battle);
+
+    const se = ResourceMaster.Audio.Se;
+    soundManager.unregisterSound(se.Attack1);
+    soundManager.unregisterSound(se.Attack2);
+    soundManager.unregisterSound(se.UnitSpawn);
+    soundManager.unregisterSound(se.Win);
+    soundManager.unregisterSound(se.Lose);
+
     GameManager.loadScene(new TitleScene());
   }
 }

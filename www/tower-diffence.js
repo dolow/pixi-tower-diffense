@@ -44458,8 +44458,17 @@ var ResourceMaster = Object.freeze({
         }
     },
     Audio: {
-        TitleBgm: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_title.mp3",
-        BattleBgm: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_battle.mp3"
+        Bgm: {
+            Title: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_title.mp3",
+            Battle: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_battle.mp3"
+        },
+        Se: {
+            Attack1: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_attack_1.mp3",
+            Attack2: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_attack_2.mp3",
+            UnitSpawn: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_unit_spawn.mp3",
+            Win: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_win.mp3",
+            Lose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_lose.mp3"
+        }
     }
 });
 /* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
@@ -46223,6 +46232,7 @@ var Sound = /** @class */ (function () {
     function Sound(buf) {
         this.loop = false;
         this.source = null;
+        this.played = false;
         this.paused = false;
         this.offset = 0;
         this.playedAt = 0;
@@ -46286,9 +46296,10 @@ var Sound = /** @class */ (function () {
         this.source.start(0, offset);
         this.playedAt = audioContext.currentTime - offset;
         this.paused = false;
+        this.played = true;
     };
     Sound.prototype.stop = function () {
-        if (!this.source) {
+        if (!this.source || !this.played) {
             return;
         }
         this.source.disconnect();
@@ -46303,7 +46314,7 @@ var Sound = /** @class */ (function () {
         this.paused = false;
     };
     Sound.prototype.pause = function () {
-        if (this.paused) {
+        if (this.paused || !this.played) {
             return;
         }
         this.offset = this.elapsedTime;
@@ -46311,7 +46322,7 @@ var Sound = /** @class */ (function () {
         this.paused = true;
     };
     Sound.prototype.resume = function () {
-        if (!this.paused) {
+        if (!this.paused || !this.played) {
             return;
         }
         this.play(this.loop, this.offset);
@@ -46756,6 +46767,12 @@ var BattleScene = /** @class */ (function (_super) {
         this.field.addChildToRandomZLine(unit.sprite);
         unit.saveSpawnedPosition();
         baseEntity.setAnimation(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN);
+        if (isPlayer) {
+            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+            if (sound) {
+                sound.play();
+            }
+        }
         return unit;
     };
     /**
@@ -46843,6 +46860,15 @@ var BattleScene = /** @class */ (function (_super) {
         var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"](isPlayerWon);
         result.onAnimationEnded = this.enableBackToTitle.bind(this);
         this.uiGraphContainer.addChild(result);
+        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
+        var bgm = soundManager.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle);
+        if (bgm) {
+            bgm.stop();
+        }
+        var sound = soundManager.getSound(isPlayerWon ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose);
+        if (sound) {
+            sound.play();
+        }
         this.registerUpdatingObject(result);
     };
     /**
@@ -46865,7 +46891,16 @@ var BattleScene = /** @class */ (function (_super) {
         if (!attacker.isHitFrame()) {
             return false;
         }
-        return attacker.isFoeContact(target.sprite);
+        var contact = attacker.isFoeContact(target.sprite);
+        if (contact) {
+            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.getSound((Math.random() >= 0.5)
+                ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1
+                : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2);
+            if (sound) {
+                sound.play();
+            }
+        }
+        return contact;
     };
     BattleScene.prototype.shouldUnitWalk = function (entity) {
         var unit = entity;
@@ -46927,7 +46962,12 @@ var BattleScene = /** @class */ (function (_super) {
             var battleResultResourceUrl = battleResultResources[i];
             assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
         }
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.BattleBgm, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.BattleBgm });
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle });
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1 });
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2 });
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn });
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win });
+        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose });
         return assets;
     };
     /**
@@ -46960,9 +47000,15 @@ var BattleScene = /** @class */ (function (_super) {
         });
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
-        var resource = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.BattleBgm];
-        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.createSound(BattleScene.battleBgmKey, resource.buffer);
+        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
+        var bgm = soundManager.createSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle, resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle].buffer);
         bgm.play(true);
+        var se = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se;
+        soundManager.createSound(se.Attack1, resources[se.Attack1].buffer);
+        soundManager.createSound(se.Attack2, resources[se.Attack2].buffer);
+        soundManager.createSound(se.UnitSpawn, resources[se.UnitSpawn].buffer);
+        soundManager.createSound(se.Win, resources[se.Win].buffer);
+        soundManager.createSound(se.Lose, resources[se.Lose].buffer);
         if (this.transitionIn.isFinished()) {
             this.state = BattleState.READY;
         }
@@ -47048,14 +47094,15 @@ var BattleScene = /** @class */ (function (_super) {
     };
     BattleScene.prototype.returnToTitle = function () {
         var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
-        var bgm = soundManager.getSound(BattleScene.battleBgmKey);
-        if (bgm) {
-            soundManager.unregisterSound(BattleScene.battleBgmKey);
-            managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.fade(bgm, 0.01, 0.5, true);
-        }
+        soundManager.unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle);
+        var se = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se;
+        soundManager.unregisterSound(se.Attack1);
+        soundManager.unregisterSound(se.Attack2);
+        soundManager.unregisterSound(se.UnitSpawn);
+        soundManager.unregisterSound(se.Win);
+        soundManager.unregisterSound(se.Lose);
         managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__["default"]());
     };
-    BattleScene.battleBgmKey = 'battle_bgm';
     return BattleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_7__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleScene);
@@ -47331,13 +47378,15 @@ var TitleScene = /** @class */ (function (_super) {
     }
     TitleScene.prototype.createResourceList = function () {
         var assets = _super.prototype.createResourceList.call(this);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.TitleBgm, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.TitleBgm });
+        var bgmTitleName = ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title;
+        assets.push({ name: bgmTitleName, url: bgmTitleName });
         return assets;
     };
     TitleScene.prototype.onResourceLoaded = function () {
         _super.prototype.onResourceLoaded.call(this);
-        var resource = PIXI.loader.resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.TitleBgm];
-        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.createSound(TitleScene.titleBgmKey, resource.buffer);
+        var bgmTitleName = ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title;
+        var resource = PIXI.loader.resources[bgmTitleName];
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.createSound(bgmTitleName, resource.buffer);
         bgm.play(true);
     };
     /**
@@ -47358,14 +47407,13 @@ var TitleScene = /** @class */ (function (_super) {
         }
         this.uiGraph.title_off.alpha = 1;
         var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance;
-        var bgm = soundManager.getSound(TitleScene.titleBgmKey);
+        var bgm = soundManager.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
         if (bgm) {
-            soundManager.unregisterSound(TitleScene.titleBgmKey);
             soundManager.fade(bgm, 0.01, 0.5, true);
         }
+        soundManager.unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
         managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_4__["default"]());
     };
-    TitleScene.titleBgmKey = 'title_bgm';
     return TitleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_3__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (TitleScene);

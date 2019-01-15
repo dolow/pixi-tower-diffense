@@ -37,6 +37,7 @@ export default class Sound {
 
   private source: AudioBufferSourceNode | null = null;
 
+  private played: boolean = false;
   private paused: boolean = false;
   private offset: number = 0;
   private playedAt: number = 0;
@@ -72,9 +73,10 @@ export default class Sound {
     this.playedAt = audioContext.currentTime - offset;
 
     this.paused = false;
+    this.played = true;
   }
   public stop(): void {
-    if (!this.source) {
+    if (!this.source || !this.played) {
       return;
     }
 
@@ -92,7 +94,7 @@ export default class Sound {
     this.paused = false;
   }
   public pause(): void {
-    if (this.paused) {
+    if (this.paused || !this.played) {
       return;
     }
     this.offset = this.elapsedTime;
@@ -101,7 +103,7 @@ export default class Sound {
     this.paused = true;
   }
   public resume(): void {
-    if (!this.paused) {
+    if (!this.paused || !this.played) {
       return;
     }
     this.play(this.loop, this.offset);

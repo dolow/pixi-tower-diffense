@@ -10,7 +10,6 @@ import UnitEntity from 'entity/UnitEntity';
  * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleManagerDelegate {
-    private static battleBgmKey;
     /**
      * 最大ユニット編成数
      */

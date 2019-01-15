@@ -146,8 +146,17 @@ const ResourceMaster = Object.freeze({
   },
 
   Audio: {
-    TitleBgm: `${Config.ResourceBaseUrl}/audio/bgm_title.mp3`,
-    BattleBgm: `${Config.ResourceBaseUrl}/audio/bgm_battle.mp3`
+    Bgm: {
+      Title: `${Config.ResourceBaseUrl}/audio/bgm_title.mp3`,
+      Battle: `${Config.ResourceBaseUrl}/audio/bgm_battle.mp3`
+    },
+    Se: {
+      Attack1: `${Config.ResourceBaseUrl}/audio/se_attack_1.mp3`,
+      Attack2: `${Config.ResourceBaseUrl}/audio/se_attack_2.mp3`,
+      UnitSpawn: `${Config.ResourceBaseUrl}/audio/se_unit_spawn.mp3`,
+      Win: `${Config.ResourceBaseUrl}/audio/se_win.mp3`,
+      Lose: `${Config.ResourceBaseUrl}/audio/se_lose.mp3`
+    }
   }
 });
 
