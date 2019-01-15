@@ -1,15 +1,6 @@
 import SoundManager from 'managers/SoundManager';
 
 export default class Sound {
-  public set loop(value: boolean) {
-    if (this.source) {
-      this.source.loop = value;
-    }
-  }
-  public get loop(): boolean {
-    return this.source ? this.source.loop : false;
-  }
-
   public set volume(value: number) {
     if (this.gainNode) {
       this.gainNode.gain.value = value;
@@ -19,35 +10,74 @@ export default class Sound {
     return this.gainNode ? this.gainNode.gain.value : -1;
   }
 
+  public get elapsedTime(): number {
+    if (this.paused) {
+      return this.offset;
+    }
+
+    const audioContext = SoundManager.sharedContext;
+    if (!this.source || !audioContext) {
+      return 0;
+    }
+
+    const playedTime = audioContext.currentTime - this.playedAt;
+
+    if (this.source.loop) {
+      const playLength = this.source.loopEnd - this.source.loopStart;
+      if (playedTime > playLength) {
+        return this.source.loopStart + (playedTime % playLength);
+      }
+    }
+    return playedTime;
+  }
+
+  public gainNode!: GainNode;
+  public loop: boolean = false;;
+  private buffer!: AudioBuffer;
+
   private source: AudioBufferSourceNode | null = null;
-  public gainNode: GainNode | null = null;
+
+  private paused: boolean = false;
+  private offset: number = 0;
+  private playedAt: number = 0;
 
   constructor(buf: AudioBuffer) {
     if (!SoundManager.sharedContext) {
       return;
     }
 
-    this.source = SoundManager.sharedContext.createBufferSource();
-    this.source.loopStart = 0;
-    this.source.loopEnd   = buf.duration as number;
-    this.source.buffer    = buf;
-    this.source.onended = () => this.stop();
-
+    this.buffer = buf;
     this.gainNode = SoundManager.sharedContext.createGain();
   }
 
-  public play(): void {
-    if (!this.gainNode || !this.source || !SoundManager.sharedContext) {
+  public play(loop: boolean = false, offset: number = 0): void {
+    const audioContext = SoundManager.sharedContext;
+    if (!audioContext) {
       return;
     }
-    this.gainNode.connect(SoundManager.sharedContext.destination);
+
+    this.loop = loop;
+
+    this.source = audioContext.createBufferSource();
+    this.source.loop      = this.loop;
+    this.source.loopStart = 0;
+    this.source.loopEnd   = this.buffer.duration as number;
+    this.source.buffer    = this.buffer;
+    this.source.onended = () => this.stop();
+
+    this.gainNode.connect(audioContext.destination);
     this.source.connect(this.gainNode);
-    this.source.start(0, 0);
+    this.source.start(0, offset);
+
+    this.playedAt = audioContext.currentTime - offset;
+
+    this.paused = false;
   }
   public stop(): void {
-    if (!this.gainNode || !this.source) {
+    if (!this.source) {
       return;
     }
+
     this.source.disconnect();
 
     try {
@@ -58,6 +88,24 @@ export default class Sound {
 
     this.source.onended = null;
     this.source = null;
-    this.gainNode = null;
+
+    this.paused = false;
+  }
+  public pause(): void {
+    if (this.paused) {
+      return;
+    }
+    this.offset = this.elapsedTime;
+    this.stop();
+
+    this.paused = true;
+  }
+  public resume(): void {
+    if (!this.paused) {
+      return;
+    }
+    this.play(this.loop, this.offset);
+
+    this.paused = false;
   }
 }

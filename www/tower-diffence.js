@@ -46022,11 +46022,15 @@ var GameManager = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/index.js");
 /* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(detect_browser__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
+
 
 var SUPPORTED_EXTENSIONS = ['mp3'];
 var SoundManager = /** @class */ (function () {
     function SoundManager() {
+        this.paused = false;
         this.soundsKillingAfterFade = [];
+        this.managedSounds = new Map();
         if (SoundManager.instance) {
             throw new Error('soSoundManager can not be initialized twice');
         }
@@ -46050,6 +46054,7 @@ var SoundManager = /** @class */ (function () {
         }
         SoundManager.addLoaderMiddleware(browser);
         SoundManager.setSoundInitializeEvent(browser);
+        SoundManager.setWindowLifeCycleEvent(browser);
     };
     SoundManager.addLoaderMiddleware = function (browser) {
         if (SoundManager.loaderMiddlewareAdded) {
@@ -46119,9 +46124,59 @@ var SoundManager = /** @class */ (function () {
         }
         document.body.addEventListener(eventName, soundInitializer);
     };
+    SoundManager.setWindowLifeCycleEvent = function (browser) {
+        if (browser.name === 'safari') {
+            document.addEventListener('webkitvisibilitychange', function () {
+                document.webkitHidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+            });
+        }
+        else {
+            document.addEventListener('visibilitychange', function () {
+                document.hidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+            });
+        }
+    };
+    SoundManager.prototype.registerSound = function (name, sound) {
+        this.managedSounds.set(name, sound);
+    };
+    SoundManager.prototype.unregisterSound = function (name) {
+        this.managedSounds.delete(name);
+    };
+    SoundManager.prototype.createSound = function (name, buf) {
+        var sound = new modules_Sound__WEBPACK_IMPORTED_MODULE_1__["default"](buf);
+        this.registerSound(name, sound);
+        return sound;
+    };
+    SoundManager.prototype.getSound = function (name) {
+        return this.managedSounds.get(name);
+    };
+    SoundManager.prototype.hasSound = function (name) {
+        return this.managedSounds.has(name);
+    };
+    SoundManager.prototype.destroySound = function (name) {
+        var sound = this.getSound(name);
+        this.unregisterSound(name);
+        if (sound) {
+            sound.stop();
+        }
+    };
+    SoundManager.prototype.pause = function () {
+        if (this.paused) {
+            return;
+        }
+        this.paused = true;
+        this.managedSounds.forEach(function (sound) { return sound.pause(); });
+    };
+    SoundManager.prototype.resume = function () {
+        if (!this.paused) {
+            return;
+        }
+        this.paused = false;
+        this.managedSounds.forEach(function (sound) { return sound.resume(); });
+    };
     SoundManager.prototype.fade = function (sound, targetVolume, seconds, stopOnEnd) {
         if (stopOnEnd === void 0) { stopOnEnd = false; }
-        if (!sound.gainNode || !SoundManager.sharedContext) {
+        if (!SoundManager.sharedContext) {
             return;
         }
         console.log(targetVolume, SoundManager.sharedContext.currentTime + seconds);
@@ -46131,6 +46186,9 @@ var SoundManager = /** @class */ (function () {
         }
     };
     SoundManager.prototype.update = function (_dt) {
+        if (this.paused) {
+            return;
+        }
         for (var i = 0; i < this.soundsKillingAfterFade.length; i++) {
             var soundData = this.soundsKillingAfterFade[i];
             if (!soundData.sound.gainNode) {
@@ -46163,31 +46221,17 @@ __webpack_require__.r(__webpack_exports__);
 
 var Sound = /** @class */ (function () {
     function Sound(buf) {
-        var _this = this;
+        this.loop = false;
         this.source = null;
-        this.gainNode = null;
+        this.paused = false;
+        this.offset = 0;
+        this.playedAt = 0;
         if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext) {
             return;
         }
-        this.source = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.createBufferSource();
-        this.source.loopStart = 0;
-        this.source.loopEnd = buf.duration;
-        this.source.buffer = buf;
-        this.source.onended = function () { return _this.stop(); };
+        this.buffer = buf;
         this.gainNode = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.createGain();
     }
-    Object.defineProperty(Sound.prototype, "loop", {
-        get: function () {
-            return this.source ? this.source.loop : false;
-        },
-        set: function (value) {
-            if (this.source) {
-                this.source.loop = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(Sound.prototype, "volume", {
         get: function () {
             return this.gainNode ? this.gainNode.gain.value : -1;
@@ -46200,16 +46244,51 @@ var Sound = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Sound.prototype.play = function () {
-        if (!this.gainNode || !this.source || !managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext) {
+    Object.defineProperty(Sound.prototype, "elapsedTime", {
+        get: function () {
+            if (this.paused) {
+                return this.offset;
+            }
+            var audioContext = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext;
+            if (!this.source || !audioContext) {
+                return 0;
+            }
+            var playedTime = audioContext.currentTime - this.playedAt;
+            if (this.source.loop) {
+                var playLength = this.source.loopEnd - this.source.loopStart;
+                if (playedTime > playLength) {
+                    return this.source.loopStart + (playedTime % playLength);
+                }
+            }
+            return playedTime;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Sound.prototype.play = function (loop, offset) {
+        var _this = this;
+        if (loop === void 0) { loop = false; }
+        if (offset === void 0) { offset = 0; }
+        var audioContext = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext;
+        if (!audioContext) {
             return;
         }
-        this.gainNode.connect(managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.destination);
+        this.loop = loop;
+        this.source = audioContext.createBufferSource();
+        this.source.loop = this.loop;
+        this.source.loopStart = 0;
+        this.source.loopEnd = this.buffer.duration;
+        this.source.buffer = this.buffer;
+        this.source.onended = function () { return _this.stop(); };
+        this.gainNode.connect(audioContext.destination);
         this.source.connect(this.gainNode);
-        this.source.start(0, 0);
+        this.source.start(0, offset);
+        this.playedAt = audioContext.currentTime - offset;
+        this.paused = false;
     };
     Sound.prototype.stop = function () {
-        if (!this.gainNode || !this.source) {
+        if (!this.source) {
             return;
         }
         this.source.disconnect();
@@ -46221,7 +46300,22 @@ var Sound = /** @class */ (function () {
         }
         this.source.onended = null;
         this.source = null;
-        this.gainNode = null;
+        this.paused = false;
+    };
+    Sound.prototype.pause = function () {
+        if (this.paused) {
+            return;
+        }
+        this.offset = this.elapsedTime;
+        this.stop();
+        this.paused = true;
+    };
+    Sound.prototype.resume = function () {
+        if (!this.paused) {
+            return;
+        }
+        this.play(this.loop, this.offset);
+        this.paused = false;
     };
     return Sound;
 }());
@@ -46529,14 +46623,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
 /* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
 /* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
-/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
-/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
-/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
-/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
-/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
-/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
-/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
+/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
+/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
+/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
+/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
+/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
+/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46550,7 +46643,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-
 
 
 
@@ -46604,13 +46696,12 @@ var BattleScene = /** @class */ (function (_super) {
          * 削除予定のコンテナ
          */
         _this.destroyList = [];
-        _this.bgm = null;
         _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_9__["default"]();
         _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_10__["default"]();
         // BattleManager インスタンスの作成とコールバックの登録
         _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_5__["default"]();
         // Background インスタンスの作成
-        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_14__["default"]();
+        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"]();
         // デフォルトのシーンステート
         _this.state = BattleState.LOADING_RESOURCES;
         Debug: {
@@ -46635,7 +46726,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (!fieldMaster) {
             return null;
         }
-        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_15__["default"](baseId, isPlayer);
+        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_14__["default"](baseId, isPlayer);
         if (isPlayer) {
             base.init({ x: fieldMaster.playerBase.position.x });
         }
@@ -46656,7 +46747,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (!master) {
             return null;
         }
-        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_13__["default"](unitId, isPlayer, {
+        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_12__["default"](unitId, isPlayer, {
             hitFrame: master.hitFrame,
             animationMaxFrameIndexes: master.animationMaxFrameIndexes,
             animationUpdateDurations: master.animationUpdateDurations
@@ -46721,7 +46812,7 @@ var BattleScene = /** @class */ (function (_super) {
                 break;
             }
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD: {
-                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!unit.isPlayer);
+                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"](!unit.isPlayer);
                 effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
                 this.field.addChildAsForeBackgroundEffect(effect);
                 this.registerUpdatingObject(effect);
@@ -46749,7 +46840,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.onGameOver = function (isPlayerWon) {
         this.state = BattleState.FINISHED;
-        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"](isPlayerWon);
+        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"](isPlayerWon);
         result.onAnimationEnded = this.enableBackToTitle.bind(this);
         this.uiGraphContainer.addChild(result);
         this.registerUpdatingObject(result);
@@ -46816,22 +46907,22 @@ var BattleScene = /** @class */ (function (_super) {
             var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(-1);
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
         }
-        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
+        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"].resourceList;
         for (var i = 0; i < fieldResources.length; i++) {
             var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
         }
-        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
+        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
         for (var i = 0; i < deadResources.length; i++) {
             var deadResourceUrl = deadResources[i];
             assets.push({ name: deadResourceUrl, url: deadResourceUrl });
         }
-        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
+        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
         for (var i = 0; i < collapseExplodeResources.length; i++) {
             var collapseExplodeResourceUrl = collapseExplodeResources[i];
             assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
         }
-        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"].resourceList;
+        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
         for (var i = 0; i < battleResultResources.length; i++) {
             var battleResultResourceUrl = battleResultResources[i];
             assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
@@ -46870,9 +46961,8 @@ var BattleScene = /** @class */ (function (_super) {
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
         var resource = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.BattleBgm];
-        this.bgm = new modules_Sound__WEBPACK_IMPORTED_MODULE_11__["default"](resource.buffer);
-        this.bgm.loop = true;
-        this.bgm.play();
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.createSound(BattleScene.battleBgmKey, resource.buffer);
+        bgm.play(true);
         if (this.transitionIn.isFinished()) {
             this.state = BattleState.READY;
         }
@@ -46895,7 +46985,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.getCustomUiGraphFactory = function (type) {
         if (type === 'unit_button') {
-            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_12__["default"]();
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_11__["default"]();
         }
         return null;
     };
@@ -46957,11 +47047,15 @@ var BattleScene = /** @class */ (function (_super) {
         this.on('pointerdown', function (_e) { return _this.returnToTitle(); });
     };
     BattleScene.prototype.returnToTitle = function () {
-        if (this.bgm) {
-            managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.fade(this.bgm, 0.01, 0.5, true);
+        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
+        var bgm = soundManager.getSound(BattleScene.battleBgmKey);
+        if (bgm) {
+            soundManager.unregisterSound(BattleScene.battleBgmKey);
+            managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.fade(bgm, 0.01, 0.5, true);
         }
         managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__["default"]());
     };
+    BattleScene.battleBgmKey = 'battle_bgm';
     return BattleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_7__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleScene);
@@ -47200,11 +47294,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 /* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
-/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
-/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
+/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
+/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47225,7 +47318,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-
 /**
  * タイトルシーン
  */
@@ -47233,9 +47325,8 @@ var TitleScene = /** @class */ (function (_super) {
     __extends(TitleScene, _super);
     function TitleScene() {
         var _this = _super.call(this) || this;
-        _this.bgm = null;
-        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_6__["default"]();
-        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_7__["default"]();
+        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_5__["default"]();
+        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_6__["default"]();
         return _this;
     }
     TitleScene.prototype.createResourceList = function () {
@@ -47246,9 +47337,8 @@ var TitleScene = /** @class */ (function (_super) {
     TitleScene.prototype.onResourceLoaded = function () {
         _super.prototype.onResourceLoaded.call(this);
         var resource = PIXI.loader.resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.TitleBgm];
-        this.bgm = new modules_Sound__WEBPACK_IMPORTED_MODULE_3__["default"](resource.buffer);
-        this.bgm.loop = true;
-        this.bgm.play();
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.createSound(TitleScene.titleBgmKey, resource.buffer);
+        bgm.play(true);
     };
     /**
      * ゲーム開始ボタンが押下されたときのコールバック
@@ -47267,13 +47357,17 @@ var TitleScene = /** @class */ (function (_super) {
             return;
         }
         this.uiGraph.title_off.alpha = 1;
-        if (this.bgm) {
-            managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.fade(this.bgm, 0.01, 0.5, true);
+        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance;
+        var bgm = soundManager.getSound(TitleScene.titleBgmKey);
+        if (bgm) {
+            soundManager.unregisterSound(TitleScene.titleBgmKey);
+            soundManager.fade(bgm, 0.01, 0.5, true);
         }
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_5__["default"]());
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_4__["default"]());
     };
+    TitleScene.titleBgmKey = 'title_bgm';
     return TitleScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_4__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_3__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (TitleScene);
 
 

@@ -11,7 +11,6 @@ import Scene from 'scenes/Scene';
 import TitleScene from 'scenes/TitleScene';
 import FadeIn from 'scenes/transition/FadeIn';
 import FadeOut from 'scenes/transition/FadeOut';
-import Sound from 'modules/Sound';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
 import AttackableEntity from 'entity/AttackableEntity';
@@ -55,6 +54,9 @@ const BattleState = Object.freeze({
  * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleManagerDelegate {
+
+  private static battleBgmKey: string = 'battle_bgm';
+
   /**
    * 最大ユニット編成数
    */
@@ -101,8 +103,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * 削除予定のコンテナ
    */
   private destroyList: PIXI.Container[] = [];
-
-  private bgm: Sound | null = null;
 
   /**
    * GameManagerDelegate 実装
@@ -424,9 +424,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     this.addChild(this.uiGraphContainer);
 
     const resource: any = PIXI.loader.resources[ResourceMaster.Audio.BattleBgm];
-    this.bgm = new Sound(resource.buffer);
-    this.bgm.loop = true;
-    this.bgm.play();
+    const bgm = SoundManager.instance.createSound(BattleScene.battleBgmKey, resource.buffer);
+    bgm.play(true);
 
     if (this.transitionIn.isFinished()) {
       this.state = BattleState.READY;
@@ -520,8 +519,11 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   }
 
   private returnToTitle(): void {
-    if (this.bgm) {
-      SoundManager.instance.fade(this.bgm, 0.01, 0.5, true);
+    const soundManager = SoundManager.instance;
+    const bgm = soundManager.getSound(BattleScene.battleBgmKey);
+    if (bgm) {
+      soundManager.unregisterSound(BattleScene.battleBgmKey);
+      SoundManager.instance.fade(bgm, 0.01, 0.5, true);
     }
     GameManager.loadScene(new TitleScene());
   }

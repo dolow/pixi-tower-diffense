@@ -10,6 +10,7 @@ import UnitEntity from 'entity/UnitEntity';
  * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleManagerDelegate {
+    private static battleBgmKey;
     /**
      * 最大ユニット編成数
      */
@@ -50,7 +51,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 削除予定のコンテナ
      */
     private destroyList;
-    private bgm;
     /**
      * GameManagerDelegate 実装
      * Base を発生させるときのコールバック

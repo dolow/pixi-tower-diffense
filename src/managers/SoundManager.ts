@@ -14,7 +14,11 @@ export default class SoundManager {
 
   private static loaderMiddlewareAdded: boolean = false;
 
+  private paused: boolean = false;
+
   private soundsKillingAfterFade: { sound: Sound, targetVolume: number }[] = [];
+
+  private managedSounds: Map<string, Sound> = new Map();
 
   constructor() {
     if (SoundManager.instance) {
@@ -38,6 +42,7 @@ export default class SoundManager {
 
     SoundManager.addLoaderMiddleware(browser);
     SoundManager.setSoundInitializeEvent(browser);
+    SoundManager.setWindowLifeCycleEvent(browser);
   }
 
   public static addLoaderMiddleware(browser: BrowserInfo | BotInfo | NodeInfo): void {
@@ -117,8 +122,61 @@ export default class SoundManager {
     document.body.addEventListener(eventName, soundInitializer);
   }
 
+  public static setWindowLifeCycleEvent(browser: BrowserInfo | BotInfo | NodeInfo): void {
+    if (browser.name === 'safari') {
+      document.addEventListener('webkitvisibilitychange', () => {
+        (document as any).webkitHidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+      });
+    } else {
+      document.addEventListener('visibilitychange', () => {
+        document.hidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+      });
+    }
+  }
+
+  public registerSound(name: string, sound: Sound): void {
+    this.managedSounds.set(name, sound);
+  }
+  public unregisterSound(name: string): void {
+    this.managedSounds.delete(name);
+  }
+
+  public createSound(name: string, buf: AudioBuffer): Sound {
+    const sound = new Sound(buf);
+    this.registerSound(name, sound);
+    return sound;
+  }
+  public getSound(name: string): Sound | undefined {
+    return this.managedSounds.get(name);
+  }
+  public hasSound(name: string): boolean {
+    return this.managedSounds.has(name);
+  }
+  public destroySound(name: string): void {
+    const sound = this.getSound(name);
+    this.unregisterSound(name);
+    if (sound) {
+      sound.stop();
+    }
+  }
+
+  public pause(): void {
+    if (this.paused) {
+      return;
+    }
+    this.paused = true;
+    this.managedSounds.forEach((sound) => sound.pause());
+  }
+  public resume(): void {
+    if (!this.paused) {
+      return;
+    }
+    this.paused = false;
+    this.managedSounds.forEach((sound) => sound.resume());
+  }
+
   public fade(sound: Sound, targetVolume: number, seconds: number, stopOnEnd: boolean = false): void {
-    if (!sound.gainNode || !SoundManager.sharedContext) {
+    if (!SoundManager.sharedContext) {
       return;
     }
     console.log(targetVolume, SoundManager.sharedContext.currentTime + seconds);
@@ -129,6 +187,10 @@ export default class SoundManager {
   }
 
   public update(_dt: number): void {
+    if (this.paused) {
+      return;
+    }
+
     for (let i = 0; i < this.soundsKillingAfterFade.length; i++) {
       const soundData = this.soundsKillingAfterFade[i];
       if (!soundData.sound.gainNode) {

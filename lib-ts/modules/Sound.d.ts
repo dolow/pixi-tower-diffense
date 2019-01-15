@@ -1,9 +1,16 @@
 export default class Sound {
-    loop: boolean;
     volume: number;
+    readonly elapsedTime: number;
+    gainNode: GainNode;
+    loop: boolean;
+    private buffer;
     private source;
-    gainNode: GainNode | null;
+    private paused;
+    private offset;
+    private playedAt;
     constructor(buf: AudioBuffer);
-    play(): void;
+    play(loop?: boolean, offset?: number): void;
     stop(): void;
+    pause(): void;
+    resume(): void;
 }
