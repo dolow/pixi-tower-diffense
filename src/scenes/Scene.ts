@@ -5,7 +5,7 @@ import * as UI from 'interfaces/UiGraph/index';
 import Transition from 'interfaces/Transition';
 import UiGraph from 'modules/UiGraph';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 import Immediate from 'scenes/transition/Immediate';
 
 /**

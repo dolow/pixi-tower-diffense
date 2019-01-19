@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 export default class Dead extends PIXI.Container implements UpdateObject {
     private static resourceListCache;
     private bucket;

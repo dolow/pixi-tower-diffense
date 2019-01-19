@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import SoundManager from 'managers/SoundManager';
 import BaseEntity from 'entity/BaseEntity';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
 
 const baseId1SpawnFrameCount = 16;
@@ -82,9 +82,11 @@ export default class Base extends BaseEntity implements UpdateObject {
     this.elapsedFrameCount = 0;
   }
   public spawn(): void {
-    const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.UnitSpawn);
-    if (sound) {
-      sound.play();
+    if (this.isPlayer) {
+      const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.UnitSpawn);
+      if (sound) {
+        sound.play();
+      }
     }
 
     this.animationType = ResourceMaster.AnimationTypes.Base.SPAWN;

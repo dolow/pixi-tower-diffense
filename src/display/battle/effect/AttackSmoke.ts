@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 
 export default class AttackSmokeEffect extends PIXI.Container implements UpdateObject {
   private elapsedFrameCount: number = 0;

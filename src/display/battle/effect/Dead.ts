@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 
 const TO_RAD = Math.PI / 180.0;
 

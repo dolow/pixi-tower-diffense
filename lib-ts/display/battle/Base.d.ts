@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import BaseEntity from 'entity/BaseEntity';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する

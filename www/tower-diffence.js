@@ -44550,9 +44550,11 @@ var Base = /** @class */ (function (_super) {
         this.elapsedFrameCount = 0;
     };
     Base.prototype.spawn = function () {
-        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
-        if (sound) {
-            sound.play();
+        if (this.isPlayer) {
+            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+            if (sound) {
+                sound.play();
+            }
         }
         this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.SPAWN;
         this.elapsedFrameCount = 0;
@@ -47022,22 +47024,6 @@ var BattleScene = /** @class */ (function (_super) {
     };
     /**
      * GameManagerDelegate 実装
-     * Base が更新されたときのコールバック
-     * Base のアニメーションと PIXI による描画を更新する
-     */
-    BattleScene.prototype.onBaseUpdated = function (_base) {
-    };
-    ;
-    /**
-     * GameManagerDelegate 実装
-     * Unit が更新されたときのコールバック
-     * Unit のアニメーションと PIXI による描画を更新する
-     */
-    BattleScene.prototype.onUnitUpdated = function (_entity) {
-        //console.log(_entity.state);
-    };
-    /**
-     * GameManagerDelegate 実装
      * 利用可能なコストの値が変動したときのコールバック
      */
     BattleScene.prototype.onAvailableCostUpdated = function (cost) {
@@ -47317,9 +47303,9 @@ var BattleScene = /** @class */ (function (_super) {
     BattleScene.prototype.enableBackToTitle = function () {
         var _this = this;
         this.interactive = true;
-        this.on('pointerdown', function (_e) { return _this.returnToTitle(); });
+        this.on('pointerdown', function (_e) { return _this.backToTitle(); });
     };
-    BattleScene.prototype.returnToTitle = function () {
+    BattleScene.prototype.backToTitle = function () {
         var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
         var keys = Object.keys(resources);

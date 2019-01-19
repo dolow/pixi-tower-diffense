@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import SoundManager from 'managers/SoundManager';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 
 export default class CollapseExplodeEffect extends PIXI.Container implements UpdateObject {
   private elapsedFrameCount: number = 0;

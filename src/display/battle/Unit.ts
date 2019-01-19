@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import UnitEntity from 'entity/UnitEntity';
 import ResourceMaster from 'ResourceMaster';
 import UnitState from 'enum/UnitState';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 import HealthGauge from 'display/battle/effect/HealthGauge';
 
 /**

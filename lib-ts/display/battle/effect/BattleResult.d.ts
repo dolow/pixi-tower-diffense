@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 export default class BattleResult extends PIXI.Container implements UpdateObject {
     animationEnded: boolean;
     onAnimationEnded: () => void;

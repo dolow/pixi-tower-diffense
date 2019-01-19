@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import BaseState from 'enum/BaseState';
 import UnitState from 'enum/UnitState';
@@ -196,24 +196,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     } else {
       unit.resetAnimation();
     }
-  }
-
-  /**
-   * GameManagerDelegate 実装
-   * Base が更新されたときのコールバック
-   * Base のアニメーションと PIXI による描画を更新する
-   */
-  public onBaseUpdated(_base: BaseEntity): void {
-
-  };
-
-  /**
-   * GameManagerDelegate 実装
-   * Unit が更新されたときのコールバック
-   * Unit のアニメーションと PIXI による描画を更新する
-   */
-  public onUnitUpdated(_entity: UnitEntity): void {
-    //console.log(_entity.state);
   }
   /**
    * GameManagerDelegate 実装
@@ -577,10 +559,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
   private enableBackToTitle(): void {
     this.interactive = true;
-    this.on('pointerdown', (_e: PIXI.interaction.InteractionEvent) => this.returnToTitle());
+    this.on('pointerdown', (_e: PIXI.interaction.InteractionEvent) => this.backToTitle());
   }
 
-  private returnToTitle(): void {
+  private backToTitle(): void {
     const soundManager = SoundManager.instance;
     const resources = PIXI.loader.resources as any;
 

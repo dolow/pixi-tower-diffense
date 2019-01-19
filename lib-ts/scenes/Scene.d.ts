@@ -3,7 +3,7 @@ import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import * as UI from 'interfaces/UiGraph/index';
 import Transition from 'interfaces/Transition';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 /**
  * ゲームシーンの抽象クラス
  * UiGraph を利用して UI 情報を透過的に読み込み初期化する

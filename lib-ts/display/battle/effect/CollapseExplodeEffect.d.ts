@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import UpdateObject from 'display/UpdateObject';
+import UpdateObject from 'interfaces/UpdateObject';
 export default class CollapseExplodeEffect extends PIXI.Container implements UpdateObject {
     private elapsedFrameCount;
     private sprite;

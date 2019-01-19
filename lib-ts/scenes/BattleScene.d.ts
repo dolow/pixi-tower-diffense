@@ -75,18 +75,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     onUnitStateChanged(entity: UnitEntity, _oldState: number): void;
     /**
      * GameManagerDelegate 実装
-     * Base が更新されたときのコールバック
-     * Base のアニメーションと PIXI による描画を更新する
-     */
-    onBaseUpdated(_base: BaseEntity): void;
-    /**
-     * GameManagerDelegate 実装
-     * Unit が更新されたときのコールバック
-     * Unit のアニメーションと PIXI による描画を更新する
-     */
-    onUnitUpdated(_entity: UnitEntity): void;
-    /**
-     * GameManagerDelegate 実装
      * 利用可能なコストの値が変動したときのコールバック
      */
     onAvailableCostUpdated(cost: number): void;
@@ -140,5 +128,5 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      */
     private getUiGraphUnitButton;
     private enableBackToTitle;
-    private returnToTitle;
+    private backToTitle;
 }
