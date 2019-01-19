@@ -8,7 +8,7 @@ import HealthGauge from 'display/battle/effect/HealthGauge';
  */
 export default class Unit extends UnitEntity implements UpdateObject {
     /**
-     * PIXI スプライト
+     * 表示する PIXI.Sprite インスタンス
      */
     sprite: PIXI.Sprite;
     /**
@@ -24,7 +24,7 @@ export default class Unit extends UnitEntity implements UpdateObject {
      */
     protected animationFrameIndex: number;
     /**
-     * 現在のアニメーション経過フレーム数
+     * 経過フレーム数
      */
     protected elapsedFrameCount: number;
     /**
@@ -46,8 +46,18 @@ export default class Unit extends UnitEntity implements UpdateObject {
     protected animationUpdateDurations: {
         [key: string]: number;
     };
+    /**
+     * HealthGauge インスタンス
+     * Unit で管理する
+     */
     protected healthGauge: HealthGauge | null;
+    /**
+     * 破棄フラグ
+     */
     protected destroyed: boolean;
+    /**
+     * コンストラクタ
+     */
     constructor(unitId: number, isPlayer: boolean, animationParam: {
         hitFrame: number;
         animationMaxFrameIndexes: {
@@ -57,15 +67,50 @@ export default class Unit extends UnitEntity implements UpdateObject {
             [key: string]: number;
         };
     });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     isDestroyed(): boolean;
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     update(_dt: number): void;
+    /**
+     * 現在の position を生成位置として保持する
+     */
     saveSpawnedPosition(): PIXI.Point;
+    /**
+     * 現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す
+     */
     isHitFrame(): boolean;
+    /**
+     * 現在のアニメーションが終了するフレーム時間かどうかを返す
+     */
     isAnimationLastFrameTime(type?: string): boolean;
+    /**
+     * 現在のアニメーション種別を返す
+     */
     getAnimationType(): string;
+    /**
+     * HealthGauge インスタンスを生成し、座標を設定して返す
+     */
     spawnHealthGauge(fromPercent: number, toPercent: number): HealthGauge;
+    /**
+     * 接敵しているかどうかを返す
+     */
     isFoeContact(target: PIXI.Container): boolean;
+    /**
+     * アニメーション時間をリセットする
+     */
     resetAnimation(): void;
-    updateAnimation(type?: string): void;
+    /**
+     * アニメーションを更新する
+     */
+    updateAnimation(): void;
+    /**
+     * このオブジェクトと子要素を破棄する
+     */
     destroy(): void;
 }

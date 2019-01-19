@@ -64,6 +64,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>即座にシーン遷移させるトランジション</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -111,9 +118,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/transition.html">Transition</a>.<a href="../interfaces/transition.html#begin">begin</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L11">scenes/transition/Immediate.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L21">scenes/transition/Immediate.ts:21</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>トランジション開始処理
+									このトランジションは即時終了させる</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -129,9 +142,14 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/transition.html">Transition</a>.<a href="../interfaces/transition.html#getcontainer">getContainer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L7">scenes/transition/Immediate.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L13">scenes/transition/Immediate.ts:13</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>トランジション描画物を含む PIXI.Container インスタンスを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Container</span>
 								<span class="tsd-signature-symbol"> | </span>
 								<span class="tsd-signature-type">null</span>
@@ -150,9 +168,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/transition.html">Transition</a>.<a href="../interfaces/transition.html#isactive">isActive</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L20">scenes/transition/Immediate.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L42">scenes/transition/Immediate.ts:42</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>トランジションが実行中かどうかを返す
+									このトランジションは即時終了するため true になることなはない</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -168,9 +192,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/transition.html">Transition</a>.<a href="../interfaces/transition.html#isbegan">isBegan</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L14">scenes/transition/Immediate.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L28">scenes/transition/Immediate.ts:28</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>トランジションが開始しているかどうかを返す
+									このトランジションは即時終了するため true になることなはない</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -186,9 +216,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/transition.html">Transition</a>.<a href="../interfaces/transition.html#isfinished">isFinished</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L17">scenes/transition/Immediate.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L35">scenes/transition/Immediate.ts:35</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>トランジションが終了しているかどうかを返す
+									このトランジションは即時終了するため false になることなはない</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -203,7 +239,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L5">scenes/transition/Immediate.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L8">scenes/transition/Immediate.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -220,9 +256,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L28">scenes/transition/Immediate.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L57">scenes/transition/Immediate.ts:57</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>トランジション終了時のコールバックを登録する</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -256,9 +297,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/transition.html">Transition</a>.<a href="../interfaces/transition.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L24">scenes/transition/Immediate.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/transition/Immediate.ts#L50">scenes/transition/Immediate.ts:50</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>トランジションを更新する
+									このトランジションは即時終了するため何も行わない</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>

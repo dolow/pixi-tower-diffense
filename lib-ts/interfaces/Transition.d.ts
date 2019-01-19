@@ -1,4 +1,7 @@
 import * as PIXI from 'pixi.js';
+/**
+ * シーントランジションのインターフェース
+ */
 export default interface Transition {
     getContainer(): PIXI.Container | null;
     begin(): void;

@@ -56,5 +56,8 @@ export default class GameManager {
      * いずれも完了したら、新しいシーンのトランジションを開始する
      */
     static loadScene(newScene: Scene): void;
+    /**
+     * HTML canvas のりサイズ処理を行う
+     */
     static resizeCanvas(): void;
 }

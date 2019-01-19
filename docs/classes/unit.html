@@ -158,9 +158,14 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L54">display/battle/Unit.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L61">display/battle/Unit.ts:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>コンストラクタ</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -286,7 +291,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#currenthealth">currentHealth</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L12">entity/AttackableEntity.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L16">entity/AttackableEntity.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -301,18 +306,23 @@
 					<div class="tsd-signature tsd-kind-icon">destroyed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L54">display/battle/Unit.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L61">display/battle/Unit.ts:61</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>破棄フラグ</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="distance" class="tsd-anchor"></a>
 					<h3>distance</h3>
 					<div class="tsd-signature tsd-kind-icon">distance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#distance">distance</a></p>
+						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#distance">distance</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/UnitEntity.ts#L24">entity/UnitEntity.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L20">entity/AttackableEntity.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -332,7 +342,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>現在のアニメーション経過フレーム数</p>
+							<p>経過フレーム数</p>
 						</div>
 					</div>
 				</section>
@@ -342,9 +352,15 @@
 					<div class="tsd-signature tsd-kind-icon">health<wbr>Gauge<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HealthGauge</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L52">display/battle/Unit.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L56">display/battle/Unit.ts:56</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>HealthGauge インスタンス
+							Unit で管理する</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="hitframe" class="tsd-anchor"></a>
@@ -400,9 +416,9 @@
 					<h3>locked<wbr>Entity</h3>
 					<div class="tsd-signature tsd-kind-icon">locked<wbr>Entity<span class="tsd-signature-symbol">:</span> <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#lockedentity">lockedEntity</a></p>
+						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#lockedentity">lockedEntity</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/UnitEntity.ts#L28">entity/UnitEntity.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L24">entity/AttackableEntity.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -437,7 +453,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>PIXI スプライト</p>
+							<p>表示する PIXI.Sprite インスタンス</p>
 						</div>
 					</div>
 				</section>
@@ -446,9 +462,9 @@
 					<h3>state</h3>
 					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="unitentity.html">UnitEntity</a>.<a href="unitentity.html#state">state</a></p>
+						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#state">state</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/UnitEntity.ts#L20">entity/UnitEntity.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L12">entity/AttackableEntity.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -487,9 +503,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#damage">damage</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L32">entity/AttackableEntity.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L53">entity/AttackableEntity.ts:53</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>health 値を引数で増減させる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -510,9 +531,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L177">display/battle/Unit.ts:177</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L217">display/battle/Unit.ts:217</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>このオブジェクトと子要素を破棄する</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -527,9 +553,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L128">display/battle/Unit.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L157">display/battle/Unit.ts:157</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>現在のアニメーション種別を返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -545,9 +576,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#isally">isAlly</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L18">entity/AttackableEntity.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L36">entity/AttackableEntity.ts:36</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>引数のエンティティが仲間かどうかを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -568,9 +604,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L123">display/battle/Unit.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L149">display/battle/Unit.ts:149</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>現在のアニメーションが終了するフレーム時間かどうかを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -592,9 +633,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/updateobject.html">UpdateObject</a>.<a href="../interfaces/updateobject.html#isdestroyed">isDestroyed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L79">display/battle/Unit.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L93">display/battle/Unit.ts:93</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UpdateObject インターフェース実装
+									削除フラグが立っているか返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -610,9 +657,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#isfoe">isFoe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L25">entity/AttackableEntity.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L46">entity/AttackableEntity.ts:46</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>引数のエンティティが敵対しているかどうかを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -633,9 +685,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L146">display/battle/Unit.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L181">display/battle/Unit.ts:181</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>接敵しているかどうかを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -656,9 +713,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L115">display/battle/Unit.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L139">display/battle/Unit.ts:139</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -673,9 +735,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L153">display/battle/Unit.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L191">display/battle/Unit.ts:191</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>アニメーション時間をリセットする</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -690,9 +757,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L109">display/battle/Unit.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L130">display/battle/Unit.ts:130</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>現在の position を生成位置として保持する</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Point</span></h4>
 						</li>
 					</ul>
@@ -707,9 +779,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L132">display/battle/Unit.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L164">display/battle/Unit.ts:164</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>HealthGauge インスタンスを生成し、座標を設定して返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -734,9 +811,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/updateobject.html">UpdateObject</a>.<a href="../interfaces/updateobject.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L83">display/battle/Unit.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L101">display/battle/Unit.ts:101</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UpdateObject インターフェース実装
+									requestAnimationFrame 毎のアップデート処理</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -751,21 +834,20 @@
 					<a name="updateanimation" class="tsd-anchor"></a>
 					<h3>update<wbr>Animation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Animation<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Animation<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L158">display/battle/Unit.ts:158</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L199">display/battle/Unit.ts:199</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> type: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>アニメーションを更新する</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>

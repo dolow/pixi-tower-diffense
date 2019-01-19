@@ -8,7 +8,7 @@ import UpdateObject from 'interfaces/UpdateObject';
  * ゲームシーンの抽象クラス
  * UiGraph を利用して UI 情報を透過的に読み込み初期化する
  * また、シーン間のトランジションイベントを提供する
- * いずれのイベントも実装クラスにて独自処理の実装が可能
+ * いずれのイベントも実装クラスにて独自処理の実装を行うことができる
  */
 export default abstract class Scene extends PIXI.Container {
     /**
@@ -26,14 +26,29 @@ export default abstract class Scene extends PIXI.Container {
      * 描画順による前後関係を統制するために一つの Container にまとめる
      */
     protected uiGraphContainer: PIXI.Container;
+    /**
+     * 更新すべきオブジェクトを保持する
+     */
     protected objectsToUpdate: UpdateObject[];
+    /**
+     * シーン開始用のトランジションオブジェクト
+     */
     protected transitionIn: Transition;
+    /**
+     * シーン終了用のトランジションオブジェクト
+     */
     protected transitionOut: Transition;
     /**
      * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
      */
     update(delta: number): void;
+    /**
+     * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
+     */
     protected registerUpdatingObject(object: UpdateObject): void;
+    /**
+     * 更新処理を行うべきオブジェクトを更新する
+     */
     protected updateRegisteredObjects(delta: number): void;
     /**
      * シーン追加トランジション開始
@@ -55,9 +70,12 @@ export default abstract class Scene extends PIXI.Container {
      * デフォルトでは UiGraph 用の情報が取得される
      */
     loadResource(onResourceLoaded: () => void): void;
+    /**
+     * UiGraph 情報のロードを行う
+     */
     protected loadUiGraph(onLoaded: () => void): void;
     /**
-     * loadResource 完了時のコールバックメソッド
+     * loadUiGraph 完了時のコールバックメソッド
      */
     protected onUiGraphLoaded(onLoaded: () => void): void;
     /**

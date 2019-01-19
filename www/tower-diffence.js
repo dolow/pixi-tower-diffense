@@ -44327,6 +44327,9 @@ __webpack_require__.r(__webpack_exports__);
  * リソースの URL や命名規則のマスタ
  */
 var ResourceMaster = Object.freeze({
+    /**
+     * マスターデータ API 情報を有するオブジェクト
+     */
     Api: {
         SceneUiGraph: function (scene) {
             var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
@@ -44346,6 +44349,9 @@ var ResourceMaster = Object.freeze({
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/base_master.json?playerBaseId=" + playerBaseId + "&aiBaseId=" + aiBaseId;
         }
     },
+    /**
+     * 渡されたパラメータによって動的に変わる url を有するオブジェクト
+     */
     Dynamic: {
         Unit: function (unitId) {
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
@@ -44357,6 +44363,9 @@ var ResourceMaster = Object.freeze({
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/base/" + baseId + ".json";
         }
     },
+    /**
+     * 静的なリソースを有するオブジェクト
+     */
     Static: {
         BattleBgFores: [
             Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_1.png",
@@ -44390,6 +44399,9 @@ var ResourceMaster = Object.freeze({
         BattleResultWin: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_win.png",
         BattleResultLose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_lose.png"
     },
+    /**
+     * サウンドリソースの静的な url を有するオブジェクト
+     */
     Audio: {
         Bgm: {
             Title: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_title.mp3",
@@ -44404,6 +44416,9 @@ var ResourceMaster = Object.freeze({
             Lose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_lose.mp3"
         }
     },
+    /**
+     * テクスチャのフレーム名を返す関数を有するオブジェクト
+     */
     TextureFrame: {
         Unit: function (unitActionType, unitId, index) {
             return PIXI.utils.TextureCache["unit_" + unitId + "_" + unitActionType + "_" + index + ".png"];
@@ -44421,6 +44436,9 @@ var ResourceMaster = Object.freeze({
             return PIXI.utils.TextureCache["effect_2_" + index + ".png"];
         }
     },
+    /**
+     * アニメーション種別の識別子を有するオブジェクト
+     */
     AnimationTypes: {
         Unit: Object.freeze({
             WAIT: 'wait',
@@ -44434,6 +44452,9 @@ var ResourceMaster = Object.freeze({
             COLLAPSE: 'collapse'
         })
     },
+    /**
+     * スプライトシートの最大フレーム数を返す関数
+     */
     MaxFrameIndex: function (resourceKey) {
         var json = PIXI.loader.resources[resourceKey];
         if (!json || !json.data || !json.data.frames) {
@@ -44482,11 +44503,14 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 var baseId1SpawnFrameCount = 16;
 /**
- * ユニットの振舞い、及び見た目に関する処理を行う
+ * 拠点の振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
 var Base = /** @class */ (function (_super) {
     __extends(Base, _super);
+    /**
+     * コンストラクタ
+     */
     function Base(baseId, isPlayer) {
         var _this = _super.call(this, baseId, isPlayer) || this;
         /**
@@ -44502,7 +44526,7 @@ var Base = /** @class */ (function (_super) {
          */
         _this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
         /**
-         * 現在の経過フレーム数
+         * 経過フレーム数
          */
         _this.elapsedFrameCount = 0;
         _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Base(baseId));
@@ -44514,18 +44538,33 @@ var Base = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Base, "resourceList", {
+        /**
+         * このクラスで利用するリソースリスト
+         */
         get: function () {
             return [ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn];
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     Base.prototype.isDestroyed = function () {
         return false;
     };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     Base.prototype.update = function (_dt) {
         this.updateAnimation();
     };
+    /**
+     * 初期化処理
+     * 主に座標周りを初期化する
+     */
     Base.prototype.init = function (options) {
         switch (this.baseId) {
             case 1:
@@ -44541,17 +44580,26 @@ var Base = /** @class */ (function (_super) {
         }
         this.originalPositon.set(this.sprite.position.x, this.sprite.position.y);
     };
+    /**
+     * アニメーションを初期化する
+     */
     Base.prototype.resetAnimation = function () {
         this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
         this.elapsedFrameCount = 0;
     };
+    /**
+     * 破壊状態にする
+     */
     Base.prototype.collapse = function () {
         this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.COLLAPSE;
         this.elapsedFrameCount = 0;
     };
+    /**
+     * ユニット生成状態にする
+     */
     Base.prototype.spawn = function () {
         if (this.isPlayer) {
-            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
             if (sound) {
                 sound.play();
             }
@@ -44559,10 +44607,10 @@ var Base = /** @class */ (function (_super) {
         this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.SPAWN;
         this.elapsedFrameCount = 0;
     };
-    Base.prototype.updateAnimation = function (type) {
-        if (type) {
-            this.animationType = type;
-        }
+    /**
+     * アニメーションを更新する
+     */
+    Base.prototype.updateAnimation = function () {
         switch (this.animationType) {
             case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.COLLAPSE: {
                 this.explodeContainer.position.set(this.sprite.position.x - this.sprite.width * this.sprite.anchor.x, this.sprite.position.y - this.sprite.height * this.sprite.anchor.y);
@@ -44603,6 +44651,9 @@ var Base = /** @class */ (function (_super) {
         }
         this.elapsedFrameCount++;
     };
+    /**
+     * 破壊時の爆発を生成する
+     */
     Base.prototype.spawnCollapseExplode = function () {
         var scale = 1.0 + Math.random() % 0.8 - 0.4;
         var effect = new display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__["default"]();
@@ -44647,13 +44698,33 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+/**
+ * ユニットや拠点が配置されるバトル背景のクラス
+ */
 var Field = /** @class */ (function (_super) {
     __extends(Field, _super);
+    /**
+     * コンストラクタ
+     */
     function Field() {
         var _this = _super.call(this) || this;
+        /**
+         * タップダウン数カウント
+         * タップダウン重複処理を防止するために数える
+         */
         _this.pointerDownCount = 0;
+        /**
+         * タップ位置の X 座標
+         * スクロール処理のために保持する
+         */
         _this.lastPointerPositionX = 0;
+        /**
+         * スクロールの限界座標値
+         */
         _this.foregroundScrollLimit = -1;
+        /**
+         * 表示上の前後関係を制御するための PIXI.Container オブジェクト
+         */
         _this.containers = {
             foreForegroundEffect: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             fore: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
@@ -44661,8 +44732,10 @@ var Field = /** @class */ (function (_super) {
             middle: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             back: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]()
         };
+        /**
+         * ユニットが配置される前景の PIXI.Container 配列
+         */
         _this.foreZLines = [];
-        _this.lastAddedZLineIndex = -1;
         // ユーザ操作で画面をスクロールできるようにする
         _this.interactive = true;
         _this.on('pointerdown', function (e) { return _this.onPointerDown(e); });
@@ -44673,20 +44746,32 @@ var Field = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Field, "resourceList", {
+        /**
+         * このクラスで利用するリソースリスト
+         */
         get: function () {
-            if (Field.resourceListCache.length === 0) {
-                var foreTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgFores;
-                var middleTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgMiddles;
-                var backTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgBacks;
-                Field.resourceListCache = Field.resourceListCache.concat(foreTiles);
-                Field.resourceListCache = Field.resourceListCache.concat(middleTiles);
-                Field.resourceListCache = Field.resourceListCache.concat(backTiles);
-            }
-            return Field.resourceListCache;
+            var list = [];
+            list = list.concat(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgFores);
+            list = list.concat(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgMiddles);
+            list = list.concat(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgBacks);
+            return list;
         },
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Field.prototype, "zLineCount", {
+        /**
+         * foreZLines の要素の数を返す
+         */
+        get: function () {
+            return this.foreZLines.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * フィールドの長さとユニットを配置するラインの数で初期化する
+     */
     Field.prototype.init = function (options) {
         if (options === void 0) { options = { fieldLength: 3000, zLines: 8 }; }
         var tiles = {
@@ -44707,6 +44792,7 @@ var Field = /** @class */ (function (_super) {
                 this.containers[layer].addChild(sprite);
             }
         }
+        // addChild 順に描画される
         this.addChild(this.containers.back);
         this.addChild(this.containers.middle);
         this.addChild(this.containers.fore);
@@ -44721,31 +44807,37 @@ var Field = /** @class */ (function (_super) {
         }
         this.foregroundScrollLimit = -(options.fieldLength - managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.75);
     };
+    /**
+     * 前景内で背景エフェクトとして addChild する
+     */
     Field.prototype.addChildAsForeBackgroundEffect = function (container) {
         this.containers.foreBackgroundEffect.addChild(container);
     };
+    /**
+     * 前景内で前景エフェクトとして addChild する
+     */
     Field.prototype.addChildAsForeForegroundEffect = function (container) {
         this.containers.foreForegroundEffect.addChild(container);
     };
-    Field.prototype.addChildToRandomZLine = function (container) {
-        var index = Math.floor(Math.random() * this.foreZLines.length);
-        if (index === this.lastAddedZLineIndex) {
-            index++;
-            if (index > (this.foreZLines.length - 1)) {
-                index = 0;
-            }
-        }
-        container.position.y = 260 + index * 16;
-        this.foreZLines[index].addChild(container);
-        // 重なって表示されないようにする
-        this.lastAddedZLineIndex = index;
+    /**
+     * 指定した zLine インデックスの PIXI.Container に addChild する
+     */
+    Field.prototype.addChildToZLine = function (container, zlineIndex) {
+        container.position.y = 260 + zlineIndex * 16;
+        this.foreZLines[zlineIndex].addChild(container);
     };
+    /**
+     * タップ押下時の制御コールバック
+     */
     Field.prototype.onPointerDown = function (event) {
         this.pointerDownCount++;
         if (this.pointerDownCount === 1) {
             this.lastPointerPositionX = event.data.global.x;
         }
     };
+    /**
+     * タップ移動時の制御コールバック
+     */
     Field.prototype.onPointerMove = function (event) {
         if (this.pointerDownCount <= 0) {
             return;
@@ -44765,13 +44857,15 @@ var Field = /** @class */ (function (_super) {
         this.containers.back.position.x = newForegroundPos * -0.9;
         this.lastPointerPositionX = xPos;
     };
+    /**
+     * タップ終了時の制御コールバック
+     */
     Field.prototype.onPointerUp = function (_) {
         this.pointerDownCount--;
         if (this.pointerDownCount < 0) {
             this.pointerDownCount = 0;
         }
     };
-    Field.resourceListCache = [];
     return Field;
 }(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (Field);
@@ -44792,7 +44886,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! entity/UnitEntity */ "./src/entity/UnitEntity.ts");
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
+/* harmony import */ var enum_AttackableState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! enum/AttackableState */ "./src/enum/AttackableState.ts");
 /* harmony import */ var display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/effect/HealthGauge */ "./src/display/battle/effect/HealthGauge.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -44818,6 +44912,9 @@ var __extends = (undefined && undefined.__extends) || (function () {
  */
 var Unit = /** @class */ (function (_super) {
     __extends(Unit, _super);
+    /**
+     * コンストラクタ
+     */
     function Unit(unitId, isPlayer, animationParam) {
         var _this = _super.call(this, unitId, isPlayer) || this;
         /**
@@ -44833,7 +44930,7 @@ var Unit = /** @class */ (function (_super) {
          */
         _this.animationFrameIndex = 1;
         /**
-         * 現在のアニメーション経過フレーム数
+         * 経過フレーム数
          */
         _this.elapsedFrameCount = 0;
         /**
@@ -44851,7 +44948,14 @@ var Unit = /** @class */ (function (_super) {
          * マスターデータの値
          */
         _this.animationUpdateDurations = {};
+        /**
+         * HealthGauge インスタンス
+         * Unit で管理する
+         */
         _this.healthGauge = null;
+        /**
+         * 破棄フラグ
+         */
         _this.destroyed = false;
         _this.hitFrame = animationParam.hitFrame;
         _this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
@@ -44863,13 +44967,21 @@ var Unit = /** @class */ (function (_super) {
         _this.sprite.anchor.x = 0.5;
         return _this;
     }
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     Unit.prototype.isDestroyed = function () {
         return this.destroyed;
     };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     Unit.prototype.update = function (_dt) {
         var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].AnimationTypes.Unit;
         switch (this.state) {
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].IDLE: {
+            case enum_AttackableState__WEBPACK_IMPORTED_MODULE_3__["default"].IDLE: {
                 if (this.animationType !== animationTypes.WALK) {
                     if (this.isAnimationLastFrameTime()) {
                         this.animationType = animationTypes.WALK;
@@ -44881,20 +44993,26 @@ var Unit = /** @class */ (function (_super) {
                 }
                 break;
             }
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].LOCKED: {
+            case enum_AttackableState__WEBPACK_IMPORTED_MODULE_3__["default"].LOCKED: {
                 this.animationType = animationTypes.ATTACK;
                 break;
             }
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD:
+            case enum_AttackableState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD:
             default: break;
         }
         this.updateAnimation();
     };
+    /**
+     * 現在の position を生成位置として保持する
+     */
     Unit.prototype.saveSpawnedPosition = function () {
         this.spawnedPosition.x = this.sprite.position.x;
         this.spawnedPosition.y = this.sprite.position.y;
         return this.spawnedPosition;
     };
+    /**
+     * 現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す
+     */
     Unit.prototype.isHitFrame = function () {
         if (this.animationFrameIndex !== this.hitFrame) {
             return false;
@@ -44902,14 +45020,23 @@ var Unit = /** @class */ (function (_super) {
         var updateDuration = this.animationUpdateDurations[ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].AnimationTypes.Unit.ATTACK];
         return (this.elapsedFrameCount % updateDuration) === 0;
     };
+    /**
+     * 現在のアニメーションが終了するフレーム時間かどうかを返す
+     */
     Unit.prototype.isAnimationLastFrameTime = function (type) {
         if (type === void 0) { type = this.animationType; }
         var maxFrameTime = this.animationUpdateDurations[type] * this.animationMaxFrameIndexes[type];
         return this.elapsedFrameCount === maxFrameTime;
     };
+    /**
+     * 現在のアニメーション種別を返す
+     */
     Unit.prototype.getAnimationType = function () {
         return this.animationType;
     };
+    /**
+     * HealthGauge インスタンスを生成し、座標を設定して返す
+     */
     Unit.prototype.spawnHealthGauge = function (fromPercent, toPercent) {
         if (this.healthGauge) {
             this.healthGauge.destroy();
@@ -44918,20 +45045,26 @@ var Unit = /** @class */ (function (_super) {
         this.healthGauge.position.set(this.sprite.position.x - (this.healthGauge.gaugeWidth * this.sprite.anchor.x), this.sprite.position.y - (this.healthGauge.gaugeHeight * this.sprite.anchor.y));
         return this.healthGauge;
     };
+    /**
+     * 接敵しているかどうかを返す
+     */
     Unit.prototype.isFoeContact = function (target) {
         var rangeDistance = this.sprite.width * 0.5 + target.width * 0.5;
         return (this.isPlayer)
             ? (this.sprite.position.x + rangeDistance) >= target.position.x
             : (target.position.x + rangeDistance) >= this.sprite.position.x;
     };
+    /**
+     * アニメーション時間をリセットする
+     */
     Unit.prototype.resetAnimation = function () {
         this.elapsedFrameCount = 0;
         this.animationFrameIndex = 1;
     };
-    Unit.prototype.updateAnimation = function (type) {
-        if (type) {
-            this.animationType = type;
-        }
+    /**
+     * アニメーションを更新する
+     */
+    Unit.prototype.updateAnimation = function () {
         var animationUpdateDuration = this.animationUpdateDurations[this.animationType];
         if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
             if (this.isAnimationLastFrameTime()) {
@@ -44942,6 +45075,9 @@ var Unit = /** @class */ (function (_super) {
         }
         this.elapsedFrameCount++;
     };
+    /**
+     * このオブジェクトと子要素を破棄する
+     */
     Unit.prototype.destroy = function () {
         this.sprite.destroy();
         this.destroyed = true;
@@ -44980,14 +45116,26 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
+/**
+ * ユニット生成をリクエストするための UI 用のボタン
+ */
 var UnitButton = /** @class */ (function (_super) {
     __extends(UnitButton, _super);
     function UnitButton() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * ボタン枠のインデックス
+         */
         _this.slotIndex = -1;
+        /**
+         * ボタンに割り当てられたユニットの ID
+         */
         _this.unitId = -1;
         return _this;
     }
+    /**
+     * ボタン枠インデックスとユニット ID で初期化する
+     */
     UnitButton.prototype.init = function (slotIndex, unitId) {
         var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel(unitId >= 0 ? unitId : undefined);
         var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId].texture;
@@ -45032,30 +45180,50 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
+/**
+ * 攻撃時のもくもくエフェクト
+ */
 var AttackSmokeEffect = /** @class */ (function (_super) {
     __extends(AttackSmokeEffect, _super);
+    /**
+     * コンストラクタ
+     */
     function AttackSmokeEffect() {
         var _this = _super.call(this) || this;
+        /**
+         * 経過フレーム数
+         */
         _this.elapsedFrameCount = 0;
         _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.AttackSmoke(1));
         _this.addChild(_this.sprite);
         return _this;
     }
     Object.defineProperty(AttackSmokeEffect, "resourceList", {
+        /**
+         * このエフェクトで使用するリソースリスト
+         */
         get: function () {
             return [ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.AttackSmoke];
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     AttackSmokeEffect.prototype.isDestroyed = function () {
         return this._destroyed;
     };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     AttackSmokeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
-        if (this.elapsedFrameCount % 4 === 0) {
-            var index = Math.floor(this.elapsedFrameCount / 4) + 1;
+        if (this.elapsedFrameCount % AttackSmokeEffect.TextureFrameUpdateFrequency === 0) {
+            var index = Math.floor(this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency) + 1;
             if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.AttackSmoke)) {
                 this.sprite.destroy();
                 this.destroy();
@@ -45064,6 +45232,10 @@ var AttackSmokeEffect = /** @class */ (function (_super) {
             this.sprite.texture = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.AttackSmoke(index);
         }
     };
+    /**
+     * スプライトアニメーションを更新する頻度
+     */
+    AttackSmokeEffect.TextureFrameUpdateFrequency = 4;
     return AttackSmokeEffect;
 }(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (AttackSmokeEffect);
@@ -45100,11 +45272,23 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+/**
+ * ゲーム結果を表現するエフェクト
+ */
 var BattleResult = /** @class */ (function (_super) {
     __extends(BattleResult, _super);
+    /**
+     * コンストラクタ
+     */
     function BattleResult(win) {
         var _this = _super.call(this) || this;
+        /**
+         * アニメーション終了フラグ
+         */
         _this.animationEnded = false;
+        /**
+         * アニメーション終了時コールバック
+         */
         _this.onAnimationEnded = function () { };
         var textureCacheName = (win)
             ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin
@@ -45118,6 +45302,9 @@ var BattleResult = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(BattleResult, "resourceList", {
+        /**
+         * このエフェクトで使用するリソースリスト
+         */
         get: function () {
             return [
                 ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin,
@@ -45127,9 +45314,17 @@ var BattleResult = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     BattleResult.prototype.isDestroyed = function () {
         return this._destroyed;
     };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     BattleResult.prototype.update = function (_delta) {
         if (this.animationEnded) {
             return;
@@ -45176,10 +45371,19 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+/**
+ * 破壊時の爆発を表現するエフェクト
+ */
 var CollapseExplodeEffect = /** @class */ (function (_super) {
     __extends(CollapseExplodeEffect, _super);
+    /**
+     * コンストラクタ
+     */
     function CollapseExplodeEffect() {
         var _this = _super.call(this) || this;
+        /**
+         * 経過フレーム数
+         */
         _this.elapsedFrameCount = 0;
         _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.CollapseExplode(1));
         _this.sprite.anchor.set(0.5, 0.5);
@@ -45187,6 +45391,9 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(CollapseExplodeEffect, "resourceList", {
+        /**
+         * このエフェクトで使用するリソースリスト
+         */
         get: function () {
             return [
                 ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.CollapseExplode,
@@ -45196,20 +45403,28 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     CollapseExplodeEffect.prototype.isDestroyed = function () {
         return this._destroyed;
     };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     CollapseExplodeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
         if (this.elapsedFrameCount === 1) {
-            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Bomb);
+            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Bomb);
             if (sound) {
                 sound.play();
             }
         }
-        if (this.elapsedFrameCount % 4 === 0) {
-            var index = Math.floor(this.elapsedFrameCount / 4) + 1;
+        if (this.elapsedFrameCount % CollapseExplodeEffect.TextureFrameUpdateFrequency === 0) {
+            var index = Math.floor(this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency) + 1;
             if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.CollapseExplode)) {
                 this.sprite.destroy();
                 this.destroy();
@@ -45218,6 +45433,10 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
             this.sprite.texture = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.CollapseExplode(index);
         }
     };
+    /**
+     * スプライトアニメーションを更新する頻度
+     */
+    CollapseExplodeEffect.TextureFrameUpdateFrequency = 4;
     return CollapseExplodeEffect;
 }(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (CollapseExplodeEffect);
@@ -45253,10 +45472,19 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 var TO_RAD = Math.PI / 180.0;
+/**
+ * 死亡を表現するエフェクト
+ */
 var Dead = /** @class */ (function (_super) {
     __extends(Dead, _super);
+    /**
+     * コンストラクタ
+     */
     function Dead(flip) {
         var _this = _super.call(this) || this;
+        /**
+         * 経過フレーム数
+         */
         _this.elapsedFrameCount = 0;
         var textureCache = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache;
         var bucketTexture = textureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadBucket];
@@ -45279,19 +45507,29 @@ var Dead = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Dead, "resourceList", {
+        /**
+         * このエフェクトで使用するリソースリスト
+         */
         get: function () {
-            if (Dead.resourceListCache.length === 0) {
-                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadBucket);
-                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadSpirit);
-            }
-            return Dead.resourceListCache;
+            return [
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadBucket,
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadSpirit
+            ];
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     Dead.prototype.isDestroyed = function () {
         return this._destroyed;
     };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     Dead.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         // TODO: move to sub system
@@ -45333,7 +45571,6 @@ var Dead = /** @class */ (function (_super) {
             }
         }
     };
-    Dead.resourceListCache = [];
     return Dead;
 }(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (Dead);
@@ -45366,18 +45603,48 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+/**
+ * health 増減を表現するエフェクト
+ */
 var HealthGaugeEffect = /** @class */ (function (_super) {
     __extends(HealthGaugeEffect, _super);
+    /**
+     * コンストラクタ
+     */
     function HealthGaugeEffect(fromPercent, toPercent) {
         var _this = _super.call(this) || this;
+        /**
+         * ゲージの幅
+         */
         _this.gaugeWidth = 60;
+        /**
+         * ゲージの高さ
+         */
         _this.gaugeHeight = 8;
+        /**
+         * 最大 health の色
+         */
         _this.maxColor = 0xFF4444;
+        /**
+         * 現在の health の色
+         */
         _this.currentColor = 0xFFFF44;
+        /**
+         * 枠線の色
+         */
         _this.lineColor = 0x222222;
+        /**
+         * 経過フレーム数
+         */
         _this.elapsedFrameCount = 0;
+        /**
+         * 減少アニメーションのフレーム数
+         */
         _this.reducingFrameCount = 4;
-        _this.remainingFrameCount = 24;
+        /**
+         * 表示するフレーム数
+         */
+        _this.activeFrameCount = 24;
         _this.fromPercent = fromPercent;
         _this.toPercent = toPercent;
         _this.maxGraphic = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Graphics"]();
@@ -45392,15 +45659,26 @@ var HealthGaugeEffect = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(HealthGaugeEffect, "resourceList", {
+        /**
+         * このエフェクトで使用するリソースリスト
+         */
         get: function () {
             return [];
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
     HealthGaugeEffect.prototype.isDestroyed = function () {
         return this._destroyed;
     };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
     HealthGaugeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         if (this.elapsedFrameCount <= this.reducingFrameCount) {
@@ -45410,7 +45688,7 @@ var HealthGaugeEffect = /** @class */ (function (_super) {
             this.currentGraphic.beginFill(this.currentColor, 1);
             this.currentGraphic.drawRect(0, 0, this.gaugeWidth * currentPercent, this.gaugeHeight);
         }
-        else if (this.elapsedFrameCount > this.remainingFrameCount) {
+        else if (this.elapsedFrameCount > this.activeFrameCount) {
             this.maxGraphic.destroy();
             this.currentGraphic.destroy();
             this.destroy();
@@ -45436,25 +45714,48 @@ __webpack_require__.r(__webpack_exports__);
  * 拠点のパラメータ
  */
 var AttackableEntity = /** @class */ (function () {
+    /**
+     * コンストラクタ
+     */
     function AttackableEntity(isPlayer) {
         /**
          * プレイヤー側のユニットかどうか
          */
         this.isPlayer = true;
         /**
+         * ステート
+         */
+        this.state = 0;
+        /**
          * 現在のヒットポイント
          */
         this.currentHealth = 0;
+        /**
+         * 拠点からの距離
+         */
+        this.distance = 0;
+        /**
+         * ロック中のユニット
+         */
+        this.lockedEntity = null;
         this.isPlayer = isPlayer;
     }
+    /**
+     * 引数のエンティティが仲間かどうかを返す
+     */
     AttackableEntity.prototype.isAlly = function (target) {
         return ((this.isPlayer && target.isPlayer) ||
             (!this.isPlayer && !target.isPlayer));
     };
+    /**
+     * 引数のエンティティが敵対しているかどうかを返す
+     */
     AttackableEntity.prototype.isFoe = function (target) {
-        return ((this.isPlayer && !target.isPlayer) ||
-            (!this.isPlayer && target.isPlayer));
+        return !this.isAlly(target);
     };
+    /**
+     * health 値を引数で増減させる
+     */
     AttackableEntity.prototype.damage = function (value) {
         this.currentHealth -= value;
         return this.currentHealth;
@@ -45495,10 +45796,15 @@ var __extends = (undefined && undefined.__extends) || (function () {
  */
 var BaseEntity = /** @class */ (function (_super) {
     __extends(BaseEntity, _super);
+    /**
+     * コンストラクタ
+     */
     function BaseEntity(baseId, isPlayer) {
         var _this = _super.call(this, isPlayer) || this;
+        /**
+         * 拠点 ID
+         */
         _this.baseId = 0;
-        _this.state = 0;
         _this.baseId = baseId;
         return _this;
     }
@@ -45538,6 +45844,9 @@ var __extends = (undefined && undefined.__extends) || (function () {
  */
 var UnitEntity = /** @class */ (function (_super) {
     __extends(UnitEntity, _super);
+    /**
+     * コンストラクタ
+     */
     function UnitEntity(unitId, isPlayer) {
         var _this = _super.call(this, isPlayer) || this;
         /**
@@ -45549,18 +45858,6 @@ var UnitEntity = /** @class */ (function (_super) {
          * ユニットID
          */
         _this.unitId = 0;
-        /**
-         * ステート
-         */
-        _this.state = 0;
-        /**
-         * 拠点からの距離
-         */
-        _this.distance = 0;
-        /**
-         * ロック中のユニット
-         */
-        _this.lockedEntity = null;
         _this.unitId = unitId;
         return _this;
     }
@@ -45571,46 +45868,49 @@ var UnitEntity = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/enum/BaseState.ts":
-/*!*******************************!*\
-  !*** ./src/enum/BaseState.ts ***!
-  \*******************************/
+/***/ "./src/enum/AttackableState.ts":
+/*!*************************************!*\
+  !*** ./src/enum/AttackableState.ts ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /**
- * 拠点のステート
+ * バトルエンティティのステート
  */
-var BaseState = Object.freeze({
-    IDLE: 1,
-    DEAD: 2
-});
-/* harmony default export */ __webpack_exports__["default"] = (BaseState);
-
-
-/***/ }),
-
-/***/ "./src/enum/UnitState.ts":
-/*!*******************************!*\
-  !*** ./src/enum/UnitState.ts ***!
-  \*******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * ユニットのステート
- */
-var UnitState = Object.freeze({
+var AttackableState = Object.freeze({
     IDLE: 1,
     LOCKED: 2,
     DEAD: 3,
     WAIT: 4
 });
-/* harmony default export */ __webpack_exports__["default"] = (UnitState);
+/* harmony default export */ __webpack_exports__["default"] = (AttackableState);
+
+
+/***/ }),
+
+/***/ "./src/enum/BattleSceneState.ts":
+/*!**************************************!*\
+  !*** ./src/enum/BattleSceneState.ts ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * BattleScene のステート
+ */
+var BattleSceneState = Object.freeze({
+    LOADING_RESOURCES: 1,
+    RESOURCE_LOADED: 2,
+    READY: 3,
+    INGAME: 4,
+    FINISHED: 5
+});
+/* harmony default export */ __webpack_exports__["default"] = (BattleSceneState);
 
 
 /***/ }),
@@ -45631,6 +45931,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+/**
+ * ゲームの初期化処理
+ */
 function initGame() {
     var width = 1136;
     var height = 640;
@@ -45643,6 +45946,7 @@ function initGame() {
     });
     // 最初のシーンの読み込み
     managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_1__["default"]());
+    // コンソールからオブジェクトを調査できるように window に生やす
     Debug: {
         window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"];
     }
@@ -45675,424 +45979,6 @@ window.onload = function () {
         initGame();
     }
 };
-
-
-/***/ }),
-
-/***/ "./src/managers/BattleManager.ts":
-/*!***************************************!*\
-  !*** ./src/managers/BattleManager.ts ***!
-  \***************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var enum_BaseState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! enum/BaseState */ "./src/enum/BaseState.ts");
-/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
-/* harmony import */ var managers_BattleManagerDefaultDelegator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/BattleManagerDefaultDelegator */ "./src/managers/BattleManagerDefaultDelegator.ts");
-
-
-
-var INVALID_UNIT_ID = -1;
-var BASE_ENTITIES_PLAYER_INDEX = 0;
-var BASE_ENTITIES_AI_INDEX = 1;
-/**
- * ゲーム内バトルパートのマネージャ
- * ゲームロジックを中心に扱う
- * TODO: Although GameManager is singleton, BattleManager is expected to be used by creating instance.
- * So class name should be changed.
- */
-var BattleManager = /** @class */ (function () {
-    function BattleManager() {
-        /**
-         * フレームごとのコスト回復量
-         */
-        this.costRecoveryPerFrame = 0;
-        /**
-         * 利用可能コストの上限値
-         */
-        this.maxAvailableCost = 100;
-        /**
-         * BattleManagerDelegate 実装オブジェクト
-         */
-        this.delegator = new managers_BattleManagerDefaultDelegator__WEBPACK_IMPORTED_MODULE_2__["default"]();
-        /**
-         * 現在の利用可能なコスト
-         */
-        this.availableCost = 0;
-        /**
-         * 次に割り当てるユニットID
-         */
-        this.nextUnitId = 0;
-        /**
-         * 生成済みの Unit インスタンスを保持する配列
-         */
-        this.unitEntities = [];
-        /**
-         * 生成済みの Base インスタンスを保持する配列
-         */
-        this.baseEntities = [];
-        this.fieldMasterCache = null;
-        /**
-         * AIWaveMaster をキャッシュするための Map
-         */
-        this.aiWaveMasterCache = new Map();
-        /**
-         * UnitMaster をキャッシュするための Map
-         */
-        this.unitMasterCache = new Map();
-        /**
-         * BaseMaster をキャッシュするための Map
-         */
-        this.baseMasterCache = new Map();
-        /**
-         * 外部から生成をリクエストされたユニット情報を保持する配列
-         */
-        this.spawnRequestedUnitUnitIds = [];
-        /**
-         * 経過フレーム数
-         */
-        this.passedFrameCount = 0;
-        /**
-         * 勝敗が決まっているかどうか
-         */
-        this.isGameOver = false;
-    }
-    BattleManager.prototype.getFieldMaster = function () {
-        return this.fieldMasterCache;
-    };
-    BattleManager.prototype.getUnitMaster = function (unitId) {
-        return this.unitMasterCache.get(unitId) || null;
-    };
-    BattleManager.prototype.init = function (params) {
-        this.delegator = params.delegator;
-        this.aiWaveMasterCache.clear();
-        this.baseMasterCache.clear();
-        this.unitMasterCache.clear();
-        this.fieldMasterCache = params.fieldMaster;
-        var waves = params.aiWaveMaster.waves;
-        var keys = Object.keys(waves);
-        for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            this.aiWaveMasterCache.set(Number.parseInt(key), waves[key]);
-        }
-        for (var i = 0; i < params.unitMasters.length; i++) {
-            var unit = params.unitMasters[i];
-            this.unitMasterCache.set(unit.unitId, unit);
-        }
-        var playerBaseMaster = params.baseMasterMap.player;
-        var aiBaseMaster = params.baseMasterMap.ai;
-        this.baseMasterCache.set(playerBaseMaster.baseId, playerBaseMaster);
-        this.baseMasterCache.set(aiBaseMaster.baseId, aiBaseMaster);
-        var playerBase = this.delegator.spawnBaseEntity(playerBaseMaster.baseId, true);
-        var aiBase = this.delegator.spawnBaseEntity(aiBaseMaster.baseId, false);
-        if (!playerBase || !aiBase) {
-            throw new Error('base could not be initialized');
-        }
-        playerBase.currentHealth = playerBaseMaster.maxHealth;
-        aiBase.currentHealth = aiBaseMaster.maxHealth;
-        this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBase;
-        this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBase;
-    };
-    BattleManager.prototype.setDelegator = function (delegator) {
-        this.delegator = delegator;
-    };
-    /**
-     * Unit 生成をリクエストする
-     */
-    BattleManager.prototype.requestSpawn = function (unitId, isPlayer) {
-        this.spawnRequestedUnitUnitIds.push({ unitId: unitId, isPlayer: isPlayer });
-    };
-    /**
-     * Unit 生成をリクエストする
-     * プレイヤーユニット生成リクエストのシュガー
-     */
-    BattleManager.prototype.requestSpawnPlayer = function (unitId) {
-        this.requestSpawn(unitId, true);
-    };
-    /**
-     * Unit 生成をリクエストする
-     * AIユニット生成リクエストのシュガー
-     */
-    BattleManager.prototype.requestSpawnAI = function (unitId) {
-        this.requestSpawn(unitId, false);
-    };
-    /**
-     * 渡された Unit が、ロジック上死亡扱いであるかどうかを返す
-     */
-    BattleManager.prototype.isDied = function (unit) {
-        return unit.id === INVALID_UNIT_ID;
-    };
-    /**
-     * ゲーム更新処理
-     * 外部から任意のタイミングでコールする
-     */
-    BattleManager.prototype.update = function (_delta) {
-        if (!this.isGameOver) {
-            this.updateGameOver();
-            this.refreshAvailableCost(this.availableCost + this.costRecoveryPerFrame);
-            this.requestAISpawn(this.passedFrameCount);
-            this.updateSpawnRequest();
-            this.updateParameter();
-            this.updateUnitState();
-            this.updateBaseState();
-        }
-        var activeUnitEntities = [];
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (!this.isDied(entity)) {
-                activeUnitEntities.push(entity);
-            }
-        }
-        this.unitEntities = activeUnitEntities;
-        this.passedFrameCount++;
-    };
-    /**
-     * Unit のパラメータを更新する
-     * ステートは全てのパラメータが変化した後に更新する
-     */
-    BattleManager.prototype.updateParameter = function () {
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            this.updateDamage(this.unitEntities[i]);
-            this.updateDistance(this.unitEntities[i]);
-        }
-    };
-    /**
-     * Unit のステートを更新する
-     * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
-     */
-    BattleManager.prototype.updateUnitState = function () {
-        var unitStates = [];
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            unitStates.push(this.unitEntities[i].state);
-        }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (entity.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD) {
-                this.updateUnitDeadState(entity);
-            }
-        }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (entity.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED) {
-                this.updateUnitLockedState(entity);
-            }
-        }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (entity.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE) {
-                this.updateUnitIdleState(entity);
-            }
-        }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            var oldState = unitStates[i];
-            if (oldState !== entity.state) {
-                this.delegator.onUnitStateChanged(entity, oldState);
-            }
-        }
-    };
-    /**
-     * BaseEntity のステートを更新する
-     */
-    BattleManager.prototype.updateBaseState = function () {
-        var entity;
-        // AI のステートを先に評価、同一フレーム内で引き分けた場合はプレーヤーの勝利
-        entity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
-        if (entity.state !== enum_BaseState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD && entity.currentHealth <= 0) {
-            entity.state = enum_BaseState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
-            this.delegator.onBaseStateChanged(entity, enum_BaseState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE);
-            return;
-        }
-        entity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
-        if (entity.state !== enum_BaseState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD && entity.currentHealth <= 0) {
-            entity.state = enum_BaseState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
-            this.delegator.onBaseStateChanged(entity, enum_BaseState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE);
-            return;
-        }
-    };
-    BattleManager.prototype.updateDamage = function (unit) {
-        if (!unit.lockedEntity) {
-            return;
-        }
-        var master = this.unitMasterCache.get(unit.unitId);
-        if (!master) {
-            return;
-        }
-        if (this.delegator.shouldDamage(unit, unit.lockedEntity)) {
-            unit.lockedEntity.currentHealth = unit.lockedEntity.currentHealth - master.power;
-            this.delegator.onAttackableEntityHealthUpdated(unit, unit.lockedEntity, unit.lockedEntity.currentHealth + master.power, unit.lockedEntity.currentHealth, master.maxHealth);
-        }
-    };
-    BattleManager.prototype.updateDistance = function (unit) {
-        if (unit.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE) {
-            return;
-        }
-        var master = this.unitMasterCache.get(unit.unitId);
-        if (!master) {
-            return;
-        }
-        if (this.delegator.shouldUnitWalk(unit)) {
-            unit.distance += master.speed;
-        }
-    };
-    BattleManager.prototype.updateUnitDeadState = function (_unit) {
-        // NOOP
-    };
-    BattleManager.prototype.updateUnitLockedState = function (unit) {
-        // ロック解除判定
-        if (unit.lockedEntity && unit.lockedEntity.currentHealth <= 0) {
-            unit.lockedEntity = null;
-            unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
-        }
-        // 自身の DEAD 判定
-        if (unit.currentHealth <= 0) {
-            unit.id = INVALID_UNIT_ID;
-            unit.lockedEntity = null;
-            unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD;
-        }
-    };
-    BattleManager.prototype.updateUnitIdleState = function (unit) {
-        // lock against foe unit first
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var target = this.unitEntities[i];
-            if (unit.isAlly(target)) {
-                continue;
-            }
-            if (target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE && target.state !== enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED) {
-                continue;
-            }
-            if (this.delegator.shouldLockUnit(unit, target)) {
-                unit.lockedEntity = target;
-                unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED;
-                break;
-            }
-        }
-        // the lock against base
-        if (!unit.lockedEntity) {
-            if (unit.isPlayer) {
-                var baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
-                if (this.delegator.shouldLockBase(unit, baseEntity)) {
-                    unit.lockedEntity = baseEntity;
-                    unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED;
-                }
-            }
-            else {
-                var baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
-                if (this.delegator.shouldLockBase(unit, baseEntity)) {
-                    unit.lockedEntity = baseEntity;
-                    unit.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].LOCKED;
-                }
-            }
-        }
-    };
-    BattleManager.prototype.updateGameOver = function () {
-        var isPlayerWon = this.baseEntities[BASE_ENTITIES_AI_INDEX].currentHealth <= 0;
-        var isEnemyWon = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX].currentHealth <= 0;
-        this.isGameOver = (isPlayerWon || isEnemyWon);
-        if (this.isGameOver) {
-            for (var i = 0; i < this.unitEntities.length; i++) {
-                var entity = this.unitEntities[i];
-                entity.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
-            }
-            this.delegator.onGameOver(isPlayerWon);
-        }
-    };
-    BattleManager.prototype.requestAISpawn = function (targetFrame) {
-        var waves = this.aiWaveMasterCache.get(targetFrame);
-        if (!waves) {
-            return;
-        }
-        for (var i = 0; i < waves.length; i++) {
-            var unitId = waves[i].unitId;
-            this.requestSpawnAI(unitId);
-        }
-    };
-    /**
-     * 受け付けた Unit 生成リクエストを処理する
-     * プレイヤーユニットの場合はコストを消費し、Unit 生成を試みる
-     * コストが足りなければ何もしない
-     */
-    BattleManager.prototype.updateSpawnRequest = function () {
-        if (this.spawnRequestedUnitUnitIds.length === 0) {
-            return;
-        }
-        var tmpCost = this.availableCost;
-        for (var i = 0; i < this.spawnRequestedUnitUnitIds.length; i++) {
-            var reservedUnit = this.spawnRequestedUnitUnitIds[i];
-            var master = this.unitMasterCache.get(reservedUnit.unitId);
-            if (!master) {
-                continue;
-            }
-            var baseEntity = void 0;
-            if (reservedUnit.isPlayer) {
-                if ((tmpCost - master.cost) < 0) {
-                    continue;
-                }
-                tmpCost -= master.cost;
-                baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
-            }
-            else {
-                baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
-            }
-            var entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, baseEntity, reservedUnit.isPlayer);
-            if (entity) {
-                entity.id = this.nextUnitId++;
-                entity.currentHealth = master.maxHealth;
-                entity.state = enum_UnitState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
-                this.unitEntities.push(entity);
-            }
-        }
-        this.refreshAvailableCost(tmpCost);
-        this.spawnRequestedUnitUnitIds = [];
-    };
-    /**
-     * 利用可能なコストを更新し、専用のコールバックをコールする
-     */
-    BattleManager.prototype.refreshAvailableCost = function (newCost) {
-        if (newCost > this.maxAvailableCost) {
-            newCost = this.maxAvailableCost;
-        }
-        this.availableCost = newCost;
-        this.delegator.onAvailableCostUpdated(this.availableCost);
-        return this.availableCost;
-    };
-    return BattleManager;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (BattleManager);
-
-
-/***/ }),
-
-/***/ "./src/managers/BattleManagerDefaultDelegator.ts":
-/*!*******************************************************!*\
-  !*** ./src/managers/BattleManagerDefaultDelegator.ts ***!
-  \*******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-var DefaultDelegator = /** @class */ (function () {
-    function DefaultDelegator() {
-    }
-    DefaultDelegator.prototype.spawnBaseEntity = function (_baseId, _isPlayer) { return null; };
-    ;
-    DefaultDelegator.prototype.spawnUnitEntity = function (_unitId, _baseEntity, _isPlayer) { return null; };
-    ;
-    DefaultDelegator.prototype.onBaseStateChanged = function (_base, _oldState) { };
-    DefaultDelegator.prototype.onUnitStateChanged = function (_unit, _oldState) { };
-    DefaultDelegator.prototype.onAttackableEntityHealthUpdated = function (_attacker, _target, _fromHealth, _toHealth, _maxHealth) { };
-    DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
-    DefaultDelegator.prototype.onGameOver = function (_isPlayerWon) { };
-    DefaultDelegator.prototype.shouldLockUnit = function (_attacker, _target) { return true; };
-    DefaultDelegator.prototype.shouldLockBase = function (_attacker, _target) { return true; };
-    DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) { return true; };
-    DefaultDelegator.prototype.shouldUnitWalk = function (_unit) { return true; };
-    return DefaultDelegator;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (DefaultDelegator);
 
 
 /***/ }),
@@ -46199,6 +46085,9 @@ var GameManager = /** @class */ (function () {
             });
         }
     };
+    /**
+     * HTML canvas のりサイズ処理を行う
+     */
     GameManager.resizeCanvas = function () {
         var game = GameManager.instance.game;
         var renderer = game.renderer;
@@ -46249,22 +46138,46 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var SUPPORTED_EXTENSIONS = ['mp3'];
+/**
+ * サウンドを扱う
+ * Sound の高級機能
+ */
 var SoundManager = /** @class */ (function () {
+    /**
+     * コンストラクタ
+     */
     function SoundManager() {
+        /**
+         * 一時停止中かどうかのフラグ
+         */
         this.paused = false;
+        /**
+         * フェー風土処理後に削除する Sound インスタンスのリスト
+         */
         this.soundsKillingAfterFade = [];
+        /**
+         * SoundManager で監理している Sound インスタンスの Map
+         */
         this.managedSounds = new Map();
         if (SoundManager.instance) {
             throw new Error('soSoundManager can not be initialized twice');
         }
     }
     Object.defineProperty(SoundManager, "sharedContext", {
+        /**
+         * AudioCntext インスタンスのゲッタ
+         * ブラウザによっては生成数に上限があるため、SoundManager では単一のインスタンスのみ生成する
+         */
         get: function () {
             return SoundManager.context;
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * 初期化処理
+     * ユーザで生成した AudioContext を渡すこともできる
+     */
     SoundManager.init = function (ctx) {
         if (SoundManager.instance) {
             return;
@@ -46279,6 +46192,9 @@ var SoundManager = /** @class */ (function () {
         SoundManager.setSoundInitializeEvent(browser);
         SoundManager.setWindowLifeCycleEvent(browser);
     };
+    /**
+     * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
+     */
     SoundManager.addLoaderMiddleware = function (browser) {
         if (SoundManager.loaderMiddlewareAdded) {
             return;
@@ -46308,16 +46224,28 @@ var SoundManager = /** @class */ (function () {
         });
         SoundManager.loaderMiddlewareAdded = true;
     };
+    /**
+     * オーディオデータのデコード処理
+     */
     SoundManager.decodeAudio = function (binary, callback) {
         if (SoundManager.sharedContext) {
             SoundManager.sharedContext.decodeAudioData(binary, callback);
         }
     };
+    /**
+     * オーディオデータのデコード処理
+     * ブラウザ種別やバージョンによっては I/F が異なるため、こちらを使う必要がある
+     */
     SoundManager.decodeAudioWithPromise = function (binary, callback) {
         if (SoundManager.sharedContext) {
             SoundManager.sharedContext.decodeAudioData(binary).then(callback);
         }
     };
+    /**
+     * サウンドを初期化するためのイベントを登録する
+     * 多くのブラウザではタップ等のユーザ操作を行わないとサウンドを再生できない
+     * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
+     */
     SoundManager.setSoundInitializeEvent = function (browser) {
         var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
         var soundInitializer;
@@ -46347,85 +46275,562 @@ var SoundManager = /** @class */ (function () {
         }
         document.body.addEventListener(eventName, soundInitializer);
     };
+    /**
+     * HTML window のライフサイクルイベントを登録する
+     * ブラウザのタブ切り替えや非アクティヴ時に音声が鳴ってしまわないようにする
+     */
     SoundManager.setWindowLifeCycleEvent = function (browser) {
         if (browser.name === 'safari') {
             document.addEventListener('webkitvisibilitychange', function () {
-                document.webkitHidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+                document.webkitHidden ? SoundManager.pause() : SoundManager.resume();
             });
         }
         else {
             document.addEventListener('visibilitychange', function () {
-                document.hidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+                document.hidden ? SoundManager.pause() : SoundManager.resume();
             });
         }
     };
-    SoundManager.prototype.registerSound = function (name, sound) {
-        this.managedSounds.set(name, sound);
+    /**
+     * 渡された Sound インスタンスを渡された名前に紐つけて SoundManager 管理下にする
+     */
+    SoundManager.registerSound = function (name, sound) {
+        SoundManager.instance.managedSounds.set(name, sound);
     };
-    SoundManager.prototype.unregisterSound = function (name) {
-        this.managedSounds.delete(name);
+    /**
+     * 渡された名前に紐ついている Sound インスタンスを SoundManager 管理下からはずす
+     */
+    SoundManager.unregisterSound = function (name) {
+        SoundManager.instance.managedSounds.delete(name);
     };
-    SoundManager.prototype.createSound = function (name, buf) {
+    /**
+     * Sound インスタンスを SoundManager 管理下として生成し返却する
+     */
+    SoundManager.createSound = function (name, buf) {
         var sound = new modules_Sound__WEBPACK_IMPORTED_MODULE_1__["default"](buf);
-        this.registerSound(name, sound);
+        SoundManager.registerSound(name, sound);
         return sound;
     };
-    SoundManager.prototype.getSound = function (name) {
-        return this.managedSounds.get(name);
+    /**
+     * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスを返す
+     */
+    SoundManager.getSound = function (name) {
+        return SoundManager.instance.managedSounds.get(name);
     };
-    SoundManager.prototype.hasSound = function (name) {
-        return this.managedSounds.has(name);
+    /**
+     * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスの存在有無を返す
+     */
+    SoundManager.hasSound = function (name) {
+        return SoundManager.instance.managedSounds.has(name);
     };
-    SoundManager.prototype.destroySound = function (name) {
+    /**
+     * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスを破棄する
+     */
+    SoundManager.destroySound = function (name) {
         var sound = this.getSound(name);
-        this.unregisterSound(name);
+        SoundManager.unregisterSound(name);
         if (sound) {
             sound.stop();
         }
     };
-    SoundManager.prototype.pause = function () {
-        if (this.paused) {
+    /**
+     * 管理下の Sound インスタンスをすべて一時停止する
+     */
+    SoundManager.pause = function () {
+        var instance = SoundManager.instance;
+        if (instance.paused) {
             return;
         }
-        this.paused = true;
-        this.managedSounds.forEach(function (sound) { return sound.pause(); });
+        instance.paused = true;
+        instance.managedSounds.forEach(function (sound) { return sound.pause(); });
     };
-    SoundManager.prototype.resume = function () {
-        if (!this.paused) {
+    /**
+     * 管理下の Sound インスタンスの再生をすべて再開する
+     */
+    SoundManager.resume = function () {
+        var instance = SoundManager.instance;
+        if (!instance.paused) {
             return;
         }
-        this.paused = false;
-        this.managedSounds.forEach(function (sound) { return sound.resume(); });
+        instance.paused = false;
+        instance.managedSounds.forEach(function (sound) { return sound.resume(); });
     };
-    SoundManager.prototype.fade = function (sound, targetVolume, seconds, stopOnEnd) {
+    /**
+     * フェード処理を行う
+     */
+    SoundManager.fade = function (sound, targetVolume, seconds, stopOnEnd) {
         if (stopOnEnd === void 0) { stopOnEnd = false; }
         if (!SoundManager.sharedContext) {
             return;
         }
         sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, SoundManager.sharedContext.currentTime + seconds);
         if (stopOnEnd) {
-            this.soundsKillingAfterFade.push({ sound: sound, targetVolume: targetVolume });
+            SoundManager.instance.soundsKillingAfterFade.push({ sound: sound, targetVolume: targetVolume });
         }
     };
-    SoundManager.prototype.update = function (_dt) {
-        if (this.paused) {
-            return;
-        }
-        for (var i = 0; i < this.soundsKillingAfterFade.length; i++) {
-            var soundData = this.soundsKillingAfterFade[i];
-            if (!soundData.sound.gainNode) {
-                continue;
-            }
-            if (soundData.targetVolume === soundData.sound.gainNode.gain.value) {
-                soundData.sound.stop();
-            }
-        }
-    };
+    /**
+     * AudioCntext インスタンス
+     */
     SoundManager.context = null;
+    /**
+     * PIXI.Loader ミドルウェアが登録済みかどうかのフラグ
+     */
     SoundManager.loaderMiddlewareAdded = false;
     return SoundManager;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (SoundManager);
+
+
+/***/ }),
+
+/***/ "./src/modules/BattleLogic.ts":
+/*!************************************!*\
+  !*** ./src/modules/BattleLogic.ts ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! enum/AttackableState */ "./src/enum/AttackableState.ts");
+/* harmony import */ var modules_BattleLogicDefaultDelegator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/BattleLogicDefaultDelegator */ "./src/modules/BattleLogicDefaultDelegator.ts");
+
+
+var INVALID_UNIT_ID = -1;
+var BASE_ENTITIES_PLAYER_INDEX = 0;
+var BASE_ENTITIES_AI_INDEX = 1;
+/**
+ * ゲーム内バトルパートのマネージャ
+ * ゲームロジックを中心に扱う
+ */
+var BattleLogic = /** @class */ (function () {
+    function BattleLogic() {
+        /**
+         * フレームごとのコスト回復量
+         */
+        this.costRecoveryPerFrame = 0;
+        /**
+         * 利用可能コストの上限値
+         */
+        this.maxAvailableCost = 100;
+        /**
+         * BattleLogicDelegate 実装オブジェクト
+         */
+        this.delegator = new modules_BattleLogicDefaultDelegator__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        /**
+         * 現在の利用可能なコスト
+         */
+        this.availableCost = 0;
+        /**
+         * 次に割り当てるユニットID
+         */
+        this.nextUnitId = 0;
+        /**
+         * 生成済みの Unit インスタンスを保持する配列
+         */
+        this.unitEntities = [];
+        /**
+         * 生成済みの Base インスタンスを保持する配列
+         */
+        this.baseEntities = [];
+        /**
+         * フィールドマスタのキャッシュ
+         */
+        this.fieldMasterCache = null;
+        /**
+         * AIWaveMaster をキャッシュするための Map
+         */
+        this.aiWaveMasterCache = new Map();
+        /**
+         * UnitMaster をキャッシュするための Map
+         */
+        this.unitMasterCache = new Map();
+        /**
+         * BaseMaster をキャッシュするための Map
+         */
+        this.baseMasterCache = new Map();
+        /**
+         * 外部から生成をリクエストされたユニット情報を保持する配列
+         */
+        this.spawnRequestedUnitUnitIds = [];
+        /**
+         * 経過フレーム数
+         */
+        this.passedFrameCount = 0;
+        /**
+         * 勝敗が決まっているかどうか
+         */
+        this.isGameOver = false;
+    }
+    BattleLogic.prototype.getFieldMaster = function () {
+        return this.fieldMasterCache;
+    };
+    BattleLogic.prototype.getUnitMaster = function (unitId) {
+        return this.unitMasterCache.get(unitId) || null;
+    };
+    /**
+     * デリゲータとマスタ情報で初期化
+     */
+    BattleLogic.prototype.init = function (params) {
+        // デリゲータのセット
+        this.delegator = params.delegator;
+        // キャッシュクリア
+        this.aiWaveMasterCache.clear();
+        this.baseMasterCache.clear();
+        this.unitMasterCache.clear();
+        // マスターのキャッシュ処理
+        this.fieldMasterCache = params.fieldMaster;
+        var waves = params.aiWaveMaster.waves;
+        var keys = Object.keys(waves);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            this.aiWaveMasterCache.set(Number.parseInt(key), waves[key]);
+        }
+        for (var i = 0; i < params.unitMasters.length; i++) {
+            var unit = params.unitMasters[i];
+            this.unitMasterCache.set(unit.unitId, unit);
+        }
+        var playerBaseMaster = params.baseMasterMap.player;
+        var aiBaseMaster = params.baseMasterMap.ai;
+        this.baseMasterCache.set(playerBaseMaster.baseId, playerBaseMaster);
+        this.baseMasterCache.set(aiBaseMaster.baseId, aiBaseMaster);
+        // 拠点エンティティの生成リクエスト
+        var playerBase = this.delegator.spawnBaseEntity(playerBaseMaster.baseId, true);
+        var aiBase = this.delegator.spawnBaseEntity(aiBaseMaster.baseId, false);
+        if (!playerBase || !aiBase) {
+            throw new Error('base could not be initialized');
+        }
+        // 拠点エンティティの health 設定
+        playerBase.currentHealth = playerBaseMaster.maxHealth;
+        aiBase.currentHealth = aiBaseMaster.maxHealth;
+        // 拠点エンティティの保持
+        this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBase;
+        this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBase;
+    };
+    /**
+     * Unit 生成をリクエストする
+     */
+    BattleLogic.prototype.requestSpawn = function (unitId, isPlayer) {
+        this.spawnRequestedUnitUnitIds.push({ unitId: unitId, isPlayer: isPlayer });
+    };
+    /**
+     * Unit 生成をリクエストする
+     * プレイヤーユニット生成リクエストのシュガー
+     */
+    BattleLogic.prototype.requestSpawnPlayer = function (unitId) {
+        this.requestSpawn(unitId, true);
+    };
+    /**
+     * Unit 生成をリクエストする
+     * AIユニット生成リクエストのシュガー
+     */
+    BattleLogic.prototype.requestSpawnAI = function (unitId) {
+        this.requestSpawn(unitId, false);
+    };
+    /**
+     * 渡された Unit が、ロジック上死亡扱いであるかどうかを返す
+     */
+    BattleLogic.prototype.isDied = function (unit) {
+        return unit.id === INVALID_UNIT_ID;
+    };
+    /**
+     * ゲーム更新処理
+     * 外部から任意のタイミングでコールする
+     */
+    BattleLogic.prototype.update = function (_delta) {
+        if (!this.isGameOver) {
+            // ゲーム終了判定
+            this.updateGameOver();
+            // コスト回復
+            this.updateAvailableCost(this.availableCost + this.costRecoveryPerFrame);
+            // AI ユニットの生成リクエスト発行
+            this.requestAISpawn(this.passedFrameCount);
+            // リクエストされているユニット生成実行
+            this.updateSpawnRequest();
+            // エンティティパラメータの更新
+            this.updateEntityParameter();
+            // エンティティのステート変更
+            this.updateEntityState();
+        }
+        // unitEntities 配列の圧縮
+        var activeUnitEntities = [];
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            var entity = this.unitEntities[i];
+            if (!this.isDied(entity)) {
+                activeUnitEntities.push(entity);
+            }
+        }
+        this.unitEntities = activeUnitEntities;
+        this.passedFrameCount++;
+    };
+    /**
+     * Unit のパラメータを更新する
+     * ステートは全てのパラメータが変化した後に更新する
+     */
+    BattleLogic.prototype.updateEntityParameter = function () {
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            this.updateDamage(this.unitEntities[i]);
+            this.updateDistance(this.unitEntities[i]);
+        }
+    };
+    /**
+     * エンティティのステートを更新する
+     * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
+     * ユニット毎に処理を行うとステートを条件にした処理結果が
+     * タイミングによって異なってしまうのでステート毎に処理を行う
+     */
+    BattleLogic.prototype.updateEntityState = function () {
+        // ステートの変化をコールバックするために古いステートを保持するコンテナ
+        var unitStates = [];
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            unitStates.push(this.unitEntities[i].state);
+        }
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            var entity = this.unitEntities[i];
+            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD) {
+                this.updateUnitDeadState(entity);
+            }
+        }
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            var entity = this.unitEntities[i];
+            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
+                this.updateUnitLockedState(entity);
+            }
+        }
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            var entity = this.unitEntities[i];
+            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE) {
+                this.updateUnitIdleState(entity);
+            }
+        }
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            var entity = this.unitEntities[i];
+            var oldState = unitStates[i];
+            if (oldState !== entity.state) {
+                this.delegator.onAttackableEntityStateChanged(entity, oldState);
+            }
+        }
+        // 拠点のステート操作
+        // AI のステートを先に評価、同一フレーム内で引き分けた場合はプレーヤーの勝利
+        var base = this.baseEntities[BASE_ENTITIES_AI_INDEX];
+        if (base.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD && base.currentHealth <= 0) {
+            var oldState = base.state;
+            base.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
+            this.delegator.onAttackableEntityStateChanged(base, oldState);
+        }
+        else {
+            base = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
+            if (base.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD && base.currentHealth <= 0) {
+                var oldState = base.state;
+                base.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
+                this.delegator.onAttackableEntityStateChanged(base, oldState);
+            }
+        }
+    };
+    /**
+     * ダメージ判定を行い、必要なら health を上限させる
+     */
+    BattleLogic.prototype.updateDamage = function (unit) {
+        if (!unit.lockedEntity) {
+            return;
+        }
+        var master = this.unitMasterCache.get(unit.unitId);
+        if (!master) {
+            return;
+        }
+        if (this.delegator.shouldDamage(unit, unit.lockedEntity)) {
+            unit.lockedEntity.currentHealth = unit.lockedEntity.currentHealth - master.power;
+            this.delegator.onAttackableEntityHealthUpdated(unit, unit.lockedEntity, unit.lockedEntity.currentHealth + master.power, unit.lockedEntity.currentHealth, master.maxHealth);
+        }
+    };
+    /**
+     * 移動可能か判定し、可能なら移動させる
+     */
+    BattleLogic.prototype.updateDistance = function (unit) {
+        if (unit.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE) {
+            return;
+        }
+        var master = this.unitMasterCache.get(unit.unitId);
+        if (!master) {
+            return;
+        }
+        if (this.delegator.shouldUnitWalk(unit)) {
+            unit.distance += master.speed;
+        }
+    };
+    /**
+     * 死亡時のステート更新処理
+     */
+    BattleLogic.prototype.updateUnitDeadState = function (_unit) {
+        // NOOP
+    };
+    /**
+     * 接敵時のステート更新処理
+     */
+    BattleLogic.prototype.updateUnitLockedState = function (unit) {
+        // ロック解除判定
+        if (unit.lockedEntity && unit.lockedEntity.currentHealth <= 0) {
+            unit.lockedEntity = null;
+            unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
+        }
+        // 自身の DEAD 判定
+        if (unit.currentHealth <= 0) {
+            unit.id = INVALID_UNIT_ID;
+            unit.lockedEntity = null;
+            unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
+        }
+    };
+    /**
+     * 何もしていない状態でのステート更新処理
+     */
+    BattleLogic.prototype.updateUnitIdleState = function (unit) {
+        // ユニットに対しての接敵判定、ユニットを無視して拠点に攻撃させない
+        for (var i = 0; i < this.unitEntities.length; i++) {
+            var target = this.unitEntities[i];
+            if (unit.isAlly(target)) {
+                continue;
+            }
+            if (target.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE && target.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED) {
+                continue;
+            }
+            if (this.delegator.shouldLockAttackableEntity(unit, target)) {
+                unit.lockedEntity = target;
+                unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
+                break;
+            }
+        }
+        // 拠点に対しての接敵判定
+        if (!unit.lockedEntity) {
+            if (unit.isPlayer) {
+                var baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
+                if (this.delegator.shouldLockAttackableEntity(unit, baseEntity)) {
+                    unit.lockedEntity = baseEntity;
+                    unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
+                }
+            }
+            else {
+                var baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
+                if (this.delegator.shouldLockAttackableEntity(unit, baseEntity)) {
+                    unit.lockedEntity = baseEntity;
+                    unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].LOCKED;
+                }
+            }
+        }
+    };
+    /**
+     * バトル状況かたゲーム終了かどうかを判断する
+     */
+    BattleLogic.prototype.updateGameOver = function () {
+        var isPlayerWon = this.baseEntities[BASE_ENTITIES_AI_INDEX].currentHealth <= 0;
+        var isEnemyWon = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX].currentHealth <= 0;
+        this.isGameOver = (isPlayerWon || isEnemyWon);
+        if (this.isGameOver) {
+            for (var i = 0; i < this.unitEntities.length; i++) {
+                var entity = this.unitEntities[i];
+                entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
+            }
+            this.delegator.onGameOver(isPlayerWon);
+        }
+    };
+    /**
+     * 必要であれば AI ユニットを生成させる
+     */
+    BattleLogic.prototype.requestAISpawn = function (targetFrame) {
+        var waves = this.aiWaveMasterCache.get(targetFrame);
+        if (!waves) {
+            return;
+        }
+        for (var i = 0; i < waves.length; i++) {
+            var unitId = waves[i].unitId;
+            this.requestSpawnAI(unitId);
+        }
+    };
+    /**
+     * 受け付けた Unit 生成リクエストを処理する
+     * プレイヤーユニットの場合はコストを消費し、Unit 生成を試みる
+     * コストが足りなければ何もしない
+     */
+    BattleLogic.prototype.updateSpawnRequest = function () {
+        if (this.spawnRequestedUnitUnitIds.length === 0) {
+            return;
+        }
+        var tmpCost = this.availableCost;
+        for (var i = 0; i < this.spawnRequestedUnitUnitIds.length; i++) {
+            var reservedUnit = this.spawnRequestedUnitUnitIds[i];
+            var master = this.unitMasterCache.get(reservedUnit.unitId);
+            if (!master) {
+                continue;
+            }
+            var baseEntity = void 0;
+            if (reservedUnit.isPlayer) {
+                if ((tmpCost - master.cost) < 0) {
+                    continue;
+                }
+                tmpCost -= master.cost;
+                baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
+            }
+            else {
+                baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
+            }
+            var entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, baseEntity, reservedUnit.isPlayer);
+            if (entity) {
+                entity.id = this.nextUnitId++;
+                entity.currentHealth = master.maxHealth;
+                entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
+                this.unitEntities.push(entity);
+            }
+        }
+        this.updateAvailableCost(tmpCost);
+        this.spawnRequestedUnitUnitIds = [];
+    };
+    /**
+     * 利用可能なコストを更新し、専用のコールバックをコールする
+     */
+    BattleLogic.prototype.updateAvailableCost = function (newCost) {
+        if (newCost > this.maxAvailableCost) {
+            newCost = this.maxAvailableCost;
+        }
+        this.availableCost = newCost;
+        this.delegator.onAvailableCostUpdated(this.availableCost);
+        return this.availableCost;
+    };
+    return BattleLogic;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (BattleLogic);
+
+
+/***/ }),
+
+/***/ "./src/modules/BattleLogicDefaultDelegator.ts":
+/*!****************************************************!*\
+  !*** ./src/modules/BattleLogicDefaultDelegator.ts ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * BattleLogicDelegate のデフォルト実装
+ * 基本的には何もしない
+ */
+var DefaultDelegator = /** @class */ (function () {
+    function DefaultDelegator() {
+    }
+    DefaultDelegator.prototype.spawnBaseEntity = function (_baseId, _isPlayer) { return null; };
+    ;
+    DefaultDelegator.prototype.spawnUnitEntity = function (_unitId, _baseEntity, _isPlayer) { return null; };
+    ;
+    DefaultDelegator.prototype.onAttackableEntityStateChanged = function (_entity, _oldState) { };
+    DefaultDelegator.prototype.onAttackableEntityHealthUpdated = function (_attacker, _target, _fromHealth, _toHealth, _maxHealth) { };
+    DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
+    DefaultDelegator.prototype.onGameOver = function (_isPlayerWon) { };
+    DefaultDelegator.prototype.shouldLockAttackableEntity = function (_attacker, _target) { return true; };
+    DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) { return true; };
+    DefaultDelegator.prototype.shouldUnitWalk = function (_unit) { return true; };
+    return DefaultDelegator;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (DefaultDelegator);
 
 
 /***/ }),
@@ -46441,13 +46846,38 @@ var SoundManager = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
 
+/**
+ * サウンド処理を行うクラス
+ */
 var Sound = /** @class */ (function () {
+    /**
+     * コンストラクタ
+     * AudioBuffer はユーザ側で用意する
+     */
     function Sound(buf) {
+        /**
+         * ループ再生フラグ
+         */
         this.loop = false;
+        /**
+         * AudioBufferSourceNode インスタンス
+         */
         this.source = null;
+        /**
+         * 再生開始フラグ
+         */
         this.played = false;
+        /**
+         * 一時停止フラグ
+         */
         this.paused = false;
+        /**
+         * サウンド再生開始時間オフセット
+         */
         this.offset = 0;
+        /**
+         * AudioContext インスタンスの currentTime を基準に保持する再生開始時間
+         */
         this.playedAt = 0;
         if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext) {
             return;
@@ -46456,9 +46886,15 @@ var Sound = /** @class */ (function () {
         this.gainNode = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.createGain();
     }
     Object.defineProperty(Sound.prototype, "volume", {
+        /**
+         * ボリュームのゲッタ
+         */
         get: function () {
             return this.gainNode ? this.gainNode.gain.value : -1;
         },
+        /**
+         * ボリュームのセッタ
+         */
         set: function (value) {
             if (this.gainNode) {
                 this.gainNode.gain.value = value;
@@ -46468,6 +46904,9 @@ var Sound = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Sound.prototype, "elapsedTime", {
+        /**
+         * サウンド再生時間を返す
+         */
         get: function () {
             if (this.paused) {
                 return this.offset;
@@ -46489,6 +46928,9 @@ var Sound = /** @class */ (function () {
         configurable: true
     });
     ;
+    /**
+     * 再生開始
+     */
     Sound.prototype.play = function (loop, offset) {
         var _this = this;
         if (loop === void 0) { loop = false; }
@@ -46511,6 +46953,9 @@ var Sound = /** @class */ (function () {
         this.paused = false;
         this.played = true;
     };
+    /**
+     * 停止
+     */
     Sound.prototype.stop = function () {
         if (!this.source || !this.played) {
             return;
@@ -46526,6 +46971,9 @@ var Sound = /** @class */ (function () {
         this.source = null;
         this.paused = false;
     };
+    /**
+     * 一時停止
+     */
     Sound.prototype.pause = function () {
         if (this.paused || !this.played) {
             return;
@@ -46534,6 +46982,9 @@ var Sound = /** @class */ (function () {
         this.stop();
         this.paused = true;
     };
+    /**
+     * 再開
+     */
     Sound.prototype.resume = function () {
         if (!this.paused || !this.played) {
             return;
@@ -46846,23 +47297,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var enum_BaseState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! enum/BaseState */ "./src/enum/BaseState.ts");
-/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
+/* harmony import */ var enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! enum/AttackableState */ "./src/enum/AttackableState.ts");
+/* harmony import */ var enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! enum/BattleSceneState */ "./src/enum/BattleSceneState.ts");
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-/* harmony import */ var managers_BattleManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! managers/BattleManager */ "./src/managers/BattleManager.ts");
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
-/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
-/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
-/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
-/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
-/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
-/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
-/* harmony import */ var display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/AttackSmoke */ "./src/display/battle/effect/AttackSmoke.ts");
-/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
-/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_TitleScene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/TitleScene */ "./src/scenes/TitleScene.ts");
+/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
+/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var modules_BattleLogic__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! modules/BattleLogic */ "./src/modules/BattleLogic.ts");
+/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
+/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
+/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
+/* harmony import */ var display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/effect/AttackSmoke */ "./src/display/battle/effect/AttackSmoke.ts");
+/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
+/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
+/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46894,33 +47344,34 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-
-/**
- * BattleScene のステートのリスト
- */
-var BattleState = Object.freeze({
-    LOADING_RESOURCES: 1,
-    RESOURCE_LOADED: 2,
-    READY: 3,
-    INGAME: 4,
-    FINISHED: 5
-});
 /**
  * メインのゲーム部分のシーン
- * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
+ * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 var BattleScene = /** @class */ (function (_super) {
     __extends(BattleScene, _super);
+    /**
+     * コンストラクタ
+     */
     function BattleScene(params) {
         var _this = _super.call(this) || this;
-        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_9__["default"]();
-        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_10__["default"]();
-        // BattleManager インスタンスの作成とコールバックの登録
-        _this.manager = new managers_BattleManager__WEBPACK_IMPORTED_MODULE_5__["default"]();
-        // Background インスタンスの作成
-        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"]();
+        /**
+         * Field に最後にユニットを追加した Zline のインデックス
+         * ユニットが重なって表示されるのを防ぐ
+         */
+        _this.fieldLastAddedZline = {
+            player: -1,
+            ai: -1
+        };
+        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](1.0, 0.0, -0.02);
+        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](0.0, 1.0, 0.02);
         // デフォルトのシーンステート
-        _this.state = BattleState.LOADING_RESOURCES;
+        _this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].LOADING_RESOURCES;
+        // BattleLogic インスタンスの作成
+        _this.manager = new modules_BattleLogic__WEBPACK_IMPORTED_MODULE_10__["default"]();
+        // Background インスタンスの作成
+        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_12__["default"]();
+        // ユーザパラメータの設定
         _this.maxUnitSlotCount = params.maxUnitSlotCount;
         _this.fieldId = params.fieldId;
         _this.stageId = params.stageId;
@@ -46932,161 +47383,48 @@ var BattleScene = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * GameManagerDelegate 実装
-     * Base を発生させるときのコールバック
-     * Field に Base のスプライトを追加する
+     * Scene クラスメソッドオーバーライド
      */
-    BattleScene.prototype.spawnBaseEntity = function (baseId, isPlayer) {
-        var fieldMaster = this.manager.getFieldMaster();
-        if (!fieldMaster) {
-            return null;
-        }
-        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_14__["default"](baseId, isPlayer);
-        if (isPlayer) {
-            base.init({ x: fieldMaster.playerBase.position.x });
-        }
-        else {
-            base.init({ x: fieldMaster.aiBase.position.x });
-        }
-        this.field.addChildAsForeBackgroundEffect(base.sprite);
-        this.registerUpdatingObject(base);
-        return base;
-    };
-    ;
     /**
-     * GameManagerDelegate 実装
-     * Unit を発生させるときのコールバック
-     * Field に Unit のスプライトを追加する
+     * トランジション開始処理
+     * トランジション終了で可能ならステートを変更する
      */
-    BattleScene.prototype.spawnUnitEntity = function (unitId, baseEntity, isPlayer) {
-        var master = this.manager.getUnitMaster(unitId);
-        if (!master) {
-            return null;
-        }
-        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_12__["default"](unitId, isPlayer, {
-            hitFrame: master.hitFrame,
-            animationMaxFrameIndexes: master.animationMaxFrameIndexes,
-            animationUpdateDurations: master.animationUpdateDurations
+    BattleScene.prototype.beginTransitionIn = function (onTransitionFinished) {
+        var _this = this;
+        _super.prototype.beginTransitionIn.call(this, function () {
+            if (_this.state === enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].RESOURCE_LOADED) {
+                _this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].READY;
+                onTransitionFinished(_this);
+            }
         });
-        unit.sprite.position.x = baseEntity.sprite.position.x;
-        this.field.addChildToRandomZLine(unit.sprite);
-        unit.saveSpawnedPosition();
-        baseEntity.spawn();
-        this.registerUpdatingObject(unit);
-        return unit;
     };
     /**
-     * GameManagerDelegate 実装
-     * 拠点のステートが変更された際のコールバック
+     * 毎フレームの更新処理
+     * シーンのステートに応じて処理する
      */
-    BattleScene.prototype.onBaseStateChanged = function (entity, _oldState) {
-        if (entity.state === enum_BaseState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD) {
-            var base = entity;
-            base.collapse();
-            this.field.addChildAsForeForegroundEffect(base.explodeContainer);
+    BattleScene.prototype.update = function (delta) {
+        switch (this.state) {
+            case enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].LOADING_RESOURCES: break;
+            case enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].READY: {
+                this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].INGAME;
+                break;
+            }
+            case enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].INGAME: {
+                this.manager.update(delta);
+                break;
+            }
+            case enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].FINISHED: {
+                this.manager.update(delta);
+                break;
+            }
         }
-    };
-    /**
-    * GameManagerDelegate 実装
-     * ユニットのステートが変更された際のコールバック
-     */
-    BattleScene.prototype.onUnitStateChanged = function (entity, _oldState) {
-        var unit = entity;
-        if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD) {
-            var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!unit.isPlayer);
-            effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
-            unit.sprite.parent.addChild(effect);
-            this.registerUpdatingObject(effect);
-            unit.destroy();
+        this.updateRegisteredObjects(delta);
+        if (this.transitionIn.isActive()) {
+            this.transitionIn.update(delta);
         }
-        else {
-            unit.resetAnimation();
+        else if (this.transitionOut.isActive()) {
+            this.transitionOut.update(delta);
         }
-    };
-    /**
-     * GameManagerDelegate 実装
-     * 利用可能なコストの値が変動したときのコールバック
-     */
-    BattleScene.prototype.onAvailableCostUpdated = function (cost) {
-        this.uiGraph.cost_text.text = Math.floor(cost) + "/" + this.manager.maxAvailableCost;
-    };
-    /**
-     * GameManagerDelegate 実装
-     * 勝敗が決定したときのコールバック
-     */
-    BattleScene.prototype.onGameOver = function (isPlayerWon) {
-        this.state = BattleState.FINISHED;
-        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"](isPlayerWon);
-        result.onAnimationEnded = this.enableBackToTitle.bind(this);
-        this.uiGraphContainer.addChild(result);
-        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
-        var bgm = soundManager.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle);
-        if (bgm) {
-            bgm.stop();
-        }
-        var sound = soundManager.getSound(isPlayerWon ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose);
-        if (sound) {
-            sound.play();
-        }
-        this.registerUpdatingObject(result);
-    };
-    /**
-     * GameManagerDelegate 実装
-     * 渡されたユニット同士が接敵可能か返す
-     */
-    BattleScene.prototype.shouldLockUnit = function (attacker, target) {
-        return attacker.isFoeContact(target.sprite);
-    };
-    BattleScene.prototype.shouldLockBase = function (attacker, target) {
-        return attacker.isFoeContact(target.sprite);
-    };
-    /**
-     * GameManagerDelegate 実装
-     * 渡されたユニット同士が攻撃可能か返す
-     */
-    BattleScene.prototype.shouldDamage = function (attackerEntity, targetEntity) {
-        var attacker = attackerEntity;
-        var target = targetEntity;
-        if (!attacker.isHitFrame()) {
-            return false;
-        }
-        var contact = attacker.isFoeContact(target.sprite);
-        return contact;
-    };
-    BattleScene.prototype.onAttackableEntityHealthUpdated = function (_attacker, target, fromHealth, toHealth, maxHealth) {
-        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.getSound((Math.random() >= 0.5)
-            ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1
-            : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2);
-        if (sound) {
-            sound.play();
-        }
-        if (!target.sprite) {
-            return;
-        }
-        var targetSprite = target.sprite;
-        // smoke effect
-        var smoke = new display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"]();
-        var targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
-        var targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
-        var scale = 0.5 + Math.random() * 0.5;
-        smoke.position.set(targetCenterX, targetCenterY);
-        smoke.scale.set(scale, scale);
-        targetSprite.parent.addChild(smoke);
-        // health gauge
-        if (target.unitId) {
-            var unit = target;
-            var gauge = unit.spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
-            targetSprite.parent.addChild(gauge);
-            this.registerUpdatingObject(gauge);
-        }
-        this.registerUpdatingObject(smoke);
-    };
-    BattleScene.prototype.shouldUnitWalk = function (entity) {
-        var unit = entity;
-        if (unit.getAnimationType() === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WALK) {
-            return true;
-        }
-        return unit.isAnimationLastFrameTime();
     };
     /**
      * リソースリストの作成
@@ -47122,32 +47460,32 @@ var BattleScene = /** @class */ (function (_super) {
             var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel();
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
         }
-        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"].resourceList;
+        var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_12__["default"].resourceList;
         for (var i = 0; i < fieldResources.length; i++) {
             var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
         }
-        var baseResources = display_battle_Base__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
+        var baseResources = display_battle_Base__WEBPACK_IMPORTED_MODULE_13__["default"].resourceList;
         for (var i = 0; i < baseResources.length; i++) {
             var baseResourceUrl = baseResources[i];
             assets.push({ name: baseResourceUrl, url: baseResourceUrl });
         }
-        var attackSmokeResources = display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
+        var attackSmokeResources = display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
         for (var i = 0; i < attackSmokeResources.length; i++) {
             var attackSmokeResourcesUrl = attackSmokeResources[i];
             assets.push({ name: attackSmokeResourcesUrl, url: attackSmokeResourcesUrl });
         }
-        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
+        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
         for (var i = 0; i < deadResources.length; i++) {
             var deadResourceUrl = deadResources[i];
             assets.push({ name: deadResourceUrl, url: deadResourceUrl });
         }
-        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
+        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
         for (var i = 0; i < collapseExplodeResources.length; i++) {
             var collapseExplodeResourceUrl = collapseExplodeResources[i];
             assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
         }
-        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"].resourceList;
+        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
         for (var i = 0; i < battleResultResources.length; i++) {
             var battleResultResourceUrl = battleResultResources[i];
             assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
@@ -47161,7 +47499,7 @@ var BattleScene = /** @class */ (function (_super) {
     };
     /**
      * リソースロード完了コールバック
-     * BattleManager にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
+     * BattleLogic にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
      */
     BattleScene.prototype.onResourceLoaded = function () {
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
@@ -47172,7 +47510,7 @@ var BattleScene = /** @class */ (function (_super) {
         var aiWaveMaster = resources[masterKeys.AI_WAVE].data;
         var unitMasters = resources[masterKeys.UNIT].data;
         var baseMasterMap = resources[masterKeys.BASE].data;
-        this.field.init({ fieldLength: fieldMaster.length, zLines: 10 });
+        this.field.init({ fieldLength: fieldMaster.length, zLines: fieldMaster.zLines });
         for (var index = 0; index < this.maxUnitSlotCount; index++) {
             var unitButton = this.getUiGraphUnitButton(index);
             if (!unitButton) {
@@ -47190,13 +47528,12 @@ var BattleScene = /** @class */ (function (_super) {
         });
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
-        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
         var keys = Object.keys(resources);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var item = resources[key];
             if (item.buffer) {
-                var audio = soundManager.createSound(key, item.buffer);
+                var audio = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(key, item.buffer);
                 ;
                 if (key === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle) {
                     audio.play(true);
@@ -47204,20 +47541,11 @@ var BattleScene = /** @class */ (function (_super) {
             }
         }
         if (this.transitionIn.isFinished()) {
-            this.state = BattleState.READY;
+            this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].READY;
         }
         else {
-            this.state = BattleState.RESOURCE_LOADED;
+            this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].RESOURCE_LOADED;
         }
-    };
-    BattleScene.prototype.beginTransitionIn = function (onTransitionFinished) {
-        var _this = this;
-        _super.prototype.beginTransitionIn.call(this, function () {
-            if (_this.state === BattleState.RESOURCE_LOADED) {
-                _this.state = BattleState.READY;
-                onTransitionFinished(_this);
-            }
-        });
     };
     /**
      * 独自 UiGraph 要素のファクトリを返す
@@ -47225,44 +47553,191 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.getCustomUiGraphFactory = function (type) {
         if (type === 'unit_button') {
-            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_11__["default"]();
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_9__["default"]();
         }
         return null;
     };
     /**
-     * 毎フレームの更新処理
-     * シーンのステートに応じて処理する
+     * BattleLogicDelegate 実装
      */
-    BattleScene.prototype.update = function (delta) {
-        switch (this.state) {
-            case BattleState.LOADING_RESOURCES: break;
-            case BattleState.READY: {
-                this.state = BattleState.INGAME;
-                break;
-            }
-            case BattleState.INGAME: {
-                this.manager.update(delta);
-                break;
-            }
-            case BattleState.FINISHED: {
-                this.manager.update(delta);
-                break;
+    /**
+     * Base を発生させるときのコールバック
+     * Field に Base のスプライトを追加する
+     */
+    BattleScene.prototype.spawnBaseEntity = function (baseId, isPlayer) {
+        var fieldMaster = this.manager.getFieldMaster();
+        if (!fieldMaster) {
+            return null;
+        }
+        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_13__["default"](baseId, isPlayer);
+        if (isPlayer) {
+            base.init({ x: fieldMaster.playerBase.position.x });
+        }
+        else {
+            base.init({ x: fieldMaster.aiBase.position.x });
+        }
+        this.field.addChildAsForeBackgroundEffect(base.sprite);
+        this.registerUpdatingObject(base);
+        return base;
+    };
+    ;
+    /**
+     * Unit を発生させるときのコールバック
+     * Field に Unit のスプライトを追加する
+     */
+    BattleScene.prototype.spawnUnitEntity = function (unitId, baseEntity, isPlayer) {
+        var master = this.manager.getUnitMaster(unitId);
+        if (!master) {
+            return null;
+        }
+        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__["default"](unitId, isPlayer, {
+            hitFrame: master.hitFrame,
+            animationMaxFrameIndexes: master.animationMaxFrameIndexes,
+            animationUpdateDurations: master.animationUpdateDurations
+        });
+        unit.sprite.position.x = baseEntity.sprite.position.x;
+        var zLineCount = this.field.zLineCount;
+        var index = Math.floor(Math.random() * this.field.zLineCount);
+        var lastAddedZline = isPlayer ? this.fieldLastAddedZline.player : this.fieldLastAddedZline.ai;
+        if (index === lastAddedZline) {
+            index++;
+            if (index > (zLineCount - 1)) {
+                index = 0;
             }
         }
-        this.updateRegisteredObjects(delta);
-        if (this.transitionIn.isActive()) {
-            this.transitionIn.update(delta);
+        this.field.addChildToZLine(unit.sprite, index);
+        // 重なって表示されないようにする
+        if (isPlayer) {
+            this.fieldLastAddedZline.player = index;
         }
-        else if (this.transitionOut.isActive()) {
-            this.transitionOut.update(delta);
+        else {
+            this.fieldLastAddedZline.ai = index;
+        }
+        unit.saveSpawnedPosition();
+        baseEntity.spawn();
+        this.registerUpdatingObject(unit);
+        return unit;
+    };
+    /**
+     * エンティティのステートが変更された際のコールバック
+     */
+    BattleScene.prototype.onAttackableEntityStateChanged = function (entity, _oldState) {
+        if (entity.unitId) {
+            var unit = entity;
+            if (unit.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD) {
+                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"](!unit.isPlayer);
+                effect.position.set(unit.sprite.position.x, unit.sprite.position.y + unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height);
+                unit.sprite.parent.addChild(effect);
+                this.registerUpdatingObject(effect);
+                unit.destroy();
+            }
+            else {
+                unit.resetAnimation();
+            }
+        }
+        else {
+            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD) {
+                var base = entity;
+                base.collapse();
+                this.field.addChildAsForeForegroundEffect(base.explodeContainer);
+            }
         }
     };
     /**
+     * 利用可能なコストの値が変動したときのコールバック
+     */
+    BattleScene.prototype.onAvailableCostUpdated = function (cost) {
+        this.uiGraph.cost_text.text = Math.floor(cost) + "/" + this.manager.maxAvailableCost;
+    };
+    /**
+     * 勝敗が決定したときのコールバック
+     */
+    BattleScene.prototype.onGameOver = function (isPlayerWon) {
+        this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].FINISHED;
+        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"](isPlayerWon);
+        result.onAnimationEnded = this.enableBackToTitle.bind(this);
+        this.uiGraphContainer.addChild(result);
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle);
+        if (bgm) {
+            bgm.stop();
+        }
+        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].getSound(isPlayerWon ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose);
+        if (sound) {
+            sound.play();
+        }
+        this.registerUpdatingObject(result);
+    };
+    /**
+     * 渡されたエンティティ同士が接敵可能か返す
+     */
+    BattleScene.prototype.shouldLockAttackableEntity = function (attacker, target) {
+        // 同じプロパティ名だが、実質的には特異実装なので処理を分ける
+        return attacker.isFoeContact((target.unitId)
+            ? target.sprite
+            : target.sprite);
+    };
+    /**
+     * 渡されたエンティティ同士が攻撃可能か返す
+     */
+    BattleScene.prototype.shouldDamage = function (attackerEntity, targetEntity) {
+        var attacker = attackerEntity;
+        var target = targetEntity;
+        if (!attacker.isHitFrame()) {
+            return false;
+        }
+        var contact = attacker.isFoeContact(target.sprite);
+        return contact;
+    };
+    /**
+     * 渡されたエンティティの health が増減した場合に呼ばれる
+     */
+    BattleScene.prototype.onAttackableEntityHealthUpdated = function (_attacker, target, fromHealth, toHealth, maxHealth) {
+        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].getSound((Math.random() >= 0.5)
+            ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1
+            : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2);
+        if (sound) {
+            sound.play();
+        }
+        if (!target.sprite) {
+            return;
+        }
+        var targetSprite = target.sprite;
+        // smoke effect
+        var smoke = new display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_14__["default"]();
+        var targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
+        var targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
+        var scale = 0.5 + Math.random() * 0.5;
+        smoke.position.set(targetCenterX, targetCenterY);
+        smoke.scale.set(scale, scale);
+        targetSprite.parent.addChild(smoke);
+        // HealthGauge を表示させる
+        if (target.unitId) {
+            var unit = target;
+            var gauge = unit.spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
+            targetSprite.parent.addChild(gauge);
+            this.registerUpdatingObject(gauge);
+        }
+        this.registerUpdatingObject(smoke);
+    };
+    /**
+    * 渡されたユニットが移動すべきかどうかを返す
+     */
+    BattleScene.prototype.shouldUnitWalk = function (entity) {
+        var unit = entity;
+        if (unit.getAnimationType() === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WALK) {
+            return true;
+        }
+        return unit.isAnimationLastFrameTime();
+    };
+    /**
+     * 特異メソッド
+     */
+    /**
      * UnitButton 用のコールバック
-     * タップされたボタンに応じたユニットの生成を BattleManager にリクエストする
+     * タップされたボタンに応じたユニットの生成を BattleLogic にリクエストする
      */
     BattleScene.prototype.onUnitButtonTapped = function (buttonIndex) {
-        if (this.state !== BattleState.INGAME) {
+        if (this.state !== enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].INGAME) {
             return;
         }
         var unitButton = this.getUiGraphUnitButton(buttonIndex);
@@ -47283,18 +47758,20 @@ var BattleScene = /** @class */ (function (_super) {
         this.on('pointerdown', function (_e) { return _this.backToTitle(); });
     };
     BattleScene.prototype.backToTitle = function () {
-        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
         var keys = Object.keys(resources);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var item = resources[key];
             if (item.buffer) {
-                soundManager.unregisterSound(key);
+                managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].destroySound(key);
             }
         }
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__["default"]());
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_7__["default"]());
     };
+    /**
+     * マスターデータを保存する PIXI.loaders.resource のキー
+     */
     BattleScene.MasterResourceKey = {
         FIELD: 'battle_scene_field_master',
         AI_WAVE: 'battle_scene_ai_wave_master',
@@ -47302,7 +47779,7 @@ var BattleScene = /** @class */ (function (_super) {
         BASE: 'battle_scene_base_master'
     };
     return BattleScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_7__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_6__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleScene);
 
 
@@ -47343,7 +47820,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
  * ゲームシーンの抽象クラス
  * UiGraph を利用して UI 情報を透過的に読み込み初期化する
  * また、シーン間のトランジションイベントを提供する
- * いずれのイベントも実装クラスにて独自処理の実装が可能
+ * いずれのイベントも実装クラスにて独自処理の実装を行うことができる
  */
 var Scene = /** @class */ (function (_super) {
     __extends(Scene, _super);
@@ -47362,8 +47839,17 @@ var Scene = /** @class */ (function (_super) {
          * 描画順による前後関係を統制するために一つの Container にまとめる
          */
         _this.uiGraphContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        /**
+         * 更新すべきオブジェクトを保持する
+         */
         _this.objectsToUpdate = [];
+        /**
+         * シーン開始用のトランジションオブジェクト
+         */
         _this.transitionIn = new scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        /**
+         * シーン終了用のトランジションオブジェクト
+         */
         _this.transitionOut = new scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__["default"]();
         return _this;
     }
@@ -47379,10 +47865,17 @@ var Scene = /** @class */ (function (_super) {
             this.transitionOut.update(delta);
         }
     };
+    /**
+     * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
+     */
     Scene.prototype.registerUpdatingObject = function (object) {
         this.objectsToUpdate.push(object);
     };
+    /**
+     * 更新処理を行うべきオブジェクトを更新する
+     */
     Scene.prototype.updateRegisteredObjects = function (delta) {
+        // 破棄されたオブジェクトを圧縮するために残存するオブジェクトのみを保持する
         var nextObjectsToUpdate = [];
         for (var i = 0; i < this.objectsToUpdate.length; i++) {
             var obj = this.objectsToUpdate[i];
@@ -47438,6 +47931,9 @@ var Scene = /** @class */ (function (_super) {
             .then(function () { return onResourceLoaded(); })
             .then(function () { return _this.onResourceLoaded(); });
     };
+    /**
+     * UiGraph 情報のロードを行う
+     */
     Scene.prototype.loadUiGraph = function (onLoaded) {
         var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
         if (this.hasSceneUiGraph && !pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name]) {
@@ -47448,7 +47944,7 @@ var Scene = /** @class */ (function (_super) {
         }
     };
     /**
-     * loadResource 完了時のコールバックメソッド
+     * loadUiGraph 完了時のコールバックメソッド
      */
     Scene.prototype.onUiGraphLoaded = function (onLoaded) {
         var assets = this.createResourceList();
@@ -47542,8 +48038,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
 /* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 /* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
-/* harmony import */ var scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/transition/FadeIn */ "./src/scenes/transition/FadeIn.ts");
-/* harmony import */ var scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/transition/FadeOut */ "./src/scenes/transition/FadeOut.ts");
+/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47563,7 +48058,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-
+// デバッグ用パラメータ
 var debugParams = {
     maxUnitSlotCount: 5,
     fieldId: 1,
@@ -47588,23 +48083,29 @@ var TitleScene = /** @class */ (function (_super) {
     __extends(TitleScene, _super);
     function TitleScene() {
         var _this = _super.call(this) || this;
-        _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_5__["default"]();
-        _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_6__["default"]();
+        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_5__["default"](1.0, 0.0, -0.02);
+        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_5__["default"](0.0, 1.0, 0.02);
         _this.interactive = true;
         _this.on('pointerup', function () { return _this.startBattle(); });
         return _this;
     }
+    /**
+     * リソースリストを作成し返却する
+     */
     TitleScene.prototype.createResourceList = function () {
         var assets = _super.prototype.createResourceList.call(this);
         var bgmTitleName = ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title;
         assets.push({ name: bgmTitleName, url: bgmTitleName });
         return assets;
     };
+    /**
+     * リソースがロードされた時のコールバック
+     */
     TitleScene.prototype.onResourceLoaded = function () {
         _super.prototype.onResourceLoaded.call(this);
         var bgmTitleName = ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title;
         var resource = PIXI.loader.resources[bgmTitleName];
-        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.createSound(bgmTitleName, resource.buffer);
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].createSound(bgmTitleName, resource.buffer);
         bgm.play(true);
     };
     /**
@@ -47614,12 +48115,11 @@ var TitleScene = /** @class */ (function (_super) {
         if (this.transitionIn.isActive() || this.transitionOut.isActive()) {
             return;
         }
-        var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance;
-        var bgm = soundManager.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
         if (bgm) {
-            soundManager.fade(bgm, 0.01, 0.5, true);
+            managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].fade(bgm, 0.01, 0.5, true);
         }
-        soundManager.unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
         var params = debugParams;
         managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_4__["default"](params));
     };
@@ -47630,10 +48130,10 @@ var TitleScene = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/scenes/transition/FadeIn.ts":
-/*!*****************************************!*\
-  !*** ./src/scenes/transition/FadeIn.ts ***!
-  \*****************************************/
+/***/ "./src/scenes/transition/Fade.ts":
+/*!***************************************!*\
+  !*** ./src/scenes/transition/Fade.ts ***!
+  \***************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -47644,13 +48144,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 
 
-var FadeOut = /** @class */ (function () {
-    function FadeOut() {
+/**
+ * トランジションのフェード表現
+ */
+var Fade = /** @class */ (function () {
+    /**
+     * コンストラクタ
+     */
+    function Fade(alphaFrom, alphaTo, alphaProgress) {
+        /**
+         * 黒画面のコンテナ
+         */
         this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        /**
+         * 黒画面の描画
+         */
         this.overlay = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Graphics"]();
+        /**
+         * トランジション開始フラグ
+         */
         this.transitionBegan = false;
+        /**
+         * トランジション終了フラグ
+         */
         this.transitionFinished = false;
+        /**
+         * トランジション終了時コールバック
+         */
         this.onTransitionFinished = function () { };
+        this.alphaFrom = alphaFrom;
+        this.alphaTo = alphaTo;
+        this.alphaProgress = alphaProgress;
         var width = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.width;
         var height = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.height;
         this.container.addChild(this.overlay);
@@ -47660,118 +48184,67 @@ var FadeOut = /** @class */ (function () {
         this.overlay.lineTo(width, height);
         this.overlay.lineTo(0, height);
         this.overlay.endFill();
-        this.overlay.alpha = 1;
+        this.overlay.alpha = this.alphaFrom;
         this.container.addChild(this.overlay);
     }
-    FadeOut.prototype.getContainer = function () {
+    /**
+     * トランジション描画物を含む PIXI.Container インスタンスを返す
+     */
+    Fade.prototype.getContainer = function () {
         return this.container;
     };
-    FadeOut.prototype.begin = function () {
+    /**
+     * トランジション開始処理
+     */
+    Fade.prototype.begin = function () {
         this.transitionBegan = true;
     };
-    FadeOut.prototype.isBegan = function () {
+    /**
+     * トランジションが開始しているかどうかを返す
+     */
+    Fade.prototype.isBegan = function () {
         return this.transitionBegan;
     };
-    FadeOut.prototype.isFinished = function () {
+    /**
+     * トランジションが終了しているかどうかを返す
+     */
+    Fade.prototype.isFinished = function () {
         return this.transitionFinished;
     };
-    FadeOut.prototype.isActive = function () {
+    /**
+     * トランジションが実行中かどうかを返す
+     */
+    Fade.prototype.isActive = function () {
         return this.isBegan() && !this.isFinished();
     };
-    FadeOut.prototype.update = function (_dt) {
-        if (!this.transitionBegan) {
+    /**
+     * トランジションを更新する
+     */
+    Fade.prototype.update = function (_dt) {
+        if (!this.isBegan()) {
             return;
         }
-        if (this.transitionFinished) {
+        if (this.isFinished()) {
             return;
         }
-        if (this.overlay.alpha <= 0.0) {
+        if ((this.alphaTo <= this.alphaFrom && this.overlay.alpha <= this.alphaTo) ||
+            (this.alphaTo >= this.alphaFrom && this.overlay.alpha >= this.alphaTo)) {
             this.onTransitionFinished();
             this.transitionFinished = true;
         }
         else {
-            this.overlay.alpha -= 0.02;
+            this.overlay.alpha += this.alphaProgress;
         }
     };
-    FadeOut.prototype.setCallback = function (callback) {
+    /**
+     * トランジション終了時のコールバックを登録する
+     */
+    Fade.prototype.setCallback = function (callback) {
         this.onTransitionFinished = callback;
     };
-    return FadeOut;
+    return Fade;
 }());
-/* harmony default export */ __webpack_exports__["default"] = (FadeOut);
-
-
-/***/ }),
-
-/***/ "./src/scenes/transition/FadeOut.ts":
-/*!******************************************!*\
-  !*** ./src/scenes/transition/FadeOut.ts ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-
-
-var FadeOut = /** @class */ (function () {
-    function FadeOut() {
-        this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
-        this.overlay = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Graphics"]();
-        this.transitionBegan = false;
-        this.transitionFinished = false;
-        this.onTransitionFinished = function () { };
-        var width = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.width;
-        var height = managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].instance.game.view.height;
-        this.container.addChild(this.overlay);
-        this.overlay.beginFill(0x000000);
-        this.overlay.moveTo(0, 0);
-        this.overlay.lineTo(width, 0);
-        this.overlay.lineTo(width, height);
-        this.overlay.lineTo(0, height);
-        this.overlay.endFill();
-        this.overlay.alpha = 0;
-        this.container.addChild(this.overlay);
-    }
-    FadeOut.prototype.getContainer = function () {
-        return this.container;
-    };
-    FadeOut.prototype.begin = function () {
-        this.transitionBegan = true;
-    };
-    FadeOut.prototype.isBegan = function () {
-        return this.transitionBegan;
-    };
-    FadeOut.prototype.isFinished = function () {
-        return this.transitionFinished;
-    };
-    FadeOut.prototype.isActive = function () {
-        return this.isBegan() && !this.isFinished();
-    };
-    FadeOut.prototype.update = function (_dt) {
-        if (!this.transitionBegan) {
-            return;
-        }
-        if (this.transitionFinished) {
-            return;
-        }
-        if (this.overlay.alpha >= 1.0) {
-            this.onTransitionFinished();
-            this.transitionFinished = true;
-        }
-        else {
-            this.overlay.alpha += 0.02;
-        }
-    };
-    FadeOut.prototype.setCallback = function (callback) {
-        this.onTransitionFinished = callback;
-    };
-    return FadeOut;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (FadeOut);
+/* harmony default export */ __webpack_exports__["default"] = (Fade);
 
 
 /***/ }),
@@ -47785,28 +48258,57 @@ var FadeOut = /** @class */ (function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/**
+ * 即座にシーン遷移させるトランジション
+ */
 var Immediate = /** @class */ (function () {
     function Immediate() {
         this.onTransitionFinished = function () { };
     }
+    /**
+     * トランジション描画物を含む PIXI.Container インスタンスを返す
+     */
     Immediate.prototype.getContainer = function () {
         return null;
     };
+    /**
+     * トランジション開始処理
+     * このトランジションは即時終了させる
+     */
     Immediate.prototype.begin = function () {
         this.onTransitionFinished();
     };
+    /**
+     * トランジションが開始しているかどうかを返す
+     * このトランジションは即時終了するため true になることなはない
+     */
     Immediate.prototype.isBegan = function () {
         return false;
     };
+    /**
+     * トランジションが終了しているかどうかを返す
+     * このトランジションは即時終了するため false になることなはない
+     */
     Immediate.prototype.isFinished = function () {
         return true;
     };
+    /**
+     * トランジションが実行中かどうかを返す
+     * このトランジションは即時終了するため true になることなはない
+     */
     Immediate.prototype.isActive = function () {
         return false;
     };
+    /**
+     * トランジションを更新する
+     * このトランジションは即時終了するため何も行わない
+     */
     Immediate.prototype.update = function (_dt) {
         return;
     };
+    /**
+     * トランジション終了時のコールバックを登録する
+     */
     Immediate.prototype.setCallback = function (callback) {
         this.onTransitionFinished = callback;
     };

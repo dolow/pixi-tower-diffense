@@ -13,16 +13,7 @@ export default class UnitEntity extends AttackableEntity {
      */
     unitId: number;
     /**
-     * ステート
+     * コンストラクタ
      */
-    state: number;
-    /**
-     * 拠点からの距離
-     */
-    distance: number;
-    /**
-     * ロック中のユニット
-     */
-    lockedEntity: AttackableEntity | null;
     constructor(unitId: number, isPlayer: boolean);
 }

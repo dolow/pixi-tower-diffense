@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BattleManager | tower-diffence</title>
+	<title>BattleLogic | tower-diffence</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="battlemanager.html">BattleManager</a>
+					<a href="battlelogic.html">BattleLogic</a>
 				</li>
 			</ul>
-			<h1>Class BattleManager</h1>
+			<h1>Class BattleLogic</h1>
 		</div>
 	</div>
 </header>
@@ -68,9 +68,7 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>ゲーム内バトルパートのマネージャ
-							ゲームロジックを中心に扱う
-							TODO: Although GameManager is singleton, BattleManager is expected to be used by creating instance.
-						So class name should be changed.</p>
+						ゲームロジックを中心に扱う</p>
 					</div>
 				</div>
 			</section>
@@ -78,7 +76,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BattleManager</span>
+						<span class="target">BattleLogic</span>
 					</li>
 				</ul>
 			</section>
@@ -89,46 +87,44 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#aiwavemastercache" class="tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#baseentities" class="tsd-kind-icon">base<wbr>Entities</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#basemastercache" class="tsd-kind-icon">base<wbr>Master<wbr>Cache</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlemanager.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#delegator" class="tsd-kind-icon">delegator</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#fieldmastercache" class="tsd-kind-icon">field<wbr>Master<wbr>Cache</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#isgameover" class="tsd-kind-icon">is<wbr>Game<wbr>Over</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlemanager.html#maxavailablecost" class="tsd-kind-icon">max<wbr>Available<wbr>Cost</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#nextunitid" class="tsd-kind-icon">next<wbr>Unit<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#passedframecount" class="tsd-kind-icon">passed<wbr>Frame<wbr>Count</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#spawnrequestedunitunitids" class="tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#unitentities" class="tsd-kind-icon">unit<wbr>Entities</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#unitmastercache" class="tsd-kind-icon">unit<wbr>Master<wbr>Cache</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#aiwavemastercache" class="tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#baseentities" class="tsd-kind-icon">base<wbr>Entities</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#basemastercache" class="tsd-kind-icon">base<wbr>Master<wbr>Cache</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlelogic.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#delegator" class="tsd-kind-icon">delegator</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#fieldmastercache" class="tsd-kind-icon">field<wbr>Master<wbr>Cache</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#isgameover" class="tsd-kind-icon">is<wbr>Game<wbr>Over</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="battlelogic.html#maxavailablecost" class="tsd-kind-icon">max<wbr>Available<wbr>Cost</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#nextunitid" class="tsd-kind-icon">next<wbr>Unit<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#passedframecount" class="tsd-kind-icon">passed<wbr>Frame<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#spawnrequestedunitunitids" class="tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#unitentities" class="tsd-kind-icon">unit<wbr>Entities</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#unitmastercache" class="tsd-kind-icon">unit<wbr>Master<wbr>Cache</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#getfieldmaster" class="tsd-kind-icon">get<wbr>Field<wbr>Master</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#getunitmaster" class="tsd-kind-icon">get<wbr>Unit<wbr>Master</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#init" class="tsd-kind-icon">init</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#isdied" class="tsd-kind-icon">is<wbr>Died</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#refreshavailablecost" class="tsd-kind-icon">refresh<wbr>Available<wbr>Cost</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#requestaispawn" class="tsd-kind-icon">requestAISpawn</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#requestspawn" class="tsd-kind-icon">request<wbr>Spawn</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#requestspawnai" class="tsd-kind-icon">request<wbr>SpawnAI</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#requestspawnplayer" class="tsd-kind-icon">request<wbr>Spawn<wbr>Player</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#setdelegator" class="tsd-kind-icon">set<wbr>Delegator</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlemanager.html#update" class="tsd-kind-icon">update</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatebasestate" class="tsd-kind-icon">update<wbr>Base<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatedamage" class="tsd-kind-icon">update<wbr>Damage</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatedistance" class="tsd-kind-icon">update<wbr>Distance</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updategameover" class="tsd-kind-icon">update<wbr>Game<wbr>Over</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updateparameter" class="tsd-kind-icon">update<wbr>Parameter</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updatespawnrequest" class="tsd-kind-icon">update<wbr>Spawn<wbr>Request</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updateunitdeadstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Dead<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updateunitidlestate" class="tsd-kind-icon">update<wbr>Unit<wbr>Idle<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updateunitlockedstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Locked<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlemanager.html#updateunitstate" class="tsd-kind-icon">update<wbr>Unit<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#getfieldmaster" class="tsd-kind-icon">get<wbr>Field<wbr>Master</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#getunitmaster" class="tsd-kind-icon">get<wbr>Unit<wbr>Master</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#init" class="tsd-kind-icon">init</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#isdied" class="tsd-kind-icon">is<wbr>Died</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#requestaispawn" class="tsd-kind-icon">requestAISpawn</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#requestspawn" class="tsd-kind-icon">request<wbr>Spawn</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#requestspawnai" class="tsd-kind-icon">request<wbr>SpawnAI</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#requestspawnplayer" class="tsd-kind-icon">request<wbr>Spawn<wbr>Player</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlelogic.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updateavailablecost" class="tsd-kind-icon">update<wbr>Available<wbr>Cost</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updatedamage" class="tsd-kind-icon">update<wbr>Damage</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updatedistance" class="tsd-kind-icon">update<wbr>Distance</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updateentityparameter" class="tsd-kind-icon">update<wbr>Entity<wbr>Parameter</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updateentitystate" class="tsd-kind-icon">update<wbr>Entity<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updategameover" class="tsd-kind-icon">update<wbr>Game<wbr>Over</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updatespawnrequest" class="tsd-kind-icon">update<wbr>Spawn<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updateunitdeadstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Dead<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updateunitidlestate" class="tsd-kind-icon">update<wbr>Unit<wbr>Idle<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlelogic.html#updateunitlockedstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Locked<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
@@ -142,7 +138,7 @@
 					<div class="tsd-signature tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L62">managers/BattleManager.ts:62</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L62">modules/BattleLogic.ts:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -157,7 +153,7 @@
 					<div class="tsd-signature tsd-kind-icon">available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L40">managers/BattleManager.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L37">modules/BattleLogic.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -172,7 +168,7 @@
 					<div class="tsd-signature tsd-kind-icon">base<wbr>Entities<span class="tsd-signature-symbol">:</span> <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L52">managers/BattleManager.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L49">modules/BattleLogic.ts:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -187,7 +183,7 @@
 					<div class="tsd-signature tsd-kind-icon">base<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/basemaster.html" class="tsd-signature-type">BaseMaster</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L73">managers/BattleManager.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L73">modules/BattleLogic.ts:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,7 +198,7 @@
 					<div class="tsd-signature tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L26">managers/BattleManager.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L23">modules/BattleLogic.ts:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -214,15 +210,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="delegator" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> delegator</h3>
-					<div class="tsd-signature tsd-kind-icon">delegator<span class="tsd-signature-symbol">:</span> <a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol"> =&nbsp;new BattleManagerDefaultDelegator()</span></div>
+					<div class="tsd-signature tsd-kind-icon">delegator<span class="tsd-signature-symbol">:</span> <a href="../interfaces/battlelogicdelegate.html" class="tsd-signature-type">BattleLogicDelegate</a><span class="tsd-signature-symbol"> =&nbsp;new BattleLogicDefaultDelegator()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L35">managers/BattleManager.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L32">modules/BattleLogic.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>BattleManagerDelegate 実装オブジェクト</p>
+							<p>BattleLogicDelegate 実装オブジェクト</p>
 						</div>
 					</div>
 				</section>
@@ -232,9 +228,14 @@
 					<div class="tsd-signature tsd-kind-icon">field<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <a href="../interfaces/fieldmaster.html" class="tsd-signature-type">FieldMaster</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L54">managers/BattleManager.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L54">modules/BattleLogic.ts:54</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>フィールドマスタのキャッシュ</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="isgameover" class="tsd-anchor"></a>
@@ -242,7 +243,7 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Game<wbr>Over<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L86">managers/BattleManager.ts:86</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L86">modules/BattleLogic.ts:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -257,7 +258,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L30">managers/BattleManager.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L27">modules/BattleLogic.ts:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -272,7 +273,7 @@
 					<div class="tsd-signature tsd-kind-icon">next<wbr>Unit<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L44">managers/BattleManager.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L41">modules/BattleLogic.ts:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -287,7 +288,7 @@
 					<div class="tsd-signature tsd-kind-icon">passed<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L81">managers/BattleManager.ts:81</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L81">modules/BattleLogic.ts:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -302,7 +303,7 @@
 					<div class="tsd-signature tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L77">managers/BattleManager.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L77">modules/BattleLogic.ts:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -317,7 +318,7 @@
 					<div class="tsd-signature tsd-kind-icon">unit<wbr>Entities<span class="tsd-signature-symbol">:</span> <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L48">managers/BattleManager.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L45">modules/BattleLogic.ts:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -332,7 +333,7 @@
 					<div class="tsd-signature tsd-kind-icon">unit<wbr>Master<wbr>Cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/unitmaster.html" class="tsd-signature-type">UnitMaster</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L66">managers/BattleManager.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L66">modules/BattleLogic.ts:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -354,7 +355,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L55">managers/BattleManager.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L55">modules/BattleLogic.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/fieldmaster.html" class="tsd-signature-type">FieldMaster</a>
@@ -374,7 +375,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L67">managers/BattleManager.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L67">modules/BattleLogic.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -400,9 +401,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L88">managers/BattleManager.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L91">modules/BattleLogic.ts:91</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>デリゲータとマスタ情報で初期化</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -423,7 +429,7 @@
 											</ul>
 										</li>
 										<li class="tsd-parameter">
-											<h5>delegator<span class="tsd-signature-symbol">: </span><a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a></h5>
+											<h5>delegator<span class="tsd-signature-symbol">: </span><a href="../interfaces/battlelogicdelegate.html" class="tsd-signature-type">BattleLogicDelegate</a></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5>field<wbr>Master<span class="tsd-signature-symbol">: </span><a href="../interfaces/fieldmaster.html" class="tsd-signature-type">FieldMaster</a></h5>
@@ -448,7 +454,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L166">managers/BattleManager.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L171">modules/BattleLogic.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -467,34 +473,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="refreshavailablecost" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> refresh<wbr>Available<wbr>Cost</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">refresh<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">(</span>newCost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L437">managers/BattleManager.ts:437</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>利用可能なコストを更新し、専用のコールバックをコールする</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>newCost: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="requestaispawn" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> requestAISpawn</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -504,9 +482,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L375">managers/BattleManager.ts:375</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L398">modules/BattleLogic.ts:398</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>必要であれば AI ユニットを生成させる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -527,7 +510,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L145">managers/BattleManager.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L150">modules/BattleLogic.ts:150</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -558,7 +541,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L159">managers/BattleManager.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L164">modules/BattleLogic.ts:164</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -587,7 +570,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L152">managers/BattleManager.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L157">modules/BattleLogic.ts:157</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -607,29 +590,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setdelegator" class="tsd-anchor"></a>
-					<h3>set<wbr>Delegator</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Delegator<span class="tsd-signature-symbol">(</span>delegator<span class="tsd-signature-symbol">: </span><a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L138">managers/BattleManager.ts:138</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>delegator: <a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -639,7 +599,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L174">managers/BattleManager.ts:174</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L179">modules/BattleLogic.ts:179</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -659,24 +619,30 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="updatebasestate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Base<wbr>State</h3>
+					<a name="updateavailablecost" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Available<wbr>Cost</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Base<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">(</span>newCost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L257">managers/BattleManager.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L460">modules/BattleLogic.ts:460</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>BaseEntity のステートを更新する</p>
+									<p>利用可能なコストを更新し、専用のコールバックをコールする</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>newCost: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -690,9 +656,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L276">managers/BattleManager.ts:276</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L281">modules/BattleLogic.ts:281</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>ダメージ判定を行い、必要なら health を上限させる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -713,15 +684,68 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L291">managers/BattleManager.ts:291</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L299">modules/BattleLogic.ts:299</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>移動可能か判定し、可能なら移動させる</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>unit: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="updateentityparameter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Entity<wbr>Parameter</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Entity<wbr>Parameter<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L213">modules/BattleLogic.ts:213</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unit のパラメータを更新する
+									ステートは全てのパラメータが変化した後に更新する</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="updateentitystate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Entity<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Entity<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L226">modules/BattleLogic.ts:226</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>エンティティのステートを更新する
+										ステート優先順位は右記の通り DEAD &gt; LOCKED &gt; IDLE
+										ユニット毎に処理を行うとステートを条件にした処理結果が
+									タイミングによって異なってしまうのでステート毎に処理を行う</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -736,30 +760,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L359">managers/BattleManager.ts:359</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="updateparameter" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Parameter</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Parameter<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L208">managers/BattleManager.ts:208</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L379">modules/BattleLogic.ts:379</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Unit のパラメータを更新する
-									ステートは全てのパラメータが変化した後に更新する</p>
+									<p>バトル状況かたゲーム終了かどうかを判断する</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -776,7 +782,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L392">managers/BattleManager.ts:392</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L415">modules/BattleLogic.ts:415</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -800,9 +806,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L306">managers/BattleManager.ts:306</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L317">modules/BattleLogic.ts:317</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>死亡時のステート更新処理</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -823,9 +834,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L323">managers/BattleManager.ts:323</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L340">modules/BattleLogic.ts:340</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>何もしていない状態でのステート更新処理</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -846,38 +862,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L309">managers/BattleManager.ts:309</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L323">modules/BattleLogic.ts:323</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>接敵時のステート更新処理</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>unit: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="updateunitstate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Unit<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Unit<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/BattleManager.ts#L219">managers/BattleManager.ts:219</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Unit のステートを更新する
-									ステート優先順位は右記の通り DEAD &gt; LOCKED &gt; IDLE</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -897,112 +895,106 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="battlemanager.html" class="tsd-kind-icon">Battle<wbr>Manager</a>
+						<a href="battlelogic.html" class="tsd-kind-icon">Battle<wbr>Logic</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#aiwavemastercache" class="tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache</a>
+								<a href="battlelogic.html#aiwavemastercache" class="tsd-kind-icon">ai<wbr>Wave<wbr>Master<wbr>Cache</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a>
+								<a href="battlelogic.html#availablecost" class="tsd-kind-icon">available<wbr>Cost</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#baseentities" class="tsd-kind-icon">base<wbr>Entities</a>
+								<a href="battlelogic.html#baseentities" class="tsd-kind-icon">base<wbr>Entities</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#basemastercache" class="tsd-kind-icon">base<wbr>Master<wbr>Cache</a>
+								<a href="battlelogic.html#basemastercache" class="tsd-kind-icon">base<wbr>Master<wbr>Cache</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="battlemanager.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a>
+								<a href="battlelogic.html#costrecoveryperframe" class="tsd-kind-icon">cost<wbr>Recovery<wbr>Per<wbr>Frame</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#delegator" class="tsd-kind-icon">delegator</a>
+								<a href="battlelogic.html#delegator" class="tsd-kind-icon">delegator</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#fieldmastercache" class="tsd-kind-icon">field<wbr>Master<wbr>Cache</a>
+								<a href="battlelogic.html#fieldmastercache" class="tsd-kind-icon">field<wbr>Master<wbr>Cache</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#isgameover" class="tsd-kind-icon">is<wbr>Game<wbr>Over</a>
+								<a href="battlelogic.html#isgameover" class="tsd-kind-icon">is<wbr>Game<wbr>Over</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="battlemanager.html#maxavailablecost" class="tsd-kind-icon">max<wbr>Available<wbr>Cost</a>
+								<a href="battlelogic.html#maxavailablecost" class="tsd-kind-icon">max<wbr>Available<wbr>Cost</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#nextunitid" class="tsd-kind-icon">next<wbr>Unit<wbr>Id</a>
+								<a href="battlelogic.html#nextunitid" class="tsd-kind-icon">next<wbr>Unit<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#passedframecount" class="tsd-kind-icon">passed<wbr>Frame<wbr>Count</a>
+								<a href="battlelogic.html#passedframecount" class="tsd-kind-icon">passed<wbr>Frame<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#spawnrequestedunitunitids" class="tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids</a>
+								<a href="battlelogic.html#spawnrequestedunitunitids" class="tsd-kind-icon">spawn<wbr>Requested<wbr>Unit<wbr>Unit<wbr>Ids</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#unitentities" class="tsd-kind-icon">unit<wbr>Entities</a>
+								<a href="battlelogic.html#unitentities" class="tsd-kind-icon">unit<wbr>Entities</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#unitmastercache" class="tsd-kind-icon">unit<wbr>Master<wbr>Cache</a>
+								<a href="battlelogic.html#unitmastercache" class="tsd-kind-icon">unit<wbr>Master<wbr>Cache</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#getfieldmaster" class="tsd-kind-icon">get<wbr>Field<wbr>Master</a>
+								<a href="battlelogic.html#getfieldmaster" class="tsd-kind-icon">get<wbr>Field<wbr>Master</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#getunitmaster" class="tsd-kind-icon">get<wbr>Unit<wbr>Master</a>
+								<a href="battlelogic.html#getunitmaster" class="tsd-kind-icon">get<wbr>Unit<wbr>Master</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#init" class="tsd-kind-icon">init</a>
+								<a href="battlelogic.html#init" class="tsd-kind-icon">init</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#isdied" class="tsd-kind-icon">is<wbr>Died</a>
+								<a href="battlelogic.html#isdied" class="tsd-kind-icon">is<wbr>Died</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#refreshavailablecost" class="tsd-kind-icon">refresh<wbr>Available<wbr>Cost</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#requestaispawn" class="tsd-kind-icon">requestAISpawn</a>
+								<a href="battlelogic.html#requestaispawn" class="tsd-kind-icon">requestAISpawn</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#requestspawn" class="tsd-kind-icon">request<wbr>Spawn</a>
+								<a href="battlelogic.html#requestspawn" class="tsd-kind-icon">request<wbr>Spawn</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#requestspawnai" class="tsd-kind-icon">request<wbr>SpawnAI</a>
+								<a href="battlelogic.html#requestspawnai" class="tsd-kind-icon">request<wbr>SpawnAI</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#requestspawnplayer" class="tsd-kind-icon">request<wbr>Spawn<wbr>Player</a>
+								<a href="battlelogic.html#requestspawnplayer" class="tsd-kind-icon">request<wbr>Spawn<wbr>Player</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#setdelegator" class="tsd-kind-icon">set<wbr>Delegator</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlemanager.html#update" class="tsd-kind-icon">update</a>
+								<a href="battlelogic.html#update" class="tsd-kind-icon">update</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updatebasestate" class="tsd-kind-icon">update<wbr>Base<wbr>State</a>
+								<a href="battlelogic.html#updateavailablecost" class="tsd-kind-icon">update<wbr>Available<wbr>Cost</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updatedamage" class="tsd-kind-icon">update<wbr>Damage</a>
+								<a href="battlelogic.html#updatedamage" class="tsd-kind-icon">update<wbr>Damage</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updatedistance" class="tsd-kind-icon">update<wbr>Distance</a>
+								<a href="battlelogic.html#updatedistance" class="tsd-kind-icon">update<wbr>Distance</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updategameover" class="tsd-kind-icon">update<wbr>Game<wbr>Over</a>
+								<a href="battlelogic.html#updateentityparameter" class="tsd-kind-icon">update<wbr>Entity<wbr>Parameter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updateparameter" class="tsd-kind-icon">update<wbr>Parameter</a>
+								<a href="battlelogic.html#updateentitystate" class="tsd-kind-icon">update<wbr>Entity<wbr>State</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updatespawnrequest" class="tsd-kind-icon">update<wbr>Spawn<wbr>Request</a>
+								<a href="battlelogic.html#updategameover" class="tsd-kind-icon">update<wbr>Game<wbr>Over</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updateunitdeadstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Dead<wbr>State</a>
+								<a href="battlelogic.html#updatespawnrequest" class="tsd-kind-icon">update<wbr>Spawn<wbr>Request</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updateunitidlestate" class="tsd-kind-icon">update<wbr>Unit<wbr>Idle<wbr>State</a>
+								<a href="battlelogic.html#updateunitdeadstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Dead<wbr>State</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updateunitlockedstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Locked<wbr>State</a>
+								<a href="battlelogic.html#updateunitidlestate" class="tsd-kind-icon">update<wbr>Unit<wbr>Idle<wbr>State</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlemanager.html#updateunitstate" class="tsd-kind-icon">update<wbr>Unit<wbr>State</a>
+								<a href="battlelogic.html#updateunitlockedstate" class="tsd-kind-icon">update<wbr>Unit<wbr>Locked<wbr>State</a>
 							</li>
 						</ul>
 					</li>

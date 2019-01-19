@@ -64,6 +64,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>health 増減を表現するエフェクト</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -112,6 +119,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#accessible" class="tsd-kind-icon">accessible</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="healthgaugeeffect.html#activeframecount" class="tsd-kind-icon">active<wbr>Frame<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#alpha" class="tsd-kind-icon">alpha</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a></li>
@@ -141,7 +149,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#pivot" class="tsd-kind-icon">pivot</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#position" class="tsd-kind-icon">position</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="healthgaugeeffect.html#reducingframecount" class="tsd-kind-icon">reducing<wbr>Frame<wbr>Count</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="healthgaugeeffect.html#remainingframecount" class="tsd-kind-icon">remaining<wbr>Frame<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#renderable" class="tsd-kind-icon">renderable</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#rotation" class="tsd-kind-icon">rotation</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="healthgaugeeffect.html#scale" class="tsd-kind-icon">scale</a></li>
@@ -237,9 +244,14 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L24">display/battle/effect/HealthGauge.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L66">display/battle/effect/HealthGauge.ts:66</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>コンストラクタ</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -410,6 +422,21 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="activeframecount" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> active<wbr>Frame<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">active<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;24</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L41">display/battle/effect/HealthGauge.ts:41</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>表示するフレーム数</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="alpha" class="tsd-anchor"></a>
 					<h3>alpha</h3>
@@ -460,9 +487,14 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;16777028</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L9">display/battle/effect/HealthGauge.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L24">display/battle/effect/HealthGauge.ts:24</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>現在の health の色</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="currentgraphic" class="tsd-anchor"></a>
@@ -470,9 +502,14 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Graphic<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Graphics</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L17">display/battle/effect/HealthGauge.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L50">display/battle/effect/HealthGauge.ts:50</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>現在の health 用の PIXI.Graphics</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="cursor" class="tsd-anchor"></a>
@@ -502,9 +539,14 @@
 					<div class="tsd-signature tsd-kind-icon">elapsed<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L12">display/battle/effect/HealthGauge.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L33">display/battle/effect/HealthGauge.ts:33</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>経過フレーム数</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="filterarea" class="tsd-anchor"></a>
@@ -534,9 +576,14 @@
 					<div class="tsd-signature tsd-kind-icon">from<wbr>Percent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L19">display/battle/effect/HealthGauge.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L55">display/battle/effect/HealthGauge.ts:55</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>減算元のゲージ比率</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="gaugeheight" class="tsd-anchor"></a>
@@ -544,9 +591,14 @@
 					<div class="tsd-signature tsd-kind-icon">gauge<wbr>Height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;8</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L6">display/battle/effect/HealthGauge.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L15">display/battle/effect/HealthGauge.ts:15</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ゲージの高さ</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="gaugewidth" class="tsd-anchor"></a>
@@ -554,9 +606,14 @@
 					<div class="tsd-signature tsd-kind-icon">gauge<wbr>Width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;60</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L5">display/battle/effect/HealthGauge.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L11">display/battle/effect/HealthGauge.ts:11</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ゲージの幅</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="height" class="tsd-anchor"></a>
@@ -608,9 +665,14 @@
 					<div class="tsd-signature tsd-kind-icon">line<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2236962</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L10">display/battle/effect/HealthGauge.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L28">display/battle/effect/HealthGauge.ts:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>枠線の色</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="localtransform" class="tsd-anchor"></a>
@@ -640,9 +702,14 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;16729156</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L8">display/battle/effect/HealthGauge.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L20">display/battle/effect/HealthGauge.ts:20</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>最大 health の色</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="maxgraphic" class="tsd-anchor"></a>
@@ -650,9 +717,14 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Graphic<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Graphics</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L16">display/battle/effect/HealthGauge.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L46">display/battle/effect/HealthGauge.ts:46</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>最大 health 用の PIXI.Graphics</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="name" class="tsd-anchor"></a>
@@ -736,19 +808,14 @@
 					<div class="tsd-signature tsd-kind-icon">reducing<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;4</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L13">display/battle/effect/HealthGauge.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L37">display/battle/effect/HealthGauge.ts:37</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="remainingframecount" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> remaining<wbr>Frame<wbr>Count</h3>
-					<div class="tsd-signature tsd-kind-icon">remaining<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;24</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L14">display/battle/effect/HealthGauge.ts:14</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>減少アニメーションのフレーム数</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="renderable" class="tsd-anchor"></a>
@@ -811,9 +878,14 @@
 					<div class="tsd-signature tsd-kind-icon">to<wbr>Percent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L20">display/battle/effect/HealthGauge.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L59">display/battle/effect/HealthGauge.ts:59</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>減算後のゲージ比率</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="trackedpointers" class="tsd-anchor"></a>
@@ -980,9 +1052,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L22">display/battle/effect/HealthGauge.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L64">display/battle/effect/HealthGauge.ts:64</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>このエフェクトで使用するリソースリスト</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -1662,9 +1739,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/updateobject.html">UpdateObject</a>.<a href="../interfaces/updateobject.html#isdestroyed">isDestroyed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L45">display/battle/effect/HealthGauge.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L94">display/battle/effect/HealthGauge.ts:94</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UpdateObject インターフェース実装
+									削除フラグが立っているか返す</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -2386,9 +2469,15 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/updateobject.html">UpdateObject</a>.<a href="../interfaces/updateobject.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L49">display/battle/effect/HealthGauge.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/HealthGauge.ts#L102">display/battle/effect/HealthGauge.ts:102</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UpdateObject インターフェース実装
+									requestAnimationFrame 毎のアップデート処理</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -2480,6 +2569,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="healthgaugeeffect.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="healthgaugeeffect.html#activeframecount" class="tsd-kind-icon">active<wbr>Frame<wbr>Count</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="healthgaugeeffect.html#alpha" class="tsd-kind-icon">alpha</a>
 							</li>
@@ -2566,9 +2658,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="healthgaugeeffect.html#reducingframecount" class="tsd-kind-icon">reducing<wbr>Frame<wbr>Count</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="healthgaugeeffect.html#remainingframecount" class="tsd-kind-icon">remaining<wbr>Frame<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="healthgaugeeffect.html#renderable" class="tsd-kind-icon">renderable</a>
