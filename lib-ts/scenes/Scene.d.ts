@@ -3,6 +3,7 @@ import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import * as UI from 'interfaces/UiGraph/index';
 import Transition from 'interfaces/Transition';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
+import UpdateObject from 'display/UpdateObject';
 /**
  * ゲームシーンの抽象クラス
  * UiGraph を利用して UI 情報を透過的に読み込み初期化する
@@ -25,18 +26,14 @@ export default abstract class Scene extends PIXI.Container {
      * 描画順による前後関係を統制するために一つの Container にまとめる
      */
     protected uiGraphContainer: PIXI.Container;
-    protected objectsToUpdate: {
-        update: (delta: number) => void;
-    }[];
+    protected objectsToUpdate: UpdateObject[];
     protected transitionIn: Transition;
     protected transitionOut: Transition;
     /**
      * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
      */
     update(delta: number): void;
-    protected registerUpdatingObject(object: {
-        update: (delta: number) => void;
-    }): void;
+    protected registerUpdatingObject(object: UpdateObject): void;
     protected updateRegisteredObjects(delta: number): void;
     /**
      * シーン追加トランジション開始

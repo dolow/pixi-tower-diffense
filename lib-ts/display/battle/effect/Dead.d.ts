@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
-export default class Dead extends PIXI.Container {
+import UpdateObject from 'display/UpdateObject';
+export default class Dead extends UpdateObject {
     private static resourceListCache;
     private bucket;
     private spirit;

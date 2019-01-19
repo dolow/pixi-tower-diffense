@@ -44427,6 +44427,16 @@ var ResourceMaster = Object.freeze({
             return list;
         }
     },
+    AttackSmoke: {
+        MaxFrameIndex: 3,
+        Api: function () {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/attack_smoke/attack_smoke.json";
+        },
+        TextureFrameName: function (index) {
+            if (index === void 0) { index = 1; }
+            return "effect_2_" + index + ".png";
+        }
+    },
     Dead: {
         Bucket: function () {
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_bucket.png";
@@ -44465,6 +44475,7 @@ var ResourceMaster = Object.freeze({
         Se: {
             Attack1: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_attack_1.mp3",
             Attack2: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_attack_2.mp3",
+            Bomb: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_bomb.mp3",
             UnitSpawn: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_unit_spawn.mp3",
             Win: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_win.mp3",
             Lose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_lose.mp3"
@@ -44472,6 +44483,48 @@ var ResourceMaster = Object.freeze({
     }
 });
 /* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
+
+
+/***/ }),
+
+/***/ "./src/display/UpdateObject.ts":
+/*!*************************************!*\
+  !*** ./src/display/UpdateObject.ts ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var UpdateObject = /** @class */ (function (_super) {
+    __extends(UpdateObject, _super);
+    function UpdateObject() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UpdateObject.prototype.isDestroyed = function () {
+        return this._destroyed;
+    };
+    UpdateObject.prototype.update = function (_dt) {
+    };
+    return UpdateObject;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+/* harmony default export */ __webpack_exports__["default"] = (UpdateObject);
 
 
 /***/ }),
@@ -44569,7 +44622,7 @@ var Base = /** @class */ (function (_super) {
         }
         switch (this.animationType) {
             case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.COLLAPSE: {
-                this.explodeContainer.position.set(this.sprite.position.x, this.sprite.position.y);
+                this.explodeContainer.position.set(this.sprite.position.x - this.sprite.width * this.sprite.anchor.x, this.sprite.position.y - this.sprite.height * this.sprite.anchor.y);
                 if ((this.elapsedFrameCount % 10) === 0) {
                     this.spawnCollapseExplode();
                 }
@@ -44612,10 +44665,8 @@ var Base = /** @class */ (function (_super) {
     Base.prototype.spawnCollapseExplode = function () {
         var scale = 1.0 + Math.random() % 0.8 - 0.4;
         var effect = new display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_3__["default"]();
-        effect.position.x = (Math.random() * this.sprite.width - this.sprite.width * 0.5);
-        effect.position.y = (Math.random() * this.sprite.height - this.sprite.height * 0.5);
-        effect.anchor.x = this.sprite.anchor.x;
-        effect.anchor.y = this.sprite.anchor.y;
+        effect.position.x = Math.random() * this.sprite.width;
+        effect.position.y = Math.random() * this.sprite.height;
         effect.scale.set(scale);
         this.explodeContainer.addChild(effect);
     };
@@ -44800,6 +44851,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! entity/UnitEntity */ "./src/entity/UnitEntity.ts");
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! display/battle/effect/HealthGauge */ "./src/display/battle/effect/HealthGauge.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44813,6 +44865,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -44855,6 +44908,7 @@ var Unit = /** @class */ (function (_super) {
          * マスターデータの値
          */
         _this.animationUpdateDurations = {};
+        _this.healthGauge = null;
         _this.hitFrame = animationParam.hitFrame;
         _this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
         _this.animationUpdateDurations = animationParam.animationUpdateDurations;
@@ -44896,6 +44950,14 @@ var Unit = /** @class */ (function (_super) {
     };
     Unit.prototype.getAnimationMaxFrameTime = function (type) {
         return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
+    };
+    Unit.prototype.spawnHealthGauge = function (fromPercent, toPercent) {
+        if (this.healthGauge) {
+            this.healthGauge.destroy();
+        }
+        this.healthGauge = new display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_3__["default"](fromPercent, toPercent);
+        this.healthGauge.position.set(this.sprite.position.x - (this.healthGauge.gaugeWidth * this.sprite.anchor.x), this.sprite.position.y - (this.healthGauge.gaugeHeight * this.sprite.anchor.y));
+        return this.healthGauge;
     };
     Unit.prototype.isFoeContact = function (target) {
         var rangeDistance = this.sprite.width * 0.5 + target.width * 0.5;
@@ -44981,10 +45043,10 @@ var UnitButton = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/display/battle/effect/BattleResult.ts":
-/*!***************************************************!*\
-  !*** ./src/display/battle/effect/BattleResult.ts ***!
-  \***************************************************/
+/***/ "./src/display/battle/effect/AttackSmoke.ts":
+/*!**************************************************!*\
+  !*** ./src/display/battle/effect/AttackSmoke.ts ***!
+  \**************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44993,7 +45055,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45010,6 +45072,73 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+var AttackSmokeEffect = /** @class */ (function (_super) {
+    __extends(AttackSmokeEffect, _super);
+    function AttackSmokeEffect() {
+        var _this = _super.call(this) || this;
+        _this.elapsedFrameCount = 0;
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.TextureFrameName(1)]);
+        _this.addChild(_this.sprite);
+        return _this;
+    }
+    Object.defineProperty(AttackSmokeEffect, "resourceList", {
+        get: function () {
+            return [ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.Api()];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AttackSmokeEffect.prototype.update = function (_delta) {
+        this.elapsedFrameCount++;
+        this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
+        if (this.elapsedFrameCount % 4 === 0) {
+            var index = Math.floor(this.elapsedFrameCount / 4) + 1;
+            if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.MaxFrameIndex) {
+                this.sprite.destroy();
+                this.destroy();
+                return;
+            }
+            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.TextureFrameName(index)];
+        }
+    };
+    return AttackSmokeEffect;
+}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (AttackSmokeEffect);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/effect/BattleResult.ts":
+/*!***************************************************!*\
+  !*** ./src/display/battle/effect/BattleResult.ts ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
 var BattleResult = /** @class */ (function (_super) {
     __extends(BattleResult, _super);
     function BattleResult(win) {
@@ -45020,11 +45149,11 @@ var BattleResult = /** @class */ (function (_super) {
             ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleResult.Win.Api()
             : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleResult.Lose.Api();
         var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureCacheName];
-        _this.result = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
-        _this.result.anchor.set(0.5);
-        _this.result.position.x = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.5;
-        _this.result.position.y = -(_this.result.height * 0.5);
-        _this.addChild(_this.result);
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
+        _this.sprite.anchor.set(0.5);
+        _this.sprite.position.x = managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"].instance.game.view.width * 0.5;
+        _this.sprite.position.y = -(_this.sprite.height * 0.5);
+        _this.addChild(_this.sprite);
         return _this;
     }
     Object.defineProperty(BattleResult, "resourceList", {
@@ -45041,14 +45170,14 @@ var BattleResult = /** @class */ (function (_super) {
         if (this.animationEnded) {
             return;
         }
-        this.result.position.y += 4;
-        if (this.result.position.y >= managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.height * 0.5) {
+        this.sprite.position.y += 4;
+        if (this.sprite.position.y >= managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"].instance.game.view.height * 0.5) {
             this.animationEnded = true;
             this.onAnimationEnded();
         }
     };
     return BattleResult;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleResult);
 
 
@@ -45066,6 +45195,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45081,33 +45212,49 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
+
+
 var CollapseExplodeEffect = /** @class */ (function (_super) {
     __extends(CollapseExplodeEffect, _super);
     function CollapseExplodeEffect() {
-        var _this = _super.call(this, pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.TextureFrameName(1)]) || this;
+        var _this = _super.call(this) || this;
         _this.elapsedFrameCount = 0;
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.TextureFrameName(1)]);
+        _this.sprite.anchor.set(0.5, 0.5);
+        _this.addChild(_this.sprite);
         return _this;
     }
     Object.defineProperty(CollapseExplodeEffect, "resourceList", {
         get: function () {
-            return [ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.Api()];
+            return [
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.Api(),
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Bomb
+            ];
         },
         enumerable: true,
         configurable: true
     });
     CollapseExplodeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
+        this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
+        if (this.elapsedFrameCount === 1) {
+            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Bomb);
+            if (sound) {
+                sound.play();
+            }
+        }
         if (this.elapsedFrameCount % 4 === 0) {
             var index = Math.floor(this.elapsedFrameCount / 4) + 1;
             if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.MaxFrameIndex) {
+                this.sprite.destroy();
                 this.destroy();
                 return;
             }
-            this.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.TextureFrameName(index)];
+            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.TextureFrameName(index)];
         }
     };
     return CollapseExplodeEffect;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]));
+}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_3__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (CollapseExplodeEffect);
 
 
@@ -45125,6 +45272,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45138,6 +45286,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 var TO_RAD = Math.PI / 180.0;
@@ -45204,9 +45353,12 @@ var Dead = /** @class */ (function (_super) {
                 this.spirit.visible = true;
                 break;
             }
-            case 80:
+            case 80: {
+                this.bucket.destroy();
+                this.spirit.destroy();
                 this.destroy();
                 break;
+            }
             default: {
                 if (this.elapsedFrameCount > 26) {
                     this.spirit.y = this.spirit.y - 3;
@@ -45216,8 +45368,89 @@ var Dead = /** @class */ (function (_super) {
     };
     Dead.resourceListCache = [];
     return Dead;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (Dead);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/effect/HealthGauge.ts":
+/*!**************************************************!*\
+  !*** ./src/display/battle/effect/HealthGauge.ts ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var HealthGaugeEffect = /** @class */ (function (_super) {
+    __extends(HealthGaugeEffect, _super);
+    function HealthGaugeEffect(fromPercent, toPercent) {
+        var _this = _super.call(this) || this;
+        _this.gaugeWidth = 60;
+        _this.gaugeHeight = 8;
+        _this.maxColor = 0xFF4444;
+        _this.currentColor = 0xFFFF44;
+        _this.lineColor = 0x222222;
+        _this.elapsedFrameCount = 0;
+        _this.reducingFrameCount = 4;
+        _this.remainingFrameCount = 24;
+        _this.fromPercent = fromPercent;
+        _this.toPercent = toPercent;
+        _this.maxGraphic = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Graphics"]();
+        _this.maxGraphic.lineStyle(2, _this.lineColor, 1);
+        _this.maxGraphic.beginFill(_this.maxColor, 1);
+        _this.maxGraphic.drawRect(0, 0, _this.gaugeWidth, _this.gaugeHeight);
+        _this.currentGraphic = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Graphics"]();
+        _this.currentGraphic.beginFill(_this.currentColor, 1);
+        _this.currentGraphic.drawRect(0, 0, 0, 22);
+        _this.addChild(_this.maxGraphic);
+        _this.addChild(_this.currentGraphic);
+        return _this;
+    }
+    Object.defineProperty(HealthGaugeEffect, "resourceList", {
+        get: function () {
+            return [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    HealthGaugeEffect.prototype.update = function (_delta) {
+        this.elapsedFrameCount++;
+        if (this.elapsedFrameCount <= this.reducingFrameCount) {
+            var reduceProgress = this.elapsedFrameCount / this.reducingFrameCount;
+            var currentPercent = this.fromPercent - (this.fromPercent - this.toPercent) * reduceProgress;
+            this.currentGraphic.clear();
+            this.currentGraphic.beginFill(this.currentColor, 1);
+            this.currentGraphic.drawRect(0, 0, this.gaugeWidth * currentPercent, this.gaugeHeight);
+        }
+        else if (this.elapsedFrameCount > this.remainingFrameCount) {
+            this.maxGraphic.destroy();
+            this.currentGraphic.destroy();
+            this.destroy();
+        }
+    };
+    return HealthGaugeEffect;
+}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_1__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (HealthGaugeEffect);
 
 
 /***/ }),
@@ -45725,7 +45958,8 @@ var BattleManager = /** @class */ (function () {
             return;
         }
         if (this.delegator.shouldDamage(unit, unit.lockedEntity)) {
-            unit.lockedEntity.currentHealth -= master.power;
+            unit.lockedEntity.currentHealth = unit.lockedEntity.currentHealth - master.power;
+            this.delegator.onAttackableEntityHealthUpdated(unit, unit.lockedEntity, unit.lockedEntity.currentHealth + master.power, unit.lockedEntity.currentHealth, master.maxHealth);
         }
     };
     BattleManager.prototype.updateDistance = function (unit) {
@@ -45886,6 +46120,7 @@ var DefaultDelegator = /** @class */ (function () {
     ;
     DefaultDelegator.prototype.onBaseStateChanged = function (_base, _oldState) { };
     DefaultDelegator.prototype.onUnitStateChanged = function (_unit, _oldState) { };
+    DefaultDelegator.prototype.onAttackableEntityHealthUpdated = function (_attacker, _target, _fromHealth, _toHealth, _maxHealth) { };
     DefaultDelegator.prototype.onBaseUpdated = function (_base) { };
     ;
     DefaultDelegator.prototype.onUnitUpdated = function (_unit) { };
@@ -46188,7 +46423,6 @@ var SoundManager = /** @class */ (function () {
         if (!SoundManager.sharedContext) {
             return;
         }
-        console.log(targetVolume, SoundManager.sharedContext.currentTime + seconds);
         sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, SoundManager.sharedContext.currentTime + seconds);
         if (stopOnEnd) {
             this.soundsKillingAfterFade.push({ sound: sound, targetVolume: targetVolume });
@@ -46474,8 +46708,9 @@ var TextFactory = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TextFactory.prototype.createUiNode = function (nodeParams) {
+        var _a;
         var textStyleParams = {};
-        var text = '';
+        var container = new PIXI.Text();
         if (nodeParams) {
             if (nodeParams.family !== undefined) {
                 textStyleParams.fontFamily = nodeParams.family;
@@ -46486,11 +46721,18 @@ var TextFactory = /** @class */ (function (_super) {
             if (nodeParams.color !== undefined) {
                 textStyleParams.fill = nodeParams.color;
             }
+            if (nodeParams.padding !== undefined) {
+                textStyleParams.padding = nodeParams.padding;
+            }
+            if (nodeParams.anchor !== undefined) {
+                (_a = container.anchor).set.apply(_a, nodeParams.anchor);
+            }
             if (nodeParams.text !== undefined) {
-                text = nodeParams.text;
+                container.text = nodeParams.text;
             }
         }
-        return new PIXI.Text(text, new PIXI.TextStyle(textStyleParams));
+        container.style = new PIXI.TextStyle(textStyleParams);
+        return container;
     };
     return TextFactory;
 }(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
@@ -46638,9 +46880,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
 /* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
 /* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
-/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
-/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
+/* harmony import */ var display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/AttackSmoke */ "./src/display/battle/effect/AttackSmoke.ts");
+/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
+/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
+/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -46654,6 +46897,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -46829,7 +47073,7 @@ var BattleScene = /** @class */ (function (_super) {
                 break;
             }
             case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD: {
-                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"](!unit.isPlayer);
+                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!unit.isPlayer);
                 effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
                 this.field.addChildAsForeBackgroundEffect(effect);
                 this.registerUpdatingObject(effect);
@@ -46857,7 +47101,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.onGameOver = function (isPlayerWon) {
         this.state = BattleState.FINISHED;
-        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"](isPlayerWon);
+        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"](isPlayerWon);
         result.onAnimationEnded = this.enableBackToTitle.bind(this);
         this.uiGraphContainer.addChild(result);
         var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
@@ -46892,15 +47136,35 @@ var BattleScene = /** @class */ (function (_super) {
             return false;
         }
         var contact = attacker.isFoeContact(target.sprite);
-        if (contact) {
-            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.getSound((Math.random() >= 0.5)
-                ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1
-                : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2);
-            if (sound) {
-                sound.play();
-            }
-        }
         return contact;
+    };
+    BattleScene.prototype.onAttackableEntityHealthUpdated = function (_attacker, target, fromHealth, toHealth, maxHealth) {
+        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.getSound((Math.random() >= 0.5)
+            ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1
+            : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2);
+        if (sound) {
+            sound.play();
+        }
+        if (!target.sprite) {
+            return;
+        }
+        var targetSprite = target.sprite;
+        // smoke effect
+        var smoke = new display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"]();
+        var targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
+        var targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
+        var scale = 0.5 + Math.random() * 0.5;
+        smoke.position.set(targetCenterX, targetCenterY);
+        smoke.scale.set(scale, scale);
+        targetSprite.parent.addChild(smoke);
+        // health gauge
+        if (target.unitId) {
+            var unit = target;
+            var gauge = unit.spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
+            targetSprite.parent.addChild(gauge);
+            this.registerUpdatingObject(gauge);
+        }
+        this.registerUpdatingObject(smoke);
     };
     BattleScene.prototype.shouldUnitWalk = function (entity) {
         var unit = entity;
@@ -46947,17 +47211,22 @@ var BattleScene = /** @class */ (function (_super) {
             var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
         }
-        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
+        var attackSmokeResources = display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
+        for (var i = 0; i < attackSmokeResources.length; i++) {
+            var attackSmokeResourcesUrl = attackSmokeResources[i];
+            assets.push({ name: attackSmokeResourcesUrl, url: attackSmokeResourcesUrl });
+        }
+        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
         for (var i = 0; i < deadResources.length; i++) {
             var deadResourceUrl = deadResources[i];
             assets.push({ name: deadResourceUrl, url: deadResourceUrl });
         }
-        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
+        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
         for (var i = 0; i < collapseExplodeResources.length; i++) {
             var collapseExplodeResourceUrl = collapseExplodeResources[i];
             assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
         }
-        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
+        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_18__["default"].resourceList;
         for (var i = 0; i < battleResultResources.length; i++) {
             var battleResultResourceUrl = battleResultResources[i];
             assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
@@ -47001,14 +47270,18 @@ var BattleScene = /** @class */ (function (_super) {
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
         var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
-        var bgm = soundManager.createSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle, resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle].buffer);
-        bgm.play(true);
-        var se = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se;
-        soundManager.createSound(se.Attack1, resources[se.Attack1].buffer);
-        soundManager.createSound(se.Attack2, resources[se.Attack2].buffer);
-        soundManager.createSound(se.UnitSpawn, resources[se.UnitSpawn].buffer);
-        soundManager.createSound(se.Win, resources[se.Win].buffer);
-        soundManager.createSound(se.Lose, resources[se.Lose].buffer);
+        var keys = Object.keys(resources);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var item = resources[key];
+            if (item.buffer) {
+                var audio = soundManager.createSound(key, item.buffer);
+                ;
+                if (key === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle) {
+                    audio.play(true);
+                }
+            }
+        }
         if (this.transitionIn.isFinished()) {
             this.state = BattleState.READY;
         }
@@ -47094,13 +47367,15 @@ var BattleScene = /** @class */ (function (_super) {
     };
     BattleScene.prototype.returnToTitle = function () {
         var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance;
-        soundManager.unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle);
-        var se = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se;
-        soundManager.unregisterSound(se.Attack1);
-        soundManager.unregisterSound(se.Attack2);
-        soundManager.unregisterSound(se.UnitSpawn);
-        soundManager.unregisterSound(se.Win);
-        soundManager.unregisterSound(se.Lose);
+        var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
+        var keys = Object.keys(resources);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var item = resources[key];
+            if (item.buffer) {
+                soundManager.unregisterSound(key);
+            }
+        }
         managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__["default"]());
     };
     return BattleScene;
@@ -47185,15 +47460,16 @@ var Scene = /** @class */ (function (_super) {
         this.objectsToUpdate.push(object);
     };
     Scene.prototype.updateRegisteredObjects = function (delta) {
-        for (var i = 0; i < this.objectsToUpdate.length;) {
+        var nextObjectsToUpdate = [];
+        for (var i = 0; i < this.objectsToUpdate.length; i++) {
             var obj = this.objectsToUpdate[i];
-            if (!obj) {
-                this.objectsToUpdate = this.objectsToUpdate.splice(i, 1);
+            if (!obj || obj.isDestroyed()) {
                 continue;
             }
-            this.objectsToUpdate[i].update(delta);
-            i++;
+            obj.update(delta);
+            nextObjectsToUpdate.push(obj);
         }
+        this.objectsToUpdate = nextObjectsToUpdate;
     };
     /**
      * シーン追加トランジション開始
@@ -47374,6 +47650,8 @@ var TitleScene = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_5__["default"]();
         _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_6__["default"]();
+        _this.interactive = true;
+        _this.on('pointerup', function () { return _this.startBattle(); });
         return _this;
     }
     TitleScene.prototype.createResourceList = function () {
@@ -47390,22 +47668,12 @@ var TitleScene = /** @class */ (function (_super) {
         bgm.play(true);
     };
     /**
-     * ゲーム開始ボタンが押下されたときのコールバック
-     */
-    TitleScene.prototype.onGameStartTappedDown = function () {
-        if (!this.transitionIn.isFinished()) {
-            return;
-        }
-        this.uiGraph.title_off.alpha = 0;
-    };
-    /**
      * ゲーム開始ボタン押下が離されたされたときのコールバック
      */
-    TitleScene.prototype.onGameStartTappedUp = function () {
-        if (!this.transitionIn.isFinished()) {
+    TitleScene.prototype.startBattle = function () {
+        if (this.transitionIn.isActive() || this.transitionOut.isActive()) {
             return;
         }
-        this.uiGraph.title_off.alpha = 1;
         var soundManager = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance;
         var bgm = soundManager.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
         if (bgm) {
@@ -47590,7 +47858,7 @@ var Immediate = /** @class */ (function () {
         return false;
     };
     Immediate.prototype.isFinished = function () {
-        return false;
+        return true;
     };
     Immediate.prototype.isActive = function () {
         return false;

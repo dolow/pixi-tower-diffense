@@ -8,7 +8,7 @@ export default class TextFactory extends UiNodeFactory {
   public createUiNode(nodeParams?: UI.TextNodeParams): PIXI.Container | null {
     const textStyleParams: PIXI.TextStyleOptions = {};
 
-    let text = '';
+    const container = new PIXI.Text();
 
     if (nodeParams) {
       if (nodeParams.family !== undefined) {
@@ -20,11 +20,19 @@ export default class TextFactory extends UiNodeFactory {
       if (nodeParams.color !== undefined) {
         textStyleParams.fill = nodeParams.color;
       }
+      if (nodeParams.padding !== undefined) {
+        textStyleParams.padding = nodeParams.padding;
+      }
+      if (nodeParams.anchor !== undefined) {
+        container.anchor.set(...nodeParams.anchor);
+      }
       if (nodeParams.text !== undefined) {
-        text = nodeParams.text;
+        container.text = nodeParams.text;
       }
     }
 
-    return new PIXI.Text(text, new PIXI.TextStyle(textStyleParams));
+    container.style = new PIXI.TextStyle(textStyleParams);
+
+    return container;
   }
 }

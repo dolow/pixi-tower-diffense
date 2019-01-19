@@ -179,7 +179,7 @@ export default class SoundManager {
     if (!SoundManager.sharedContext) {
       return;
     }
-    console.log(targetVolume, SoundManager.sharedContext.currentTime + seconds);
+    
     sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, SoundManager.sharedContext.currentTime + seconds);
     if (stopOnEnd) {
       this.soundsKillingAfterFade.push({ sound, targetVolume });

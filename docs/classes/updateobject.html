@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BattleScene | tower-diffence</title>
+	<title>UpdateObject | tower-diffence</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,32 +54,41 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="battlescene.html">BattleScene</a>
+					<a href="updateobject.html">UpdateObject</a>
 				</li>
 			</ul>
-			<h1>Class BattleScene</h1>
+			<h1>Class UpdateObject</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>メインのゲーム部分のシーン
-						ゲームロジックは BattleManager に委譲し、主に描画周りを行う</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="scene.html" class="tsd-signature-type">Scene</a>
+						<span class="tsd-signature-type">Container</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">BattleScene</span>
+								<span class="target">UpdateObject</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="collapseexplodeeffect.html" class="tsd-signature-type">CollapseExplodeEffect</a>
+									</li>
+									<li>
+										<a href="healthgaugeeffect.html" class="tsd-signature-type">HealthGaugeEffect</a>
+									</li>
+									<li>
+										<a href="attacksmokeeffect.html" class="tsd-signature-type">AttackSmokeEffect</a>
+									</li>
+									<li>
+										<a href="battleresult.html" class="tsd-signature-type">BattleResult</a>
+									</li>
+									<li>
+										<a href="dead.html" class="tsd-signature-type">Dead</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -90,195 +99,164 @@
 				<ul class="tsd-hierarchy">
 					<li><span class="tsd-signature-type">InteractiveTarget</span></li>
 					<li><span class="tsd-signature-type">AccessibleTarget</span></li>
-					<li><a href="../interfaces/battlemanagerdelegate.html" class="tsd-signature-type">BattleManagerDelegate</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="battlescene.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_bounds" class="tsd-kind-icon">_bounds</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_boundsid" class="tsd-kind-icon">_boundsID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_destroyed" class="tsd-kind-icon">_destroyed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_filters" class="tsd-kind-icon">_filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_mask" class="tsd-kind-icon">_mask</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#accessible" class="tsd-kind-icon">accessible</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#alpha" class="tsd-kind-icon">alpha</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#baseidmap" class="tsd-kind-icon">base<wbr>IdMap</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#children" class="tsd-kind-icon">children</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#cursor" class="tsd-kind-icon">cursor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#destroylist" class="tsd-kind-icon">destroy<wbr>List</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#field" class="tsd-kind-icon">field</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#fieldid" class="tsd-kind-icon">field<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#filters" class="tsd-kind-icon">filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#hassceneuigraph" class="tsd-kind-icon">has<wbr>Scene<wbr>UiGraph</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#interactive" class="tsd-kind-icon">interactive</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#manager" class="tsd-kind-icon">manager</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#mask" class="tsd-kind-icon">mask</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#maxunitslotcount" class="tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#parent" class="tsd-kind-icon">parent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#pivot" class="tsd-kind-icon">pivot</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#playerbaseparams" class="tsd-kind-icon">player<wbr>Base<wbr>Params</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#position" class="tsd-kind-icon">position</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#renderable" class="tsd-kind-icon">renderable</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#rotation" class="tsd-kind-icon">rotation</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#scale" class="tsd-kind-icon">scale</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#skew" class="tsd-kind-icon">skew</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#stageid" class="tsd-kind-icon">stage<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#state" class="tsd-kind-icon">state</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#transform" class="tsd-kind-icon">transform</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#uigraph" class="tsd-kind-icon">ui<wbr>Graph</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#uigraphcontainer" class="tsd-kind-icon">ui<wbr>Graph<wbr>Container</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#unitids" class="tsd-kind-icon">unit<wbr>Ids</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#visible" class="tsd-kind-icon">visible</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#width" class="tsd-kind-icon">width</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#x" class="tsd-kind-icon">x</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#y" class="tsd-kind-icon">y</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="battlescene.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="battlescene.html#prefixed-1" class="tsd-kind-icon">prefixed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_bounds" class="tsd-kind-icon">_bounds</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_boundsid" class="tsd-kind-icon">_boundsID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_destroyed" class="tsd-kind-icon">_destroyed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_filters" class="tsd-kind-icon">_filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_mask" class="tsd-kind-icon">_mask</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#accessible" class="tsd-kind-icon">accessible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#alpha" class="tsd-kind-icon">alpha</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#children" class="tsd-kind-icon">children</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#cursor" class="tsd-kind-icon">cursor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#filters" class="tsd-kind-icon">filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#interactive" class="tsd-kind-icon">interactive</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#mask" class="tsd-kind-icon">mask</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#pivot" class="tsd-kind-icon">pivot</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#renderable" class="tsd-kind-icon">renderable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#rotation" class="tsd-kind-icon">rotation</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#scale" class="tsd-kind-icon">scale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#skew" class="tsd-kind-icon">skew</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#transform" class="tsd-kind-icon">transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#visible" class="tsd-kind-icon">visible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#x" class="tsd-kind-icon">x</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#y" class="tsd-kind-icon">y</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="updateobject.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="updateobject.html#prefixed-1" class="tsd-kind-icon">prefixed</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battlescene.html#addchild" class="tsd-kind-icon">add<wbr>Child</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battlescene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="battlescene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="battlescene.html#createresourcelist" class="tsd-kind-icon">create<wbr>Resource<wbr>List</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#destroy" class="tsd-kind-icon">destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#emit" class="tsd-kind-icon">emit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#enablebacktotitle" class="tsd-kind-icon">enable<wbr>Back<wbr>ToTitle</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="battlescene.html#getcustomuigraphfactory" class="tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#getuigraphunitbutton" class="tsd-kind-icon">get<wbr>UiGraph<wbr>Unit<wbr>Button</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#listeners" class="tsd-kind-icon">listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#loadresource" class="tsd-kind-icon">load<wbr>Resource</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#loaduigraph" class="tsd-kind-icon">load<wbr>UiGraph</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#off" class="tsd-kind-icon">off</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#on" class="tsd-kind-icon">on</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onattackableentityhealthupdated" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onbasestatechanged" class="tsd-kind-icon">on<wbr>Base<wbr>State<wbr>Changed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onbaseupdated" class="tsd-kind-icon">on<wbr>Base<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#ongameover" class="tsd-kind-icon">on<wbr>Game<wbr>Over</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="battlescene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#onuigraphloaded" class="tsd-kind-icon">on<wbr>UiGraph<wbr>Loaded</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onunitbuttontapped" class="tsd-kind-icon">on<wbr>Unit<wbr>Button<wbr>Tapped</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onunitstatechanged" class="tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#onunitupdated" class="tsd-kind-icon">on<wbr>Unit<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#once" class="tsd-kind-icon">once</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#returntotitle" class="tsd-kind-icon">return<wbr>ToTitle</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#shouldlockbase" class="tsd-kind-icon">should<wbr>Lock<wbr>Base</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#shouldlockunit" class="tsd-kind-icon">should<wbr>Lock<wbr>Unit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#shouldunitwalk" class="tsd-kind-icon">should<wbr>Unit<wbr>Walk</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#spawnbaseentity" class="tsd-kind-icon">spawn<wbr>Base<wbr>Entity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battlescene.html#spawnunitentity" class="tsd-kind-icon">spawn<wbr>Unit<wbr>Entity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battlescene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battlescene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="battlescene.html#update" class="tsd-kind-icon">update</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="battlescene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battlescene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="updateobject.html#addchild" class="tsd-kind-icon">add<wbr>Child</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="updateobject.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="updateobject.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#emit" class="tsd-kind-icon">emit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="updateobject.html#isdestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#listeners" class="tsd-kind-icon">listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#off" class="tsd-kind-icon">off</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="updateobject.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="updateobject.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="updateobject.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="updateobject.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="updateobject.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Battle<wbr>Scene<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="battlescene.html" class="tsd-signature-type">BattleScene</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Update<wbr>Object<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="updateobject.html" class="tsd-signature-type">UpdateObject</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides EventEmitter.__constructor</p>
+								<p>Inherited from EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L344">scenes/BattleScene.ts:344</a></li>
+									<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:4085</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="battlescene.html" class="tsd-signature-type">BattleScene</a></h4>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Minimal EventEmitter interface that is molded against the Node.js
+									EventEmitter interface.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>constructor</dt>
+									<dd></dd>
+									<dt>api</dt>
+									<dd><p>public</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="updateobject.html" class="tsd-signature-type">UpdateObject</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="_bounds" class="tsd-anchor"></a>
@@ -445,32 +423,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="baseidmap" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> base<wbr>IdMap</h3>
-					<div class="tsd-signature tsd-kind-icon">base<wbr>IdMap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L84">scenes/BattleScene.ts:84</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>指定された拠点ID</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>ai<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>player<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="buttonmode" class="tsd-anchor"></a>
 					<h3>button<wbr>Mode</h3>
@@ -526,51 +478,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="destroylist" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> destroy<wbr>List</h3>
-					<div class="tsd-signature tsd-kind-icon">destroy<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L104">scenes/BattleScene.ts:104</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>削除予定のコンテナ</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="field" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> field</h3>
-					<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <a href="field.html" class="tsd-signature-type">Field</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L99">scenes/BattleScene.ts:99</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>背景の PIXI.Container</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="fieldid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> field<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">field<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L67">scenes/BattleScene.ts:67</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>利用するフィールドID</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="filterarea" class="tsd-anchor"></a>
 					<h3>filter<wbr>Area</h3>
@@ -592,22 +499,6 @@
 							<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:412</li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="hassceneuigraph" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> has<wbr>Scene<wbr>UiGraph</h3>
-					<div class="tsd-signature tsd-kind-icon">has<wbr>Scene<wbr>UiGraph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#hassceneuigraph">hasSceneUiGraph</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L21">scenes/Scene.ts:21</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>UiGraph を利用して読み込む UI があるかどうか</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="height" class="tsd-anchor"></a>
@@ -664,21 +555,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="manager" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> manager</h3>
-					<div class="tsd-signature tsd-kind-icon">manager<span class="tsd-signature-symbol">:</span> <a href="battlemanager.html" class="tsd-signature-type">BattleManager</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L95">scenes/BattleScene.ts:95</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>ゲームロジックを処理する BattleManager のインスタンス</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="mask" class="tsd-anchor"></a>
 					<h3>mask</h3>
@@ -690,21 +566,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="maxunitslotcount" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> max<wbr>Unit<wbr>Slot<wbr>Count</h3>
-					<div class="tsd-signature tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L62">scenes/BattleScene.ts:62</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>最大ユニット編成数</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="name" class="tsd-anchor"></a>
 					<h3>name</h3>
@@ -713,17 +574,6 @@
 						<p>Inherited from DisplayObject.name</p>
 						<ul>
 							<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:354</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="objectstoupdate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> objects<wbr>ToUpdate</h3>
-					<div class="tsd-signature tsd-kind-icon">objects<wbr>ToUpdate<span class="tsd-signature-symbol">:</span> <a href="updateobject.html" class="tsd-signature-type">UpdateObject</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#objectstoupdate">objectsToUpdate</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L32">scenes/Scene.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -781,29 +631,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="playerbaseparams" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> player<wbr>Base<wbr>Params</h3>
-					<div class="tsd-signature tsd-kind-icon">player<wbr>Base<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L75">scenes/BattleScene.ts:75</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>編成した拠点パラメータ</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>max<wbr>Health<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="position" class="tsd-anchor"></a>
 					<h3>position</h3>
@@ -859,36 +686,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="stageid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> stage<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">stage<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L71">scenes/BattleScene.ts:71</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>挑戦するステージID</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="state" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> state</h3>
-					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L91">scenes/BattleScene.ts:91</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>このシーンのステート</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="tabindex" class="tsd-anchor"></a>
 					<h3>tab<wbr>Index</h3>
@@ -929,84 +726,6 @@
 							<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:385</li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="transitionin" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> transition<wbr>In</h3>
-					<div class="tsd-signature tsd-kind-icon">transition<wbr>In<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol"> =&nbsp;new Immediate()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#transitionin">transitionIn</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L34">scenes/Scene.ts:34</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="transitionout" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> transition<wbr>Out</h3>
-					<div class="tsd-signature tsd-kind-icon">transition<wbr>Out<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol"> =&nbsp;new Immediate()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#transitionout">transitionOut</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L35">scenes/Scene.ts:35</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="uigraph" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> ui<wbr>Graph</h3>
-					<div class="tsd-signature tsd-kind-icon">ui<wbr>Graph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#uigraph">uiGraph</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L25">scenes/Scene.ts:25</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>UiGraph でロードされた UI データ</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Container</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="uigraphcontainer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> ui<wbr>Graph<wbr>Container</h3>
-					<div class="tsd-signature tsd-kind-icon">ui<wbr>Graph<wbr>Container<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol"> =&nbsp;new PIXI.Container()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#uigraphcontainer">uiGraphContainer</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L30">scenes/Scene.ts:30</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>UiGraph でロードされた UI データを配置するための PIXI.Container
-							描画順による前後関係を統制するために一つの Container にまとめる</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="unitids" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> unit<wbr>Ids</h3>
-					<div class="tsd-signature tsd-kind-icon">unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L79">scenes/BattleScene.ts:79</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>編成したユニットID配列</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="visible" class="tsd-anchor"></a>
@@ -1503,96 +1222,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-					<a name="begintransitionin" class="tsd-anchor"></a>
-					<h3>begin<wbr>Transition<wbr>In</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">begin<wbr>Transition<wbr>In<span class="tsd-signature-symbol">(</span>onTransitionFinished<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#begintransitionin">beginTransitionIn</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L513">scenes/BattleScene.ts:513</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>onTransitionFinished: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>scene<span class="tsd-signature-symbol">: </span><a href="scene.html" class="tsd-signature-type">Scene</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>scene: <a href="scene.html" class="tsd-signature-type">Scene</a></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="begintransitionout" class="tsd-anchor"></a>
-					<h3>begin<wbr>Transition<wbr>Out</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">begin<wbr>Transition<wbr>Out<span class="tsd-signature-symbol">(</span>onTransitionFinished<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#begintransitionout">beginTransitionOut</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L88">scenes/Scene.ts:88</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>シーン削除トランジション開始
-									引数でトランジション終了時のコールバックを指定できる</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>onTransitionFinished: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>scene<span class="tsd-signature-symbol">: </span><a href="scene.html" class="tsd-signature-type">Scene</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>scene: <a href="scene.html" class="tsd-signature-type">Scene</a></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="calculatebounds" class="tsd-anchor"></a>
 					<h3>calculate<wbr>Bounds</h3>
@@ -1626,30 +1255,6 @@
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-					<a name="createresourcelist" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Resource<wbr>List</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Resource<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#createresourcelist">createResourceList</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L377">scenes/BattleScene.ts:377</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>リソースリストの作成
-									ユーザが選択したユニットとフィールドのリソース情報も加える</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1732,23 +1337,6 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p><code>true</code> if the event had listeners, else <code>false</code>.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="enablebacktotitle" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> enable<wbr>Back<wbr>ToTitle</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">enable<wbr>Back<wbr>ToTitle<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L592">scenes/BattleScene.ts:592</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1874,39 +1462,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-					<a name="getcustomuigraphfactory" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> get<wbr>Custom<wbr>UiGraph<wbr>Factory</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="uinodefactory.html" class="tsd-signature-type">UiNodeFactory</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#getcustomuigraphfactory">getCustomUiGraphFactory</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L526">scenes/BattleScene.ts:526</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>独自 UiGraph 要素のファクトリを返す
-									BattleScene は UnitButton を独自で定義している</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="uinodefactory.html" class="tsd-signature-type">UiNodeFactory</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">null</span>
-							</h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="getglobalposition" class="tsd-anchor"></a>
 					<h3>get<wbr>Global<wbr>Position</h3>
@@ -1958,34 +1513,20 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="getuigraphunitbutton" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>UiGraph<wbr>Unit<wbr>Button</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>UiGraph<wbr>Unit<wbr>Button<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unitbutton.html" class="tsd-signature-type">UnitButton</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="isdestroyed" class="tsd-anchor"></a>
+					<h3>is<wbr>Destroyed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Destroyed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L587">scenes/BattleScene.ts:587</a></li>
+									<li>Defined in display/UpdateObject.ts:4</li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>ボタンインデックスから UnitButton インスタンスを返す</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="unitbutton.html" class="tsd-signature-type">UnitButton</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">undefined</span>
-							</h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2049,84 +1590,6 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="loadresource" class="tsd-anchor"></a>
-					<h3>load<wbr>Resource</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">load<wbr>Resource<span class="tsd-signature-symbol">(</span>onResourceLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#loadresource">loadResource</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L111">scenes/Scene.ts:111</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>リソースをロードする
-									デフォルトでは UiGraph 用の情報が取得される</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>onResourceLoaded: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="loaduigraph" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> load<wbr>UiGraph</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">load<wbr>UiGraph<span class="tsd-signature-symbol">(</span>onLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#loaduigraph">loadUiGraph</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L118">scenes/Scene.ts:118</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>onLoaded: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2233,324 +1696,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onattackableentityhealthupdated" class="tsd-anchor"></a>
-					<h3>on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated<span class="tsd-signature-symbol">(</span>_attacker<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, target<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, fromHealth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, toHealth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxHealth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onattackableentityhealthupdated">onAttackableEntityHealthUpdated</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L301">scenes/BattleScene.ts:301</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>_attacker: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
-								</li>
-								<li>
-									<h5>target: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
-								</li>
-								<li>
-									<h5>fromHealth: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>toHealth: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>maxHealth: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onavailablecostupdated" class="tsd-anchor"></a>
-					<h3>on<wbr>Available<wbr>Cost<wbr>Updated</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated<span class="tsd-signature-symbol">(</span>cost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onavailablecostupdated">onAvailableCostUpdated</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L243">scenes/BattleScene.ts:243</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-									利用可能なコストの値が変動したときのコールバック</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>cost: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onbasestatechanged" class="tsd-anchor"></a>
-					<h3>on<wbr>Base<wbr>State<wbr>Changed</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Base<wbr>State<wbr>Changed<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a>, _oldState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onbasestatechanged">onBaseStateChanged</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L169">scenes/BattleScene.ts:169</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-									拠点のステートが変更された際のコールバック</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>entity: <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
-								</li>
-								<li>
-									<h5>_oldState: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onbaseupdated" class="tsd-anchor"></a>
-					<h3>on<wbr>Base<wbr>Updated</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Base<wbr>Updated<span class="tsd-signature-symbol">(</span>base<span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onbaseupdated">onBaseUpdated</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L190">scenes/BattleScene.ts:190</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-										Base が更新されたときのコールバック
-									Base のアニメーションと PIXI による描画を更新する</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>base: <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="ongameover" class="tsd-anchor"></a>
-					<h3>on<wbr>Game<wbr>Over</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Game<wbr>Over<span class="tsd-signature-symbol">(</span>isPlayerWon<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#ongameover">onGameOver</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L251">scenes/BattleScene.ts:251</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-									勝敗が決定したときのコールバック</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>isPlayerWon: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-					<a name="onresourceloaded" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Resource<wbr>Loaded</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Resource<wbr>Loaded<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#onresourceloaded">onResourceLoaded</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L458">scenes/BattleScene.ts:458</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>リソースロード完了コールバック
-									BattleManager にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="onuigraphloaded" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>UiGraph<wbr>Loaded</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>UiGraph<wbr>Loaded<span class="tsd-signature-symbol">(</span>onLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#onuigraphloaded">onUiGraphLoaded</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L130">scenes/Scene.ts:130</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>loadResource 完了時のコールバックメソッド</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>onLoaded: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onunitbuttontapped" class="tsd-anchor"></a>
-					<h3>on<wbr>Unit<wbr>Button<wbr>Tapped</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Button<wbr>Tapped<span class="tsd-signature-symbol">(</span>buttonIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L573">scenes/BattleScene.ts:573</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>UnitButton 用のコールバック
-									タップされたボタンに応じたユニットの生成を BattleManager にリクエストする</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>buttonIndex: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onunitstatechanged" class="tsd-anchor"></a>
-					<h3>on<wbr>Unit<wbr>State<wbr>Changed</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a>, _oldState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onunitstatechanged">onUnitStateChanged</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L181">scenes/BattleScene.ts:181</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-									ユニットのステートが変更された際のコールバック</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>entity: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
-								</li>
-								<li>
-									<h5>_oldState: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="onunitupdated" class="tsd-anchor"></a>
-					<h3>on<wbr>Unit<wbr>Updated</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Updated<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onunitupdated">onUnitUpdated</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L199">scenes/BattleScene.ts:199</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-										Unit が更新されたときのコールバック
-									Unit のアニメーションと PIXI による描画を更新する</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>entity: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="once" class="tsd-anchor"></a>
 					<h3>once</h3>
@@ -2620,59 +1765,6 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="prepareuigraphcontainer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> prepare<wbr>UiGraph<wbr>Container</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container<span class="tsd-signature-symbol">(</span>uiData<span class="tsd-signature-symbol">: </span><a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#prepareuigraphcontainer">prepareUiGraphContainer</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L177">scenes/Scene.ts:177</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>UiGraph 用の PIXI.Container インスタンスに UiGraph 要素をロードする</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>uiData: <a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="registerupdatingobject" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> register<wbr>Updating<wbr>Object</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">register<wbr>Updating<wbr>Object<span class="tsd-signature-symbol">(</span>object<span class="tsd-signature-symbol">: </span><a href="updateobject.html" class="tsd-signature-type">UpdateObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#registerupdatingobject">registerUpdatingObject</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L50">scenes/Scene.ts:50</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>object: <a href="updateobject.html" class="tsd-signature-type">UpdateObject</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2881,23 +1973,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="returntotitle" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> return<wbr>ToTitle</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">return<wbr>ToTitle<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L597">scenes/BattleScene.ts:597</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="setchildindex" class="tsd-anchor"></a>
 					<h3>set<wbr>Child<wbr>Index</h3>
@@ -3021,200 +2096,6 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">DisplayObject</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="shoulddamage" class="tsd-anchor"></a>
-					<h3>should<wbr>Damage</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Damage<span class="tsd-signature-symbol">(</span>attackerEntity<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, targetEntity<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shoulddamage">shouldDamage</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L289">scenes/BattleScene.ts:289</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-									渡されたユニット同士が攻撃可能か返す</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>attackerEntity: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
-								</li>
-								<li>
-									<h5>targetEntity: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="shouldlockbase" class="tsd-anchor"></a>
-					<h3>should<wbr>Lock<wbr>Base</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Lock<wbr>Base<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, target<span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldlockbase">shouldLockBase</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L281">scenes/BattleScene.ts:281</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>attacker: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
-								</li>
-								<li>
-									<h5>target: <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="shouldlockunit" class="tsd-anchor"></a>
-					<h3>should<wbr>Lock<wbr>Unit</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Lock<wbr>Unit<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, target<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldlockunit">shouldLockUnit</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L277">scenes/BattleScene.ts:277</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-									渡されたユニット同士が接敵可能か返す</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>attacker: <a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
-								</li>
-								<li>
-									<h5>target: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="shouldunitwalk" class="tsd-anchor"></a>
-					<h3>should<wbr>Unit<wbr>Walk</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Unit<wbr>Walk<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldunitwalk">shouldUnitWalk</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L337">scenes/BattleScene.ts:337</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>entity: <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="spawnbaseentity" class="tsd-anchor"></a>
-					<h3>spawn<wbr>Base<wbr>Entity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Base<wbr>Entity<span class="tsd-signature-symbol">(</span>baseId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#spawnbaseentity">spawnBaseEntity</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L111">scenes/BattleScene.ts:111</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-										Base を発生させるときのコールバック
-									Field に Base のスプライトを追加する</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>baseId: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">null</span>
-							</h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="spawnunitentity" class="tsd-anchor"></a>
-					<h3>spawn<wbr>Unit<wbr>Entity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Unit<wbr>Entity<span class="tsd-signature-symbol">(</span>unitId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, baseEntity<span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#spawnunitentity">spawnUnitEntity</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L135">scenes/BattleScene.ts:135</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>GameManagerDelegate 実装
-										Unit を発生させるときのコールバック
-									Field に Unit のスプライトを追加する</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>unitId: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>baseEntity: <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
-								</li>
-								<li>
-									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="unitentity.html" class="tsd-signature-type">UnitEntity</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">null</span>
-							</h4>
 						</li>
 					</ul>
 				</section>
@@ -3355,54 +2236,23 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>_dt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L537">scenes/BattleScene.ts:537</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>毎フレームの更新処理
-									シーンのステートに応じて処理する</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>delta: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="updateregisteredobjects" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> update<wbr>Registered<wbr>Objects</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Registered<wbr>Objects<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#updateregisteredobjects">updateRegisteredObjects</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L54">scenes/Scene.ts:54</a></li>
+									<li>Defined in display/UpdateObject.ts:7</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>delta: <span class="tsd-signature-type">number</span></h5>
+									<h5>_dt: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -3443,433 +2293,304 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="battlescene.html" class="tsd-kind-icon">Battle<wbr>Scene</a>
+						<a href="updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="battlescene.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_bounds" class="tsd-kind-icon">_bounds</a>
+								<a href="updateobject.html#_bounds" class="tsd-kind-icon">_bounds</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_boundsid" class="tsd-kind-icon">_boundsID</a>
+								<a href="updateobject.html#_boundsid" class="tsd-kind-icon">_boundsID</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a>
+								<a href="updateobject.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a>
+								<a href="updateobject.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a>
+								<a href="updateobject.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_destroyed" class="tsd-kind-icon">_destroyed</a>
+								<a href="updateobject.html#_destroyed" class="tsd-kind-icon">_destroyed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a>
+								<a href="updateobject.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_filters" class="tsd-kind-icon">_filters</a>
+								<a href="updateobject.html#_filters" class="tsd-kind-icon">_filters</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a>
+								<a href="updateobject.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a>
+								<a href="updateobject.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_mask" class="tsd-kind-icon">_mask</a>
+								<a href="updateobject.html#_mask" class="tsd-kind-icon">_mask</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#accessible" class="tsd-kind-icon">accessible</a>
+								<a href="updateobject.html#accessible" class="tsd-kind-icon">accessible</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a>
+								<a href="updateobject.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a>
+								<a href="updateobject.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#alpha" class="tsd-kind-icon">alpha</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#baseidmap" class="tsd-kind-icon">base<wbr>IdMap</a>
+								<a href="updateobject.html#alpha" class="tsd-kind-icon">alpha</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a>
+								<a href="updateobject.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a>
+								<a href="updateobject.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#children" class="tsd-kind-icon">children</a>
+								<a href="updateobject.html#children" class="tsd-kind-icon">children</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#cursor" class="tsd-kind-icon">cursor</a>
+								<a href="updateobject.html#cursor" class="tsd-kind-icon">cursor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#destroylist" class="tsd-kind-icon">destroy<wbr>List</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#field" class="tsd-kind-icon">field</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#fieldid" class="tsd-kind-icon">field<wbr>Id</a>
+								<a href="updateobject.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a>
+								<a href="updateobject.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#filters" class="tsd-kind-icon">filters</a>
+								<a href="updateobject.html#filters" class="tsd-kind-icon">filters</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#height" class="tsd-kind-icon">height</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#interactive" class="tsd-kind-icon">interactive</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#mask" class="tsd-kind-icon">mask</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="updateobject.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#hassceneuigraph" class="tsd-kind-icon">has<wbr>Scene<wbr>UiGraph</a>
+								<a href="updateobject.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#height" class="tsd-kind-icon">height</a>
+								<a href="updateobject.html#parent" class="tsd-kind-icon">parent</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a>
+								<a href="updateobject.html#pivot" class="tsd-kind-icon">pivot</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#interactive" class="tsd-kind-icon">interactive</a>
+								<a href="updateobject.html#position" class="tsd-kind-icon">position</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a>
+								<a href="updateobject.html#renderable" class="tsd-kind-icon">renderable</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#manager" class="tsd-kind-icon">manager</a>
+								<a href="updateobject.html#rotation" class="tsd-kind-icon">rotation</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#mask" class="tsd-kind-icon">mask</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#maxunitslotcount" class="tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count</a>
+								<a href="updateobject.html#scale" class="tsd-kind-icon">scale</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a>
+								<a href="updateobject.html#skew" class="tsd-kind-icon">skew</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#parent" class="tsd-kind-icon">parent</a>
+								<a href="updateobject.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#pivot" class="tsd-kind-icon">pivot</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#playerbaseparams" class="tsd-kind-icon">player<wbr>Base<wbr>Params</a>
+								<a href="updateobject.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#position" class="tsd-kind-icon">position</a>
+								<a href="updateobject.html#transform" class="tsd-kind-icon">transform</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#renderable" class="tsd-kind-icon">renderable</a>
+								<a href="updateobject.html#visible" class="tsd-kind-icon">visible</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#rotation" class="tsd-kind-icon">rotation</a>
+								<a href="updateobject.html#width" class="tsd-kind-icon">width</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#scale" class="tsd-kind-icon">scale</a>
+								<a href="updateobject.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#skew" class="tsd-kind-icon">skew</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#stageid" class="tsd-kind-icon">stage<wbr>Id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#state" class="tsd-kind-icon">state</a>
+								<a href="updateobject.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a>
+								<a href="updateobject.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a>
+								<a href="updateobject.html#x" class="tsd-kind-icon">x</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#transform" class="tsd-kind-icon">transform</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#uigraph" class="tsd-kind-icon">ui<wbr>Graph</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#uigraphcontainer" class="tsd-kind-icon">ui<wbr>Graph<wbr>Container</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#unitids" class="tsd-kind-icon">unit<wbr>Ids</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#visible" class="tsd-kind-icon">visible</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#width" class="tsd-kind-icon">width</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#x" class="tsd-kind-icon">x</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#y" class="tsd-kind-icon">y</a>
+								<a href="updateobject.html#y" class="tsd-kind-icon">y</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="battlescene.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a>
+								<a href="updateobject.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="battlescene.html#prefixed-1" class="tsd-kind-icon">prefixed</a>
+								<a href="updateobject.html#prefixed-1" class="tsd-kind-icon">prefixed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a>
+								<a href="updateobject.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a>
+								<a href="updateobject.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a>
+								<a href="updateobject.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a>
+								<a href="updateobject.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a>
+								<a href="updateobject.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a>
+								<a href="updateobject.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a>
+								<a href="updateobject.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a>
+								<a href="updateobject.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a>
+								<a href="updateobject.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a>
+								<a href="updateobject.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a>
+								<a href="updateobject.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a>
+								<a href="updateobject.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="battlescene.html#addchild" class="tsd-kind-icon">add<wbr>Child</a>
+								<a href="updateobject.html#addchild" class="tsd-kind-icon">add<wbr>Child</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="battlescene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a>
+								<a href="updateobject.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="battlescene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a>
+								<a href="updateobject.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a>
+								<a href="updateobject.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="battlescene.html#createresourcelist" class="tsd-kind-icon">create<wbr>Resource<wbr>List</a>
+								<a href="updateobject.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#destroy" class="tsd-kind-icon">destroy</a>
+								<a href="updateobject.html#destroy" class="tsd-kind-icon">destroy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a>
+								<a href="updateobject.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#emit" class="tsd-kind-icon">emit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#enablebacktotitle" class="tsd-kind-icon">enable<wbr>Back<wbr>ToTitle</a>
+								<a href="updateobject.html#emit" class="tsd-kind-icon">emit</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
+								<a href="updateobject.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a>
+								<a href="updateobject.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a>
+								<a href="updateobject.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a>
+								<a href="updateobject.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="battlescene.html#getcustomuigraphfactory" class="tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory</a>
+								<a href="updateobject.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a>
+								<a href="updateobject.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a>
+								<a href="updateobject.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#getuigraphunitbutton" class="tsd-kind-icon">get<wbr>UiGraph<wbr>Unit<wbr>Button</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#listeners" class="tsd-kind-icon">listeners</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="updateobject.html#isdestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#loadresource" class="tsd-kind-icon">load<wbr>Resource</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#loaduigraph" class="tsd-kind-icon">load<wbr>UiGraph</a>
+								<a href="updateobject.html#listeners" class="tsd-kind-icon">listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#off" class="tsd-kind-icon">off</a>
+								<a href="updateobject.html#off" class="tsd-kind-icon">off</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#on" class="tsd-kind-icon">on</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onattackableentityhealthupdated" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onbasestatechanged" class="tsd-kind-icon">on<wbr>Base<wbr>State<wbr>Changed</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onbaseupdated" class="tsd-kind-icon">on<wbr>Base<wbr>Updated</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#ongameover" class="tsd-kind-icon">on<wbr>Game<wbr>Over</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="battlescene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#onuigraphloaded" class="tsd-kind-icon">on<wbr>UiGraph<wbr>Loaded</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onunitbuttontapped" class="tsd-kind-icon">on<wbr>Unit<wbr>Button<wbr>Tapped</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onunitstatechanged" class="tsd-kind-icon">on<wbr>Unit<wbr>State<wbr>Changed</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#onunitupdated" class="tsd-kind-icon">on<wbr>Unit<wbr>Updated</a>
+								<a href="updateobject.html#on" class="tsd-kind-icon">on</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#once" class="tsd-kind-icon">once</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a>
+								<a href="updateobject.html#once" class="tsd-kind-icon">once</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
+								<a href="updateobject.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a>
+								<a href="updateobject.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a>
+								<a href="updateobject.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a>
+								<a href="updateobject.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
+								<a href="updateobject.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a>
+								<a href="updateobject.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a>
+								<a href="updateobject.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#returntotitle" class="tsd-kind-icon">return<wbr>ToTitle</a>
+								<a href="updateobject.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a>
+								<a href="updateobject.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
+								<a href="updateobject.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a>
+								<a href="updateobject.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#shouldlockbase" class="tsd-kind-icon">should<wbr>Lock<wbr>Base</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#shouldlockunit" class="tsd-kind-icon">should<wbr>Lock<wbr>Unit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#shouldunitwalk" class="tsd-kind-icon">should<wbr>Unit<wbr>Walk</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#spawnbaseentity" class="tsd-kind-icon">spawn<wbr>Base<wbr>Entity</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="battlescene.html#spawnunitentity" class="tsd-kind-icon">spawn<wbr>Unit<wbr>Entity</a>
+								<a href="updateobject.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="battlescene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a>
+								<a href="updateobject.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="battlescene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a>
+								<a href="updateobject.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="battlescene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a>
+								<a href="updateobject.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="battlescene.html#update" class="tsd-kind-icon">update</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="battlescene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="updateobject.html#update" class="tsd-kind-icon">update</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="battlescene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a>
+								<a href="updateobject.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a>
 							</li>
 						</ul>
 					</li>

@@ -1,0 +1,39 @@
+{"frames": {
+
+"effect_2_1.png":
+{
+	"frame": {"x":1,"y":129,"w":154,"h":130},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":75,"w":154,"h":130},
+	"sourceSize": {"w":280,"h":280}
+},
+"effect_2_2.png":
+{
+	"frame": {"x":1,"y":261,"w":154,"h":130},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":75,"w":154,"h":130},
+	"sourceSize": {"w":280,"h":280}
+},
+"effect_2_3.png":
+{
+	"frame": {"x":1,"y":1,"w":154,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":75,"w":154,"h":126},
+	"sourceSize": {"w":280,"h":280}
+}},
+"animations": {
+	"effect_2": ["effect_2_1.png","effect_2_2.png","effect_2_3.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "attack_smoke.png",
+	"format": "RGBA8888",
+	"size": {"w":156,"h":392},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6ba90ad53afabbe53245c98ae5cd62b9:a272a8823fe53ea82d33dfbb3bc1bbcb:94ab1914b3c54d869f8f68a0102d6259$"
+}
+}

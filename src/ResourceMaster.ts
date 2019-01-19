@@ -115,6 +115,15 @@ const ResourceMaster = Object.freeze({
     }
   },
 
+  AttackSmoke: {
+    MaxFrameIndex: 3,
+    Api: (): string => {
+      return `${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json`;
+    },
+    TextureFrameName: (index: number = 1): string => {
+      return `effect_2_${index}.png`;
+    }
+  },
   Dead: {
     Bucket: () => {
       return `${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png`;
@@ -153,6 +162,7 @@ const ResourceMaster = Object.freeze({
     Se: {
       Attack1: `${Config.ResourceBaseUrl}/audio/se_attack_1.mp3`,
       Attack2: `${Config.ResourceBaseUrl}/audio/se_attack_2.mp3`,
+      Bomb: `${Config.ResourceBaseUrl}/audio/se_bomb.mp3`,
       UnitSpawn: `${Config.ResourceBaseUrl}/audio/se_unit_spawn.mp3`,
       Win: `${Config.ResourceBaseUrl}/audio/se_win.mp3`,
       Lose: `${Config.ResourceBaseUrl}/audio/se_lose.mp3`

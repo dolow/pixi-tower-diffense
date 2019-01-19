@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import UnitEntity from 'entity/UnitEntity';
 import ResourceMaster from 'ResourceMaster';
+import HealthGauge from 'display/battle/effect/HealthGauge';
 
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
@@ -102,6 +103,22 @@ export default class Unit extends UnitEntity {
     }
 
     this.sprite.anchor.x = 0.5;
+  }
+
+  protected healthGauge: HealthGauge | null = null;
+
+  public spawnHealthGauge(fromPercent: number, toPercent: number): HealthGauge {
+    if (this.healthGauge) {
+      this.healthGauge.destroy();
+    }
+
+    this.healthGauge = new HealthGauge(fromPercent, toPercent);
+    this.healthGauge.position.set(
+      this.sprite.position.x - (this.healthGauge.gaugeWidth * this.sprite.anchor.x),
+      this.sprite.position.y - (this.healthGauge.gaugeHeight * this.sprite.anchor.y)
+    );
+
+    return this.healthGauge;
   }
 
   public isFoeContact(target: PIXI.Container): boolean {

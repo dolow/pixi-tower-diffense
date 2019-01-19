@@ -49,6 +49,11 @@ declare const ResourceMaster: Readonly<{
         Middle: () => string[];
         Back: () => string[];
     };
+    AttackSmoke: {
+        MaxFrameIndex: number;
+        Api: () => string;
+        TextureFrameName: (index?: number) => string;
+    };
     Dead: {
         Bucket: () => string;
         Spirit: () => string;
@@ -74,6 +79,7 @@ declare const ResourceMaster: Readonly<{
         Se: {
             Attack1: string;
             Attack2: string;
+            Bomb: string;
             UnitSpawn: string;
             Win: string;
             Lose: string;

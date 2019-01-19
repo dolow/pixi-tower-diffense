@@ -82,34 +82,17 @@
       }
     },
     {
-      "id": "title_on",
-      "type": "sprite",
+      "id": "touch_to_start",
+      "type": "text",
       "position": [568, 320],
       "params": {
-        "textureName": "/assets/ui/title_button_start_on.png",
-        "url": "/assets/ui/title_button_start_on.png",
-        "anchor": [0.5, 0.5]
+        "family": "MisakiGothic",
+        "text": "TOUCH TO START",
+        "size": 64,
+        "color": "0xffffff",
+        "anchor": [0.5, 0.5],
+        "padding": 16
       }
-    },
-    {
-      "id": "title_off",
-      "type": "sprite",
-      "position": [568, 320],
-      "params": {
-        "textureName": "/assets/ui/title_button_start_off.png",
-        "url": "/assets/ui/title_button_start_off.png",
-        "anchor": [0.5, 0.5]
-      },
-      "events": [
-        {
-          "type": "pointerdown",
-          "callback": "onGameStartTappedDown"
-        },
-        {
-          "type": "pointerup",
-          "callback": "onGameStartTappedUp"
-        }
-      ]
     }
   ],
   "metadata": {

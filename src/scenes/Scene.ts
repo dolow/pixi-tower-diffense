@@ -5,6 +5,7 @@ import * as UI from 'interfaces/UiGraph/index';
 import Transition from 'interfaces/Transition';
 import UiGraph from 'modules/UiGraph';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
+import UpdateObject from 'display/UpdateObject';
 import Immediate from 'scenes/transition/Immediate';
 
 /**
@@ -28,7 +29,7 @@ export default abstract class Scene extends PIXI.Container {
    */
   protected uiGraphContainer: PIXI.Container = new PIXI.Container();
 
-  protected objectsToUpdate: { update: (delta: number) => void }[] = [];
+  protected objectsToUpdate: UpdateObject[] = [];
 
   protected transitionIn:  Transition = new Immediate();
   protected transitionOut: Transition = new Immediate();
@@ -46,20 +47,23 @@ export default abstract class Scene extends PIXI.Container {
     }
   }
 
-  protected registerUpdatingObject(object: { update: (delta: number) => void }): void {
+  protected registerUpdatingObject(object: UpdateObject): void {
     this.objectsToUpdate.push(object);
   }
 
   protected updateRegisteredObjects(delta: number): void {
-    for (let i = 0; i < this.objectsToUpdate.length;) {
+    const nextObjectsToUpdate = [];
+
+    for (let i = 0; i < this.objectsToUpdate.length; i++) {
       const obj = this.objectsToUpdate[i];
-      if (!obj) {
-        this.objectsToUpdate = this.objectsToUpdate.splice(i, 1);
+      if (!obj || obj.isDestroyed()) {
         continue
       }
-      this.objectsToUpdate[i].update(delta);
-      i++;
+      obj.update(delta);
+      nextObjectsToUpdate.push(obj);
     }
+
+    this.objectsToUpdate = nextObjectsToUpdate;
   }
 
   /**

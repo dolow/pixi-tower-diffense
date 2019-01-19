@@ -19,6 +19,10 @@ export default interface BattleManagerDelegate {
      */
     onUnitStateChanged(unit: UnitEntity, oldState: number): void;
     /**
+     * エンティティの health が変動した際のコールバック
+     */
+    onAttackableEntityHealthUpdated(attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void;
+    /**
      * 拠点が更新される際のコールバック
      */
     onBaseUpdated(unit: BaseEntity): void;
@@ -43,7 +47,7 @@ export default interface BattleManagerDelegate {
      */
     shouldLockBase(attacker: AttackableEntity, target: BaseEntity): boolean;
     /**
-     * 渡されたユニットが攻撃可能か返す
+     * 渡されたエンティティが攻撃可能か返す
      */
     shouldDamage(attacker: AttackableEntity, target: AttackableEntity): boolean;
     /**

@@ -105,6 +105,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 渡されたユニット同士が攻撃可能か返す
      */
     shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean;
+    onAttackableEntityHealthUpdated(_attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void;
     shouldUnitWalk(entity: UnitEntity): boolean;
     constructor();
     /**

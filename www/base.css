@@ -2,3 +2,16 @@
   font-family: 'MisakiGothic';
   src: url('assets/font/MisakiGothic.ttf') format('truetype');
 }
+
+* {
+  margin: 0px;
+}
+
+body {
+  background-color: #222222;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}

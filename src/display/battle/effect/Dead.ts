@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
+import UpdateObject from 'display/UpdateObject';
 
 const TO_RAD = Math.PI / 180.0;
 
-export default class Dead extends PIXI.Container {
+export default class Dead extends UpdateObject {
   private static resourceListCache: string[] = [];
 
   private bucket!: PIXI.Sprite;
@@ -62,7 +63,12 @@ export default class Dead extends PIXI.Container {
         this.spirit.visible = true;
         break;
       }
-      case 80: this.destroy(); break;
+      case 80: {
+        this.bucket.destroy();
+        this.spirit.destroy();
+        this.destroy();
+        break;
+      }
       default: {
         if (this.elapsedFrameCount > 26) {
           this.spirit.y = this.spirit.y - 3;

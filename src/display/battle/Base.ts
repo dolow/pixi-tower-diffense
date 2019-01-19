@@ -74,7 +74,10 @@ export default class Base extends BaseEntity {
 
     switch (this.animationType) {
       case ResourceMaster.Base.AnimationTypes.COLLAPSE: {
-        this.explodeContainer.position.set(this.sprite.position.x, this.sprite.position.y);
+        this.explodeContainer.position.set(
+          this.sprite.position.x - this.sprite.width * this.sprite.anchor.x,
+          this.sprite.position.y - this.sprite.height * this.sprite.anchor.y
+        );
         if ((this.elapsedFrameCount % 10) === 0) {
           this.spawnCollapseExplode();
         }
@@ -122,10 +125,8 @@ export default class Base extends BaseEntity {
     const scale = 1.0 + Math.random() % 0.8 - 0.4;
 
     const effect = new CollapseExplodeEffect();
-    effect.position.x = (Math.random() * this.sprite.width - this.sprite.width * 0.5);
-    effect.position.y = (Math.random() * this.sprite.height - this.sprite.height * 0.5);
-    effect.anchor.x = this.sprite.anchor.x;
-    effect.anchor.y = this.sprite.anchor.y;
+    effect.position.x = Math.random() * this.sprite.width;
+    effect.position.y = Math.random() * this.sprite.height;
     effect.scale.set(scale);
 
     this.explodeContainer.addChild(effect);

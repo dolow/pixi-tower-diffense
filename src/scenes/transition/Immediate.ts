@@ -15,7 +15,7 @@ export default class Immediate implements Transition {
     return false;
   }
   public isFinished(): boolean {
-    return false;
+    return true;
   }
   public isActive(): boolean {
     return false;

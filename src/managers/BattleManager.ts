@@ -291,7 +291,8 @@ export default class BattleManager {
     }
 
     if (this.delegator.shouldDamage(unit, unit.lockedEntity)) {
-      unit.lockedEntity.currentHealth -= master.power;
+      unit.lockedEntity.currentHealth = unit.lockedEntity.currentHealth - master.power;
+      this.delegator.onAttackableEntityHealthUpdated(unit, unit.lockedEntity, unit.lockedEntity.currentHealth + master.power, unit.lockedEntity.currentHealth, master.maxHealth);
     }
   }
   private updateDistance(unit: UnitEntity): void {

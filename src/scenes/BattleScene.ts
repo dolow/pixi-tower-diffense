@@ -20,6 +20,7 @@ import UnitButton from 'display/battle/UnitButton';
 import Unit from 'display/battle/Unit';
 import Field from 'display/battle/Field';
 import Base from 'display/battle/Base';
+import AttackSmoke from 'display/battle/effect/AttackSmoke';
 import Dead from 'display/battle/effect/Dead';
 import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
 import BattleResult from 'display/battle/effect/BattleResult';
@@ -294,17 +295,44 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     }
 
     const contact = attacker.isFoeContact(target.sprite);
-    if (contact) {
-
-      const sound = SoundManager.instance.getSound((Math.random() >= 0.5)
-        ? ResourceMaster.Audio.Se.Attack1
-        : ResourceMaster.Audio.Se.Attack2
-      );
-      if (sound) {
-        sound.play();
-      }
-    }
     return contact;
+  }
+
+  public onAttackableEntityHealthUpdated(_attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void {
+    const sound = SoundManager.instance.getSound((Math.random() >= 0.5)
+      ? ResourceMaster.Audio.Se.Attack1
+      : ResourceMaster.Audio.Se.Attack2
+    );
+    if (sound) {
+      sound.play();
+    }
+
+    if (!(target as any).sprite) {
+      return;
+    }
+
+    const targetSprite = (target as any).sprite;
+
+    // smoke effect
+    const smoke = new AttackSmoke();
+    const targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
+    const targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
+    const scale = 0.5 + Math.random() * 0.5;
+
+    smoke.position.set(targetCenterX, targetCenterY);
+    smoke.scale.set(scale, scale);
+
+    targetSprite.parent.addChild(smoke);
+
+    // health gauge
+    if ((target as any).unitId) {
+      const unit = target as Unit;
+      const gauge = unit.spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
+      targetSprite.parent.addChild(gauge);
+      this.registerUpdatingObject(gauge);
+    }
+
+    this.registerUpdatingObject(smoke);
   }
   public shouldUnitWalk(entity: UnitEntity): boolean {
     const unit = entity as Unit;
@@ -389,6 +417,12 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       assets.push({ name: bgResourceUrl, url: bgResourceUrl });
     }
 
+    const attackSmokeResources = AttackSmoke.resourceList;
+    for (let i = 0; i < attackSmokeResources.length; i++) {
+      const attackSmokeResourcesUrl = attackSmokeResources[i];
+      assets.push({ name: attackSmokeResourcesUrl, url: attackSmokeResourcesUrl });
+    }
+
     const deadResources = Dead.resourceList;
     for (let i = 0; i < deadResources.length; i++) {
       const deadResourceUrl = deadResources[i];
@@ -457,15 +491,17 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     this.addChild(this.uiGraphContainer);
 
     const soundManager = SoundManager.instance;
-    const bgm = soundManager.createSound(ResourceMaster.Audio.Bgm.Battle, resources[ResourceMaster.Audio.Bgm.Battle].buffer);
-    bgm.play(true);
-
-    const se = ResourceMaster.Audio.Se;
-    soundManager.createSound(se.Attack1, resources[se.Attack1].buffer);
-    soundManager.createSound(se.Attack2, resources[se.Attack2].buffer);
-    soundManager.createSound(se.UnitSpawn, resources[se.UnitSpawn].buffer);
-    soundManager.createSound(se.Win, resources[se.Win].buffer);
-    soundManager.createSound(se.Lose, resources[se.Lose].buffer);
+    const keys = Object.keys(resources);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const item = resources[key];
+      if (item.buffer) {
+        const audio = soundManager.createSound(key, item.buffer);;
+        if (key === ResourceMaster.Audio.Bgm.Battle) {
+          audio.play(true);
+        }
+      }
+    }
 
     if (this.transitionIn.isFinished()) {
       this.state = BattleState.READY;
@@ -560,15 +596,16 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
   private returnToTitle(): void {
     const soundManager = SoundManager.instance;
+    const resources = PIXI.loader.resources as any;
 
-    soundManager.unregisterSound(ResourceMaster.Audio.Bgm.Battle);
-
-    const se = ResourceMaster.Audio.Se;
-    soundManager.unregisterSound(se.Attack1);
-    soundManager.unregisterSound(se.Attack2);
-    soundManager.unregisterSound(se.UnitSpawn);
-    soundManager.unregisterSound(se.Win);
-    soundManager.unregisterSound(se.Lose);
+    const keys = Object.keys(resources);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const item = resources[key];
+      if (item.buffer) {
+        soundManager.unregisterSound(key);
+      }
+    }
 
     GameManager.loadScene(new TitleScene());
   }

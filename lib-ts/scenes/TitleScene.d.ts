@@ -8,11 +8,7 @@ export default class TitleScene extends Scene {
     protected createResourceList(): LoaderAddParam[];
     protected onResourceLoaded(): void;
     /**
-     * ゲーム開始ボタンが押下されたときのコールバック
-     */
-    onGameStartTappedDown(): void;
-    /**
      * ゲーム開始ボタン押下が離されたされたときのコールバック
      */
-    onGameStartTappedUp(): void;
+    startBattle(): void;
 }

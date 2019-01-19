@@ -86,6 +86,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onattackableentityhealthupdated" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onbasestatechanged" class="tsd-kind-icon">on<wbr>Base<wbr>State<wbr>Changed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlemanagerdelegate.html#onbaseupdated" class="tsd-kind-icon">on<wbr>Base<wbr>Updated</a></li>
@@ -106,6 +107,46 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onattackableentityhealthupdated" class="tsd-anchor"></a>
+					<h3>on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated<span class="tsd-signature-symbol">(</span>attacker<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, target<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, fromHealth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, toHealth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxHealth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L25">interfaces/BattleManagerDelegate.ts:25</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>エンティティの health が変動した際のコールバック</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>attacker: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
+								</li>
+								<li>
+									<h5>target: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
+								</li>
+								<li>
+									<h5>fromHealth: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>toHealth: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>maxHealth: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="onavailablecostupdated" class="tsd-anchor"></a>
 					<h3>on<wbr>Available<wbr>Cost<wbr>Updated</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -115,7 +156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L33">interfaces/BattleManagerDelegate.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L37">interfaces/BattleManagerDelegate.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -174,7 +215,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L25">interfaces/BattleManagerDelegate.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L29">interfaces/BattleManagerDelegate.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -202,7 +243,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L37">interfaces/BattleManagerDelegate.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L41">interfaces/BattleManagerDelegate.ts:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -261,7 +302,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L29">interfaces/BattleManagerDelegate.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L33">interfaces/BattleManagerDelegate.ts:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -289,12 +330,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L49">interfaces/BattleManagerDelegate.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L53">interfaces/BattleManagerDelegate.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>渡されたユニットが攻撃可能か返す</p>
+									<p>渡されたエンティティが攻撃可能か返す</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -320,7 +361,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L45">interfaces/BattleManagerDelegate.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L49">interfaces/BattleManagerDelegate.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -351,7 +392,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L41">interfaces/BattleManagerDelegate.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L45">interfaces/BattleManagerDelegate.ts:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -382,7 +423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L53">interfaces/BattleManagerDelegate.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleManagerDelegate.ts#L57">interfaces/BattleManagerDelegate.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -488,6 +529,9 @@
 					<li class="current tsd-kind-interface">
 						<a href="battlemanagerdelegate.html" class="tsd-kind-icon">Battle<wbr>Manager<wbr>Delegate</a>
 						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="battlemanagerdelegate.html#onattackableentityhealthupdated" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlemanagerdelegate.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a>
 							</li>

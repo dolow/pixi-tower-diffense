@@ -68,7 +68,8 @@
         "family": "MisakiGothic",
         "text": "0/0",
         "size": 64,
-        "color": "0xffffff"
+        "color": "0xffffff",
+        "padding": 16
       }
     }
   ],

@@ -68,7 +68,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-type">Container</span>
+						<a href="updateobject.html" class="tsd-signature-type">UpdateObject</a>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">BattleResult</span>
@@ -132,10 +132,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#pivot" class="tsd-kind-icon">pivot</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#position" class="tsd-kind-icon">position</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#renderable" class="tsd-kind-icon">renderable</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battleresult.html#result" class="tsd-kind-icon">result</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#rotation" class="tsd-kind-icon">rotation</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#scale" class="tsd-kind-icon">scale</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#skew" class="tsd-kind-icon">skew</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battleresult.html#sprite" class="tsd-kind-icon">sprite</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#transform" class="tsd-kind-icon">transform</a></li>
@@ -186,6 +186,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#isdestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#listeners" class="tsd-kind-icon">listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battleresult.html#off" class="tsd-kind-icon">off</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battleresult.html#on" class="tsd-kind-icon">on</a></li>
@@ -206,7 +207,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="battleresult.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battleresult.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="battleresult.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="battleresult.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="battleresult.html#update" class="tsd-kind-icon">update</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="battleresult.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
 							</ul>
 						</section>
@@ -226,7 +227,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L17">display/battle/effect/BattleResult.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L18">display/battle/effect/BattleResult.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -413,7 +414,7 @@
 					<div class="tsd-signature tsd-kind-icon">animation<wbr>Ended<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L6">display/battle/effect/BattleResult.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L7">display/battle/effect/BattleResult.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -647,16 +648,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="result" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> result</h3>
-					<div class="tsd-signature tsd-kind-icon">result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Sprite</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L10">display/battle/effect/BattleResult.ts:10</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="rotation" class="tsd-anchor"></a>
 					<h3>rotation</h3>
@@ -687,6 +678,16 @@
 						<p>Inherited from DisplayObject.skew</p>
 						<ul>
 							<li>Defined in /Users/kuwabara_yuki/workspace/pixi/tower-diffence/node_modules/@types/pixi.js/index.d.ts:408</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="sprite" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> sprite</h3>
+					<div class="tsd-signature tsd-kind-icon">sprite<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Sprite</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L11">display/battle/effect/BattleResult.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -866,7 +867,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L12">display/battle/effect/BattleResult.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L13">display/battle/effect/BattleResult.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -1538,6 +1539,24 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="isdestroyed" class="tsd-anchor"></a>
+					<h3>is<wbr>Destroyed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Destroyed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="updateobject.html">UpdateObject</a>.<a href="updateobject.html#isdestroyed">isDestroyed</a></p>
+								<ul>
+									<li>Defined in display/UpdateObject.ts:4</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="listeners" class="tsd-anchor"></a>
 					<h3>listeners</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -1713,7 +1732,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L8">display/battle/effect/BattleResult.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L9">display/battle/effect/BattleResult.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2260,17 +2279,18 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>_delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Overrides <a href="updateobject.html">UpdateObject</a>.<a href="updateobject.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L36">display/battle/effect/BattleResult.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/effect/BattleResult.ts#L37">display/battle/effect/BattleResult.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2427,9 +2447,6 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="battleresult.html#renderable" class="tsd-kind-icon">renderable</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battleresult.html#result" class="tsd-kind-icon">result</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="battleresult.html#rotation" class="tsd-kind-icon">rotation</a>
 							</li>
@@ -2438,6 +2455,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="battleresult.html#skew" class="tsd-kind-icon">skew</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="battleresult.html#sprite" class="tsd-kind-icon">sprite</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="battleresult.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a>
@@ -2560,6 +2580,9 @@
 								<a href="battleresult.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="battleresult.html#isdestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="battleresult.html#listeners" class="tsd-kind-icon">listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
@@ -2619,7 +2642,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 								<a href="battleresult.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="battleresult.html#update" class="tsd-kind-icon">update</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">

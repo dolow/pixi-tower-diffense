@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import UnitEntity from 'entity/UnitEntity';
+import HealthGauge from 'display/battle/effect/HealthGauge';
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
@@ -61,6 +62,8 @@ export default class Unit extends UnitEntity {
             [key: string]: number;
         };
     });
+    protected healthGauge: HealthGauge | null;
+    spawnHealthGauge(fromPercent: number, toPercent: number): HealthGauge;
     isFoeContact(target: PIXI.Container): boolean;
     resetAnimation(): void;
     updateAnimation(type?: string): void;

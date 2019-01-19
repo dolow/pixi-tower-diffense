@@ -15,6 +15,9 @@ export default class TitleScene extends Scene  {
     super();
     this.transitionIn  = new FadeIn();
     this.transitionOut = new FadeOut();
+
+    this.interactive = true;
+    this.on('pointerup', () => this.startBattle());
   }
 
   protected createResourceList(): LoaderAddParam[] {
@@ -34,22 +37,12 @@ export default class TitleScene extends Scene  {
   }
 
   /**
-   * ゲーム開始ボタンが押下されたときのコールバック
-   */
-  public onGameStartTappedDown(): void {
-    if (!this.transitionIn.isFinished()) {
-      return;
-    }
-    this.uiGraph.title_off.alpha = 0;
-  }
-  /**
    * ゲーム開始ボタン押下が離されたされたときのコールバック
    */
-  public onGameStartTappedUp(): void {
-    if (!this.transitionIn.isFinished()) {
+  public startBattle(): void {
+    if (this.transitionIn.isActive() || this.transitionOut.isActive()) {
       return;
     }
-    this.uiGraph.title_off.alpha = 1;
 
     const soundManager = SoundManager.instance;
     const bgm = soundManager.getSound(ResourceMaster.Audio.Bgm.Title);

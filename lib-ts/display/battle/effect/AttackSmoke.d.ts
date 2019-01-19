@@ -1,5 +1,5 @@
 import UpdateObject from 'display/UpdateObject';
-export default class CollapseExplodeEffect extends UpdateObject {
+export default class AttackSmokeEffect extends UpdateObject {
     private elapsedFrameCount;
     private sprite;
     static readonly resourceList: string[];

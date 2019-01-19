@@ -1,13 +1,14 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
+import UpdateObject from 'display/UpdateObject';
 import GameManager from 'managers/GameManager';
 
-export default class BattleResult extends PIXI.Container {
+export default class BattleResult extends UpdateObject {
   public animationEnded: boolean = false;
 
   public onAnimationEnded: () => void = () => {};
 
-  private result!: PIXI.Sprite;
+  private sprite!: PIXI.Sprite;
 
   public static get resourceList(): string[] {
     return [
@@ -24,13 +25,13 @@ export default class BattleResult extends PIXI.Container {
       : ResourceMaster.BattleResult.Lose.Api();
     const texture = PIXI.utils.TextureCache[textureCacheName];
 
-    this.result = new PIXI.Sprite(texture);
-    this.result.anchor.set(0.5);
+    this.sprite = new PIXI.Sprite(texture);
+    this.sprite.anchor.set(0.5);
 
-    this.result.position.x = GameManager.instance.game.view.width * 0.5;
-    this.result.position.y = -(this.result.height * 0.5);
+    this.sprite.position.x = GameManager.instance.game.view.width * 0.5;
+    this.sprite.position.y = -(this.sprite.height * 0.5);
 
-    this.addChild(this.result);
+    this.addChild(this.sprite);
   }
 
   public update(_delta: number): void {
@@ -38,9 +39,9 @@ export default class BattleResult extends PIXI.Container {
       return;
     }
 
-    this.result.position.y += 4;
+    this.sprite.position.y += 4;
 
-    if (this.result.position.y >= GameManager.instance.game.view.height * 0.5) {
+    if (this.sprite.position.y >= GameManager.instance.game.view.height * 0.5) {
       this.animationEnded = true;
       this.onAnimationEnded();
     }
