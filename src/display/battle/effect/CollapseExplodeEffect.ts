@@ -9,14 +9,14 @@ export default class CollapseExplodeEffect extends UpdateObject {
 
   public static get resourceList(): string[] {
     return [
-      ResourceMaster.CollapseExplode.Api(),
+      ResourceMaster.Static.CollapseExplode,
       ResourceMaster.Audio.Se.Bomb
     ];
   }
 
   constructor() {
     super();
-    this.sprite = new PIXI.Sprite(PIXI.utils.TextureCache[ResourceMaster.CollapseExplode.TextureFrameName(1)]);
+    this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.CollapseExplode(1));
     this.sprite.anchor.set(0.5, 0.5);
     this.addChild(this.sprite);
   }
@@ -35,13 +35,13 @@ export default class CollapseExplodeEffect extends UpdateObject {
 
     if (this.elapsedFrameCount % 4 === 0) {
       const index = Math.floor(this.elapsedFrameCount / 4) + 1;
-      if (index > ResourceMaster.CollapseExplode.MaxFrameIndex) {
+      if (index > ResourceMaster.MaxFrameIndex(ResourceMaster.Static.CollapseExplode)) {
         this.sprite.destroy();
         this.destroy();
         return;
       }
 
-      this.sprite.texture = PIXI.utils.TextureCache[ResourceMaster.CollapseExplode.TextureFrameName(index)];
+      this.sprite.texture = ResourceMaster.TextureFrame.CollapseExplode(index);
     }
   }
 }

@@ -56,6 +56,13 @@ const BattleState = Object.freeze({
  */
 export default class BattleScene extends Scene implements BattleManagerDelegate {
 
+  private static readonly MasterResourceKey = {
+    FIELD: 'battle_scene_field_master',
+    AI_WAVE: 'battle_scene_ai_wave_master',
+    UNIT: 'battle_scene_unit_master',
+    BASE: 'battle_scene_base_master'
+  };
+
   /**
    * 最大ユニット編成数
    */
@@ -150,7 +157,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
     unit.saveSpawnedPosition();
 
-    (baseEntity as Base).setAnimation(ResourceMaster.Base.AnimationTypes.SPAWN);
+    (baseEntity as Base).setAnimation(ResourceMaster.AnimationTypes.Base.SPAWN);
 
     if (isPlayer) {
       const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.UnitSpawn);
@@ -169,7 +176,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   public onBaseStateChanged(entity: BaseEntity, _oldState: number): void {
     if (entity.state === BaseState.DEAD) {
       const base = (entity as Base)
-      base.setAnimation(ResourceMaster.Base.AnimationTypes.COLLAPSE);
+      base.setAnimation(ResourceMaster.AnimationTypes.Base.COLLAPSE);
       this.field.addChildAsForeForegroundEffect(base.explodeContainer);
     }
   }
@@ -199,7 +206,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   public onUnitUpdated(entity: UnitEntity): void {
     const unit = entity as Unit;
 
-    const animationTypes = ResourceMaster.Unit.AnimationTypes;
+    const animationTypes = ResourceMaster.AnimationTypes.Unit;
     let animationType = unit.getAnimationType();
 
     switch (unit.state) {
@@ -337,7 +344,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   public shouldUnitWalk(entity: UnitEntity): boolean {
     const unit = entity as Unit;
 
-    if (unit.getAnimationType() === ResourceMaster.Unit.AnimationTypes.WALK) {
+    if (unit.getAnimationType() === ResourceMaster.AnimationTypes.Unit.WALK) {
       return true;
     }
     return unit.isAnimationLastFrameTime();
@@ -380,34 +387,34 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     for (let i = 0; i < this.unitIds.length; i++) {
       const unitId = this.unitIds[i];
       if (unitId >= 0) {
-        const unitUrl      = ResourceMaster.Unit.Texture(unitId);
-        const unitPanelUrl = ResourceMaster.Unit.PanelTexture(unitId);
+        const unitUrl      = ResourceMaster.Dynamic.Unit(unitId);
+        const unitPanelUrl = ResourceMaster.Dynamic.UnitPanel(unitId);
         assets.push({ name: unitUrl,      url: unitUrl });
         assets.push({ name: unitPanelUrl, url: unitPanelUrl});
       }
     }
 
-    const fieldMasterUrl = ResourceMaster.Field.Api(this.fieldId);
-    assets.push({ name: ResourceMaster.Field.ApiEntryPoint(), url: fieldMasterUrl });
+    const masterKeys = BattleScene.MasterResourceKey;
 
-    const aiWaveMasterUrl = ResourceMaster.AiWave.Api(this.stageId);
-    assets.push({ name: ResourceMaster.AiWave.ApiEntryPoint(), url: aiWaveMasterUrl });
+    const fieldMasterUrl = ResourceMaster.Api.Field(this.fieldId);
+    const aiWaveMasterUrl = ResourceMaster.Api.AiWave(this.stageId);
+    const unitMasterUrl = ResourceMaster.Api.Unit(this.unitIds);
+    const baseMasterUrl = ResourceMaster.Api.Base(this.baseIdMap.player, this.baseIdMap.ai);
 
-    const unitMasterUrl = ResourceMaster.Unit.Api(this.unitIds);
-    assets.push({ name: ResourceMaster.Unit.ApiEntryPoint(), url: unitMasterUrl });
+    assets.push({ name: masterKeys.FIELD, url: fieldMasterUrl });
+    assets.push({ name: masterKeys.AI_WAVE, url: aiWaveMasterUrl });
+    assets.push({ name: masterKeys.UNIT, url: unitMasterUrl });
+    assets.push({ name: masterKeys.BASE, url: baseMasterUrl });
 
-    const baseMasterUrl = ResourceMaster.Base.Api(this.baseIdMap.player, this.baseIdMap.ai);
-    assets.push({ name: ResourceMaster.Base.ApiEntryPoint(), url: baseMasterUrl });
-
-    const playerBaseTextureUrl = ResourceMaster.Base.Texture(this.baseIdMap.player);
+    const playerBaseTextureUrl = ResourceMaster.Dynamic.Base(this.baseIdMap.player);
     assets.push({ name: playerBaseTextureUrl, url: playerBaseTextureUrl });
     if (this.baseIdMap.player !== this.baseIdMap.ai) {
-      const aiBaseTextureUrl = ResourceMaster.Base.Texture(this.baseIdMap.ai);
+      const aiBaseTextureUrl = ResourceMaster.Dynamic.Base(this.baseIdMap.ai);
       assets.push({ name: aiBaseTextureUrl, url: aiBaseTextureUrl });
     }
 
     if (this.unitIds.indexOf(-1) >= 0) {
-      const emptyPanelUrl = ResourceMaster.Unit.PanelTexture(-1);
+      const emptyPanelUrl = ResourceMaster.Dynamic.UnitPanel();
       assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
     }
 
@@ -458,13 +465,15 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   protected onResourceLoaded(): void {
     const resources = PIXI.loader.resources as any;
 
-    const sceneUiGraphName = ResourceMaster.SceneUiGraph.Api(this);
+    const sceneUiGraphName = ResourceMaster.Api.SceneUiGraph(this);
     this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
 
-    const fieldMaster   = resources[ResourceMaster.Field.ApiEntryPoint()].data;
-    const aiWaveMaster  = resources[ResourceMaster.AiWave.ApiEntryPoint()].data;
-    const unitMasters   = resources[ResourceMaster.Unit.ApiEntryPoint()].data;
-    const baseMasterMap = resources[ResourceMaster.Base.ApiEntryPoint()].data;
+    const masterKeys = BattleScene.MasterResourceKey;
+
+    const fieldMaster   = resources[masterKeys.FIELD].data;
+    const aiWaveMaster  = resources[masterKeys.AI_WAVE].data;
+    const unitMasters   = resources[masterKeys.UNIT].data;
+    const baseMasterMap = resources[masterKeys.BASE].data;
 
     this.field.init({ fieldLength: fieldMaster.length, zLines: 10 });
 

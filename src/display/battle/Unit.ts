@@ -60,7 +60,7 @@ export default class Unit extends UnitEntity {
     if (this.animationFrameIndex !== this.hitFrame) {
       return false;
     }
-    const updateDuration = this.getAnimationUpdateDuration(ResourceMaster.Unit.AnimationTypes.ATTACK);
+    const updateDuration = this.getAnimationUpdateDuration(ResourceMaster.AnimationTypes.Unit.ATTACK);
     return (this.elapsedFrameCount % updateDuration) === 0;
   }
 
@@ -144,8 +144,7 @@ export default class Unit extends UnitEntity {
         this.resetAnimation();
       }
 
-      const name = ResourceMaster.Unit.TextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
-      this.sprite.texture = PIXI.utils.TextureCache[name];
+      this.sprite.texture = ResourceMaster.TextureFrame.Unit(this.animationType, this.unitId, this.animationFrameIndex);
 
       this.animationFrameIndex++;
     }

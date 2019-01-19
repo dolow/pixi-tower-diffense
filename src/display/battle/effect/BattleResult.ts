@@ -12,8 +12,8 @@ export default class BattleResult extends UpdateObject {
 
   public static get resourceList(): string[] {
     return [
-      ResourceMaster.BattleResult.Win.Api(),
-      ResourceMaster.BattleResult.Lose.Api()
+      ResourceMaster.Static.BattleResultWin,
+      ResourceMaster.Static.BattleResultLose
     ];
   }
 
@@ -21,8 +21,8 @@ export default class BattleResult extends UpdateObject {
     super();
 
     const textureCacheName = (win)
-      ? ResourceMaster.BattleResult.Win.Api()
-      : ResourceMaster.BattleResult.Lose.Api();
+      ? ResourceMaster.Static.BattleResultWin
+      : ResourceMaster.Static.BattleResultLose;
     const texture = PIXI.utils.TextureCache[textureCacheName];
 
     this.sprite = new PIXI.Sprite(texture);

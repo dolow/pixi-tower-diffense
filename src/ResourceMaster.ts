@@ -5,155 +5,73 @@ import Scene from  'scenes/Scene';
  * リソースの URL や命名規則のマスタ
  */
 const ResourceMaster = Object.freeze({
-  SceneUiGraph: {
-    ApiEntryPoint: (): string => {
-      return `${Config.ResourceBaseUrl}/ui_graph`;
-    },
-    Api: (scene: Scene): string => {
+  Api: {
+    SceneUiGraph: (scene: Scene): string => {
       const snake_case = scene.constructor.name.replace(/([A-Z])/g,
         (s) => { return `_${s.charAt(0).toLowerCase()}`; }
       ).replace(/^_/, '');
 
-      return `${ResourceMaster.SceneUiGraph.ApiEntryPoint()}/${snake_case}.json`;
-    }
-  },
-
-  Field: {
-    ApiEntryPoint: (): string => {
-      return `${Config.ResourceBaseUrl}/master/field_master.json`;
+      return `${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json`;
     },
-    Api: (fieldId: number): string => {
-      return `${ResourceMaster.Field.ApiEntryPoint()}?fieldId=${fieldId}`;
-    }
-  },
-
-  AiWave: {
-    ApiEntryPoint: (): string => {
-      return `${Config.ResourceBaseUrl}/master/ai_wave_master.json`;
+    Field: (fieldId: number): string => {
+      return `${Config.ResourceBaseUrl}/master/field_master.json?fieldId=${fieldId}`;
     },
-    Api: (stageId: number): string => {
-      return `${ResourceMaster.AiWave.ApiEntryPoint()}?stageId=${stageId}`;
-    }
-  },
-
-  Unit: {
-    AnimationTypes: Object.freeze({
-      WAIT: 'wait',
-      WALK: 'walk',
-      ATTACK: 'attack',
-      DAMAGE: 'damage'
-    }),
-
-    ApiEntryPoint: (): string => {
-      return `${Config.ResourceBaseUrl}/master/unit_master.json`;
+    AiWave: (stageId: number): string => {
+      return `${Config.ResourceBaseUrl}/master/ai_wave_master.json?stageId=${stageId}`;
     },
-    Api: (unitIds: number[]): string => {
+    Unit: (unitIds: number[]): string => {
       const joinedUnitIds = unitIds.join('&unitId[]=');
-      return `${ResourceMaster.Unit.ApiEntryPoint()}?unitId[]=${joinedUnitIds}`;
+      return `${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]=${joinedUnitIds}`;
     },
-    Texture: (unitId: number): string => {
+    Base: (playerBaseId: number, aiBaseId: number): string => {
+      return `${Config.ResourceBaseUrl}/master/base_master.json?playerBaseId=${playerBaseId}&aiBaseId=${aiBaseId}`;
+    }
+  },
+
+  Dynamic: {
+    Unit: (unitId: number): string => {
       return `${Config.ResourceBaseUrl}/units/${unitId}.json`;
     },
-    PanelTexture: (unitId: number): string => {
-      if (unitId <= 0) {
-        return `${Config.ResourceBaseUrl}/ui/units_panel/button/unit_empty.png`;
-      }
-      return `${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${unitId}.png`;
+    UnitPanel: (unitId?: number): string => {
+      return `${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${unitId ? unitId : 'empty'}.png`;
     },
-    TextureFrameName: (unitActionType: string, unitId: number, index: number): string => {
-      return `unit_${unitId}_${unitActionType}_${index}.png`;
-    }
-  },
-
-  Base: {
-    AnimationTypes: Object.freeze({
-      IDLE: 'idle',
-      SPAWN: 'spawn',
-      COLLAPSE: 'collapse'
-    }),
-
-    ApiEntryPoint: (): string => {
-      return `${Config.ResourceBaseUrl}/master`;
-    },
-    Api: (playerBaseId: number, aiBaseId: number): string => {
-      return `${ResourceMaster.Base.ApiEntryPoint()}/base_master.json?playerBaseId=${playerBaseId}&aiBaseId=${aiBaseId}`;
-    },
-    Texture: (baseId: number): string => {
+    Base: (baseId: number): string => {
       return `${Config.ResourceBaseUrl}/battle/base/${baseId}.json`;
-    },
-    TextureFrameName: (baseId: number, index: number = 1): string => {
-      return `base_${baseId}_${index}.png`;
     }
   },
-
-  BattleBg: {
-    TileCount: {
-      Fore: 10,
-      Middle: 6,
-      Back: 3
-    },
-    Fore: (): string[] => {
-      const list = [];
-      for (let i = 1; i <= ResourceMaster.BattleBg.TileCount.Fore; i++) {
-        list.push(`${Config.ResourceBaseUrl}/battle/bg_1_${i}.png`);
-      }
-      return list;
-    },
-    Middle: (): string[] => {
-      const list = [];
-      for (let i = 1; i <= ResourceMaster.BattleBg.TileCount.Middle; i++) {
-        list.push(`${Config.ResourceBaseUrl}/battle/bg_2_${i}.png`);
-      }
-      return list;
-    },
-    Back: (): string[] => {
-      const list = [];
-      for (let i = 1; i <= ResourceMaster.BattleBg.TileCount.Back; i++) {
-        list.push(`${Config.ResourceBaseUrl}/battle/bg_3_${i}.png`);
-      }
-      return list;
-    }
+  Static: {
+    BattleBgFores: [
+      `${Config.ResourceBaseUrl}/battle/bg_1_1.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_2.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_3.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_4.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_5.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_6.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_7.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_8.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_9.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_1_10.png`
+    ],
+    BattleBgMiddles: [
+      `${Config.ResourceBaseUrl}/battle/bg_2_1.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_2_2.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_2_3.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_2_4.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_2_5.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_2_6.png`
+    ],
+    BattleBgBacks: [
+      `${Config.ResourceBaseUrl}/battle/bg_3_1.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_3_2.png`,
+      `${Config.ResourceBaseUrl}/battle/bg_3_3.png`
+    ],
+    AttackSmoke: `${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json`,
+    DeadBucket: `${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png`,
+    DeadSpirit: `${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png`,
+    CollapseExplode: `${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json`,
+    BattleResultWin: `${Config.ResourceBaseUrl}/ui/battle_win.png`,
+    BattleResultLose: `${Config.ResourceBaseUrl}/ui/battle_lose.png`
   },
-
-  AttackSmoke: {
-    MaxFrameIndex: 3,
-    Api: (): string => {
-      return `${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json`;
-    },
-    TextureFrameName: (index: number = 1): string => {
-      return `effect_2_${index}.png`;
-    }
-  },
-  Dead: {
-    Bucket: () => {
-      return `${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png`;
-    },
-    Spirit: () => {
-      return `${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png`;
-    }
-  },
-  CollapseExplode: {
-    MaxFrameIndex: 5,
-    Api: (): string => {
-      return `${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json`;
-    },
-    TextureFrameName: (index: number = 1): string => {
-      return `effect_1_${index}.png`;
-    }
-  },
-  BattleResult: {
-    Win: {
-      Api: (): string => {
-        return `${Config.ResourceBaseUrl}/ui/battle_win.png`;
-      }
-    },
-    Lose: {
-      Api: (): string => {
-        return `${Config.ResourceBaseUrl}/ui/battle_lose.png`;
-      }
-    }
-  },
-
   Audio: {
     Bgm: {
       Title: `${Config.ResourceBaseUrl}/audio/bgm_title.mp3`,
@@ -167,6 +85,43 @@ const ResourceMaster = Object.freeze({
       Win: `${Config.ResourceBaseUrl}/audio/se_win.mp3`,
       Lose: `${Config.ResourceBaseUrl}/audio/se_lose.mp3`
     }
+  },
+
+  TextureFrame: {
+    Unit: (unitActionType: string, unitId: number, index: number): PIXI.Texture => {
+      return PIXI.utils.TextureCache[`unit_${unitId}_${unitActionType}_${index}.png`];
+    },
+    Base: (baseId: number, index: number = 1): PIXI.Texture => {
+      return PIXI.utils.TextureCache[`base_${baseId}_${index}.png`];
+    },
+    CollapseExplode: (index: number = 1): PIXI.Texture => {
+      return PIXI.utils.TextureCache[`effect_1_${index}.png`];
+    },
+    AttackSmoke: (index: number = 1): PIXI.Texture => {
+      return PIXI.utils.TextureCache[`effect_2_${index}.png`];
+    }
+  },
+
+  AnimationTypes: {
+    Unit: Object.freeze({
+      WAIT: 'wait',
+      WALK: 'walk',
+      ATTACK: 'attack',
+      DAMAGE: 'damage'
+    }),
+    Base: Object.freeze({
+      IDLE: 'idle',
+      SPAWN: 'spawn',
+      COLLAPSE: 'collapse'
+    })
+  },
+
+  MaxFrameIndex: (resourceKey: string): number => {
+    const json = PIXI.loader.resources[resourceKey];
+    if (!json || !json.data || !json.data.frames) {
+      return -1;
+    }
+    return Object.keys(json.data.frames).length;
   }
 });
 

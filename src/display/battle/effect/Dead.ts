@@ -14,8 +14,8 @@ export default class Dead extends UpdateObject {
 
   public static get resourceList(): string[] {
     if (Dead.resourceListCache.length === 0) {
-      Dead.resourceListCache.push(ResourceMaster.Dead.Bucket());
-      Dead.resourceListCache.push(ResourceMaster.Dead.Spirit());
+      Dead.resourceListCache.push(ResourceMaster.Static.DeadBucket);
+      Dead.resourceListCache.push(ResourceMaster.Static.DeadSpirit);
     }
     return Dead.resourceListCache;
   }
@@ -24,8 +24,8 @@ export default class Dead extends UpdateObject {
     super();
 
     const textureCache = PIXI.utils.TextureCache;
-    const bucketTexture = textureCache[ResourceMaster.Dead.Bucket()];
-    const spiritTexture = textureCache[ResourceMaster.Dead.Spirit()];
+    const bucketTexture = textureCache[ResourceMaster.Static.DeadBucket];
+    const spiritTexture = textureCache[ResourceMaster.Static.DeadSpirit];
 
     this.bucket = new PIXI.Sprite(bucketTexture);
     this.spirit = new PIXI.Sprite(spiritTexture);
@@ -71,6 +71,7 @@ export default class Dead extends UpdateObject {
       }
       default: {
         if (this.elapsedFrameCount > 26) {
+          this.spirit.visible = (this.elapsedFrameCount % 2 === 0);
           this.spirit.y = this.spirit.y - 3;
         }
       }

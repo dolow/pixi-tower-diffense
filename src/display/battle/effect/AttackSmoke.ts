@@ -7,13 +7,13 @@ export default class AttackSmokeEffect extends UpdateObject {
   private sprite!: PIXI.Sprite;
 
   public static get resourceList(): string[] {
-    return [ResourceMaster.AttackSmoke.Api()];
+    return [ResourceMaster.Static.AttackSmoke];
   }
 
   constructor() {
     super();
 
-    this.sprite = new PIXI.Sprite(PIXI.utils.TextureCache[ResourceMaster.AttackSmoke.TextureFrameName(1)]);
+    this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.AttackSmoke(1));
     this.addChild(this.sprite);
   }
 
@@ -24,13 +24,13 @@ export default class AttackSmokeEffect extends UpdateObject {
 
     if (this.elapsedFrameCount % 4 === 0) {
       const index = Math.floor(this.elapsedFrameCount / 4) + 1;
-      if (index > ResourceMaster.AttackSmoke.MaxFrameIndex) {
+      if (index > ResourceMaster.MaxFrameIndex(ResourceMaster.Static.AttackSmoke)) {
         this.sprite.destroy();
         this.destroy();
         return;
       }
 
-      this.sprite.texture = PIXI.utils.TextureCache[ResourceMaster.AttackSmoke.TextureFrameName(index)];
+      this.sprite.texture = ResourceMaster.TextureFrame.AttackSmoke(index);
     }
   }
 }

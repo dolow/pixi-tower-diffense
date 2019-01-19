@@ -23,9 +23,9 @@ export default class Field extends PIXI.Container {
 
   public static get resourceList(): string[] {
     if (Field.resourceListCache.length === 0) {
-      const foreTiles   = ResourceMaster.BattleBg.Fore();
-      const middleTiles = ResourceMaster.BattleBg.Middle();
-      const backTiles   = ResourceMaster.BattleBg.Back();
+      const foreTiles   = ResourceMaster.Static.BattleBgFores;
+      const middleTiles = ResourceMaster.Static.BattleBgMiddles;
+      const backTiles   = ResourceMaster.Static.BattleBgBacks;
       Field.resourceListCache = Field.resourceListCache.concat(foreTiles);
       Field.resourceListCache = Field.resourceListCache.concat(middleTiles);
       Field.resourceListCache = Field.resourceListCache.concat(backTiles);
@@ -47,9 +47,9 @@ export default class Field extends PIXI.Container {
 
   public init(options: any = { fieldLength: 3000, zLines: 8 }): void {
     const tiles: { [key: string]: string[] } = {
-      fore:   ResourceMaster.BattleBg.Fore(),
-      middle: ResourceMaster.BattleBg.Middle(),
-      back:   ResourceMaster.BattleBg.Back()
+      fore:   ResourceMaster.Static.BattleBgFores,
+      middle: ResourceMaster.Static.BattleBgMiddles,
+      back:   ResourceMaster.Static.BattleBgBacks
     };
 
     const layers = Object.keys(tiles);

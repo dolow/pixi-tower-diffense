@@ -26,7 +26,7 @@ export default class Base extends BaseEntity {
   /**
    * 現在のアニメーション種別
    */
-  protected animationType: string = ResourceMaster.Base.AnimationTypes.IDLE;
+  protected animationType: string = ResourceMaster.AnimationTypes.Base.IDLE;
   /**
    * 現在の経過フレーム数
    */
@@ -35,7 +35,7 @@ export default class Base extends BaseEntity {
   constructor(baseId: number, isPlayer: boolean) {
     super(baseId, isPlayer);
 
-    this.sprite = new PIXI.Sprite(PIXI.utils.TextureCache[ResourceMaster.Base.TextureFrameName(baseId)]);
+    this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.Base(baseId));
     if (!isPlayer) {
       this.sprite.scale.x  = -1.0;
     }
@@ -59,7 +59,7 @@ export default class Base extends BaseEntity {
   }
 
   public resetAnimation(): void {
-    this.animationType = ResourceMaster.Base.AnimationTypes.IDLE;
+    this.animationType = ResourceMaster.AnimationTypes.Base.IDLE;
     this.elapsedFrameCount = 0;
   }
   public setAnimation(type: string): void {
@@ -73,7 +73,7 @@ export default class Base extends BaseEntity {
     }
 
     switch (this.animationType) {
-      case ResourceMaster.Base.AnimationTypes.COLLAPSE: {
+      case ResourceMaster.AnimationTypes.Base.COLLAPSE: {
         this.explodeContainer.position.set(
           this.sprite.position.x - this.sprite.width * this.sprite.anchor.x,
           this.sprite.position.y - this.sprite.height * this.sprite.anchor.y
@@ -84,24 +84,22 @@ export default class Base extends BaseEntity {
         this.sprite.position.x = this.sprite.position.x + 4 * ((this.elapsedFrameCount % 2 === 0) ? 1 : -1);
         break;
       }
-      case ResourceMaster.Base.AnimationTypes.SPAWN: {
+      case ResourceMaster.AnimationTypes.Base.SPAWN: {
         if (this.baseId === 1) {
-          const cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 2);
-          this.sprite.texture = PIXI.utils.TextureCache[cacheName];
+          this.sprite.texture = ResourceMaster.TextureFrame.Base(this.baseId, 2);
 
           if (this.elapsedFrameCount >= baseId1SpawnFrameCount) {
             this.resetAnimation();
           }
         } else {
-          this.animationType = ResourceMaster.Base.AnimationTypes.IDLE;
+          this.animationType = ResourceMaster.AnimationTypes.Base.IDLE;
         }
         break;
       }
-      case ResourceMaster.Base.AnimationTypes.IDLE:
+      case ResourceMaster.AnimationTypes.Base.IDLE:
       default: {
         if (this.baseId === 1) {
-          const cacheName = ResourceMaster.Base.TextureFrameName(this.baseId, 1);
-          this.sprite.texture = PIXI.utils.TextureCache[cacheName];
+          this.sprite.texture = ResourceMaster.TextureFrame.Base(this.baseId, 1);
         } else if (this.baseId === 2) {
           const r  = 20;  // range
           const t  = 400; // duration
