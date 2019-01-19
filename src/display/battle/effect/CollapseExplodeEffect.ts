@@ -3,10 +3,27 @@ import ResourceMaster from 'ResourceMaster';
 import SoundManager from 'managers/SoundManager';
 import UpdateObject from 'interfaces/UpdateObject';
 
+/**
+ * 破壊時の爆発を表現するエフェクト
+ */
 export default class CollapseExplodeEffect extends PIXI.Container implements UpdateObject {
+  /**
+   * スプライトアニメーションを更新する頻度
+   */
+  public static readonly TextureFrameUpdateFrequency: number = 4;
+
+  /**
+   * 経過フレーム数
+   */
   private elapsedFrameCount: number = 0;
+  /**
+   * 表示する PIXI.Sprite インスタンス
+   */
   private sprite!: PIXI.Sprite;
 
+  /**
+   * このエフェクトで使用するリソースリスト
+   */
   public static get resourceList(): string[] {
     return [
       ResourceMaster.Static.CollapseExplode,
@@ -14,6 +31,9 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
     ];
   }
 
+  /**
+   * コンストラクタ
+   */
   constructor() {
     super();
     this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.CollapseExplode(1));
@@ -21,24 +41,32 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
     this.addChild(this.sprite);
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * 削除フラグが立っているか返す
+   */
   public isDestroyed(): boolean {
     return this._destroyed;
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * requestAnimationFrame 毎のアップデート処理
+   */
   public update(_delta: number): void {
     this.elapsedFrameCount++;
 
     this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
 
     if (this.elapsedFrameCount === 1) {
-      const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.Bomb);
+      const sound = SoundManager.getSound(ResourceMaster.Audio.Se.Bomb);
       if (sound) {
         sound.play();
       }
     }
 
-    if (this.elapsedFrameCount % 4 === 0) {
-      const index = Math.floor(this.elapsedFrameCount / 4) + 1;
+    if (this.elapsedFrameCount % CollapseExplodeEffect.TextureFrameUpdateFrequency === 0) {
+      const index = Math.floor(this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency) + 1;
       if (index > ResourceMaster.MaxFrameIndex(ResourceMaster.Static.CollapseExplode)) {
         this.sprite.destroy();
         this.destroy();

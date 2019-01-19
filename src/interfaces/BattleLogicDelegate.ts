@@ -2,23 +2,22 @@ import AttackableEntity from 'entity/AttackableEntity';
 import UnitEntity from 'entity/UnitEntity';
 import BaseEntity from 'entity/BaseEntity';
 
-export default interface BattleManagerDelegate {
+/**
+ * BattleLogic が委譲する処理を著したインターフェース
+ */
+export default interface BattleLogicDelegate {
   /**
-   * 拠点を生成する際のコールバック
+   * 拠点を生成する
    */
   spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null;
   /**
-   * ユニットを生成する際のコールバック
+   * ユニットを生成する
    */
   spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null;
   /**
-   * 拠点のステートが変更した際のコールバック
+   * エンティティのステートが変更した際のコールバック
    */
-  onBaseStateChanged(base: BaseEntity, oldState: number): void;
-  /**
-   * ユニットのステートが変更した際のコールバック
-   */
-  onUnitStateChanged(unit: UnitEntity, oldState: number): void;
+  onAttackableEntityStateChanged(entity: AttackableEntity, oldState: number): void;
   /**
    * エンティティの health が変動した際のコールバック
    */
@@ -32,13 +31,9 @@ export default interface BattleManagerDelegate {
    */
   onGameOver(isPlayerWon: boolean): void;
   /**
-   * 渡されたユニットが接敵可能か返す
+   * 渡されたエンティティが接敵可能か返す
    */
-  shouldLockUnit(attacker: AttackableEntity, target: UnitEntity): boolean;
-  /**
-   * 渡されたユニットが接敵可能か返す
-   */
-  shouldLockBase(attacker: AttackableEntity, target: BaseEntity): boolean;
+  shouldLockAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean;
   /**
    * 渡されたエンティティが攻撃可能か返す
    */

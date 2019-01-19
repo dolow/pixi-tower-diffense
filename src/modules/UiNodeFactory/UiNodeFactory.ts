@@ -30,11 +30,7 @@ export default class UiNodeFactory {
   /**
    * 定義されたイベントを実装する
    */
-  public attachUiEventByGraphElement(
-    events: UI.Event[],
-    node: PIXI.Container,
-    target: any
-  ): void {
+  public attachUiEventByGraphElement(events: UI.Event[], node: PIXI.Container, target: any): void {
     node.interactive = true;
 
     for (let i = 0; i < events.length; i++) {

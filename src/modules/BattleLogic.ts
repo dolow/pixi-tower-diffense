@@ -2,10 +2,9 @@ import FieldMaster from 'interfaces/master/Field';
 import AIWaveMaster from 'interfaces/master/AIWave';
 import UnitMaster from 'interfaces/master/Unit';
 import BaseMaster from 'interfaces/master/Base';
-import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
-import BaseState from 'enum/BaseState';
-import UnitState from 'enum/UnitState';
-import BattleManagerDefaultDelegator from 'managers/BattleManagerDefaultDelegator';
+import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
+import AttackableState from 'enum/AttackableState';
+import BattleLogicDefaultDelegator from 'modules/BattleLogicDefaultDelegator';
 import UnitEntity from 'entity/UnitEntity';
 import BaseEntity from 'entity/BaseEntity';
 
@@ -16,10 +15,8 @@ const BASE_ENTITIES_AI_INDEX = 1;
 /**
  * ゲーム内バトルパートのマネージャ
  * ゲームロジックを中心に扱う
- * TODO: Although GameManager is singleton, BattleManager is expected to be used by creating instance.
- * So class name should be changed.
  */
-export default class BattleManager {
+export default class BattleLogic {
   /**
    * フレームごとのコスト回復量
    */
@@ -30,9 +27,9 @@ export default class BattleManager {
   public maxAvailableCost: number = 100;
 
   /**
-   * BattleManagerDelegate 実装オブジェクト
+   * BattleLogicDelegate 実装オブジェクト
    */
-  private delegator: BattleManagerDelegate = new BattleManagerDefaultDelegator();
+  private delegator: BattleLogicDelegate = new BattleLogicDefaultDelegator();
 
   /**
    * 現在の利用可能なコスト
@@ -51,6 +48,9 @@ export default class BattleManager {
    */
   private baseEntities: BaseEntity[] = [];
 
+  /**
+   * フィールドマスタのキャッシュ
+   */
   private fieldMasterCache: FieldMaster | null = null;
   public getFieldMaster(): FieldMaster | null {
     return this.fieldMasterCache;
@@ -85,8 +85,11 @@ export default class BattleManager {
    */
   private isGameOver: boolean = false;
 
+  /**
+   * デリゲータとマスタ情報で初期化
+   */
   public init(params: {
-    delegator: BattleManagerDelegate,
+    delegator: BattleLogicDelegate,
     aiWaveMaster: AIWaveMaster,
     fieldMaster: FieldMaster,
     unitMasters: UnitMaster[],
@@ -95,12 +98,15 @@ export default class BattleManager {
       ai: BaseMaster
     }
   }): void {
+    // デリゲータのセット
     this.delegator = params.delegator;
 
+    // キャッシュクリア
     this.aiWaveMasterCache.clear();
     this.baseMasterCache.clear();
     this.unitMasterCache.clear();
 
+    // マスターのキャッシュ処理
     this.fieldMasterCache = params.fieldMaster;
 
     const waves = params.aiWaveMaster.waves;
@@ -121,6 +127,7 @@ export default class BattleManager {
     this.baseMasterCache.set(playerBaseMaster.baseId, playerBaseMaster);
     this.baseMasterCache.set(aiBaseMaster.baseId, aiBaseMaster);
 
+    // 拠点エンティティの生成リクエスト
     const playerBase = this.delegator.spawnBaseEntity(playerBaseMaster.baseId, true);
     const aiBase = this.delegator.spawnBaseEntity(aiBaseMaster.baseId, false);
 
@@ -128,15 +135,13 @@ export default class BattleManager {
       throw new Error('base could not be initialized');
     }
 
+    // 拠点エンティティの health 設定
     playerBase.currentHealth = playerBaseMaster.maxHealth;
     aiBase.currentHealth = aiBaseMaster.maxHealth;
 
+    // 拠点エンティティの保持
     this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBase;
     this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBase;
-  }
-
-  public setDelegator(delegator: BattleManagerDelegate): void {
-    this.delegator = delegator;
   }
 
   /**
@@ -173,21 +178,21 @@ export default class BattleManager {
    */
   public update(_delta: number): void {
     if (!this.isGameOver) {
+      // ゲーム終了判定
       this.updateGameOver();
-
-      this.refreshAvailableCost(this.availableCost + this.costRecoveryPerFrame);
-
+      // コスト回復
+      this.updateAvailableCost(this.availableCost + this.costRecoveryPerFrame);
+      // AI ユニットの生成リクエスト発行
       this.requestAISpawn(this.passedFrameCount);
-
+      // リクエストされているユニット生成実行
       this.updateSpawnRequest();
-
-      this.updateParameter();
-
-      this.updateUnitState();
-
-      this.updateBaseState();
+      // エンティティパラメータの更新
+      this.updateEntityParameter();
+      // エンティティのステート変更
+      this.updateEntityState();
     }
 
+    // unitEntities 配列の圧縮
     const activeUnitEntities: UnitEntity[] = [];
     for (let i = 0; i < this.unitEntities.length; i++) {
       const entity = this.unitEntities[i];
@@ -205,7 +210,7 @@ export default class BattleManager {
    * Unit のパラメータを更新する
    * ステートは全てのパラメータが変化した後に更新する
    */
-  private updateParameter(): void {
+  private updateEntityParameter(): void {
     for (let i = 0; i < this.unitEntities.length; i++) {
       this.updateDamage(this.unitEntities[i]);
       this.updateDistance(this.unitEntities[i]);
@@ -213,10 +218,13 @@ export default class BattleManager {
   }
 
   /**
-   * Unit のステートを更新する
+   * エンティティのステートを更新する
    * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
+   * ユニット毎に処理を行うとステートを条件にした処理結果が
+   * タイミングによって異なってしまうのでステート毎に処理を行う
    */
-  private updateUnitState(): void {
+  private updateEntityState(): void {
+    // ステートの変化をコールバックするために古いステートを保持するコンテナ
     const unitStates = [];
     for (let i = 0; i < this.unitEntities.length; i++) {
       unitStates.push(this.unitEntities[i].state);
@@ -224,20 +232,20 @@ export default class BattleManager {
 
     for (let i = 0; i < this.unitEntities.length; i++) {
       const entity = this.unitEntities[i];
-      if (entity.state === UnitState.DEAD) {
+      if (entity.state === AttackableState.DEAD) {
         this.updateUnitDeadState(entity);
       }
     }
 
     for (let i = 0; i < this.unitEntities.length; i++) {
       const entity = this.unitEntities[i];
-      if (entity.state === UnitState.LOCKED) {
+      if (entity.state === AttackableState.LOCKED) {
         this.updateUnitLockedState(entity);
       }
     }
     for (let i = 0; i < this.unitEntities.length; i++) {
       const entity = this.unitEntities[i];
-      if (entity.state === UnitState.IDLE) {
+      if (entity.state === AttackableState.IDLE) {
         this.updateUnitIdleState(entity);
       }
     }
@@ -246,33 +254,30 @@ export default class BattleManager {
       const entity = this.unitEntities[i];
       const oldState = unitStates[i];
       if (oldState !== entity.state) {
-        this.delegator.onUnitStateChanged(entity, oldState);
+        this.delegator.onAttackableEntityStateChanged(entity, oldState);
+      }
+    }
+
+    // 拠点のステート操作
+    // AI のステートを先に評価、同一フレーム内で引き分けた場合はプレーヤーの勝利
+    let base = this.baseEntities[BASE_ENTITIES_AI_INDEX];
+    if (base.state !== AttackableState.DEAD && base.currentHealth <= 0) {
+      const oldState = base.state;
+      base.state = AttackableState.DEAD;
+      this.delegator.onAttackableEntityStateChanged(base, oldState);
+    } else {
+      base = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
+      if (base.state !== AttackableState.DEAD && base.currentHealth <= 0) {
+        const oldState = base.state;
+        base.state = AttackableState.DEAD;
+        this.delegator.onAttackableEntityStateChanged(base, oldState);
       }
     }
   }
 
   /**
-   * BaseEntity のステートを更新する
+   * ダメージ判定を行い、必要なら health を上限させる
    */
-  private updateBaseState(): void {
-    let entity;
-
-    // AI のステートを先に評価、同一フレーム内で引き分けた場合はプレーヤーの勝利
-    entity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
-    if (entity.state !== BaseState.DEAD && entity.currentHealth <= 0) {
-      entity.state = BaseState.DEAD;
-      this.delegator.onBaseStateChanged(entity, BaseState.IDLE);
-      return;
-    }
-
-    entity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
-    if (entity.state !== BaseState.DEAD && entity.currentHealth <= 0) {
-      entity.state = BaseState.DEAD;
-      this.delegator.onBaseStateChanged(entity, BaseState.IDLE);
-      return;
-    }
-  }
-
   private updateDamage(unit: UnitEntity): void {
     if (!unit.lockedEntity) {
       return;
@@ -288,8 +293,11 @@ export default class BattleManager {
       this.delegator.onAttackableEntityHealthUpdated(unit, unit.lockedEntity, unit.lockedEntity.currentHealth + master.power, unit.lockedEntity.currentHealth, master.maxHealth);
     }
   }
+  /**
+   * 移動可能か判定し、可能なら移動させる
+   */
   private updateDistance(unit: UnitEntity): void {
-    if (unit.state !== UnitState.IDLE) {
+    if (unit.state !== AttackableState.IDLE) {
       return;
     }
 
@@ -303,59 +311,71 @@ export default class BattleManager {
     }
   }
 
+  /**
+   * 死亡時のステート更新処理
+   */
   private updateUnitDeadState(_unit: UnitEntity): void {
     // NOOP
   }
+  /**
+   * 接敵時のステート更新処理
+   */
   private updateUnitLockedState(unit: UnitEntity): void {
     // ロック解除判定
     if (unit.lockedEntity && unit.lockedEntity.currentHealth <= 0) {
       unit.lockedEntity = null;
-      unit.state        = UnitState.IDLE;
+      unit.state        = AttackableState.IDLE;
     }
 
     // 自身の DEAD 判定
     if (unit.currentHealth <= 0) {
       unit.id           = INVALID_UNIT_ID;
       unit.lockedEntity = null;
-      unit.state        = UnitState.DEAD;
+      unit.state        = AttackableState.DEAD;
     }
   }
+  /**
+   * 何もしていない状態でのステート更新処理
+   */
   private updateUnitIdleState(unit: UnitEntity): void {
-    // lock against foe unit first
+    // ユニットに対しての接敵判定、ユニットを無視して拠点に攻撃させない
     for (let i = 0; i < this.unitEntities.length; i++) {
       const target = this.unitEntities[i];
       if (unit.isAlly(target)) {
         continue;
       }
-      if (target.state !== UnitState.IDLE && target.state !== UnitState.LOCKED) {
+      if (target.state !== AttackableState.IDLE && target.state !== AttackableState.LOCKED) {
         continue;
       }
 
-      if (this.delegator.shouldLockUnit(unit, target)) {
+      if (this.delegator.shouldLockAttackableEntity(unit, target)) {
         unit.lockedEntity = target;
-        unit.state = UnitState.LOCKED;
+        unit.state = AttackableState.LOCKED;
         break;
       }
     }
 
-    // the lock against base
+    // 拠点に対しての接敵判定
     if (!unit.lockedEntity) {
       if (unit.isPlayer) {
         const baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
-        if (this.delegator.shouldLockBase(unit, baseEntity)) {
+        if (this.delegator.shouldLockAttackableEntity(unit, baseEntity)) {
           unit.lockedEntity = baseEntity;
-          unit.state = UnitState.LOCKED;
+          unit.state = AttackableState.LOCKED;
         }
       } else {
         const baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
-        if (this.delegator.shouldLockBase(unit, baseEntity)) {
+        if (this.delegator.shouldLockAttackableEntity(unit, baseEntity)) {
           unit.lockedEntity = baseEntity;
-          unit.state = UnitState.LOCKED;
+          unit.state = AttackableState.LOCKED;
         }
       }
     }
   }
 
+  /**
+   * バトル状況かたゲーム終了かどうかを判断する
+   */
   private updateGameOver(): void {
     const isPlayerWon = this.baseEntities[BASE_ENTITIES_AI_INDEX].currentHealth <= 0;
     const isEnemyWon  = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX].currentHealth <= 0;
@@ -365,13 +385,16 @@ export default class BattleManager {
     if (this.isGameOver) {
       for (let i = 0; i < this.unitEntities.length; i++) {
         const entity = this.unitEntities[i];
-        entity.state = UnitState.IDLE;
+        entity.state = AttackableState.IDLE;
       }
 
       this.delegator.onGameOver(isPlayerWon);
     }
   }
 
+  /**
+   * 必要であれば AI ユニットを生成させる
+   */
   private requestAISpawn(targetFrame: number): void {
     const waves = this.aiWaveMasterCache.get(targetFrame);
     if (!waves) {
@@ -421,12 +444,12 @@ export default class BattleManager {
       if (entity) {
         entity.id = this.nextUnitId++;
         entity.currentHealth = master.maxHealth;
-        entity.state = UnitState.IDLE;
+        entity.state = AttackableState.IDLE;
         this.unitEntities.push(entity);
       }
     }
 
-    this.refreshAvailableCost(tmpCost);
+    this.updateAvailableCost(tmpCost);
 
     this.spawnRequestedUnitUnitIds = [];
   }
@@ -434,7 +457,7 @@ export default class BattleManager {
   /**
    * 利用可能なコストを更新し、専用のコールバックをコールする
    */
-  private refreshAvailableCost(newCost: number): number {
+  private updateAvailableCost(newCost: number): number {
     if (newCost > this.maxAvailableCost) {
       newCost = this.maxAvailableCost;
     }

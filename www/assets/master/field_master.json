@@ -1,6 +1,7 @@
 {
   "id": 1,
   "length": 2000,
+  "zLines": 10,
   "playerBase": {
     "position": {
       "x": 200

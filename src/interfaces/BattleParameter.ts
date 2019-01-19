@@ -1,3 +1,6 @@
+/**
+ * バトル開始時に渡すパラメータのインターフェース
+ */
 export default interface BattleParameter {
   maxUnitSlotCount: number;
   fieldId: number;
@@ -13,6 +16,6 @@ export default interface BattleParameter {
   cost: {
     recoveryPerFrame: number;
     max: number;
-    
+
   };
 }

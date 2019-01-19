@@ -2,14 +2,29 @@ import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import GameManager from 'managers/GameManager';
 
+/**
+ * ユニットや拠点が配置されるバトル背景のクラス
+ */
 export default class Field extends PIXI.Container {
-  private static resourceListCache: string[] = [];
-
+  /**
+   * タップダウン数カウント
+   * タップダウン重複処理を防止するために数える
+   */
   private pointerDownCount: number = 0;
+  /**
+   * タップ位置の X 座標
+   * スクロール処理のために保持する
+   */
   private lastPointerPositionX: number = 0;
 
+  /**
+   * スクロールの限界座標値
+   */
   private foregroundScrollLimit: number = -1;
 
+  /**
+   * 表示上の前後関係を制御するための PIXI.Container オブジェクト
+   */
   private containers: { [key: string]: PIXI.Container } = {
     foreForegroundEffect: new PIXI.Container(),
     fore: new PIXI.Container(),
@@ -18,21 +33,33 @@ export default class Field extends PIXI.Container {
     back: new PIXI.Container()
   };
 
+  /**
+   * ユニットが配置される前景の PIXI.Container 配列
+   */
   private foreZLines: PIXI.Container[] = [];
-  private lastAddedZLineIndex: number = -1;
 
+  /**
+   * このクラスで利用するリソースリスト
+   */
   public static get resourceList(): string[] {
-    if (Field.resourceListCache.length === 0) {
-      const foreTiles   = ResourceMaster.Static.BattleBgFores;
-      const middleTiles = ResourceMaster.Static.BattleBgMiddles;
-      const backTiles   = ResourceMaster.Static.BattleBgBacks;
-      Field.resourceListCache = Field.resourceListCache.concat(foreTiles);
-      Field.resourceListCache = Field.resourceListCache.concat(middleTiles);
-      Field.resourceListCache = Field.resourceListCache.concat(backTiles);
-    }
-    return Field.resourceListCache;
+    let list: string[] = [];
+    list = list.concat(ResourceMaster.Static.BattleBgFores);
+    list = list.concat(ResourceMaster.Static.BattleBgMiddles);
+    list = list.concat(ResourceMaster.Static.BattleBgBacks);
+
+    return list;
   }
 
+  /**
+   * foreZLines の要素の数を返す
+   */
+  public get zLineCount(): number {
+    return this.foreZLines.length;
+  }
+
+  /**
+   * コンストラクタ
+   */
   constructor() {
     super();
 
@@ -45,6 +72,9 @@ export default class Field extends PIXI.Container {
     this.on('pointerout',    (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
   }
 
+  /**
+   * フィールドの長さとユニットを配置するラインの数で初期化する
+   */
   public init(options: any = { fieldLength: 3000, zLines: 8 }): void {
     const tiles: { [key: string]: string[] } = {
       fore:   ResourceMaster.Static.BattleBgFores,
@@ -66,6 +96,7 @@ export default class Field extends PIXI.Container {
       }
     }
 
+    // addChild 順に描画される
     this.addChild(this.containers.back);
     this.addChild(this.containers.middle);
     this.addChild(this.containers.fore);
@@ -83,28 +114,29 @@ export default class Field extends PIXI.Container {
     this.foregroundScrollLimit = -(options.fieldLength - GameManager.instance.game.view.width * 0.75);
   }
 
+  /**
+   * 前景内で背景エフェクトとして addChild する
+   */
   public addChildAsForeBackgroundEffect(container: PIXI.Container): void {
     this.containers.foreBackgroundEffect.addChild(container);
   }
+  /**
+   * 前景内で前景エフェクトとして addChild する
+   */
   public addChildAsForeForegroundEffect(container: PIXI.Container): void {
     this.containers.foreForegroundEffect.addChild(container);
   }
-
-  public addChildToRandomZLine(container: PIXI.Container): void {
-    let index = Math.floor(Math.random() * this.foreZLines.length);
-    if (index === this.lastAddedZLineIndex) {
-      index++;
-      if (index > (this.foreZLines.length - 1)) {
-        index = 0;
-      }
-    }
-    container.position.y = 260 + index * 16;
-    this.foreZLines[index].addChild(container);
-
-    // 重なって表示されないようにする
-    this.lastAddedZLineIndex = index;
+  /**
+   * 指定した zLine インデックスの PIXI.Container に addChild する
+   */
+  public addChildToZLine(container: PIXI.Container, zlineIndex: number): void {
+    container.position.y = 260 + zlineIndex * 16;
+    this.foreZLines[zlineIndex].addChild(container);
   }
 
+  /**
+   * タップ押下時の制御コールバック
+   */
   private onPointerDown(event: PIXI.interaction.InteractionEvent): void {
     this.pointerDownCount++;
     if (this.pointerDownCount === 1) {
@@ -112,6 +144,9 @@ export default class Field extends PIXI.Container {
     }
   }
 
+  /**
+   * タップ移動時の制御コールバック
+   */
   private onPointerMove(event: PIXI.interaction.InteractionEvent): void {
     if (this.pointerDownCount <= 0) {
       return;
@@ -136,6 +171,9 @@ export default class Field extends PIXI.Container {
     this.lastPointerPositionX = xPos;
   }
 
+  /**
+   * タップ終了時の制御コールバック
+   */
   private onPointerUp(_: PIXI.interaction.InteractionEvent): void {
     this.pointerDownCount--;
     if (this.pointerDownCount < 0) {

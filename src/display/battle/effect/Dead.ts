@@ -4,22 +4,31 @@ import UpdateObject from 'interfaces/UpdateObject';
 
 const TO_RAD = Math.PI / 180.0;
 
+/**
+ * 死亡を表現するエフェクト
+ */
 export default class Dead extends PIXI.Container implements UpdateObject {
-  private static resourceListCache: string[] = [];
+  /**
+   * 経過フレーム数
+   */
+  private elapsedFrameCount: number = 0;
 
   private bucket!: PIXI.Sprite;
   private spirit!: PIXI.Sprite;
 
-  private elapsedFrameCount: number = 0;
-
+  /**
+   * このエフェクトで使用するリソースリスト
+   */
   public static get resourceList(): string[] {
-    if (Dead.resourceListCache.length === 0) {
-      Dead.resourceListCache.push(ResourceMaster.Static.DeadBucket);
-      Dead.resourceListCache.push(ResourceMaster.Static.DeadSpirit);
-    }
-    return Dead.resourceListCache;
+    return [
+      ResourceMaster.Static.DeadBucket,
+      ResourceMaster.Static.DeadSpirit
+    ];
   }
 
+  /**
+   * コンストラクタ
+   */
   constructor(flip: boolean) {
     super();
 
@@ -47,10 +56,18 @@ export default class Dead extends PIXI.Container implements UpdateObject {
     this.spirit.visible = false;
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * 削除フラグが立っているか返す
+   */
   public isDestroyed(): boolean {
     return this._destroyed;
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * requestAnimationFrame 毎のアップデート処理
+   */
   public update(_delta: number): void {
     this.elapsedFrameCount++;
 

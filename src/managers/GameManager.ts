@@ -126,6 +126,9 @@ export default class GameManager {
     }
   }
 
+  /**
+   * HTML canvas のりサイズ処理を行う
+   */
   public static resizeCanvas(): void {
     const game = GameManager.instance.game;
     const renderer = game.renderer;

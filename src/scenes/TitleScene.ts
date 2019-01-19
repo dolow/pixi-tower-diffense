@@ -5,9 +5,9 @@ import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import BattleParameter from 'interfaces/BattleParameter';
 import Scene from 'scenes/Scene';
 import BattleScene from 'scenes/BattleScene';
-import FadeIn from 'scenes/transition/FadeIn';
-import FadeOut from 'scenes/transition/FadeOut';
+import Fade from 'scenes/transition/Fade';
 
+// デバッグ用パラメータ
 const debugParams: BattleParameter = {
   maxUnitSlotCount: 5,
   fieldId: 1,
@@ -32,13 +32,17 @@ const debugParams: BattleParameter = {
 export default class TitleScene extends Scene  {
   constructor() {
     super();
-    this.transitionIn  = new FadeIn();
-    this.transitionOut = new FadeOut();
+
+    this.transitionIn  = new Fade(1.0, 0.0, -0.02);
+    this.transitionOut = new Fade(0.0, 1.0, 0.02);
 
     this.interactive = true;
     this.on('pointerup', () => this.startBattle());
   }
 
+  /**
+   * リソースリストを作成し返却する
+   */
   protected createResourceList(): LoaderAddParam[] {
     const assets = super.createResourceList();
     const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
@@ -46,12 +50,15 @@ export default class TitleScene extends Scene  {
     return assets;
   }
 
+  /**
+   * リソースがロードされた時のコールバック
+   */
   protected onResourceLoaded(): void {
     super.onResourceLoaded();
 
     const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
     const resource = PIXI.loader.resources[bgmTitleName] as any;
-    const bgm = SoundManager.instance.createSound(bgmTitleName, resource.buffer);
+    const bgm = SoundManager.createSound(bgmTitleName, resource.buffer);
     bgm.play(true);
   }
 
@@ -63,13 +70,12 @@ export default class TitleScene extends Scene  {
       return;
     }
 
-    const soundManager = SoundManager.instance;
-    const bgm = soundManager.getSound(ResourceMaster.Audio.Bgm.Title);
+    const bgm = SoundManager.getSound(ResourceMaster.Audio.Bgm.Title);
     if (bgm) {
-      soundManager.fade(bgm, 0.01, 0.5, true);
+      SoundManager.fade(bgm, 0.01, 0.5, true);
     }
 
-    soundManager.unregisterSound(ResourceMaster.Audio.Bgm.Title);
+    SoundManager.unregisterSound(ResourceMaster.Audio.Bgm.Title);
 
     const params: BattleParameter = debugParams;
 

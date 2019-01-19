@@ -5,6 +5,9 @@ import Scene from  'scenes/Scene';
  * リソースの URL や命名規則のマスタ
  */
 const ResourceMaster = Object.freeze({
+  /**
+   * マスターデータ API 情報を有するオブジェクト
+   */
   Api: {
     SceneUiGraph: (scene: Scene): string => {
       const snake_case = scene.constructor.name.replace(/([A-Z])/g,
@@ -28,6 +31,9 @@ const ResourceMaster = Object.freeze({
     }
   },
 
+  /**
+   * 渡されたパラメータによって動的に変わる url を有するオブジェクト
+   */
   Dynamic: {
     Unit: (unitId: number): string => {
       return `${Config.ResourceBaseUrl}/units/${unitId}.json`;
@@ -39,6 +45,9 @@ const ResourceMaster = Object.freeze({
       return `${Config.ResourceBaseUrl}/battle/base/${baseId}.json`;
     }
   },
+  /**
+   * 静的なリソースを有するオブジェクト
+   */
   Static: {
     BattleBgFores: [
       `${Config.ResourceBaseUrl}/battle/bg_1_1.png`,
@@ -72,6 +81,9 @@ const ResourceMaster = Object.freeze({
     BattleResultWin: `${Config.ResourceBaseUrl}/ui/battle_win.png`,
     BattleResultLose: `${Config.ResourceBaseUrl}/ui/battle_lose.png`
   },
+  /**
+   * サウンドリソースの静的な url を有するオブジェクト
+   */
   Audio: {
     Bgm: {
       Title: `${Config.ResourceBaseUrl}/audio/bgm_title.mp3`,
@@ -87,6 +99,9 @@ const ResourceMaster = Object.freeze({
     }
   },
 
+  /**
+   * テクスチャのフレーム名を返す関数を有するオブジェクト
+   */
   TextureFrame: {
     Unit: (unitActionType: string, unitId: number, index: number): PIXI.Texture => {
       return PIXI.utils.TextureCache[`unit_${unitId}_${unitActionType}_${index}.png`];
@@ -102,6 +117,9 @@ const ResourceMaster = Object.freeze({
     }
   },
 
+  /**
+   * アニメーション種別の識別子を有するオブジェクト
+   */
   AnimationTypes: {
     Unit: Object.freeze({
       WAIT: 'wait',
@@ -116,6 +134,9 @@ const ResourceMaster = Object.freeze({
     })
   },
 
+  /**
+   * スプライトシートの最大フレーム数を返す関数
+   */
   MaxFrameIndex: (resourceKey: string): number => {
     const json = PIXI.loader.resources[resourceKey];
     if (!json || !json.data || !json.data.frames) {

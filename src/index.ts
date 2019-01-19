@@ -2,6 +2,9 @@ import * as WebFont from 'webfontloader';
 import TitleScene from 'scenes/TitleScene';
 import GameManager from 'managers/GameManager';
 
+/**
+ * ゲームの初期化処理
+ */
 function initGame() {
   const width = 1136;
   const height = 640;
@@ -16,6 +19,7 @@ function initGame() {
   // 最初のシーンの読み込み
   GameManager.loadScene(new TitleScene());
 
+  // コンソールからオブジェクトを調査できるように window に生やす
   Debug: {
     (window as any).GameManager = GameManager;
   }

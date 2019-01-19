@@ -12,7 +12,7 @@ import Immediate from 'scenes/transition/Immediate';
  * ゲームシーンの抽象クラス
  * UiGraph を利用して UI 情報を透過的に読み込み初期化する
  * また、シーン間のトランジションイベントを提供する
- * いずれのイベントも実装クラスにて独自処理の実装が可能
+ * いずれのイベントも実装クラスにて独自処理の実装を行うことができる
  */
 export default abstract class Scene extends PIXI.Container {
   /**
@@ -28,10 +28,18 @@ export default abstract class Scene extends PIXI.Container {
    * 描画順による前後関係を統制するために一つの Container にまとめる
    */
   protected uiGraphContainer: PIXI.Container = new PIXI.Container();
-
+  /**
+   * 更新すべきオブジェクトを保持する
+   */
   protected objectsToUpdate: UpdateObject[] = [];
 
+  /**
+   * シーン開始用のトランジションオブジェクト
+   */
   protected transitionIn:  Transition = new Immediate();
+  /**
+   * シーン終了用のトランジションオブジェクト
+   */
   protected transitionOut: Transition = new Immediate();
 
   /**
@@ -47,11 +55,18 @@ export default abstract class Scene extends PIXI.Container {
     }
   }
 
+  /**
+   * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
+   */
   protected registerUpdatingObject(object: UpdateObject): void {
     this.objectsToUpdate.push(object);
   }
 
+  /**
+   * 更新処理を行うべきオブジェクトを更新する
+   */
   protected updateRegisteredObjects(delta: number): void {
+    // 破棄されたオブジェクトを圧縮するために残存するオブジェクトのみを保持する
     const nextObjectsToUpdate = [];
 
     for (let i = 0; i < this.objectsToUpdate.length; i++) {
@@ -115,6 +130,9 @@ export default abstract class Scene extends PIXI.Container {
       .then(() => this.onResourceLoaded());
   }
 
+  /**
+   * UiGraph 情報のロードを行う
+   */
   protected loadUiGraph(onLoaded: () => void): void {
     const name = ResourceMaster.Api.SceneUiGraph(this);
     if (this.hasSceneUiGraph && !PIXI.loader.resources[name]) {
@@ -125,7 +143,7 @@ export default abstract class Scene extends PIXI.Container {
   }
 
   /**
-   * loadResource 完了時のコールバックメソッド
+   * loadUiGraph 完了時のコールバックメソッド
    */
   protected onUiGraphLoaded(onLoaded: () => void): void {
     const assets = this.createResourceList();

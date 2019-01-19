@@ -7,6 +7,7 @@
     "build:develop": "webpack --mode development",
     "build:production": "webpack --mode production",
     "build:docs": "typedoc 'src/'",
+    "test:lint": "tslint -p tsconfig.json --format stylish \"src/**/*.ts*\"",
     "workflow:build": "npm run build:develop && npm run build:production && npm run build:docs",
     "server": "webpack-dev-server"
   },

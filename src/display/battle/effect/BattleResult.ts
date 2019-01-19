@@ -3,13 +3,28 @@ import ResourceMaster from 'ResourceMaster';
 import UpdateObject from 'interfaces/UpdateObject';
 import GameManager from 'managers/GameManager';
 
+/**
+ * ゲーム結果を表現するエフェクト
+ */
 export default class BattleResult extends PIXI.Container implements UpdateObject {
+  /**
+   * アニメーション終了フラグ
+   */
   public animationEnded: boolean = false;
 
+  /**
+   * アニメーション終了時コールバック
+   */
   public onAnimationEnded: () => void = () => {};
 
+  /**
+   * 表示する PIXI.Sprite インスタンス
+   */
   private sprite!: PIXI.Sprite;
 
+  /**
+   * このエフェクトで使用するリソースリスト
+   */
   public static get resourceList(): string[] {
     return [
       ResourceMaster.Static.BattleResultWin,
@@ -17,6 +32,9 @@ export default class BattleResult extends PIXI.Container implements UpdateObject
     ];
   }
 
+  /**
+   * コンストラクタ
+   */
   constructor(win: boolean) {
     super();
 
@@ -34,10 +52,18 @@ export default class BattleResult extends PIXI.Container implements UpdateObject
     this.addChild(this.sprite);
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * 削除フラグが立っているか返す
+   */
   public isDestroyed(): boolean {
     return this._destroyed;
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * requestAnimationFrame 毎のアップデート処理
+   */
   public update(_delta: number): void {
     if (this.animationEnded) {
       return;

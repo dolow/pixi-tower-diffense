@@ -3,29 +3,62 @@ import Sound from 'modules/Sound';
 
 const SUPPORTED_EXTENSIONS = ['mp3'];
 
+/**
+ * サウンドを扱う
+ * Sound の高級機能
+ */
 export default class SoundManager {
+  /**
+   * シングルトンインスタンス
+   */
   public static instance: SoundManager;
 
+  /**
+   * AudioCntext インスタンスのゲッタ
+   * ブラウザによっては生成数に上限があるため、SoundManager では単一のインスタンスのみ生成する
+   */
   public static get sharedContext(): AudioContext | null {
     return SoundManager.context;
   }
 
+  /**
+   * AudioCntext インスタンス
+   */
   private static context: AudioContext | null = null;
 
+  /**
+   * PIXI.Loader ミドルウェアが登録済みかどうかのフラグ
+   */
   private static loaderMiddlewareAdded: boolean = false;
 
+  /**
+   * 一時停止中かどうかのフラグ
+   */
   private paused: boolean = false;
 
+  /**
+   * フェー風土処理後に削除する Sound インスタンスのリスト
+   */
   private soundsKillingAfterFade: { sound: Sound, targetVolume: number }[] = [];
 
+  /**
+   * SoundManager で監理している Sound インスタンスの Map
+   */
   private managedSounds: Map<string, Sound> = new Map();
 
+  /**
+   * コンストラクタ
+   */
   constructor() {
     if (SoundManager.instance) {
       throw new Error('soSoundManager can not be initialized twice');
     }
   }
 
+  /**
+   * 初期化処理
+   * ユーザで生成した AudioContext を渡すこともできる
+   */
   public static init(ctx?: AudioContext): void {
     if (SoundManager.instance) {
       return;
@@ -45,6 +78,9 @@ export default class SoundManager {
     SoundManager.setWindowLifeCycleEvent(browser);
   }
 
+  /**
+   * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
+   */
   public static addLoaderMiddleware(browser: BrowserInfo | BotInfo | NodeInfo): void {
     if (SoundManager.loaderMiddlewareAdded) {
       return;
@@ -79,17 +115,29 @@ export default class SoundManager {
     SoundManager.loaderMiddlewareAdded = true;
   }
 
+  /**
+   * オーディオデータのデコード処理
+   */
   public static decodeAudio(binary: any, callback: (buf: AudioBuffer) => void): void {
     if (SoundManager.sharedContext) {
       SoundManager.sharedContext.decodeAudioData(binary, callback);
     }
   }
+  /**
+   * オーディオデータのデコード処理
+   * ブラウザ種別やバージョンによっては I/F が異なるため、こちらを使う必要がある
+   */
   public static decodeAudioWithPromise(binary: any, callback: (buf: AudioBuffer) => void): void {
     if (SoundManager.sharedContext) {
       SoundManager.sharedContext.decodeAudioData(binary).then(callback);
     }
   }
 
+  /**
+   * サウンドを初期化するためのイベントを登録する
+   * 多くのブラウザではタップ等のユーザ操作を行わないとサウンドを再生できない
+   * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
+   */
   public static setSoundInitializeEvent(browser: BrowserInfo | BotInfo | NodeInfo): void {
     let eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
     let soundInitializer: () => void;
@@ -122,83 +170,99 @@ export default class SoundManager {
     document.body.addEventListener(eventName, soundInitializer);
   }
 
+  /**
+   * HTML window のライフサイクルイベントを登録する
+   * ブラウザのタブ切り替えや非アクティヴ時に音声が鳴ってしまわないようにする
+   */
   public static setWindowLifeCycleEvent(browser: BrowserInfo | BotInfo | NodeInfo): void {
     if (browser.name === 'safari') {
       document.addEventListener('webkitvisibilitychange', () => {
-        (document as any).webkitHidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+        (document as any).webkitHidden ? SoundManager.pause() : SoundManager.resume();
       });
     } else {
       document.addEventListener('visibilitychange', () => {
-        document.hidden ? SoundManager.instance.pause() : SoundManager.instance.resume();
+        document.hidden ? SoundManager.pause() : SoundManager.resume();
       });
     }
   }
 
-  public registerSound(name: string, sound: Sound): void {
-    this.managedSounds.set(name, sound);
+  /**
+   * 渡された Sound インスタンスを渡された名前に紐つけて SoundManager 管理下にする
+   */
+  public static registerSound(name: string, sound: Sound): void {
+    SoundManager.instance.managedSounds.set(name, sound);
   }
-  public unregisterSound(name: string): void {
-    this.managedSounds.delete(name);
+  /**
+   * 渡された名前に紐ついている Sound インスタンスを SoundManager 管理下からはずす
+   */
+  public static unregisterSound(name: string): void {
+    SoundManager.instance.managedSounds.delete(name);
   }
-
-  public createSound(name: string, buf: AudioBuffer): Sound {
+  /**
+   * Sound インスタンスを SoundManager 管理下として生成し返却する
+   */
+  public static createSound(name: string, buf: AudioBuffer): Sound {
     const sound = new Sound(buf);
-    this.registerSound(name, sound);
+    SoundManager.registerSound(name, sound);
     return sound;
   }
-  public getSound(name: string): Sound | undefined {
-    return this.managedSounds.get(name);
+  /**
+   * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスを返す
+   */
+  public static getSound(name: string): Sound | undefined {
+    return SoundManager.instance.managedSounds.get(name);
   }
-  public hasSound(name: string): boolean {
-    return this.managedSounds.has(name);
+  /**
+   * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスの存在有無を返す
+   */
+  public static hasSound(name: string): boolean {
+    return SoundManager.instance.managedSounds.has(name);
   }
-  public destroySound(name: string): void {
+  /**
+   * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスを破棄する
+   */
+  public static destroySound(name: string): void {
     const sound = this.getSound(name);
-    this.unregisterSound(name);
+    SoundManager.unregisterSound(name);
     if (sound) {
       sound.stop();
     }
   }
 
-  public pause(): void {
-    if (this.paused) {
+  /**
+   * 管理下の Sound インスタンスをすべて一時停止する
+   */
+  public static pause(): void {
+    const instance = SoundManager.instance;
+    if (instance.paused) {
       return;
     }
-    this.paused = true;
-    this.managedSounds.forEach((sound) => sound.pause());
+    instance.paused = true;
+    instance.managedSounds.forEach((sound) => sound.pause());
   }
-  public resume(): void {
-    if (!this.paused) {
+  /**
+   * 管理下の Sound インスタンスの再生をすべて再開する
+   */
+  public static resume(): void {
+    const instance = SoundManager.instance;
+    if (!instance.paused) {
       return;
     }
-    this.paused = false;
-    this.managedSounds.forEach((sound) => sound.resume());
+    instance.paused = false;
+    instance.managedSounds.forEach((sound) => sound.resume());
   }
 
-  public fade(sound: Sound, targetVolume: number, seconds: number, stopOnEnd: boolean = false): void {
+  /**
+   * フェード処理を行う
+   */
+  public static fade(sound: Sound, targetVolume: number, seconds: number, stopOnEnd: boolean = false): void {
     if (!SoundManager.sharedContext) {
       return;
     }
-    
+
     sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, SoundManager.sharedContext.currentTime + seconds);
     if (stopOnEnd) {
-      this.soundsKillingAfterFade.push({ sound, targetVolume });
-    }
-  }
-
-  public update(_dt: number): void {
-    if (this.paused) {
-      return;
-    }
-
-    for (let i = 0; i < this.soundsKillingAfterFade.length; i++) {
-      const soundData = this.soundsKillingAfterFade[i];
-      if (!soundData.sound.gainNode) {
-        continue;
-      }
-      if (soundData.targetVolume === soundData.sound.gainNode.gain.value) {
-        soundData.sound.stop();
-      }
+      SoundManager.instance.soundsKillingAfterFade.push({ sound, targetVolume });
     }
   }
 }

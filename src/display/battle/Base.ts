@@ -8,12 +8,12 @@ import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
 const baseId1SpawnFrameCount = 16;
 
 /**
- * ユニットの振舞い、及び見た目に関する処理を行う
+ * 拠点の振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
 export default class Base extends BaseEntity implements UpdateObject {
   /**
-   * PIXI スプライト
+   * 表示する PIXI.Sprite インスタンス
    */
   public sprite!: PIXI.Sprite;
   /**
@@ -30,14 +30,20 @@ export default class Base extends BaseEntity implements UpdateObject {
    */
   protected animationType: string = ResourceMaster.AnimationTypes.Base.IDLE;
   /**
-   * 現在の経過フレーム数
+   * 経過フレーム数
    */
   protected elapsedFrameCount: number = 0;
 
+  /**
+   * このクラスで利用するリソースリスト
+   */
   public static get resourceList(): string[] {
     return [ResourceMaster.Audio.Se.UnitSpawn];
   }
 
+  /**
+   * コンストラクタ
+   */
   constructor(baseId: number, isPlayer: boolean) {
     super(baseId, isPlayer);
 
@@ -50,14 +56,26 @@ export default class Base extends BaseEntity implements UpdateObject {
     this.sprite.anchor.y = 1.0;
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * 削除フラグが立っているか返す
+   */
   public isDestroyed(): boolean {
     return false;
   }
 
+  /**
+   * UpdateObject インターフェース実装
+   * requestAnimationFrame 毎のアップデート処理
+   */
   public update(_dt: number): void {
     this.updateAnimation();
   }
 
+  /**
+   * 初期化処理
+   * 主に座標周りを初期化する
+   */
   public init(options?: any): void {
     switch (this.baseId) {
       case 1: this.sprite.position.y = 300; break;
@@ -72,18 +90,27 @@ export default class Base extends BaseEntity implements UpdateObject {
     this.originalPositon.set(this.sprite.position.x, this.sprite.position.y);
   }
 
+  /**
+   * アニメーションを初期化する
+   */
   public resetAnimation(): void {
     this.animationType = ResourceMaster.AnimationTypes.Base.IDLE;
     this.elapsedFrameCount = 0;
   }
 
+  /**
+   * 破壊状態にする
+   */
   public collapse(): void {
     this.animationType = ResourceMaster.AnimationTypes.Base.COLLAPSE;
     this.elapsedFrameCount = 0;
   }
+  /**
+   * ユニット生成状態にする
+   */
   public spawn(): void {
     if (this.isPlayer) {
-      const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.UnitSpawn);
+      const sound = SoundManager.getSound(ResourceMaster.Audio.Se.UnitSpawn);
       if (sound) {
         sound.play();
       }
@@ -93,11 +120,10 @@ export default class Base extends BaseEntity implements UpdateObject {
     this.elapsedFrameCount = 0;
   }
 
-  public updateAnimation(type?: string): void {
-    if (type) {
-      this.animationType = type;
-    }
-
+  /**
+   * アニメーションを更新する
+   */
+  public updateAnimation(): void {
     switch (this.animationType) {
       case ResourceMaster.AnimationTypes.Base.COLLAPSE: {
         this.explodeContainer.position.set(
@@ -145,6 +171,9 @@ export default class Base extends BaseEntity implements UpdateObject {
     this.elapsedFrameCount++;
   }
 
+  /**
+   * 破壊時の爆発を生成する
+   */
   private spawnCollapseExplode(): void {
     const scale = 1.0 + Math.random() % 0.8 - 0.4;
 

@@ -1,23 +1,29 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
-import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
+
+import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import UpdateObject from 'interfaces/UpdateObject';
 import BattleParameter from 'interfaces/BattleParameter';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
-import BaseState from 'enum/BaseState';
-import UnitState from 'enum/UnitState';
+
+import AttackableState from 'enum/AttackableState';
+import BattleSceneState from 'enum/BattleSceneState';
+
 import GameManager from 'managers/GameManager';
-import BattleManager from 'managers/BattleManager';
 import SoundManager from 'managers/SoundManager';
+
 import Scene from 'scenes/Scene';
 import TitleScene from 'scenes/TitleScene';
-import FadeIn from 'scenes/transition/FadeIn';
-import FadeOut from 'scenes/transition/FadeOut';
+import Fade from 'scenes/transition/Fade';
+
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
+import BattleLogic from 'modules/BattleLogic';
+
 import AttackableEntity from 'entity/AttackableEntity';
 import BaseEntity from 'entity/BaseEntity';
 import UnitEntity from 'entity/UnitEntity';
+
 import UnitButton from 'display/battle/UnitButton';
 import Unit from 'display/battle/Unit';
 import Field from 'display/battle/Field';
@@ -28,22 +34,14 @@ import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
 import BattleResult from 'display/battle/effect/BattleResult';
 
 /**
- * BattleScene のステートのリスト
- */
-const BattleState = Object.freeze({
-  LOADING_RESOURCES: 1,
-  RESOURCE_LOADED: 2,
-  READY: 3,
-  INGAME: 4,
-  FINISHED: 5
-});
-
-/**
  * メインのゲーム部分のシーン
- * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
+ * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
-export default class BattleScene extends Scene implements BattleManagerDelegate {
+export default class BattleScene extends Scene implements BattleLogicDelegate {
 
+  /**
+   * マスターデータを保存する PIXI.loaders.resource のキー
+   */
   private static readonly MasterResourceKey = {
     FIELD: 'battle_scene_field_master',
     AI_WAVE: 'battle_scene_ai_wave_master',
@@ -52,10 +50,14 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   };
 
   /**
+   * このシーンのステート
+   */
+  private state!: number;
+
+  /**
    * 最大ユニット編成数
    */
   private maxUnitSlotCount!: number;
-
   /**
    * 利用するフィールドID
    */
@@ -72,7 +74,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * 編成したユニットID配列
    */
   private unitIds!: number[];
-
   /**
    * 指定された拠点ID
    */
@@ -81,32 +82,43 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     ai: number;
   };
   /**
-   * このシーンのステート
+   * ゲームロジックを処理する BattleLogic のインスタンス
    */
-  private state!: number;
-  /**
-   * ゲームロジックを処理する BattleManager のインスタンス
-   */
-  private manager!: BattleManager;
+  private manager!: BattleLogic;
   /**
    * 背景の PIXI.Container
    */
   private field!: Field;
 
+  /**
+   * Field に最後にユニットを追加した Zline のインデックス
+   * ユニットが重なって表示されるのを防ぐ
+   */
+  private fieldLastAddedZline: {
+    player: number;
+    ai: number;
+  } = {
+    player: -1,
+    ai: -1
+  };
+
+  /**
+   * コンストラクタ
+   */
   constructor(params: BattleParameter) {
     super();
 
-    this.transitionIn  = new FadeIn();
-    this.transitionOut = new FadeOut();
+    this.transitionIn  = new Fade(1.0, 0.0, -0.02);
+    this.transitionOut = new Fade(0.0, 1.0, 0.02);
 
-    // BattleManager インスタンスの作成とコールバックの登録
-    this.manager = new BattleManager();
-
+    // デフォルトのシーンステート
+    this.state = BattleSceneState.LOADING_RESOURCES;
+    // BattleLogic インスタンスの作成
+    this.manager = new BattleLogic();
     // Background インスタンスの作成
     this.field = new Field();
-    // デフォルトのシーンステート
-    this.state = BattleState.LOADING_RESOURCES;
 
+    // ユーザパラメータの設定
     this.maxUnitSlotCount = params.maxUnitSlotCount;
     this.fieldId   = params.fieldId;
     this.stageId   = params.stageId;
@@ -118,196 +130,50 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   }
 
   /**
-   * GameManagerDelegate 実装
-   * Base を発生させるときのコールバック
-   * Field に Base のスプライトを追加する
+   * Scene クラスメソッドオーバーライド
    */
-  public spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null {
-    const fieldMaster = this.manager.getFieldMaster();
-    if (!fieldMaster) {
-      return null;
-    }
-
-    const base = new Base(baseId, isPlayer);
-
-    if (isPlayer) {
-      base.init({ x: fieldMaster.playerBase.position.x });
-    } else {
-      base.init({ x: fieldMaster.aiBase.position.x });
-    }
-
-    this.field.addChildAsForeBackgroundEffect(base.sprite);
-
-    this.registerUpdatingObject(base);
-
-    return base;
-  };
 
   /**
-   * GameManagerDelegate 実装
-   * Unit を発生させるときのコールバック
-   * Field に Unit のスプライトを追加する
+   * トランジション開始処理
+   * トランジション終了で可能ならステートを変更する
    */
-  public spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null {
-    const master = this.manager.getUnitMaster(unitId);
-    if (!master) {
-      return null;
-    }
-
-    const unit = new Unit(unitId, isPlayer, {
-      hitFrame: master.hitFrame,
-      animationMaxFrameIndexes: master.animationMaxFrameIndexes,
-      animationUpdateDurations: master.animationUpdateDurations
+  public beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void {
+    super.beginTransitionIn(() => {
+      if (this.state === BattleSceneState.RESOURCE_LOADED) {
+        this.state = BattleSceneState.READY;
+        onTransitionFinished(this);
+      }
     });
-
-    unit.sprite.position.x = (baseEntity as Base).sprite.position.x;
-
-    this.field.addChildToRandomZLine(unit.sprite);
-
-    unit.saveSpawnedPosition();
-
-    (baseEntity as Base).spawn();
-
-    this.registerUpdatingObject(unit as UpdateObject);
-
-    return unit;
   }
 
   /**
-   * GameManagerDelegate 実装
-   * 拠点のステートが変更された際のコールバック
+   * 毎フレームの更新処理
+   * シーンのステートに応じて処理する
    */
-  public onBaseStateChanged(entity: BaseEntity, _oldState: number): void {
-    if (entity.state === BaseState.DEAD) {
-      const base = (entity as Base)
-      base.collapse();
-      this.field.addChildAsForeForegroundEffect(base.explodeContainer);
-    }
-  }
-
-  /**
-  * GameManagerDelegate 実装
-   * ユニットのステートが変更された際のコールバック
-   */
-  public onUnitStateChanged(entity: UnitEntity, _oldState: number): void {
-    const unit = entity as Unit;
-
-    if (unit.state === UnitState.DEAD) {
-      const effect = new Dead(!unit.isPlayer);
-      effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
-      unit.sprite.parent.addChild(effect);
-      this.registerUpdatingObject(effect);
-
-      unit.destroy();
-    } else {
-      unit.resetAnimation();
-    }
-  }
-  /**
-   * GameManagerDelegate 実装
-   * 利用可能なコストの値が変動したときのコールバック
-   */
-  public onAvailableCostUpdated(cost: number): void {
-    (this.uiGraph.cost_text as PIXI.Text).text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
-  }
-
-  /**
-   * GameManagerDelegate 実装
-   * 勝敗が決定したときのコールバック
-   */
-  public onGameOver(isPlayerWon: boolean): void {
-    this.state = BattleState.FINISHED;
-
-    const result = new BattleResult(isPlayerWon);
-    result.onAnimationEnded = this.enableBackToTitle.bind(this);
-    this.uiGraphContainer.addChild(result);
-
-    const soundManager = SoundManager.instance;
-
-    const bgm = soundManager.getSound(ResourceMaster.Audio.Bgm.Battle);
-    if (bgm) {
-      bgm.stop();
+  public update(delta: number): void {
+    switch (this.state) {
+      case BattleSceneState.LOADING_RESOURCES: break;
+      case BattleSceneState.READY: {
+        this.state = BattleSceneState.INGAME;
+        break;
+      }
+      case BattleSceneState.INGAME: {
+        this.manager.update(delta);
+        break;
+      }
+      case BattleSceneState.FINISHED: {
+        this.manager.update(delta);
+        break;
+      }
     }
 
-    const sound = soundManager.getSound(isPlayerWon ? ResourceMaster.Audio.Se.Win : ResourceMaster.Audio.Se.Lose);
-    if (sound) {
-      sound.play();
+    this.updateRegisteredObjects(delta);
+
+    if (this.transitionIn.isActive()) {
+      this.transitionIn.update(delta);
+    } else if (this.transitionOut.isActive()) {
+      this.transitionOut.update(delta);
     }
-
-    this.registerUpdatingObject(result);
-  }
-
-  /**
-   * GameManagerDelegate 実装
-   * 渡されたユニット同士が接敵可能か返す
-   */
-  public shouldLockUnit(attacker: AttackableEntity, target: UnitEntity): boolean {
-    return (attacker as Unit).isFoeContact((target as Unit).sprite);
-  }
-
-  public shouldLockBase(attacker: AttackableEntity, target: BaseEntity): boolean {
-    return (attacker as Unit).isFoeContact((target as Base).sprite);
-  }
-
-  /**
-   * GameManagerDelegate 実装
-   * 渡されたユニット同士が攻撃可能か返す
-   */
-  public shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean {
-    const attacker = attackerEntity as Unit;
-    const target = targetEntity as Unit;
-
-    if (!attacker.isHitFrame()) {
-      return false;
-    }
-
-    const contact = attacker.isFoeContact(target.sprite);
-    return contact;
-  }
-
-  public onAttackableEntityHealthUpdated(_attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void {
-    const sound = SoundManager.instance.getSound((Math.random() >= 0.5)
-      ? ResourceMaster.Audio.Se.Attack1
-      : ResourceMaster.Audio.Se.Attack2
-    );
-    if (sound) {
-      sound.play();
-    }
-
-    if (!(target as any).sprite) {
-      return;
-    }
-
-    const targetSprite = (target as any).sprite;
-
-    // smoke effect
-    const smoke = new AttackSmoke();
-    const targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
-    const targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
-    const scale = 0.5 + Math.random() * 0.5;
-
-    smoke.position.set(targetCenterX, targetCenterY);
-    smoke.scale.set(scale, scale);
-
-    targetSprite.parent.addChild(smoke);
-
-    // health gauge
-    if ((target as any).unitId) {
-      const unit = target as Unit;
-      const gauge = unit.spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
-      targetSprite.parent.addChild(gauge);
-      this.registerUpdatingObject(gauge);
-    }
-
-    this.registerUpdatingObject(smoke);
-  }
-  public shouldUnitWalk(entity: UnitEntity): boolean {
-    const unit = entity as Unit;
-
-    if (unit.getAnimationType() === ResourceMaster.AnimationTypes.Unit.WALK) {
-      return true;
-    }
-    return unit.isAnimationLastFrameTime();
   }
 
   /**
@@ -398,7 +264,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
   /**
    * リソースロード完了コールバック
-   * BattleManager にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
+   * BattleLogic にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
    */
   protected onResourceLoaded(): void {
     const resources = PIXI.loader.resources as any;
@@ -413,7 +279,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     const unitMasters   = resources[masterKeys.UNIT].data;
     const baseMasterMap = resources[masterKeys.BASE].data;
 
-    this.field.init({ fieldLength: fieldMaster.length, zLines: 10 });
+    this.field.init({ fieldLength: fieldMaster.length, zLines: fieldMaster.zLines });
 
     for (let index = 0; index < this.maxUnitSlotCount; index++) {
       const unitButton = this.getUiGraphUnitButton(index);
@@ -437,13 +303,12 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
-    const soundManager = SoundManager.instance;
     const keys = Object.keys(resources);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const item = resources[key];
       if (item.buffer) {
-        const audio = soundManager.createSound(key, item.buffer);;
+        const audio = SoundManager.createSound(key, item.buffer);;
         if (key === ResourceMaster.Audio.Bgm.Battle) {
           audio.play(true);
         }
@@ -451,19 +316,10 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     }
 
     if (this.transitionIn.isFinished()) {
-      this.state = BattleState.READY;
+      this.state = BattleSceneState.READY;
     } else {
-      this.state = BattleState.RESOURCE_LOADED;
+      this.state = BattleSceneState.RESOURCE_LOADED;
     }
-  }
-
-  public beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void {
-    super.beginTransitionIn(() => {
-      if (this.state === BattleState.RESOURCE_LOADED) {
-        this.state = BattleState.READY;
-        onTransitionFinished(this);
-      }
-    })
   }
 
   /**
@@ -478,41 +334,224 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   }
 
   /**
-   * 毎フレームの更新処理
-   * シーンのステートに応じて処理する
+   * BattleLogicDelegate 実装
    */
-  public update(delta: number): void {
-    switch (this.state) {
-      case BattleState.LOADING_RESOURCES: break;
-      case BattleState.READY: {
-        this.state = BattleState.INGAME;
-        break;
-      }
-      case BattleState.INGAME: {
-        this.manager.update(delta);
-        break;
-      }
-      case BattleState.FINISHED: {
-        this.manager.update(delta);
-        break;
+
+  /**
+   * Base を発生させるときのコールバック
+   * Field に Base のスプライトを追加する
+   */
+  public spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null {
+    const fieldMaster = this.manager.getFieldMaster();
+    if (!fieldMaster) {
+      return null;
+    }
+
+    const base = new Base(baseId, isPlayer);
+
+    if (isPlayer) {
+      base.init({ x: fieldMaster.playerBase.position.x });
+    } else {
+      base.init({ x: fieldMaster.aiBase.position.x });
+    }
+
+    this.field.addChildAsForeBackgroundEffect(base.sprite);
+
+    this.registerUpdatingObject(base);
+
+    return base;
+  };
+
+  /**
+   * Unit を発生させるときのコールバック
+   * Field に Unit のスプライトを追加する
+   */
+  public spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null {
+    const master = this.manager.getUnitMaster(unitId);
+    if (!master) {
+      return null;
+    }
+
+    const unit = new Unit(unitId, isPlayer, {
+      hitFrame: master.hitFrame,
+      animationMaxFrameIndexes: master.animationMaxFrameIndexes,
+      animationUpdateDurations: master.animationUpdateDurations
+    });
+
+    unit.sprite.position.x = (baseEntity as Base).sprite.position.x;
+
+    const zLineCount = this.field.zLineCount;
+    let index = Math.floor(Math.random() * this.field.zLineCount);
+    const lastAddedZline = isPlayer ? this.fieldLastAddedZline.player : this.fieldLastAddedZline.ai;
+    if (index === lastAddedZline) {
+      index++;
+      if (index > (zLineCount - 1)) {
+        index = 0;
       }
     }
 
-    this.updateRegisteredObjects(delta);
+    this.field.addChildToZLine(unit.sprite, index);
 
-    if (this.transitionIn.isActive()) {
-      this.transitionIn.update(delta);
-    } else if (this.transitionOut.isActive()) {
-      this.transitionOut.update(delta);
+    // 重なって表示されないようにする
+    if (isPlayer) {
+      this.fieldLastAddedZline.player = index;
+    } else {
+      this.fieldLastAddedZline.ai = index;
+    }
+
+    unit.saveSpawnedPosition();
+
+    (baseEntity as Base).spawn();
+
+    this.registerUpdatingObject(unit as UpdateObject);
+
+    return unit;
+  }
+
+  /**
+   * エンティティのステートが変更された際のコールバック
+   */
+  public onAttackableEntityStateChanged(entity: AttackableEntity, _oldState: number): void {
+    if ((entity as UnitEntity).unitId) {
+      const unit = entity as Unit;
+
+      if (unit.state === AttackableState.DEAD) {
+        const effect = new Dead(!unit.isPlayer);
+        effect.position.set(unit.sprite.position.x, unit.sprite.position.y + unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height);
+        unit.sprite.parent.addChild(effect);
+        this.registerUpdatingObject(effect);
+
+        unit.destroy();
+      } else {
+        unit.resetAnimation();
+      }
+    } else {
+      if (entity.state === AttackableState.DEAD) {
+        const base = (entity as Base)
+        base.collapse();
+        this.field.addChildAsForeForegroundEffect(base.explodeContainer);
+      }
     }
   }
 
   /**
+   * 利用可能なコストの値が変動したときのコールバック
+   */
+  public onAvailableCostUpdated(cost: number): void {
+    (this.uiGraph.cost_text as PIXI.Text).text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
+  }
+
+  /**
+   * 勝敗が決定したときのコールバック
+   */
+  public onGameOver(isPlayerWon: boolean): void {
+    this.state = BattleSceneState.FINISHED;
+
+    const result = new BattleResult(isPlayerWon);
+    result.onAnimationEnded = this.enableBackToTitle.bind(this);
+    this.uiGraphContainer.addChild(result);
+
+    const bgm = SoundManager.getSound(ResourceMaster.Audio.Bgm.Battle);
+    if (bgm) {
+      bgm.stop();
+    }
+
+    const sound = SoundManager.getSound(isPlayerWon ? ResourceMaster.Audio.Se.Win : ResourceMaster.Audio.Se.Lose);
+    if (sound) {
+      sound.play();
+    }
+
+    this.registerUpdatingObject(result);
+  }
+
+  /**
+   * 渡されたエンティティ同士が接敵可能か返す
+   */
+  public shouldLockAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean {
+    // 同じプロパティ名だが、実質的には特異実装なので処理を分ける
+    return (attacker as Unit).isFoeContact(
+      ((target as Unit).unitId)
+      ? (target as Unit).sprite
+      : (target as Base).sprite
+    );
+  }
+
+  /**
+   * 渡されたエンティティ同士が攻撃可能か返す
+   */
+  public shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean {
+    const attacker = attackerEntity as Unit;
+    const target = targetEntity as Unit;
+
+    if (!attacker.isHitFrame()) {
+      return false;
+    }
+
+    const contact = attacker.isFoeContact(target.sprite);
+    return contact;
+  }
+
+  /**
+   * 渡されたエンティティの health が増減した場合に呼ばれる
+   */
+  public onAttackableEntityHealthUpdated(_attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void {
+    const sound = SoundManager.getSound((Math.random() >= 0.5)
+      ? ResourceMaster.Audio.Se.Attack1
+      : ResourceMaster.Audio.Se.Attack2
+    );
+    if (sound) {
+      sound.play();
+    }
+
+    if (!(target as any).sprite) {
+      return;
+    }
+
+    const targetSprite = (target as any).sprite;
+
+    // smoke effect
+    const smoke = new AttackSmoke();
+    const targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
+    const targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
+    const scale = 0.5 + Math.random() * 0.5;
+
+    smoke.position.set(targetCenterX, targetCenterY);
+    smoke.scale.set(scale, scale);
+
+    targetSprite.parent.addChild(smoke);
+
+    // HealthGauge を表示させる
+    if ((target as any).unitId) {
+      const unit = target as Unit;
+      const gauge = unit.spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
+      targetSprite.parent.addChild(gauge);
+      this.registerUpdatingObject(gauge);
+    }
+
+    this.registerUpdatingObject(smoke);
+  }
+  /**
+  * 渡されたユニットが移動すべきかどうかを返す
+   */
+  public shouldUnitWalk(entity: UnitEntity): boolean {
+    const unit = entity as Unit;
+
+    if (unit.getAnimationType() === ResourceMaster.AnimationTypes.Unit.WALK) {
+      return true;
+    }
+    return unit.isAnimationLastFrameTime();
+  }
+
+  /**
+   * 特異メソッド
+   */
+
+  /**
    * UnitButton 用のコールバック
-   * タップされたボタンに応じたユニットの生成を BattleManager にリクエストする
+   * タップされたボタンに応じたユニットの生成を BattleLogic にリクエストする
    */
   public onUnitButtonTapped(buttonIndex: number): void {
-    if (this.state !== BattleState.INGAME) {
+    if (this.state !== BattleSceneState.INGAME) {
       return;
     }
 
@@ -536,7 +575,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   }
 
   private backToTitle(): void {
-    const soundManager = SoundManager.instance;
     const resources = PIXI.loader.resources as any;
 
     const keys = Object.keys(resources);
@@ -544,7 +582,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       const key = keys[i];
       const item = resources[key];
       if (item.buffer) {
-        soundManager.unregisterSound(key);
+        SoundManager.destroySound(key);
       }
     }
 
