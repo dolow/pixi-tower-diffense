@@ -9,12 +9,11 @@ export default class UnitEntity extends AttackableEntity {
    * ユニット生成順に動的に割り当てられる
    */
   public id: number  = 0;
-
   /**
    * ユニットID
    */
   public unitId: number  = 0;
-  
+
   /**
    * コンストラクタ
    */

@@ -10,24 +10,28 @@ const ResourceMaster = Object.freeze({
    */
   Api: {
     SceneUiGraph: (scene: Scene): string => {
-      const snake_case = scene.constructor.name.replace(/([A-Z])/g,
+      const snake_case = scene.constructor.name.replace(
+        /([A-Z])/g,
         (s) => { return `_${s.charAt(0).toLowerCase()}`; }
       ).replace(/^_/, '');
 
       return `${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json`;
     },
     Field: (fieldId: number): string => {
-      return `${Config.ResourceBaseUrl}/master/field_master.json?fieldId=${fieldId}`;
+      const query = `?fieldId=${fieldId}`;
+      return `${Config.ResourceBaseUrl}/master/field_master.json${query}`;
     },
     AiWave: (stageId: number): string => {
-      return `${Config.ResourceBaseUrl}/master/ai_wave_master.json?stageId=${stageId}`;
+      const query = `?stageId=${stageId}`;
+      return `${Config.ResourceBaseUrl}/master/ai_wave_master.json${query}`;
     },
     Unit: (unitIds: number[]): string => {
       const joinedUnitIds = unitIds.join('&unitId[]=');
       return `${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]=${joinedUnitIds}`;
     },
     Base: (playerBaseId: number, aiBaseId: number): string => {
-      return `${Config.ResourceBaseUrl}/master/base_master.json?playerBaseId=${playerBaseId}&aiBaseId=${aiBaseId}`;
+      const query = `?playerBaseId=${playerBaseId}&aiBaseId=${aiBaseId}`;
+      return `${Config.ResourceBaseUrl}/master/base_master.json${query}`;
     }
   },
 
@@ -39,7 +43,8 @@ const ResourceMaster = Object.freeze({
       return `${Config.ResourceBaseUrl}/units/${unitId}.json`;
     },
     UnitPanel: (unitId?: number): string => {
-      return `${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${unitId ? unitId : 'empty'}.png`;
+      const id = unitId ? unitId : 'empty';
+      return `${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${id}.png`;
     },
     Base: (baseId: number): string => {
       return `${Config.ResourceBaseUrl}/battle/base/${baseId}.json`;
@@ -74,12 +79,18 @@ const ResourceMaster = Object.freeze({
       `${Config.ResourceBaseUrl}/battle/bg_3_2.png`,
       `${Config.ResourceBaseUrl}/battle/bg_3_3.png`
     ],
-    AttackSmoke: `${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json`,
-    DeadBucket: `${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png`,
-    DeadSpirit: `${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png`,
-    CollapseExplode: `${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json`,
-    BattleResultWin: `${Config.ResourceBaseUrl}/ui/battle_win.png`,
-    BattleResultLose: `${Config.ResourceBaseUrl}/ui/battle_lose.png`
+    AttackSmoke:
+      `${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json`,
+    DeadBucket:
+      `${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png`,
+    DeadSpirit:
+      `${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png`,
+    CollapseExplode:
+      `${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json`,
+    BattleResultWin:
+      `${Config.ResourceBaseUrl}/ui/battle_win.png`,
+    BattleResultLose:
+      `${Config.ResourceBaseUrl}/ui/battle_lose.png`
   },
   /**
    * サウンドリソースの静的な url を有するオブジェクト

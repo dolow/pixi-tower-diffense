@@ -66,7 +66,12 @@ export default class SoundManager {
 
     SoundManager.instance = new SoundManager();
 
-    SoundManager.context = (ctx) ? ctx : new ((window as any).AudioContext || (window as any).webkitAudioContext)();
+    if (ctx) {
+      SoundManager.context = ctx;
+    } else {
+      const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
+      SoundManager.context = new AudioContextClass();
+    }
 
     const browser = detect();
     if (!browser) {
@@ -96,7 +101,7 @@ export default class SoundManager {
     const majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
 
     let methodName = 'decodeAudio';
-    if (browser.name === 'chrome' && Number.parseInt(majorVersion) === 64) {
+    if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
       methodName = 'decodeAudioWithPromise';
     }
 
@@ -139,12 +144,12 @@ export default class SoundManager {
    * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
    */
   public static setSoundInitializeEvent(browser: BrowserInfo | BotInfo | NodeInfo): void {
-    let eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+    const eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
     let soundInitializer: () => void;
 
     const majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
 
-    if (browser.name === 'chrome' && Number.parseInt(majorVersion) >= 66) {
+    if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) >= 66) {
       soundInitializer = () => {
         if (SoundManager.sharedContext) {
           SoundManager.sharedContext.resume();
@@ -238,7 +243,7 @@ export default class SoundManager {
       return;
     }
     instance.paused = true;
-    instance.managedSounds.forEach((sound) => sound.pause());
+    instance.managedSounds.forEach((sound) => { sound.pause(); });
   }
   /**
    * 管理下の Sound インスタンスの再生をすべて再開する
@@ -249,18 +254,26 @@ export default class SoundManager {
       return;
     }
     instance.paused = false;
-    instance.managedSounds.forEach((sound) => sound.resume());
+    instance.managedSounds.forEach((sound) => { sound.resume(); });
   }
 
   /**
    * フェード処理を行う
    */
-  public static fade(sound: Sound, targetVolume: number, seconds: number, stopOnEnd: boolean = false): void {
+  public static fade(
+    sound: Sound,
+    targetVolume: number,
+    seconds: number,
+    stopOnEnd: boolean = false
+  ): void {
     if (!SoundManager.sharedContext) {
       return;
     }
 
-    sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, SoundManager.sharedContext.currentTime + seconds);
+    sound.gainNode.gain.exponentialRampToValueAtTime(
+      targetVolume,
+      SoundManager.sharedContext.currentTime + seconds
+    );
     if (stopOnEnd) {
       SoundManager.instance.soundsKillingAfterFade.push({ sound, targetVolume });
     }

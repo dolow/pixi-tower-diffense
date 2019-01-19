@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js';
 import SoundManager from 'managers/SoundManager';
 import Scene from 'scenes/Scene';
 
@@ -51,7 +51,11 @@ export default class GameManager {
    * ゲームを起動する
    * 画面サイズや PIXI.ApplicationOptions を渡すことができる
    */
-  public static start(params: { glWidth: number, glHeight: number, option?: PIXI.ApplicationOptions }): void {
+  public static start(params: {
+    glWidth: number,
+    glHeight: number,
+    option?: PIXI.ApplicationOptions
+  }): void {
     const game = new PIXI.Application(params.glWidth, params.glHeight, params.option);
     const instance = new GameManager(game);
     GameManager.instance = instance;

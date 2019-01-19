@@ -72,7 +72,7 @@ export default abstract class Scene extends PIXI.Container {
     for (let i = 0; i < this.objectsToUpdate.length; i++) {
       const obj = this.objectsToUpdate[i];
       if (!obj || obj.isDestroyed()) {
-        continue
+        continue;
       }
       obj.update(delta);
       nextObjectsToUpdate.push(obj);
@@ -124,10 +124,17 @@ export default abstract class Scene extends PIXI.Container {
    * デフォルトでは UiGraph 用の情報が取得される
    */
   public loadResource(onResourceLoaded: () => void): void {
-    new Promise((resolve) => this.loadUiGraph(() => resolve()))
-      .then(() => new Promise((resolve) => this.onUiGraphLoaded(() => resolve())))
-      .then(() => onResourceLoaded())
-      .then(() => this.onResourceLoaded());
+    new Promise((resolve) => {
+      this.loadUiGraph(() => resolve());
+    }).then(() => {
+      return new Promise((resolve) => {
+        this.onUiGraphLoaded(() => resolve());
+      });
+    }).then(() => {
+      onResourceLoaded();
+    }).then(() => {
+      this.onResourceLoaded();
+    });
   }
 
   /**
@@ -136,7 +143,7 @@ export default abstract class Scene extends PIXI.Container {
   protected loadUiGraph(onLoaded: () => void): void {
     const name = ResourceMaster.Api.SceneUiGraph(this);
     if (this.hasSceneUiGraph && !PIXI.loader.resources[name]) {
-      PIXI.loader.add([{ name: name, url: name }]).load(() => onLoaded());
+      PIXI.loader.add([{ name, url: name }]).load(() => onLoaded());
     } else {
       onLoaded();
     }
@@ -176,7 +183,6 @@ export default abstract class Scene extends PIXI.Container {
       }
     }
   }
-
 
   /**
    * loadResource 完了時のコールバックメソッド

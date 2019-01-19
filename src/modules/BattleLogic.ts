@@ -1,7 +1,7 @@
-import FieldMaster from 'interfaces/master/Field';
-import AIWaveMaster from 'interfaces/master/AIWave';
-import UnitMaster from 'interfaces/master/Unit';
-import BaseMaster from 'interfaces/master/Base';
+import FieldMaster from 'interfaces/master/FieldMaster';
+import AIWaveMaster from 'interfaces/master/AIWaveMaster';
+import UnitMaster from 'interfaces/master/UnitMaster';
+import BaseMaster from 'interfaces/master/BaseMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import AttackableState from 'enum/AttackableState';
 import BattleLogicDefaultDelegator from 'modules/BattleLogicDefaultDelegator';
@@ -113,7 +113,7 @@ export default class BattleLogic {
     const keys = Object.keys(waves);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      this.aiWaveMasterCache.set(Number.parseInt(key), waves[key]);
+      this.aiWaveMasterCache.set(Number.parseInt(key, 10), waves[key]);
     }
 
     for (let i = 0; i < params.unitMasters.length; i++) {
@@ -290,7 +290,13 @@ export default class BattleLogic {
 
     if (this.delegator.shouldDamage(unit, unit.lockedEntity)) {
       unit.lockedEntity.currentHealth = unit.lockedEntity.currentHealth - master.power;
-      this.delegator.onAttackableEntityHealthUpdated(unit, unit.lockedEntity, unit.lockedEntity.currentHealth + master.power, unit.lockedEntity.currentHealth, master.maxHealth);
+      this.delegator.onAttackableEntityHealthUpdated(
+        unit,
+        unit.lockedEntity,
+        unit.lockedEntity.currentHealth + master.power,
+        unit.lockedEntity.currentHealth,
+        master.maxHealth
+      );
     }
   }
   /**
@@ -440,7 +446,11 @@ export default class BattleLogic {
         baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
       }
 
-      const entity = this.delegator.spawnUnitEntity(reservedUnit.unitId, baseEntity, reservedUnit.isPlayer);
+      const entity = this.delegator.spawnUnitEntity(
+        reservedUnit.unitId,
+        baseEntity,
+        reservedUnit.isPlayer
+      );
       if (entity) {
         entity.id = this.nextUnitId++;
         entity.currentHealth = master.maxHealth;
@@ -458,10 +468,11 @@ export default class BattleLogic {
    * 利用可能なコストを更新し、専用のコールバックをコールする
    */
   private updateAvailableCost(newCost: number): number {
-    if (newCost > this.maxAvailableCost) {
-      newCost = this.maxAvailableCost;
+    let cost = newCost;
+    if (cost > this.maxAvailableCost) {
+      cost = this.maxAvailableCost;
     }
-    this.availableCost = newCost;
+    this.availableCost = cost;
     this.delegator.onAvailableCostUpdated(this.availableCost);
 
     return this.availableCost;

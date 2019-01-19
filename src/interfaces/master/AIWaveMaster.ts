@@ -4,7 +4,7 @@
 export default interface AIWaveMaster {
   waves: {
     [key: string]: {
-      unitId: number
-    }[]
-  }
+      unitId: number;
+    }[];
+  };
 }

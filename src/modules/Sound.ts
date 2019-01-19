@@ -50,7 +50,7 @@ export default class Sound {
   /**
    * ループ再生フラグ
    */
-  public loop: boolean = false;;
+  public loop: boolean = false;
 
   /**
    * AudioBuffer インスタンス

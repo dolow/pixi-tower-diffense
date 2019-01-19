@@ -133,7 +133,8 @@ export default class Base extends BaseEntity implements UpdateObject {
         if ((this.elapsedFrameCount % 10) === 0) {
           this.spawnCollapseExplode();
         }
-        this.sprite.position.x = this.sprite.position.x + 4 * ((this.elapsedFrameCount % 2 === 0) ? 1 : -1);
+        const direction = (this.elapsedFrameCount % 2 === 0) ? 1 : -1;
+        this.sprite.position.x = this.sprite.position.x + 4 * direction;
         break;
       }
       case ResourceMaster.AnimationTypes.Base.SPAWN: {
@@ -156,7 +157,8 @@ export default class Base extends BaseEntity implements UpdateObject {
           const r  = 20;  // range
           const t  = 400; // duration
 
-          this.sprite.position.y = this.originalPositon.y + -r * Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
+          const wave = Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
+          this.sprite.position.y = this.originalPositon.y + -r * wave;
         }
 
         break;

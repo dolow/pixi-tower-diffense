@@ -44336,17 +44336,20 @@ var ResourceMaster = Object.freeze({
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
         },
         Field: function (fieldId) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json?fieldId=" + fieldId;
+            var query = "?fieldId=" + fieldId;
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json" + query;
         },
         AiWave: function (stageId) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json?stageId=" + stageId;
+            var query = "?stageId=" + stageId;
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json" + query;
         },
         Unit: function (unitIds) {
             var joinedUnitIds = unitIds.join('&unitId[]=');
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json?unitId[]=" + joinedUnitIds;
         },
         Base: function (playerBaseId, aiBaseId) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/base_master.json?playerBaseId=" + playerBaseId + "&aiBaseId=" + aiBaseId;
+            var query = "?playerBaseId=" + playerBaseId + "&aiBaseId=" + aiBaseId;
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/base_master.json" + query;
         }
     },
     /**
@@ -44357,7 +44360,8 @@ var ResourceMaster = Object.freeze({
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
         },
         UnitPanel: function (unitId) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + (unitId ? unitId : 'empty') + ".png";
+            var id = unitId ? unitId : 'empty';
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + id + ".png";
         },
         Base: function (baseId) {
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/base/" + baseId + ".json";
@@ -44617,7 +44621,8 @@ var Base = /** @class */ (function (_super) {
                 if ((this.elapsedFrameCount % 10) === 0) {
                     this.spawnCollapseExplode();
                 }
-                this.sprite.position.x = this.sprite.position.x + 4 * ((this.elapsedFrameCount % 2 === 0) ? 1 : -1);
+                var direction = (this.elapsedFrameCount % 2 === 0) ? 1 : -1;
+                this.sprite.position.x = this.sprite.position.x + 4 * direction;
                 break;
             }
             case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.SPAWN: {
@@ -44640,7 +44645,8 @@ var Base = /** @class */ (function (_super) {
                 else if (this.baseId === 2) {
                     var r = 20; // range
                     var t = 400; // duration
-                    this.sprite.position.y = this.originalPositon.y + -r * Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
+                    var wave = Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
+                    this.sprite.position.y = this.originalPositon.y + -r * wave;
                 }
                 break;
             }
@@ -44805,7 +44811,9 @@ var Field = /** @class */ (function (_super) {
             this.foreZLines.push(line);
             this.containers.fore.addChild(line);
         }
-        this.foregroundScrollLimit = -(options.fieldLength - managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.75);
+        // 的拠点よりも少し後ろを見せるための余剰スクロール範囲
+        var spareLength = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.75;
+        this.foregroundScrollLimit = -(options.fieldLength - spareLength);
     };
     /**
      * 前景内で背景エフェクトとして addChild する
@@ -44989,7 +44997,8 @@ var Unit = /** @class */ (function (_super) {
                     }
                 }
                 else {
-                    this.sprite.position.x = this.spawnedPosition.x + this.distance * (this.isPlayer ? 1 : -1);
+                    var direction = this.isPlayer ? 1 : -1;
+                    this.sprite.position.x = this.spawnedPosition.x + this.distance * direction;
                 }
                 break;
             }
@@ -45223,7 +45232,8 @@ var AttackSmokeEffect = /** @class */ (function (_super) {
         this.elapsedFrameCount++;
         this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
         if (this.elapsedFrameCount % AttackSmokeEffect.TextureFrameUpdateFrequency === 0) {
-            var index = Math.floor(this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency) + 1;
+            var count = this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency;
+            var index = Math.floor(count) + 1;
             if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.AttackSmoke)) {
                 this.sprite.destroy();
                 this.destroy();
@@ -45424,7 +45434,8 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
             }
         }
         if (this.elapsedFrameCount % CollapseExplodeEffect.TextureFrameUpdateFrequency === 0) {
-            var index = Math.floor(this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency) + 1;
+            var count = this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency;
+            var index = Math.floor(count) + 1;
             if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.CollapseExplode)) {
                 this.sprite.destroy();
                 this.destroy();
@@ -45682,8 +45693,9 @@ var HealthGaugeEffect = /** @class */ (function (_super) {
     HealthGaugeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         if (this.elapsedFrameCount <= this.reducingFrameCount) {
+            var reduceDistance = this.fromPercent - this.toPercent;
             var reduceProgress = this.elapsedFrameCount / this.reducingFrameCount;
-            var currentPercent = this.fromPercent - (this.fromPercent - this.toPercent) * reduceProgress;
+            var currentPercent = this.fromPercent - reduceDistance * reduceProgress;
             this.currentGraphic.clear();
             this.currentGraphic.beginFill(this.currentColor, 1);
             this.currentGraphic.drawRect(0, 0, this.gaugeWidth * currentPercent, this.gaugeHeight);
@@ -46183,7 +46195,13 @@ var SoundManager = /** @class */ (function () {
             return;
         }
         SoundManager.instance = new SoundManager();
-        SoundManager.context = (ctx) ? ctx : new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx) {
+            SoundManager.context = ctx;
+        }
+        else {
+            var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            SoundManager.context = new AudioContextClass();
+        }
         var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_0__["detect"])();
         if (!browser) {
             return;
@@ -46207,7 +46225,7 @@ var SoundManager = /** @class */ (function () {
         }
         var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
         var methodName = 'decodeAudio';
-        if (browser.name === 'chrome' && Number.parseInt(majorVersion) === 64) {
+        if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
             methodName = 'decodeAudioWithPromise';
         }
         PIXI.loader.use(function (resource, next) {
@@ -46250,7 +46268,7 @@ var SoundManager = /** @class */ (function () {
         var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
         var soundInitializer;
         var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
-        if (browser.name === 'chrome' && Number.parseInt(majorVersion) >= 66) {
+        if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) >= 66) {
             soundInitializer = function () {
                 if (SoundManager.sharedContext) {
                     SoundManager.sharedContext.resume();
@@ -46342,7 +46360,7 @@ var SoundManager = /** @class */ (function () {
             return;
         }
         instance.paused = true;
-        instance.managedSounds.forEach(function (sound) { return sound.pause(); });
+        instance.managedSounds.forEach(function (sound) { sound.pause(); });
     };
     /**
      * 管理下の Sound インスタンスの再生をすべて再開する
@@ -46353,7 +46371,7 @@ var SoundManager = /** @class */ (function () {
             return;
         }
         instance.paused = false;
-        instance.managedSounds.forEach(function (sound) { return sound.resume(); });
+        instance.managedSounds.forEach(function (sound) { sound.resume(); });
     };
     /**
      * フェード処理を行う
@@ -46484,7 +46502,7 @@ var BattleLogic = /** @class */ (function () {
         var keys = Object.keys(waves);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            this.aiWaveMasterCache.set(Number.parseInt(key), waves[key]);
+            this.aiWaveMasterCache.set(Number.parseInt(key, 10), waves[key]);
         }
         for (var i = 0; i < params.unitMasters.length; i++) {
             var unit = params.unitMasters[i];
@@ -46787,10 +46805,11 @@ var BattleLogic = /** @class */ (function () {
      * 利用可能なコストを更新し、専用のコールバックをコールする
      */
     BattleLogic.prototype.updateAvailableCost = function (newCost) {
-        if (newCost > this.maxAvailableCost) {
-            newCost = this.maxAvailableCost;
+        var cost = newCost;
+        if (cost > this.maxAvailableCost) {
+            cost = this.maxAvailableCost;
         }
-        this.availableCost = newCost;
+        this.availableCost = cost;
         this.delegator.onAvailableCostUpdated(this.availableCost);
         return this.availableCost;
     };
@@ -46817,17 +46836,27 @@ __webpack_require__.r(__webpack_exports__);
 var DefaultDelegator = /** @class */ (function () {
     function DefaultDelegator() {
     }
-    DefaultDelegator.prototype.spawnBaseEntity = function (_baseId, _isPlayer) { return null; };
-    ;
-    DefaultDelegator.prototype.spawnUnitEntity = function (_unitId, _baseEntity, _isPlayer) { return null; };
-    ;
-    DefaultDelegator.prototype.onAttackableEntityStateChanged = function (_entity, _oldState) { };
-    DefaultDelegator.prototype.onAttackableEntityHealthUpdated = function (_attacker, _target, _fromHealth, _toHealth, _maxHealth) { };
+    DefaultDelegator.prototype.spawnBaseEntity = function (_baseId, _isPlayer) {
+        return null;
+    };
+    DefaultDelegator.prototype.spawnUnitEntity = function (_unitId, _baseEntity, _isPlayer) {
+        return null;
+    };
+    DefaultDelegator.prototype.onAttackableEntityStateChanged = function (_entity, _oldState) {
+    };
+    DefaultDelegator.prototype.onAttackableEntityHealthUpdated = function (_attacker, _target, _fromHealth, _toHealth, _maxHealth) {
+    };
     DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
     DefaultDelegator.prototype.onGameOver = function (_isPlayerWon) { };
-    DefaultDelegator.prototype.shouldLockAttackableEntity = function (_attacker, _target) { return true; };
-    DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) { return true; };
-    DefaultDelegator.prototype.shouldUnitWalk = function (_unit) { return true; };
+    DefaultDelegator.prototype.shouldLockAttackableEntity = function (_attacker, _target) {
+        return true;
+    };
+    DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) {
+        return true;
+    };
+    DefaultDelegator.prototype.shouldUnitWalk = function (_unit) {
+        return true;
+    };
     return DefaultDelegator;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (DefaultDelegator);
@@ -46927,7 +46956,6 @@ var Sound = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    ;
     /**
      * 再生開始
      */
@@ -47534,7 +47562,6 @@ var BattleScene = /** @class */ (function (_super) {
             var item = resources[key];
             if (item.buffer) {
                 var audio = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(key, item.buffer);
-                ;
                 if (key === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle) {
                     audio.play(true);
                 }
@@ -47580,7 +47607,6 @@ var BattleScene = /** @class */ (function (_super) {
         this.registerUpdatingObject(base);
         return base;
     };
-    ;
     /**
      * Unit を発生させるときのコールバック
      * Field に Unit のスプライトを追加する
@@ -47626,7 +47652,8 @@ var BattleScene = /** @class */ (function (_super) {
             var unit = entity;
             if (unit.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD) {
                 var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"](!unit.isPlayer);
-                effect.position.set(unit.sprite.position.x, unit.sprite.position.y + unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height);
+                var yAdjust = unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height;
+                effect.position.set(unit.sprite.position.x, unit.sprite.position.y + yAdjust);
                 unit.sprite.parent.addChild(effect);
                 this.registerUpdatingObject(effect);
                 unit.destroy();
@@ -47647,7 +47674,8 @@ var BattleScene = /** @class */ (function (_super) {
      * 利用可能なコストの値が変動したときのコールバック
      */
     BattleScene.prototype.onAvailableCostUpdated = function (cost) {
-        this.uiGraph.cost_text.text = Math.floor(cost) + "/" + this.manager.maxAvailableCost;
+        var text = Math.floor(cost) + "/" + this.manager.maxAvailableCost;
+        this.uiGraph.cost_text.text = text;
     };
     /**
      * 勝敗が決定したときのコールバック
@@ -47661,7 +47689,8 @@ var BattleScene = /** @class */ (function (_super) {
         if (bgm) {
             bgm.stop();
         }
-        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].getSound(isPlayerWon ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose);
+        var soundName = isPlayerWon ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose;
+        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].getSound(soundName);
         if (sound) {
             sound.play();
         }
@@ -47704,8 +47733,12 @@ var BattleScene = /** @class */ (function (_super) {
         var targetSprite = target.sprite;
         // smoke effect
         var smoke = new display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_14__["default"]();
-        var targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
-        var targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
+        var xRand = Math.random() * targetSprite.width;
+        var yRand = Math.random() * targetSprite.height;
+        var xAdjust = targetSprite.width * (0.5 + targetSprite.anchor.x);
+        var yAdjust = targetSprite.height * (0.5 + targetSprite.anchor.y);
+        var targetCenterX = targetSprite.position.x + xRand - xAdjust;
+        var targetCenterY = targetSprite.position.y + yRand - yAdjust;
         var scale = 0.5 + Math.random() * 0.5;
         smoke.position.set(targetCenterX, targetCenterY);
         smoke.scale.set(scale, scale);
@@ -47926,10 +47959,17 @@ var Scene = /** @class */ (function (_super) {
      */
     Scene.prototype.loadResource = function (onResourceLoaded) {
         var _this = this;
-        new Promise(function (resolve) { return _this.loadUiGraph(function () { return resolve(); }); })
-            .then(function () { return new Promise(function (resolve) { return _this.onUiGraphLoaded(function () { return resolve(); }); }); })
-            .then(function () { return onResourceLoaded(); })
-            .then(function () { return _this.onResourceLoaded(); });
+        new Promise(function (resolve) {
+            _this.loadUiGraph(function () { return resolve(); });
+        }).then(function () {
+            return new Promise(function (resolve) {
+                _this.onUiGraphLoaded(function () { return resolve(); });
+            });
+        }).then(function () {
+            onResourceLoaded();
+        }).then(function () {
+            _this.onResourceLoaded();
+        });
     };
     /**
      * UiGraph 情報のロードを行う

@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js';
 import * as UI from 'interfaces/UiGraph/index';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButton from 'display/battle/UnitButton';

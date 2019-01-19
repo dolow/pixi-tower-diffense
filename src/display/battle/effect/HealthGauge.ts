@@ -103,8 +103,9 @@ export default class HealthGaugeEffect extends PIXI.Container implements UpdateO
     this.elapsedFrameCount++;
 
     if (this.elapsedFrameCount <= this.reducingFrameCount) {
+      const reduceDistance = this.fromPercent - this.toPercent;
       const reduceProgress = this.elapsedFrameCount / this.reducingFrameCount;
-      const currentPercent = this.fromPercent - (this.fromPercent - this.toPercent) * reduceProgress;
+      const currentPercent = this.fromPercent - reduceDistance * reduceProgress;
 
       this.currentGraphic.clear();
       this.currentGraphic.beginFill(this.currentColor, 1);

@@ -189,7 +189,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         const unitUrl      = ResourceMaster.Dynamic.Unit(unitId);
         const unitPanelUrl = ResourceMaster.Dynamic.UnitPanel(unitId);
         assets.push({ name: unitUrl,      url: unitUrl });
-        assets.push({ name: unitPanelUrl, url: unitPanelUrl});
+        assets.push({ name: unitPanelUrl, url: unitPanelUrl });
       }
     }
 
@@ -241,7 +241,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       assets.push({ name: deadResourceUrl, url: deadResourceUrl });
     }
 
-    const collapseExplodeResources = CollapseExplodeEffect.resourceList
+    const collapseExplodeResources = CollapseExplodeEffect.resourceList;
     for (let i = 0; i < collapseExplodeResources.length; i++) {
       const collapseExplodeResourceUrl = collapseExplodeResources[i];
       assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
@@ -308,7 +308,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       const key = keys[i];
       const item = resources[key];
       if (item.buffer) {
-        const audio = SoundManager.createSound(key, item.buffer);;
+        const audio = SoundManager.createSound(key, item.buffer);
         if (key === ResourceMaster.Audio.Bgm.Battle) {
           audio.play(true);
         }
@@ -360,13 +360,17 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     this.registerUpdatingObject(base);
 
     return base;
-  };
+  }
 
   /**
    * Unit を発生させるときのコールバック
    * Field に Unit のスプライトを追加する
    */
-  public spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null {
+  public spawnUnitEntity(
+    unitId: number,
+    baseEntity: BaseEntity,
+    isPlayer: boolean
+  ): UnitEntity | null {
     const master = this.manager.getUnitMaster(unitId);
     if (!master) {
       return null;
@@ -417,7 +421,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
       if (unit.state === AttackableState.DEAD) {
         const effect = new Dead(!unit.isPlayer);
-        effect.position.set(unit.sprite.position.x, unit.sprite.position.y + unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height);
+        const yAdjust = unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height;
+        effect.position.set(unit.sprite.position.x, unit.sprite.position.y + yAdjust);
         unit.sprite.parent.addChild(effect);
         this.registerUpdatingObject(effect);
 
@@ -427,7 +432,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
     } else {
       if (entity.state === AttackableState.DEAD) {
-        const base = (entity as Base)
+        const base = (entity as Base);
         base.collapse();
         this.field.addChildAsForeForegroundEffect(base.explodeContainer);
       }
@@ -438,7 +443,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * 利用可能なコストの値が変動したときのコールバック
    */
   public onAvailableCostUpdated(cost: number): void {
-    (this.uiGraph.cost_text as PIXI.Text).text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
+    const text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
+    (this.uiGraph.cost_text as PIXI.Text).text = text;
   }
 
   /**
@@ -456,7 +462,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       bgm.stop();
     }
 
-    const sound = SoundManager.getSound(isPlayerWon ? ResourceMaster.Audio.Se.Win : ResourceMaster.Audio.Se.Lose);
+    const soundName = isPlayerWon ? ResourceMaster.Audio.Se.Win : ResourceMaster.Audio.Se.Lose;
+    const sound = SoundManager.getSound(soundName);
     if (sound) {
       sound.play();
     }
@@ -494,7 +501,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 渡されたエンティティの health が増減した場合に呼ばれる
    */
-  public onAttackableEntityHealthUpdated(_attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void {
+  public onAttackableEntityHealthUpdated(
+    _attacker: AttackableEntity,
+    target: AttackableEntity,
+    fromHealth: number,
+    toHealth: number,
+    maxHealth: number
+  ): void {
     const sound = SoundManager.getSound((Math.random() >= 0.5)
       ? ResourceMaster.Audio.Se.Attack1
       : ResourceMaster.Audio.Se.Attack2
@@ -511,8 +524,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     // smoke effect
     const smoke = new AttackSmoke();
-    const targetCenterX = targetSprite.position.x + Math.random() * targetSprite.width - targetSprite.width * (0.5 + targetSprite.anchor.x);
-    const targetCenterY = targetSprite.position.y + Math.random() * targetSprite.height - targetSprite.height * (0.5 + targetSprite.anchor.y);
+    const xRand = Math.random() * targetSprite.width;
+    const yRand = Math.random() * targetSprite.height;
+    const xAdjust = targetSprite.width * (0.5 + targetSprite.anchor.x);
+    const yAdjust = targetSprite.height * (0.5 + targetSprite.anchor.y);
+    const targetCenterX = targetSprite.position.x + xRand - xAdjust;
+    const targetCenterY = targetSprite.position.y + yRand - yAdjust;
     const scale = 0.5 + Math.random() * 0.5;
 
     smoke.position.set(targetCenterX, targetCenterY);
@@ -565,7 +582,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * ボタンインデックスから UnitButton インスタンスを返す
    */
   private getUiGraphUnitButton(index: number): UnitButton | undefined {
-    const uiGraphUnitButtonName = `unit_button_${index+1}`;
+    const uiGraphUnitButtonName = `unit_button_${index + 1}`;
     return this.uiGraph[uiGraphUnitButtonName] as UnitButton;
   }
 

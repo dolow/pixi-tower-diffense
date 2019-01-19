@@ -1,7 +1,7 @@
-import FieldMaster from 'interfaces/master/Field';
-import AIWaveMaster from 'interfaces/master/AIWave';
-import UnitMaster from 'interfaces/master/Unit';
-import BaseMaster from 'interfaces/master/Base';
+import FieldMaster from 'interfaces/master/FieldMaster';
+import AIWaveMaster from 'interfaces/master/AIWaveMaster';
+import UnitMaster from 'interfaces/master/UnitMaster';
+import BaseMaster from 'interfaces/master/BaseMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import UnitEntity from 'entity/UnitEntity';
 /**

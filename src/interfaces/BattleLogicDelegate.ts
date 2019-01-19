@@ -21,7 +21,13 @@ export default interface BattleLogicDelegate {
   /**
    * エンティティの health が変動した際のコールバック
    */
-  onAttackableEntityHealthUpdated(attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void;
+  onAttackableEntityHealthUpdated(
+    attacker: AttackableEntity,
+    target: AttackableEntity,
+    fromHealth: number,
+    toHealth: number,
+    maxHealth: number
+  ): void;
   /**
    * 利用可能コストが変動した際のコールバック
    */

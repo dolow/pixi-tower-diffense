@@ -111,7 +111,9 @@ export default class Field extends PIXI.Container {
       this.containers.fore.addChild(line);
     }
 
-    this.foregroundScrollLimit = -(options.fieldLength - GameManager.instance.game.view.width * 0.75);
+    // 的拠点よりも少し後ろを見せるための余剰スクロール範囲
+    const spareLength = GameManager.instance.game.view.width * 0.75;
+    this.foregroundScrollLimit = -(options.fieldLength - spareLength);
   }
 
   /**

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import Transition from 'interfaces/Transition'
+import Transition from 'interfaces/Transition';
 
 /**
  * 即座にシーン遷移させるトランジション
@@ -10,7 +10,7 @@ export default class Immediate implements Transition {
   /**
    * トランジション描画物を含む PIXI.Container インスタンスを返す
    */
-  public getContainer(): PIXI.Container | null{
+  public getContainer(): PIXI.Container | null {
     return null;
   }
 

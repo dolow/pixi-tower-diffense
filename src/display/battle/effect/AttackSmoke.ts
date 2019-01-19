@@ -55,7 +55,8 @@ export default class AttackSmokeEffect extends PIXI.Container implements UpdateO
     this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
 
     if (this.elapsedFrameCount % AttackSmokeEffect.TextureFrameUpdateFrequency === 0) {
-      const index = Math.floor(this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency) + 1;
+      const count = this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency;
+      const index = Math.floor(count) + 1;
       if (index > ResourceMaster.MaxFrameIndex(ResourceMaster.Static.AttackSmoke)) {
         this.sprite.destroy();
         this.destroy();

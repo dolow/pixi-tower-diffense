@@ -66,7 +66,8 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
     }
 
     if (this.elapsedFrameCount % CollapseExplodeEffect.TextureFrameUpdateFrequency === 0) {
-      const index = Math.floor(this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency) + 1;
+      const count = this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency;
+      const index = Math.floor(count) + 1;
       if (index > ResourceMaster.MaxFrameIndex(ResourceMaster.Static.CollapseExplode)) {
         this.sprite.destroy();
         this.destroy();

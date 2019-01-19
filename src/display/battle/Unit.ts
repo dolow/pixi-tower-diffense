@@ -47,7 +47,7 @@ export default class Unit extends UnitEntity implements UpdateObject {
    * フレーム更新に必要なrequestAnimationFrame数
    * マスターデータの値
    */
-  protected animationUpdateDurations: { [key: string]: number } = {}
+  protected animationUpdateDurations: { [key: string]: number } = {};
 
   /**
    * HealthGauge インスタンス
@@ -109,7 +109,8 @@ export default class Unit extends UnitEntity implements UpdateObject {
             this.resetAnimation();
           }
         } else {
-          this.sprite.position.x = this.spawnedPosition.x + this.distance * (this.isPlayer ? 1 : -1);
+          const direction = this.isPlayer ? 1 : -1;
+          this.sprite.position.x = this.spawnedPosition.x + this.distance * direction;
         }
         break;
       }
@@ -203,7 +204,11 @@ export default class Unit extends UnitEntity implements UpdateObject {
         this.resetAnimation();
       }
 
-      this.sprite.texture = ResourceMaster.TextureFrame.Unit(this.animationType, this.unitId, this.animationFrameIndex);
+      this.sprite.texture = ResourceMaster.TextureFrame.Unit(
+        this.animationType,
+        this.unitId,
+        this.animationFrameIndex
+      );
 
       this.animationFrameIndex++;
     }
