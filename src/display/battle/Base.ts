@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
+import SoundManager from 'managers/SoundManager';
 import BaseEntity from 'entity/BaseEntity';
+import UpdateObject from 'display/UpdateObject';
 import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
 
 const baseId1SpawnFrameCount = 16;
@@ -9,7 +11,7 @@ const baseId1SpawnFrameCount = 16;
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Base extends BaseEntity {
+export default class Base extends BaseEntity implements UpdateObject {
   /**
    * PIXI スプライト
    */
@@ -32,6 +34,10 @@ export default class Base extends BaseEntity {
    */
   protected elapsedFrameCount: number = 0;
 
+  public static get resourceList(): string[] {
+    return [ResourceMaster.Audio.Se.UnitSpawn];
+  }
+
   constructor(baseId: number, isPlayer: boolean) {
     super(baseId, isPlayer);
 
@@ -42,6 +48,14 @@ export default class Base extends BaseEntity {
 
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
+  }
+
+  public isDestroyed(): boolean {
+    return false;
+  }
+
+  public update(_dt: number): void {
+    this.updateAnimation();
   }
 
   public init(options?: any): void {
@@ -62,8 +76,18 @@ export default class Base extends BaseEntity {
     this.animationType = ResourceMaster.AnimationTypes.Base.IDLE;
     this.elapsedFrameCount = 0;
   }
-  public setAnimation(type: string): void {
-    this.animationType = type;
+
+  public collapse(): void {
+    this.animationType = ResourceMaster.AnimationTypes.Base.COLLAPSE;
+    this.elapsedFrameCount = 0;
+  }
+  public spawn(): void {
+    const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.UnitSpawn);
+    if (sound) {
+      sound.play();
+    }
+
+    this.animationType = ResourceMaster.AnimationTypes.Base.SPAWN;
     this.elapsedFrameCount = 0;
   }
 

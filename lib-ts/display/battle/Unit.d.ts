@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js';
 import UnitEntity from 'entity/UnitEntity';
+import UpdateObject from 'display/UpdateObject';
 import HealthGauge from 'display/battle/effect/HealthGauge';
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Unit extends UnitEntity {
+export default class Unit extends UnitEntity implements UpdateObject {
     /**
      * PIXI スプライト
      */
@@ -45,14 +46,8 @@ export default class Unit extends UnitEntity {
     protected animationUpdateDurations: {
         [key: string]: number;
     };
-    saveSpawnedPosition(): PIXI.Point;
-    getSpawnedPosition(): PIXI.Point;
-    isHitFrame(): boolean;
-    isAnimationLastFrameTime(type?: string): boolean;
-    getAnimationType(): string;
-    getAnimationMaxFrameIndex(type: string): number;
-    getAnimationUpdateDuration(type: string): number;
-    getAnimationMaxFrameTime(type: string): number;
+    protected healthGauge: HealthGauge | null;
+    protected destroyed: boolean;
     constructor(unitId: number, isPlayer: boolean, animationParam: {
         hitFrame: number;
         animationMaxFrameIndexes: {
@@ -62,9 +57,15 @@ export default class Unit extends UnitEntity {
             [key: string]: number;
         };
     });
-    protected healthGauge: HealthGauge | null;
+    isDestroyed(): boolean;
+    update(_dt: number): void;
+    saveSpawnedPosition(): PIXI.Point;
+    isHitFrame(): boolean;
+    isAnimationLastFrameTime(type?: string): boolean;
+    getAnimationType(): string;
     spawnHealthGauge(fromPercent: number, toPercent: number): HealthGauge;
     isFoeContact(target: PIXI.Container): boolean;
     resetAnimation(): void;
     updateAnimation(type?: string): void;
+    destroy(): void;
 }

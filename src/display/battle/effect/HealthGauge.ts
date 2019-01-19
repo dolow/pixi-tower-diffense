@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import UpdateObject from 'display/UpdateObject';
 
-export default class HealthGaugeEffect extends UpdateObject {
+export default class HealthGaugeEffect extends PIXI.Container implements UpdateObject {
   public gaugeWidth: number = 60;
   public gaugeHeight: number = 8;
 
@@ -40,6 +40,10 @@ export default class HealthGaugeEffect extends UpdateObject {
 
     this.addChild(this.maxGraphic);
     this.addChild(this.currentGraphic);
+  }
+
+  public isDestroyed(): boolean {
+    return this._destroyed;
   }
 
   public update(_delta: number): void {

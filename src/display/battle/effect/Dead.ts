@@ -4,7 +4,7 @@ import UpdateObject from 'display/UpdateObject';
 
 const TO_RAD = Math.PI / 180.0;
 
-export default class Dead extends UpdateObject {
+export default class Dead extends PIXI.Container implements UpdateObject {
   private static resourceListCache: string[] = [];
 
   private bucket!: PIXI.Sprite;
@@ -45,6 +45,10 @@ export default class Dead extends UpdateObject {
     this.addChild(this.spirit);
 
     this.spirit.visible = false;
+  }
+
+  public isDestroyed(): boolean {
+    return this._destroyed;
   }
 
   public update(_delta: number): void {

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import UpdateObject from 'display/UpdateObject';
 
-export default class AttackSmokeEffect extends UpdateObject {
+export default class AttackSmokeEffect extends PIXI.Container implements UpdateObject {
   private elapsedFrameCount: number = 0;
   private sprite!: PIXI.Sprite;
 
@@ -15,6 +15,10 @@ export default class AttackSmokeEffect extends UpdateObject {
 
     this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.AttackSmoke(1));
     this.addChild(this.sprite);
+  }
+
+  public isDestroyed(): boolean {
+    return this._destroyed;
   }
 
   public update(_delta: number): void {

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
+import UpdateObject from 'display/UpdateObject';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import BaseState from 'enum/BaseState';
 import UnitState from 'enum/UnitState';
@@ -131,6 +132,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
     this.field.addChildAsForeBackgroundEffect(base.sprite);
 
+    this.registerUpdatingObject(base);
+
     return base;
   };
 
@@ -157,14 +160,9 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
 
     unit.saveSpawnedPosition();
 
-    (baseEntity as Base).setAnimation(ResourceMaster.AnimationTypes.Base.SPAWN);
+    (baseEntity as Base).spawn();
 
-    if (isPlayer) {
-      const sound = SoundManager.instance.getSound(ResourceMaster.Audio.Se.UnitSpawn);
-      if (sound) {
-        sound.play();
-      }
-    }
+    this.registerUpdatingObject(unit as UpdateObject);
 
     return unit;
   }
@@ -176,7 +174,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
   public onBaseStateChanged(entity: BaseEntity, _oldState: number): void {
     if (entity.state === BaseState.DEAD) {
       const base = (entity as Base)
-      base.setAnimation(ResourceMaster.AnimationTypes.Base.COLLAPSE);
+      base.collapse();
       this.field.addChildAsForeForegroundEffect(base.explodeContainer);
     }
   }
@@ -186,7 +184,18 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * ユニットのステートが変更された際のコールバック
    */
   public onUnitStateChanged(entity: UnitEntity, _oldState: number): void {
-    (entity as Unit).resetAnimation();
+    const unit = entity as Unit;
+
+    if (unit.state === UnitState.DEAD) {
+      const effect = new Dead(!unit.isPlayer);
+      effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
+      unit.sprite.parent.addChild(effect);
+      this.registerUpdatingObject(effect);
+
+      unit.destroy();
+    } else {
+      unit.resetAnimation();
+    }
   }
 
   /**
@@ -194,8 +203,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * Base が更新されたときのコールバック
    * Base のアニメーションと PIXI による描画を更新する
    */
-  public onBaseUpdated(base: BaseEntity): void {
-    (base as Base).updateAnimation();
+  public onBaseUpdated(_base: BaseEntity): void {
+
   };
 
   /**
@@ -203,45 +212,8 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    * Unit が更新されたときのコールバック
    * Unit のアニメーションと PIXI による描画を更新する
    */
-  public onUnitUpdated(entity: UnitEntity): void {
-    const unit = entity as Unit;
-
-    const animationTypes = ResourceMaster.AnimationTypes.Unit;
-    let animationType = unit.getAnimationType();
-
-    switch (unit.state) {
-      case UnitState.IDLE: {
-        if (animationType !== animationTypes.WALK) {
-          if (unit.isAnimationLastFrameTime()) {
-            animationType = animationTypes.WALK;
-            unit.resetAnimation();
-          }
-        } else {
-          unit.sprite.position.x = unit.getSpawnedPosition().x + unit.distance * (unit.isPlayer ? 1 : -1);
-        }
-        break;
-      }
-      case UnitState.LOCKED: {
-        animationType = animationTypes.ATTACK;
-        break;
-      }
-      case UnitState.DEAD: {
-        const effect = new Dead(!unit.isPlayer);
-        effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
-        this.field.addChildAsForeBackgroundEffect(effect);
-        this.registerUpdatingObject(effect);
-
-        if (unit.sprite) {
-          this.destroyList.push(unit.sprite);
-        }
-        break;
-      }
-      default: break;
-    }
-
-    if (animationType) {
-      unit.updateAnimation(animationType);
-    }
+  public onUnitUpdated(_entity: UnitEntity): void {
+    //console.log(_entity.state);
   }
   /**
    * GameManagerDelegate 実装
@@ -424,6 +396,12 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       assets.push({ name: bgResourceUrl, url: bgResourceUrl });
     }
 
+    const baseResources = Base.resourceList;
+    for (let i = 0; i < baseResources.length; i++) {
+      const baseResourceUrl = baseResources[i];
+      assets.push({ name: baseResourceUrl, url: baseResourceUrl });
+    }
+
     const attackSmokeResources = AttackSmoke.resourceList;
     for (let i = 0; i < attackSmokeResources.length; i++) {
       const attackSmokeResourcesUrl = attackSmokeResources[i];
@@ -451,7 +429,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     assets.push({ name: ResourceMaster.Audio.Bgm.Battle, url: ResourceMaster.Audio.Bgm.Battle });
     assets.push({ name: ResourceMaster.Audio.Se.Attack1, url: ResourceMaster.Audio.Se.Attack1 });
     assets.push({ name: ResourceMaster.Audio.Se.Attack2, url: ResourceMaster.Audio.Se.Attack2 });
-    assets.push({ name: ResourceMaster.Audio.Se.UnitSpawn, url: ResourceMaster.Audio.Se.UnitSpawn });
     assets.push({ name: ResourceMaster.Audio.Se.Win, url: ResourceMaster.Audio.Se.Win });
     assets.push({ name: ResourceMaster.Audio.Se.Lose, url: ResourceMaster.Audio.Se.Lose });
 

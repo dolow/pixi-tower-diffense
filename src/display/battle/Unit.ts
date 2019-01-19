@@ -1,13 +1,15 @@
 import * as PIXI from 'pixi.js';
 import UnitEntity from 'entity/UnitEntity';
 import ResourceMaster from 'ResourceMaster';
+import UnitState from 'enum/UnitState';
+import UpdateObject from 'display/UpdateObject';
 import HealthGauge from 'display/battle/effect/HealthGauge';
 
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Unit extends UnitEntity {
+export default class Unit extends UnitEntity implements UpdateObject {
   /**
    * PIXI スプライト
    */
@@ -21,7 +23,7 @@ export default class Unit extends UnitEntity {
   /**
    * 現在のアニメーション種別
    */
-  protected animationType: string = '';
+  protected animationType: string = ResourceMaster.AnimationTypes.Unit.WAIT;
   /**
    * 現在のアニメーションフレーム
    */
@@ -47,40 +49,9 @@ export default class Unit extends UnitEntity {
    */
   protected animationUpdateDurations: { [key: string]: number } = {}
 
-  public saveSpawnedPosition(): PIXI.Point {
-    this.spawnedPosition.x = this.sprite.position.x;
-    this.spawnedPosition.y = this.sprite.position.y;
-    return this.spawnedPosition;
-  }
-  public getSpawnedPosition(): PIXI.Point {
-    return this.spawnedPosition;
-  }
+  protected healthGauge: HealthGauge | null = null;
 
-  public isHitFrame(): boolean {
-    if (this.animationFrameIndex !== this.hitFrame) {
-      return false;
-    }
-    const updateDuration = this.getAnimationUpdateDuration(ResourceMaster.AnimationTypes.Unit.ATTACK);
-    return (this.elapsedFrameCount % updateDuration) === 0;
-  }
-
-  public isAnimationLastFrameTime(type: string = this.animationType): boolean {
-    const maxFrameTime = this.getAnimationMaxFrameTime(type);
-    return this.elapsedFrameCount === maxFrameTime;
-  }
-
-  public getAnimationType(): string {
-    return this.animationType;
-  }
-  public getAnimationMaxFrameIndex(type: string): number {
-    return this.animationMaxFrameIndexes[type] || 0;
-  }
-  public getAnimationUpdateDuration(type: string): number {
-    return this.animationUpdateDurations[type] || 0;
-  }
-  public getAnimationMaxFrameTime(type: string): number {
-    return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
-  }
+  protected destroyed: boolean = false;
 
   constructor(
     unitId: number,
@@ -105,7 +76,58 @@ export default class Unit extends UnitEntity {
     this.sprite.anchor.x = 0.5;
   }
 
-  protected healthGauge: HealthGauge | null = null;
+  public isDestroyed(): boolean {
+    return this.destroyed;
+  }
+
+  public update(_dt: number): void {
+    const animationTypes = ResourceMaster.AnimationTypes.Unit;
+
+    switch (this.state) {
+      case UnitState.IDLE: {
+        if (this.animationType !== animationTypes.WALK) {
+          if (this.isAnimationLastFrameTime()) {
+            this.animationType = animationTypes.WALK;
+            this.resetAnimation();
+          }
+        } else {
+          this.sprite.position.x = this.spawnedPosition.x + this.distance * (this.isPlayer ? 1 : -1);
+        }
+        break;
+      }
+      case UnitState.LOCKED: {
+        this.animationType = animationTypes.ATTACK;
+        break;
+      }
+      case UnitState.DEAD:
+      default: break;
+    }
+
+    this.updateAnimation();
+  }
+
+  public saveSpawnedPosition(): PIXI.Point {
+    this.spawnedPosition.x = this.sprite.position.x;
+    this.spawnedPosition.y = this.sprite.position.y;
+    return this.spawnedPosition;
+  }
+
+  public isHitFrame(): boolean {
+    if (this.animationFrameIndex !== this.hitFrame) {
+      return false;
+    }
+    const updateDuration = this.animationUpdateDurations[ResourceMaster.AnimationTypes.Unit.ATTACK];
+    return (this.elapsedFrameCount % updateDuration) === 0;
+  }
+
+  public isAnimationLastFrameTime(type: string = this.animationType): boolean {
+    const maxFrameTime = this.animationUpdateDurations[type] * this.animationMaxFrameIndexes[type];
+    return this.elapsedFrameCount === maxFrameTime;
+  }
+
+  public getAnimationType(): string {
+    return this.animationType;
+  }
 
   public spawnHealthGauge(fromPercent: number, toPercent: number): HealthGauge {
     if (this.healthGauge) {
@@ -138,7 +160,7 @@ export default class Unit extends UnitEntity {
       this.animationType = type;
     }
 
-    const animationUpdateDuration = this.getAnimationUpdateDuration(this.animationType);
+    const animationUpdateDuration = this.animationUpdateDurations[this.animationType];
     if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
       if (this.isAnimationLastFrameTime()) {
         this.resetAnimation();
@@ -150,5 +172,10 @@ export default class Unit extends UnitEntity {
     }
 
     this.elapsedFrameCount++;
+  }
+
+  public destroy(): void {
+    this.sprite.destroy();
+    this.destroyed = true;
   }
 }

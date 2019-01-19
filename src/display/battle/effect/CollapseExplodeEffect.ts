@@ -3,7 +3,7 @@ import ResourceMaster from 'ResourceMaster';
 import SoundManager from 'managers/SoundManager';
 import UpdateObject from 'display/UpdateObject';
 
-export default class CollapseExplodeEffect extends UpdateObject {
+export default class CollapseExplodeEffect extends PIXI.Container implements UpdateObject {
   private elapsedFrameCount: number = 0;
   private sprite!: PIXI.Sprite;
 
@@ -19,6 +19,10 @@ export default class CollapseExplodeEffect extends UpdateObject {
     this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.CollapseExplode(1));
     this.sprite.anchor.set(0.5, 0.5);
     this.addChild(this.sprite);
+  }
+
+  public isDestroyed(): boolean {
+    return this._destroyed;
   }
 
   public update(_delta: number): void {

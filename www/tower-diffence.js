@@ -44327,145 +44327,68 @@ __webpack_require__.r(__webpack_exports__);
  * リソースの URL や命名規則のマスタ
  */
 var ResourceMaster = Object.freeze({
-    SceneUiGraph: {
-        ApiEntryPoint: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph";
-        },
-        Api: function (scene) {
+    Api: {
+        SceneUiGraph: function (scene) {
             var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
-            return ResourceMaster.SceneUiGraph.ApiEntryPoint() + "/" + snake_case + ".json";
-        }
-    },
-    Field: {
-        ApiEntryPoint: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json";
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
         },
-        Api: function (fieldId) {
-            return ResourceMaster.Field.ApiEntryPoint() + "?fieldId=" + fieldId;
-        }
-    },
-    AiWave: {
-        ApiEntryPoint: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json";
+        Field: function (fieldId) {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json?fieldId=" + fieldId;
         },
-        Api: function (stageId) {
-            return ResourceMaster.AiWave.ApiEntryPoint() + "?stageId=" + stageId;
-        }
-    },
-    Unit: {
-        AnimationTypes: Object.freeze({
-            WAIT: 'wait',
-            WALK: 'walk',
-            ATTACK: 'attack',
-            DAMAGE: 'damage'
-        }),
-        ApiEntryPoint: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json";
+        AiWave: function (stageId) {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json?stageId=" + stageId;
         },
-        Api: function (unitIds) {
+        Unit: function (unitIds) {
             var joinedUnitIds = unitIds.join('&unitId[]=');
-            return ResourceMaster.Unit.ApiEntryPoint() + "?unitId[]=" + joinedUnitIds;
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json?unitId[]=" + joinedUnitIds;
         },
-        Texture: function (unitId) {
+        Base: function (playerBaseId, aiBaseId) {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/base_master.json?playerBaseId=" + playerBaseId + "&aiBaseId=" + aiBaseId;
+        }
+    },
+    Dynamic: {
+        Unit: function (unitId) {
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
         },
-        PanelTexture: function (unitId) {
-            if (unitId <= 0) {
-                return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_empty.png";
-            }
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + unitId + ".png";
+        UnitPanel: function (unitId) {
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + (unitId ? unitId : 'empty') + ".png";
         },
-        TextureFrameName: function (unitActionType, unitId, index) {
-            return "unit_" + unitId + "_" + unitActionType + "_" + index + ".png";
-        }
-    },
-    Base: {
-        AnimationTypes: Object.freeze({
-            IDLE: 'idle',
-            SPAWN: 'spawn',
-            COLLAPSE: 'collapse'
-        }),
-        ApiEntryPoint: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master";
-        },
-        Api: function (playerBaseId, aiBaseId) {
-            return ResourceMaster.Base.ApiEntryPoint() + "/base_master.json?playerBaseId=" + playerBaseId + "&aiBaseId=" + aiBaseId;
-        },
-        Texture: function (baseId) {
+        Base: function (baseId) {
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/base/" + baseId + ".json";
-        },
-        TextureFrameName: function (baseId, index) {
-            if (index === void 0) { index = 1; }
-            return "base_" + baseId + "_" + index + ".png";
         }
     },
-    BattleBg: {
-        TileCount: {
-            Fore: 10,
-            Middle: 6,
-            Back: 3
-        },
-        Fore: function () {
-            var list = [];
-            for (var i = 1; i <= ResourceMaster.BattleBg.TileCount.Fore; i++) {
-                list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_" + i + ".png");
-            }
-            return list;
-        },
-        Middle: function () {
-            var list = [];
-            for (var i = 1; i <= ResourceMaster.BattleBg.TileCount.Middle; i++) {
-                list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_" + i + ".png");
-            }
-            return list;
-        },
-        Back: function () {
-            var list = [];
-            for (var i = 1; i <= ResourceMaster.BattleBg.TileCount.Back; i++) {
-                list.push(Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_" + i + ".png");
-            }
-            return list;
-        }
-    },
-    AttackSmoke: {
-        MaxFrameIndex: 3,
-        Api: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/attack_smoke/attack_smoke.json";
-        },
-        TextureFrameName: function (index) {
-            if (index === void 0) { index = 1; }
-            return "effect_2_" + index + ".png";
-        }
-    },
-    Dead: {
-        Bucket: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_bucket.png";
-        },
-        Spirit: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_spirit.png";
-        }
-    },
-    CollapseExplode: {
-        MaxFrameIndex: 5,
-        Api: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/collapse_explode/collapse_explode.json";
-        },
-        TextureFrameName: function (index) {
-            if (index === void 0) { index = 1; }
-            return "effect_1_" + index + ".png";
-        }
-    },
-    BattleResult: {
-        Win: {
-            Api: function () {
-                return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_win.png";
-            }
-        },
-        Lose: {
-            Api: function () {
-                return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_lose.png";
-            }
-        }
+    Static: {
+        BattleBgFores: [
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_1.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_2.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_3.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_4.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_5.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_6.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_7.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_8.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_9.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_10.png"
+        ],
+        BattleBgMiddles: [
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_1.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_2.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_3.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_4.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_5.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_6.png"
+        ],
+        BattleBgBacks: [
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_1.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_2.png",
+            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_3.png"
+        ],
+        AttackSmoke: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/attack_smoke/attack_smoke.json",
+        DeadBucket: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_bucket.png",
+        DeadSpirit: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_spirit.png",
+        CollapseExplode: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/collapse_explode/collapse_explode.json",
+        BattleResultWin: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_win.png",
+        BattleResultLose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_lose.png"
     },
     Audio: {
         Bgm: {
@@ -44480,51 +44403,46 @@ var ResourceMaster = Object.freeze({
             Win: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_win.mp3",
             Lose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_lose.mp3"
         }
+    },
+    TextureFrame: {
+        Unit: function (unitActionType, unitId, index) {
+            return PIXI.utils.TextureCache["unit_" + unitId + "_" + unitActionType + "_" + index + ".png"];
+        },
+        Base: function (baseId, index) {
+            if (index === void 0) { index = 1; }
+            return PIXI.utils.TextureCache["base_" + baseId + "_" + index + ".png"];
+        },
+        CollapseExplode: function (index) {
+            if (index === void 0) { index = 1; }
+            return PIXI.utils.TextureCache["effect_1_" + index + ".png"];
+        },
+        AttackSmoke: function (index) {
+            if (index === void 0) { index = 1; }
+            return PIXI.utils.TextureCache["effect_2_" + index + ".png"];
+        }
+    },
+    AnimationTypes: {
+        Unit: Object.freeze({
+            WAIT: 'wait',
+            WALK: 'walk',
+            ATTACK: 'attack',
+            DAMAGE: 'damage'
+        }),
+        Base: Object.freeze({
+            IDLE: 'idle',
+            SPAWN: 'spawn',
+            COLLAPSE: 'collapse'
+        })
+    },
+    MaxFrameIndex: function (resourceKey) {
+        var json = PIXI.loader.resources[resourceKey];
+        if (!json || !json.data || !json.data.frames) {
+            return -1;
+        }
+        return Object.keys(json.data.frames).length;
     }
 });
 /* harmony default export */ __webpack_exports__["default"] = (ResourceMaster);
-
-
-/***/ }),
-
-/***/ "./src/display/UpdateObject.ts":
-/*!*************************************!*\
-  !*** ./src/display/UpdateObject.ts ***!
-  \*************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-var UpdateObject = /** @class */ (function (_super) {
-    __extends(UpdateObject, _super);
-    function UpdateObject() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UpdateObject.prototype.isDestroyed = function () {
-        return this._destroyed;
-    };
-    UpdateObject.prototype.update = function (_dt) {
-    };
-    return UpdateObject;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
-/* harmony default export */ __webpack_exports__["default"] = (UpdateObject);
 
 
 /***/ }),
@@ -44541,8 +44459,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var entity_BaseEntity__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! entity/BaseEntity */ "./src/entity/BaseEntity.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! entity/BaseEntity */ "./src/entity/BaseEntity.ts");
+/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44556,6 +44475,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -44580,12 +44500,12 @@ var Base = /** @class */ (function (_super) {
         /**
          * 現在のアニメーション種別
          */
-        _this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE;
+        _this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
         /**
          * 現在の経過フレーム数
          */
         _this.elapsedFrameCount = 0;
-        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(baseId)]);
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Base(baseId));
         if (!isPlayer) {
             _this.sprite.scale.x = -1.0;
         }
@@ -44593,6 +44513,19 @@ var Base = /** @class */ (function (_super) {
         _this.sprite.anchor.y = 1.0;
         return _this;
     }
+    Object.defineProperty(Base, "resourceList", {
+        get: function () {
+            return [ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Base.prototype.isDestroyed = function () {
+        return false;
+    };
+    Base.prototype.update = function (_dt) {
+        this.updateAnimation();
+    };
     Base.prototype.init = function (options) {
         switch (this.baseId) {
             case 1:
@@ -44609,11 +44542,19 @@ var Base = /** @class */ (function (_super) {
         this.originalPositon.set(this.sprite.position.x, this.sprite.position.y);
     };
     Base.prototype.resetAnimation = function () {
-        this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE;
+        this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
         this.elapsedFrameCount = 0;
     };
-    Base.prototype.setAnimation = function (type) {
-        this.animationType = type;
+    Base.prototype.collapse = function () {
+        this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.COLLAPSE;
+        this.elapsedFrameCount = 0;
+    };
+    Base.prototype.spawn = function () {
+        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+        if (sound) {
+            sound.play();
+        }
+        this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.SPAWN;
         this.elapsedFrameCount = 0;
     };
     Base.prototype.updateAnimation = function (type) {
@@ -44621,7 +44562,7 @@ var Base = /** @class */ (function (_super) {
             this.animationType = type;
         }
         switch (this.animationType) {
-            case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.COLLAPSE: {
+            case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.COLLAPSE: {
                 this.explodeContainer.position.set(this.sprite.position.x - this.sprite.width * this.sprite.anchor.x, this.sprite.position.y - this.sprite.height * this.sprite.anchor.y);
                 if ((this.elapsedFrameCount % 10) === 0) {
                     this.spawnCollapseExplode();
@@ -44629,24 +44570,22 @@ var Base = /** @class */ (function (_super) {
                 this.sprite.position.x = this.sprite.position.x + 4 * ((this.elapsedFrameCount % 2 === 0) ? 1 : -1);
                 break;
             }
-            case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN: {
+            case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.SPAWN: {
                 if (this.baseId === 1) {
-                    var cacheName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(this.baseId, 2);
-                    this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[cacheName];
+                    this.sprite.texture = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Base(this.baseId, 2);
                     if (this.elapsedFrameCount >= baseId1SpawnFrameCount) {
                         this.resetAnimation();
                     }
                 }
                 else {
-                    this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE;
+                    this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
                 }
                 break;
             }
-            case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.IDLE:
+            case ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE:
             default: {
                 if (this.baseId === 1) {
-                    var cacheName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.TextureFrameName(this.baseId, 1);
-                    this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[cacheName];
+                    this.sprite.texture = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Base(this.baseId, 1);
                 }
                 else if (this.baseId === 2) {
                     var r = 20; // range
@@ -44664,14 +44603,14 @@ var Base = /** @class */ (function (_super) {
     };
     Base.prototype.spawnCollapseExplode = function () {
         var scale = 1.0 + Math.random() % 0.8 - 0.4;
-        var effect = new display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        var effect = new display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__["default"]();
         effect.position.x = Math.random() * this.sprite.width;
         effect.position.y = Math.random() * this.sprite.height;
         effect.scale.set(scale);
         this.explodeContainer.addChild(effect);
     };
     return Base;
-}(entity_BaseEntity__WEBPACK_IMPORTED_MODULE_2__["default"]));
+}(entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (Base);
 
 
@@ -44734,9 +44673,9 @@ var Field = /** @class */ (function (_super) {
     Object.defineProperty(Field, "resourceList", {
         get: function () {
             if (Field.resourceListCache.length === 0) {
-                var foreTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Fore();
-                var middleTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Middle();
-                var backTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Back();
+                var foreTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgFores;
+                var middleTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgMiddles;
+                var backTiles = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgBacks;
                 Field.resourceListCache = Field.resourceListCache.concat(foreTiles);
                 Field.resourceListCache = Field.resourceListCache.concat(middleTiles);
                 Field.resourceListCache = Field.resourceListCache.concat(backTiles);
@@ -44749,9 +44688,9 @@ var Field = /** @class */ (function (_super) {
     Field.prototype.init = function (options) {
         if (options === void 0) { options = { fieldLength: 3000, zLines: 8 }; }
         var tiles = {
-            fore: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Fore(),
-            middle: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Middle(),
-            back: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleBg.Back()
+            fore: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgFores,
+            middle: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgMiddles,
+            back: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleBgBacks
         };
         var layers = Object.keys(tiles);
         for (var i = 0; i < layers.length; i++) {
@@ -44851,7 +44790,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! entity/UnitEntity */ "./src/entity/UnitEntity.ts");
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! display/battle/effect/HealthGauge */ "./src/display/battle/effect/HealthGauge.ts");
+/* harmony import */ var enum_UnitState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! enum/UnitState */ "./src/enum/UnitState.ts");
+/* harmony import */ var display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/effect/HealthGauge */ "./src/display/battle/effect/HealthGauge.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44865,6 +44805,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -44884,7 +44825,7 @@ var Unit = /** @class */ (function (_super) {
         /**
          * 現在のアニメーション種別
          */
-        _this.animationType = '';
+        _this.animationType = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].AnimationTypes.Unit.WAIT;
         /**
          * 現在のアニメーションフレーム
          */
@@ -44909,6 +44850,7 @@ var Unit = /** @class */ (function (_super) {
          */
         _this.animationUpdateDurations = {};
         _this.healthGauge = null;
+        _this.destroyed = false;
         _this.hitFrame = animationParam.hitFrame;
         _this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
         _this.animationUpdateDurations = animationParam.animationUpdateDurations;
@@ -44919,43 +44861,58 @@ var Unit = /** @class */ (function (_super) {
         _this.sprite.anchor.x = 0.5;
         return _this;
     }
+    Unit.prototype.isDestroyed = function () {
+        return this.destroyed;
+    };
+    Unit.prototype.update = function (_dt) {
+        var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].AnimationTypes.Unit;
+        switch (this.state) {
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].IDLE: {
+                if (this.animationType !== animationTypes.WALK) {
+                    if (this.isAnimationLastFrameTime()) {
+                        this.animationType = animationTypes.WALK;
+                        this.resetAnimation();
+                    }
+                }
+                else {
+                    this.sprite.position.x = this.spawnedPosition.x + this.distance * (this.isPlayer ? 1 : -1);
+                }
+                break;
+            }
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].LOCKED: {
+                this.animationType = animationTypes.ATTACK;
+                break;
+            }
+            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD:
+            default: break;
+        }
+        this.updateAnimation();
+    };
     Unit.prototype.saveSpawnedPosition = function () {
         this.spawnedPosition.x = this.sprite.position.x;
         this.spawnedPosition.y = this.sprite.position.y;
-        return this.spawnedPosition;
-    };
-    Unit.prototype.getSpawnedPosition = function () {
         return this.spawnedPosition;
     };
     Unit.prototype.isHitFrame = function () {
         if (this.animationFrameIndex !== this.hitFrame) {
             return false;
         }
-        var updateDuration = this.getAnimationUpdateDuration(ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].Unit.AnimationTypes.ATTACK);
+        var updateDuration = this.animationUpdateDurations[ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].AnimationTypes.Unit.ATTACK];
         return (this.elapsedFrameCount % updateDuration) === 0;
     };
     Unit.prototype.isAnimationLastFrameTime = function (type) {
         if (type === void 0) { type = this.animationType; }
-        var maxFrameTime = this.getAnimationMaxFrameTime(type);
+        var maxFrameTime = this.animationUpdateDurations[type] * this.animationMaxFrameIndexes[type];
         return this.elapsedFrameCount === maxFrameTime;
     };
     Unit.prototype.getAnimationType = function () {
         return this.animationType;
     };
-    Unit.prototype.getAnimationMaxFrameIndex = function (type) {
-        return this.animationMaxFrameIndexes[type] || 0;
-    };
-    Unit.prototype.getAnimationUpdateDuration = function (type) {
-        return this.animationUpdateDurations[type] || 0;
-    };
-    Unit.prototype.getAnimationMaxFrameTime = function (type) {
-        return this.getAnimationUpdateDuration(type) * this.getAnimationMaxFrameIndex(type);
-    };
     Unit.prototype.spawnHealthGauge = function (fromPercent, toPercent) {
         if (this.healthGauge) {
             this.healthGauge.destroy();
         }
-        this.healthGauge = new display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_3__["default"](fromPercent, toPercent);
+        this.healthGauge = new display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_4__["default"](fromPercent, toPercent);
         this.healthGauge.position.set(this.sprite.position.x - (this.healthGauge.gaugeWidth * this.sprite.anchor.x), this.sprite.position.y - (this.healthGauge.gaugeHeight * this.sprite.anchor.y));
         return this.healthGauge;
     };
@@ -44973,16 +44930,19 @@ var Unit = /** @class */ (function (_super) {
         if (type) {
             this.animationType = type;
         }
-        var animationUpdateDuration = this.getAnimationUpdateDuration(this.animationType);
+        var animationUpdateDuration = this.animationUpdateDurations[this.animationType];
         if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
             if (this.isAnimationLastFrameTime()) {
                 this.resetAnimation();
             }
-            var name_1 = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].Unit.TextureFrameName(this.animationType, this.unitId, this.animationFrameIndex);
-            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[name_1];
+            this.sprite.texture = ResourceMaster__WEBPACK_IMPORTED_MODULE_2__["default"].TextureFrame.Unit(this.animationType, this.unitId, this.animationFrameIndex);
             this.animationFrameIndex++;
         }
         this.elapsedFrameCount++;
+    };
+    Unit.prototype.destroy = function () {
+        this.sprite.destroy();
+        this.destroyed = true;
     };
     return Unit;
 }(entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__["default"]));
@@ -45027,7 +44987,7 @@ var UnitButton = /** @class */ (function (_super) {
         return _this;
     }
     UnitButton.prototype.init = function (slotIndex, unitId) {
-        var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(unitId);
+        var resourceId = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel(unitId >= 0 ? unitId : undefined);
         var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId].texture;
         if (!texture) {
             return;
@@ -45055,7 +45015,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45071,38 +45030,40 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-
 var AttackSmokeEffect = /** @class */ (function (_super) {
     __extends(AttackSmokeEffect, _super);
     function AttackSmokeEffect() {
         var _this = _super.call(this) || this;
         _this.elapsedFrameCount = 0;
-        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.TextureFrameName(1)]);
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.AttackSmoke(1));
         _this.addChild(_this.sprite);
         return _this;
     }
     Object.defineProperty(AttackSmokeEffect, "resourceList", {
         get: function () {
-            return [ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.Api()];
+            return [ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.AttackSmoke];
         },
         enumerable: true,
         configurable: true
     });
+    AttackSmokeEffect.prototype.isDestroyed = function () {
+        return this._destroyed;
+    };
     AttackSmokeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
         if (this.elapsedFrameCount % 4 === 0) {
             var index = Math.floor(this.elapsedFrameCount / 4) + 1;
-            if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.MaxFrameIndex) {
+            if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.AttackSmoke)) {
                 this.sprite.destroy();
                 this.destroy();
                 return;
             }
-            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AttackSmoke.TextureFrameName(index)];
+            this.sprite.texture = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.AttackSmoke(index);
         }
     };
     return AttackSmokeEffect;
-}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__["default"]));
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (AttackSmokeEffect);
 
 
@@ -45120,8 +45081,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45138,7 +45098,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-
 var BattleResult = /** @class */ (function (_super) {
     __extends(BattleResult, _super);
     function BattleResult(win) {
@@ -45146,12 +45105,12 @@ var BattleResult = /** @class */ (function (_super) {
         _this.animationEnded = false;
         _this.onAnimationEnded = function () { };
         var textureCacheName = (win)
-            ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleResult.Win.Api()
-            : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleResult.Lose.Api();
+            ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin
+            : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultLose;
         var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureCacheName];
         _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
         _this.sprite.anchor.set(0.5);
-        _this.sprite.position.x = managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"].instance.game.view.width * 0.5;
+        _this.sprite.position.x = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.5;
         _this.sprite.position.y = -(_this.sprite.height * 0.5);
         _this.addChild(_this.sprite);
         return _this;
@@ -45159,25 +45118,28 @@ var BattleResult = /** @class */ (function (_super) {
     Object.defineProperty(BattleResult, "resourceList", {
         get: function () {
             return [
-                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleResult.Win.Api(),
-                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].BattleResult.Lose.Api()
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin,
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultLose
             ];
         },
         enumerable: true,
         configurable: true
     });
+    BattleResult.prototype.isDestroyed = function () {
+        return this._destroyed;
+    };
     BattleResult.prototype.update = function (_delta) {
         if (this.animationEnded) {
             return;
         }
         this.sprite.position.y += 4;
-        if (this.sprite.position.y >= managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"].instance.game.view.height * 0.5) {
+        if (this.sprite.position.y >= managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.height * 0.5) {
             this.animationEnded = true;
             this.onAnimationEnded();
         }
     };
     return BattleResult;
-}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__["default"]));
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleResult);
 
 
@@ -45196,7 +45158,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
 /* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45213,13 +45174,12 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-
 var CollapseExplodeEffect = /** @class */ (function (_super) {
     __extends(CollapseExplodeEffect, _super);
     function CollapseExplodeEffect() {
         var _this = _super.call(this) || this;
         _this.elapsedFrameCount = 0;
-        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.TextureFrameName(1)]);
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.CollapseExplode(1));
         _this.sprite.anchor.set(0.5, 0.5);
         _this.addChild(_this.sprite);
         return _this;
@@ -45227,13 +45187,16 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
     Object.defineProperty(CollapseExplodeEffect, "resourceList", {
         get: function () {
             return [
-                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.Api(),
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.CollapseExplode,
                 ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Bomb
             ];
         },
         enumerable: true,
         configurable: true
     });
+    CollapseExplodeEffect.prototype.isDestroyed = function () {
+        return this._destroyed;
+    };
     CollapseExplodeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
@@ -45245,16 +45208,16 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
         }
         if (this.elapsedFrameCount % 4 === 0) {
             var index = Math.floor(this.elapsedFrameCount / 4) + 1;
-            if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.MaxFrameIndex) {
+            if (index > ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.CollapseExplode)) {
                 this.sprite.destroy();
                 this.destroy();
                 return;
             }
-            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].CollapseExplode.TextureFrameName(index)];
+            this.sprite.texture = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.CollapseExplode(index);
         }
     };
     return CollapseExplodeEffect;
-}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_3__["default"]));
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (CollapseExplodeEffect);
 
 
@@ -45272,7 +45235,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45288,7 +45250,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-
 var TO_RAD = Math.PI / 180.0;
 var Dead = /** @class */ (function (_super) {
     __extends(Dead, _super);
@@ -45296,8 +45257,8 @@ var Dead = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.elapsedFrameCount = 0;
         var textureCache = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache;
-        var bucketTexture = textureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Bucket()];
-        var spiritTexture = textureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Spirit()];
+        var bucketTexture = textureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadBucket];
+        var spiritTexture = textureCache[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadSpirit];
         _this.bucket = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](bucketTexture);
         _this.spirit = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](spiritTexture);
         _this.bucket.anchor.y = 0.0;
@@ -45318,14 +45279,17 @@ var Dead = /** @class */ (function (_super) {
     Object.defineProperty(Dead, "resourceList", {
         get: function () {
             if (Dead.resourceListCache.length === 0) {
-                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Bucket());
-                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dead.Spirit());
+                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadBucket);
+                Dead.resourceListCache.push(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.DeadSpirit);
             }
             return Dead.resourceListCache;
         },
         enumerable: true,
         configurable: true
     });
+    Dead.prototype.isDestroyed = function () {
+        return this._destroyed;
+    };
     Dead.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         // TODO: move to sub system
@@ -45361,6 +45325,7 @@ var Dead = /** @class */ (function (_super) {
             }
             default: {
                 if (this.elapsedFrameCount > 26) {
+                    this.spirit.visible = (this.elapsedFrameCount % 2 === 0);
                     this.spirit.y = this.spirit.y - 3;
                 }
             }
@@ -45368,7 +45333,7 @@ var Dead = /** @class */ (function (_super) {
     };
     Dead.resourceListCache = [];
     return Dead;
-}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_2__["default"]));
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (Dead);
 
 
@@ -45385,7 +45350,6 @@ var Dead = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var display_UpdateObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! display/UpdateObject */ "./src/display/UpdateObject.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45399,7 +45363,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-
 
 var HealthGaugeEffect = /** @class */ (function (_super) {
     __extends(HealthGaugeEffect, _super);
@@ -45433,6 +45396,9 @@ var HealthGaugeEffect = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    HealthGaugeEffect.prototype.isDestroyed = function () {
+        return this._destroyed;
+    };
     HealthGaugeEffect.prototype.update = function (_delta) {
         this.elapsedFrameCount++;
         if (this.elapsedFrameCount <= this.reducingFrameCount) {
@@ -45449,7 +45415,7 @@ var HealthGaugeEffect = /** @class */ (function (_super) {
         }
     };
     return HealthGaugeEffect;
-}(display_UpdateObject__WEBPACK_IMPORTED_MODULE_1__["default"]));
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
 /* harmony default export */ __webpack_exports__["default"] = (HealthGaugeEffect);
 
 
@@ -45688,7 +45654,7 @@ var windowLoaded = false;
 webfontloader__WEBPACK_IMPORTED_MODULE_0__["load"]({
     custom: {
         families: ['MisakiGothic'],
-        urls: ['font.css']
+        urls: ['base.css']
     },
     active: function () {
         fontLoaded = true;
@@ -45870,11 +45836,6 @@ var BattleManager = /** @class */ (function () {
             this.updateUnitState();
             this.updateBaseState();
         }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            this.delegator.onUnitUpdated(this.unitEntities[i]);
-        }
-        this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_PLAYER_INDEX]);
-        this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_AI_INDEX]);
         var activeUnitEntities = [];
         for (var i = 0; i < this.unitEntities.length; i++) {
             var entity = this.unitEntities[i];
@@ -46121,9 +46082,6 @@ var DefaultDelegator = /** @class */ (function () {
     DefaultDelegator.prototype.onBaseStateChanged = function (_base, _oldState) { };
     DefaultDelegator.prototype.onUnitStateChanged = function (_unit, _oldState) { };
     DefaultDelegator.prototype.onAttackableEntityHealthUpdated = function (_attacker, _target, _fromHealth, _toHealth, _maxHealth) { };
-    DefaultDelegator.prototype.onBaseUpdated = function (_base) { };
-    ;
-    DefaultDelegator.prototype.onUnitUpdated = function (_unit) { };
     DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
     DefaultDelegator.prototype.onGameOver = function (_isPlayerWon) { };
     DefaultDelegator.prototype.shouldLockUnit = function (_attacker, _target) { return true; };
@@ -47008,6 +46966,7 @@ var BattleScene = /** @class */ (function (_super) {
             base.init({ x: fieldMaster.aiBase.position.x });
         }
         this.field.addChildAsForeBackgroundEffect(base.sprite);
+        this.registerUpdatingObject(base);
         return base;
     };
     ;
@@ -47029,13 +46988,8 @@ var BattleScene = /** @class */ (function (_super) {
         unit.sprite.position.x = baseEntity.sprite.position.x;
         this.field.addChildToRandomZLine(unit.sprite);
         unit.saveSpawnedPosition();
-        baseEntity.setAnimation(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.SPAWN);
-        if (isPlayer) {
-            var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_6__["default"].instance.getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
-            if (sound) {
-                sound.play();
-            }
-        }
+        baseEntity.spawn();
+        this.registerUpdatingObject(unit);
         return unit;
     };
     /**
@@ -47045,7 +46999,7 @@ var BattleScene = /** @class */ (function (_super) {
     BattleScene.prototype.onBaseStateChanged = function (entity, _oldState) {
         if (entity.state === enum_BaseState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD) {
             var base = entity;
-            base.setAnimation(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.AnimationTypes.COLLAPSE);
+            base.collapse();
             this.field.addChildAsForeForegroundEffect(base.explodeContainer);
         }
     };
@@ -47054,15 +47008,24 @@ var BattleScene = /** @class */ (function (_super) {
      * ユニットのステートが変更された際のコールバック
      */
     BattleScene.prototype.onUnitStateChanged = function (entity, _oldState) {
-        entity.resetAnimation();
+        var unit = entity;
+        if (unit.state === enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD) {
+            var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!unit.isPlayer);
+            effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
+            unit.sprite.parent.addChild(effect);
+            this.registerUpdatingObject(effect);
+            unit.destroy();
+        }
+        else {
+            unit.resetAnimation();
+        }
     };
     /**
      * GameManagerDelegate 実装
      * Base が更新されたときのコールバック
      * Base のアニメーションと PIXI による描画を更新する
      */
-    BattleScene.prototype.onBaseUpdated = function (base) {
-        base.updateAnimation();
+    BattleScene.prototype.onBaseUpdated = function (_base) {
     };
     ;
     /**
@@ -47070,42 +47033,8 @@ var BattleScene = /** @class */ (function (_super) {
      * Unit が更新されたときのコールバック
      * Unit のアニメーションと PIXI による描画を更新する
      */
-    BattleScene.prototype.onUnitUpdated = function (entity) {
-        var unit = entity;
-        var animationTypes = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.AnimationTypes;
-        var animationType = unit.getAnimationType();
-        switch (unit.state) {
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].IDLE: {
-                if (animationType !== animationTypes.WALK) {
-                    if (unit.isAnimationLastFrameTime()) {
-                        animationType = animationTypes.WALK;
-                        unit.resetAnimation();
-                    }
-                }
-                else {
-                    unit.sprite.position.x = unit.getSpawnedPosition().x + unit.distance * (unit.isPlayer ? 1 : -1);
-                }
-                break;
-            }
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].LOCKED: {
-                animationType = animationTypes.ATTACK;
-                break;
-            }
-            case enum_UnitState__WEBPACK_IMPORTED_MODULE_3__["default"].DEAD: {
-                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!unit.isPlayer);
-                effect.position.set(unit.sprite.position.x, unit.sprite.position.y);
-                this.field.addChildAsForeBackgroundEffect(effect);
-                this.registerUpdatingObject(effect);
-                if (unit.sprite) {
-                    this.destroyList.push(unit.sprite);
-                }
-                break;
-            }
-            default: break;
-        }
-        if (animationType) {
-            unit.updateAnimation(animationType);
-        }
+    BattleScene.prototype.onUnitUpdated = function (_entity) {
+        //console.log(_entity.state);
     };
     /**
      * GameManagerDelegate 実装
@@ -47187,7 +47116,7 @@ var BattleScene = /** @class */ (function (_super) {
     };
     BattleScene.prototype.shouldUnitWalk = function (entity) {
         var unit = entity;
-        if (unit.getAnimationType() === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.AnimationTypes.WALK) {
+        if (unit.getAnimationType() === ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WALK) {
             return true;
         }
         return unit.isAnimationLastFrameTime();
@@ -47201,34 +47130,40 @@ var BattleScene = /** @class */ (function (_super) {
         for (var i = 0; i < this.unitIds.length; i++) {
             var unitId = this.unitIds[i];
             if (unitId >= 0) {
-                var unitUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.Texture(unitId);
-                var unitPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(unitId);
+                var unitUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Unit(unitId);
+                var unitPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel(unitId);
                 assets.push({ name: unitUrl, url: unitUrl });
                 assets.push({ name: unitPanelUrl, url: unitPanelUrl });
             }
         }
-        var fieldMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field.Api(this.fieldId);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field.ApiEntryPoint(), url: fieldMasterUrl });
-        var aiWaveMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AiWave.Api(this.stageId);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AiWave.ApiEntryPoint(), url: aiWaveMasterUrl });
-        var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.Api(this.unitIds);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.ApiEntryPoint(), url: unitMasterUrl });
-        var baseMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.Api(this.baseIdMap.player, this.baseIdMap.ai);
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.ApiEntryPoint(), url: baseMasterUrl });
-        var playerBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.Texture(this.baseIdMap.player);
+        var masterKeys = BattleScene.MasterResourceKey;
+        var fieldMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Field(this.fieldId);
+        var aiWaveMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.AiWave(this.stageId);
+        var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Unit(this.unitIds);
+        var baseMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Base(this.baseIdMap.player, this.baseIdMap.ai);
+        assets.push({ name: masterKeys.FIELD, url: fieldMasterUrl });
+        assets.push({ name: masterKeys.AI_WAVE, url: aiWaveMasterUrl });
+        assets.push({ name: masterKeys.UNIT, url: unitMasterUrl });
+        assets.push({ name: masterKeys.BASE, url: baseMasterUrl });
+        var playerBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Base(this.baseIdMap.player);
         assets.push({ name: playerBaseTextureUrl, url: playerBaseTextureUrl });
         if (this.baseIdMap.player !== this.baseIdMap.ai) {
-            var aiBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.Texture(this.baseIdMap.ai);
+            var aiBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Base(this.baseIdMap.ai);
             assets.push({ name: aiBaseTextureUrl, url: aiBaseTextureUrl });
         }
         if (this.unitIds.indexOf(-1) >= 0) {
-            var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.PanelTexture(-1);
+            var emptyPanelUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel();
             assets.push({ name: emptyPanelUrl, url: emptyPanelUrl });
         }
         var fieldResources = display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"].resourceList;
         for (var i = 0; i < fieldResources.length; i++) {
             var bgResourceUrl = fieldResources[i];
             assets.push({ name: bgResourceUrl, url: bgResourceUrl });
+        }
+        var baseResources = display_battle_Base__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
+        for (var i = 0; i < baseResources.length; i++) {
+            var baseResourceUrl = baseResources[i];
+            assets.push({ name: baseResourceUrl, url: baseResourceUrl });
         }
         var attackSmokeResources = display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
         for (var i = 0; i < attackSmokeResources.length; i++) {
@@ -47253,7 +47188,6 @@ var BattleScene = /** @class */ (function (_super) {
         assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle });
         assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1 });
         assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2 });
-        assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn });
         assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Win });
         assets.push({ name: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose, url: ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Lose });
         return assets;
@@ -47264,12 +47198,13 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.onResourceLoaded = function () {
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
-        var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
+        var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
         this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
-        var fieldMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Field.ApiEntryPoint()].data;
-        var aiWaveMaster = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].AiWave.ApiEntryPoint()].data;
-        var unitMasters = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Unit.ApiEntryPoint()].data;
-        var baseMasterMap = resources[ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Base.ApiEntryPoint()].data;
+        var masterKeys = BattleScene.MasterResourceKey;
+        var fieldMaster = resources[masterKeys.FIELD].data;
+        var aiWaveMaster = resources[masterKeys.AI_WAVE].data;
+        var unitMasters = resources[masterKeys.UNIT].data;
+        var baseMasterMap = resources[masterKeys.BASE].data;
         this.field.init({ fieldLength: fieldMaster.length, zLines: 10 });
         for (var index = 0; index < this.maxUnitSlotCount; index++) {
             var unitButton = this.getUiGraphUnitButton(index);
@@ -47396,6 +47331,12 @@ var BattleScene = /** @class */ (function (_super) {
             }
         }
         managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_8__["default"]());
+    };
+    BattleScene.MasterResourceKey = {
+        FIELD: 'battle_scene_field_master',
+        AI_WAVE: 'battle_scene_ai_wave_master',
+        UNIT: 'battle_scene_unit_master',
+        BASE: 'battle_scene_base_master'
     };
     return BattleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_7__["default"]));
@@ -47535,7 +47476,7 @@ var Scene = /** @class */ (function (_super) {
             .then(function () { return _this.onResourceLoaded(); });
     };
     Scene.prototype.loadUiGraph = function (onLoaded) {
-        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
+        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
         if (this.hasSceneUiGraph && !pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name]) {
             pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add([{ name: name, url: name }]).load(function () { return onLoaded(); });
         }
@@ -47548,7 +47489,7 @@ var Scene = /** @class */ (function (_super) {
      */
     Scene.prototype.onUiGraphLoaded = function (onLoaded) {
         var assets = this.createResourceList();
-        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
+        var name = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
         var uiGraph = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name];
         if (uiGraph) {
             for (var i = 0; i < uiGraph.data.nodes.length; i++) {
@@ -47582,7 +47523,7 @@ var Scene = /** @class */ (function (_super) {
      */
     Scene.prototype.onResourceLoaded = function () {
         if (this.hasSceneUiGraph) {
-            var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph.Api(this);
+            var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
             this.prepareUiGraphContainer(pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[sceneUiGraphName].data);
             this.addChild(this.uiGraphContainer);
         }

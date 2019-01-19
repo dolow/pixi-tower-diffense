@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js';
 import BaseEntity from 'entity/BaseEntity';
+import UpdateObject from 'display/UpdateObject';
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Base extends BaseEntity {
+export default class Base extends BaseEntity implements UpdateObject {
     /**
      * PIXI スプライト
      */
@@ -25,10 +26,14 @@ export default class Base extends BaseEntity {
      * 現在の経過フレーム数
      */
     protected elapsedFrameCount: number;
+    static readonly resourceList: string[];
     constructor(baseId: number, isPlayer: boolean);
+    isDestroyed(): boolean;
+    update(_dt: number): void;
     init(options?: any): void;
     resetAnimation(): void;
-    setAnimation(type: string): void;
+    collapse(): void;
+    spawn(): void;
     updateAnimation(type?: string): void;
     private spawnCollapseExplode;
 }

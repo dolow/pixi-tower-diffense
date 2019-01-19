@@ -95,7 +95,6 @@
 								<li class="tsd-kind-class"><a href="classes/unitbutton.html" class="tsd-kind-icon">Unit<wbr>Button</a></li>
 								<li class="tsd-kind-class"><a href="classes/unitbuttonfactory.html" class="tsd-kind-icon">Unit<wbr>Button<wbr>Factory</a></li>
 								<li class="tsd-kind-class"><a href="classes/unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a></li>
-								<li class="tsd-kind-class"><a href="classes/updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -117,6 +116,7 @@
 								<li class="tsd-kind-interface"><a href="interfaces/textnodeparams.html" class="tsd-kind-icon">Text<wbr>Node<wbr>Params</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/transition.html" class="tsd-kind-icon">Transition</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/unitmaster.html" class="tsd-kind-icon">Unit<wbr>Master</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -211,7 +211,7 @@
 					<div class="tsd-signature tsd-kind-icon">Battle<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({LOADING_RESOURCES: 1,RESOURCE_LOADED: 2,READY: 3,INGAME: 4,FINISHED: 5})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L45">scenes/BattleScene.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L46">scenes/BattleScene.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -258,7 +258,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="resourcemaster" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Resource<wbr>Master</h3>
-					<div class="tsd-signature tsd-kind-icon">Resource<wbr>Master<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({SceneUiGraph: {ApiEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/ui_graph&#x60;;},Api: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;${ResourceMaster.SceneUiGraph.ApiEntryPoint()}/${snake_case}.json&#x60;;}},Field: {ApiEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/field_master.json&#x60;;},Api: (fieldId: number): string &#x3D;&gt; {return &#x60;${ResourceMaster.Field.ApiEntryPoint()}?fieldId&#x3D;${fieldId}&#x60;;}},AiWave: {ApiEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/ai_wave_master.json&#x60;;},Api: (stageId: number): string &#x3D;&gt; {return &#x60;${ResourceMaster.AiWave.ApiEntryPoint()}?stageId&#x3D;${stageId}&#x60;;}},Unit: {AnimationTypes: Object.freeze({WAIT: &#x27;wait&#x27;,WALK: &#x27;walk&#x27;,ATTACK: &#x27;attack&#x27;,DAMAGE: &#x27;damage&#x27;}),ApiEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/unit_master.json&#x60;;},Api: (unitIds: number[]): string &#x3D;&gt; {const joinedUnitIds &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${ResourceMaster.Unit.ApiEntryPoint()}?unitId[]&#x3D;${joinedUnitIds}&#x60;;},Texture: (unitId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/units/${unitId}.json&#x60;;},PanelTexture: (unitId: number): string &#x3D;&gt; {if (unitId &lt;&#x3D; 0) {return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_empty.png&#x60;;}return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${unitId}.png&#x60;;},TextureFrameName: (unitActionType: string, unitId: number, index: number): string &#x3D;&gt; {return &#x60;unit_${unitId}_${unitActionType}_${index}.png&#x60;;}},Base: {AnimationTypes: Object.freeze({IDLE: &#x27;idle&#x27;,SPAWN: &#x27;spawn&#x27;,COLLAPSE: &#x27;collapse&#x27;}),ApiEntryPoint: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master&#x60;;},Api: (playerBaseId: number, aiBaseId: number): string &#x3D;&gt; {return &#x60;${ResourceMaster.Base.ApiEntryPoint()}/base_master.json?playerBaseId&#x3D;${playerBaseId}&amp;aiBaseId&#x3D;${aiBaseId}&#x60;;},Texture: (baseId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/base/${baseId}.json&#x60;;},TextureFrameName: (baseId: number, index: number &#x3D; 1): string &#x3D;&gt; {return &#x60;base_${baseId}_${index}.png&#x60;;}},BattleBg: {TileCount: {Fore: 10,Middle: 6,Back: 3},Fore: (): string[] &#x3D;&gt; {const list &#x3D; [];for (let i &#x3D; 1; i &lt;&#x3D; ResourceMaster.BattleBg.TileCount.Fore; i++) {list.push(&#x60;${Config.ResourceBaseUrl}/battle/bg_1_${i}.png&#x60;);}return list;},Middle: (): string[] &#x3D;&gt; {const list &#x3D; [];for (let i &#x3D; 1; i &lt;&#x3D; ResourceMaster.BattleBg.TileCount.Middle; i++) {list.push(&#x60;${Config.ResourceBaseUrl}/battle/bg_2_${i}.png&#x60;);}return list;},Back: (): string[] &#x3D;&gt; {const list &#x3D; [];for (let i &#x3D; 1; i &lt;&#x3D; ResourceMaster.BattleBg.TileCount.Back; i++) {list.push(&#x60;${Config.ResourceBaseUrl}/battle/bg_3_${i}.png&#x60;);}return list;}},AttackSmoke: {MaxFrameIndex: 3,Api: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json&#x60;;},TextureFrameName: (index: number &#x3D; 1): string &#x3D;&gt; {return &#x60;effect_2_${index}.png&#x60;;}},Dead: {Bucket: () &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png&#x60;;},Spirit: () &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png&#x60;;}},CollapseExplode: {MaxFrameIndex: 5,Api: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json&#x60;;},TextureFrameName: (index: number &#x3D; 1): string &#x3D;&gt; {return &#x60;effect_1_${index}.png&#x60;;}},BattleResult: {Win: {Api: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/ui/battle_win.png&#x60;;}},Lose: {Api: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/ui/battle_lose.png&#x60;;}}},Audio: {Bgm: {Title: &#x60;${Config.ResourceBaseUrl}/audio/bgm_title.mp3&#x60;,Battle: &#x60;${Config.ResourceBaseUrl}/audio/bgm_battle.mp3&#x60;},Se: {Attack1: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_1.mp3&#x60;,Attack2: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_2.mp3&#x60;,Bomb: &#x60;${Config.ResourceBaseUrl}/audio/se_bomb.mp3&#x60;,UnitSpawn: &#x60;${Config.ResourceBaseUrl}/audio/se_unit_spawn.mp3&#x60;,Win: &#x60;${Config.ResourceBaseUrl}/audio/se_win.mp3&#x60;,Lose: &#x60;${Config.ResourceBaseUrl}/audio/se_lose.mp3&#x60;}}})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Resource<wbr>Master<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({Api: {SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json&#x60;;},Field: (fieldId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/field_master.json?fieldId&#x3D;${fieldId}&#x60;;},AiWave: (stageId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/ai_wave_master.json?stageId&#x3D;${stageId}&#x60;;},Unit: (unitIds: number[]): string &#x3D;&gt; {const joinedUnitIds &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]&#x3D;${joinedUnitIds}&#x60;;},Base: (playerBaseId: number, aiBaseId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/base_master.json?playerBaseId&#x3D;${playerBaseId}&amp;aiBaseId&#x3D;${aiBaseId}&#x60;;}},Dynamic: {Unit: (unitId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/units/${unitId}.json&#x60;;},UnitPanel: (unitId?: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${unitId ? unitId : &#x27;empty&#x27;}.png&#x60;;},Base: (baseId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/base/${baseId}.json&#x60;;}},Static: {BattleBgFores: [&#x60;${Config.ResourceBaseUrl}/battle/bg_1_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_3.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_4.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_5.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_6.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_7.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_8.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_9.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_10.png&#x60;],BattleBgMiddles: [&#x60;${Config.ResourceBaseUrl}/battle/bg_2_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_3.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_4.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_5.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_6.png&#x60;],BattleBgBacks: [&#x60;${Config.ResourceBaseUrl}/battle/bg_3_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_3_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_3_3.png&#x60;],AttackSmoke: &#x60;${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json&#x60;,DeadBucket: &#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png&#x60;,DeadSpirit: &#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png&#x60;,CollapseExplode: &#x60;${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json&#x60;,BattleResultWin: &#x60;${Config.ResourceBaseUrl}/ui/battle_win.png&#x60;,BattleResultLose: &#x60;${Config.ResourceBaseUrl}/ui/battle_lose.png&#x60;},Audio: {Bgm: {Title: &#x60;${Config.ResourceBaseUrl}/audio/bgm_title.mp3&#x60;,Battle: &#x60;${Config.ResourceBaseUrl}/audio/bgm_battle.mp3&#x60;},Se: {Attack1: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_1.mp3&#x60;,Attack2: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_2.mp3&#x60;,Bomb: &#x60;${Config.ResourceBaseUrl}/audio/se_bomb.mp3&#x60;,UnitSpawn: &#x60;${Config.ResourceBaseUrl}/audio/se_unit_spawn.mp3&#x60;,Win: &#x60;${Config.ResourceBaseUrl}/audio/se_win.mp3&#x60;,Lose: &#x60;${Config.ResourceBaseUrl}/audio/se_lose.mp3&#x60;}},TextureFrame: {Unit: (unitActionType: string, unitId: number, index: number): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;unit_${unitId}_${unitActionType}_${index}.png&#x60;];},Base: (baseId: number, index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;base_${baseId}_${index}.png&#x60;];},CollapseExplode: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_1_${index}.png&#x60;];},AttackSmoke: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_2_${index}.png&#x60;];}},AnimationTypes: {Unit: Object.freeze({WAIT: &#x27;wait&#x27;,WALK: &#x27;walk&#x27;,ATTACK: &#x27;attack&#x27;,DAMAGE: &#x27;damage&#x27;}),Base: Object.freeze({IDLE: &#x27;idle&#x27;,SPAWN: &#x27;spawn&#x27;,COLLAPSE: &#x27;collapse&#x27;})},MaxFrameIndex: (resourceKey: string): number &#x3D;&gt; {const json &#x3D; PIXI.loader.resources[resourceKey];if (!json || !json.data || !json.data.frames) {return -1;}return Object.keys(json.data.frames).length;}})</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/ResourceMaster.ts#L7">ResourceMaster.ts:7</a></li>
@@ -321,7 +321,7 @@
 					<div class="tsd-signature tsd-kind-icon">base<wbr>Id1<wbr>Spawn<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">16</span><span class="tsd-signature-symbol"> =&nbsp;16</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Base.ts#L6">display/battle/Base.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Base.ts#L8">display/battle/Base.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -331,7 +331,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Cost<wbr>Recovery<wbr>Per<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0.05</span><span class="tsd-signature-symbol"> =&nbsp;0.05</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L39">scenes/BattleScene.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L40">scenes/BattleScene.ts:40</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -341,7 +341,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L29">scenes/BattleScene.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L30">scenes/BattleScene.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -351,7 +351,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Max<wbr>Available<wbr>Cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">100</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L40">scenes/BattleScene.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L41">scenes/BattleScene.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -361,7 +361,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Max<wbr>Unit<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">5</span><span class="tsd-signature-symbol"> =&nbsp;5</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L28">scenes/BattleScene.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L29">scenes/BattleScene.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -371,7 +371,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Stage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L30">scenes/BattleScene.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L31">scenes/BattleScene.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -381,7 +381,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[1, -1, 3, -1, 5]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L31">scenes/BattleScene.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L32">scenes/BattleScene.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -519,7 +519,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Base<wbr>IdMap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L32">scenes/BattleScene.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L33">scenes/BattleScene.ts:33</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -528,7 +528,7 @@
 						<div class="tsd-signature tsd-kind-icon">ai<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L34">scenes/BattleScene.ts:34</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L35">scenes/BattleScene.ts:35</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -538,7 +538,7 @@
 						<div class="tsd-signature tsd-kind-icon">player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L33">scenes/BattleScene.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L34">scenes/BattleScene.ts:34</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -549,7 +549,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Player<wbr>Base<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L36">scenes/BattleScene.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L37">scenes/BattleScene.ts:37</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -558,7 +558,7 @@
 						<div class="tsd-signature tsd-kind-icon">max<wbr>Health<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L37">scenes/BattleScene.ts:37</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L38">scenes/BattleScene.ts:38</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -656,9 +656,6 @@
 					<li class=" tsd-kind-class">
 						<a href="classes/unitentity.html" class="tsd-kind-icon">Unit<wbr>Entity</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a>
-					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
 					</li>
@@ -706,6 +703,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/unitmaster.html" class="tsd-kind-icon">Unit<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#base_entities_ai_index" class="tsd-kind-icon">BASE_<wbr>ENTITIES_<wbr>AI_<wbr>INDEX</a>

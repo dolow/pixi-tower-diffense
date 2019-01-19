@@ -188,13 +188,6 @@ export default class BattleManager {
       this.updateBaseState();
     }
 
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      this.delegator.onUnitUpdated(this.unitEntities[i]);
-    }
-
-    this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_PLAYER_INDEX]);
-    this.delegator.onBaseUpdated(this.baseEntities[BASE_ENTITIES_AI_INDEX]);
-
     const activeUnitEntities: UnitEntity[] = [];
     for (let i = 0; i < this.unitEntities.length; i++) {
       const entity = this.unitEntities[i];

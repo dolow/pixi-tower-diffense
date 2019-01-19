@@ -9,8 +9,6 @@ export default class DefaultDelegator implements BattleManagerDelegate {
   public onBaseStateChanged(_base: BaseEntity, _oldState: number): void {}
   public onUnitStateChanged(_unit: UnitEntity, _oldState: number): void {}
   public onAttackableEntityHealthUpdated(_attacker: AttackableEntity, _target: AttackableEntity, _fromHealth: number, _toHealth: number, _maxHealth: number): void { }
-  public onBaseUpdated(_base: BaseEntity): void {};
-  public onUnitUpdated(_unit: UnitEntity): void {}
   public onAvailableCostUpdated(_cost: number): void {}
   public onGameOver(_isPlayerWon: boolean): void {}
   public shouldLockUnit(_attacker: AttackableEntity, _target: UnitEntity): boolean { return true; }

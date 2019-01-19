@@ -3,7 +3,7 @@ import ResourceMaster from 'ResourceMaster';
 import UpdateObject from 'display/UpdateObject';
 import GameManager from 'managers/GameManager';
 
-export default class BattleResult extends UpdateObject {
+export default class BattleResult extends PIXI.Container implements UpdateObject {
   public animationEnded: boolean = false;
 
   public onAnimationEnded: () => void = () => {};
@@ -32,6 +32,10 @@ export default class BattleResult extends UpdateObject {
     this.sprite.position.y = -(this.sprite.height * 0.5);
 
     this.addChild(this.sprite);
+  }
+
+  public isDestroyed(): boolean {
+    return this._destroyed;
   }
 
   public update(_delta: number): void {

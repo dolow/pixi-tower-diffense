@@ -23,14 +23,6 @@ export default interface BattleManagerDelegate {
      */
     onAttackableEntityHealthUpdated(attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void;
     /**
-     * 拠点が更新される際のコールバック
-     */
-    onBaseUpdated(unit: BaseEntity): void;
-    /**
-     * ユニットが更新される際のコールバック
-     */
-    onUnitUpdated(unit: UnitEntity): void;
-    /**
      * 利用可能コストが変動した際のコールバック
      */
     onAvailableCostUpdated(cost: number): void;

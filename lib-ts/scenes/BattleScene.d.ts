@@ -10,6 +10,7 @@ import UnitEntity from 'entity/UnitEntity';
  * ゲームロジックは BattleManager に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleManagerDelegate {
+    private static readonly MasterResourceKey;
     /**
      * 最大ユニット編成数
      */
@@ -77,13 +78,13 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * Base が更新されたときのコールバック
      * Base のアニメーションと PIXI による描画を更新する
      */
-    onBaseUpdated(base: BaseEntity): void;
+    onBaseUpdated(_base: BaseEntity): void;
     /**
      * GameManagerDelegate 実装
      * Unit が更新されたときのコールバック
      * Unit のアニメーションと PIXI による描画を更新する
      */
-    onUnitUpdated(entity: UnitEntity): void;
+    onUnitUpdated(_entity: UnitEntity): void;
     /**
      * GameManagerDelegate 実装
      * 利用可能なコストの値が変動したときのコールバック
