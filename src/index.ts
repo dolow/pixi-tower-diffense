@@ -3,11 +3,12 @@ import TitleScene from 'scenes/TitleScene';
 import GameManager from 'managers/GameManager';
 
 function initGame() {
+  const width = 1136;
+  const height = 640;
+
   GameManager.start({
-    glWidth: 1136,
-    glHeight: 640,
-    canvasWidth: window.innerWidth,
-    canvasHeight: window.innerWidth * (640 / 1136),
+    glWidth: width,
+    glHeight: height,
     option: {
       backgroundColor: 0x222222
     }
@@ -30,7 +31,7 @@ let windowLoaded = false;
 WebFont.load({
   custom: {
     families: ['MisakiGothic'],
-    urls: ['font.css']
+    urls: ['base.css']
   },
   active: () => {
     fontLoaded = true;

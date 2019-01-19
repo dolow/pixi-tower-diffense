@@ -51,22 +51,18 @@ export default class GameManager {
    * ゲームを起動する
    * 画面サイズや PIXI.ApplicationOptions を渡すことができる
    */
-  public static start(params: {
-    glWidth: number,
-    glHeight: number,
-    canvasWidth: number,
-    canvasHeight: number,
-    option?: PIXI.ApplicationOptions
-  }): void {
+  public static start(params: { glWidth: number, glHeight: number, option?: PIXI.ApplicationOptions }): void {
     const game = new PIXI.Application(params.glWidth, params.glHeight, params.option);
-    GameManager.instance = new GameManager(game);
+    const instance = new GameManager(game);
+    GameManager.instance = instance;
     document.body.appendChild(GameManager.instance.game.view);
-    GameManager.instance.game.view.style.width  = `${params.canvasWidth}px`;
-    GameManager.instance.game.view.style.height = `${params.canvasHeight}px`;
 
-    GameManager.instance.game.ticker.add((delta: number) => {
-      if (GameManager.instance.currentScene) {
-        GameManager.instance.currentScene.update(delta);
+    window.addEventListener('resize', GameManager.resizeCanvas);
+    GameManager.resizeCanvas();
+
+    instance.game.ticker.add((delta: number) => {
+      if (instance.currentScene) {
+        instance.currentScene.update(delta);
       }
     });
   }
@@ -128,5 +124,27 @@ export default class GameManager {
         GameManager.transitionInIfPossible(newScene);
       });
     }
+  }
+
+  public static resizeCanvas(): void {
+    const game = GameManager.instance.game;
+    const renderer = game.renderer;
+
+    let canvasWidth;
+    let canvasHeight;
+
+    const rendererHeightRatio = renderer.height / renderer.width;
+    const windowHeightRatio = window.innerHeight / window.innerWidth;
+
+    if (windowHeightRatio > rendererHeightRatio) {
+      canvasWidth = window.innerWidth;
+      canvasHeight = window.innerWidth * (renderer.height / renderer.width);
+    } else {
+      canvasWidth = window.innerHeight * (renderer.width / renderer.height);
+      canvasHeight = window.innerHeight;
+    }
+
+    game.view.style.width  = `${canvasWidth}px`;
+    game.view.style.height = `${canvasHeight}px`;
   }
 }
