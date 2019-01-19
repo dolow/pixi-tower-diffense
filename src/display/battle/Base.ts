@@ -3,7 +3,7 @@ import ResourceMaster from 'ResourceMaster';
 import SoundManager from 'managers/SoundManager';
 import BaseEntity from 'entity/BaseEntity';
 import UpdateObject from 'interfaces/UpdateObject';
-import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
+import CollapseExplodeEffect from 'display/battle/single_shot/CollapseExplodeEffect';
 
 const baseId1SpawnFrameCount = 16;
 

@@ -28,10 +28,10 @@ import UnitButton from 'display/battle/UnitButton';
 import Unit from 'display/battle/Unit';
 import Field from 'display/battle/Field';
 import Base from 'display/battle/Base';
-import AttackSmoke from 'display/battle/effect/AttackSmoke';
-import Dead from 'display/battle/effect/Dead';
-import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
-import BattleResult from 'display/battle/effect/BattleResult';
+import BattleResult from 'display/battle/BattleResult';
+import AttackSmoke from 'display/battle/single_shot/AttackSmoke';
+import Dead from 'display/battle/single_shot/Dead';
+import CollapseExplodeEffect from 'display/battle/single_shot/CollapseExplodeEffect';
 
 /**
  * メインのゲーム部分のシーン

@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import UnitEntity from 'entity/UnitEntity';
 import UpdateObject from 'interfaces/UpdateObject';
-import HealthGauge from 'display/battle/effect/HealthGauge';
+import HealthGauge from 'display/battle/single_shot/HealthGauge';
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する

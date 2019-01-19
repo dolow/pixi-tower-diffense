@@ -44486,7 +44486,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
 /* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
 /* harmony import */ var entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! entity/BaseEntity */ "./src/entity/BaseEntity.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
+/* harmony import */ var display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/single_shot/CollapseExplodeEffect */ "./src/display/battle/single_shot/CollapseExplodeEffect.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44662,7 +44662,7 @@ var Base = /** @class */ (function (_super) {
      */
     Base.prototype.spawnCollapseExplode = function () {
         var scale = 1.0 + Math.random() % 0.8 - 0.4;
-        var effect = new display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__["default"]();
+        var effect = new display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__["default"]();
         effect.position.x = Math.random() * this.sprite.width;
         effect.position.y = Math.random() * this.sprite.height;
         effect.scale.set(scale);
@@ -44671,6 +44671,105 @@ var Base = /** @class */ (function (_super) {
     return Base;
 }(entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (Base);
+
+
+/***/ }),
+
+/***/ "./src/display/battle/BattleResult.ts":
+/*!********************************************!*\
+  !*** ./src/display/battle/BattleResult.ts ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+/**
+ * ゲーム結果を表現する
+ */
+var BattleResult = /** @class */ (function (_super) {
+    __extends(BattleResult, _super);
+    /**
+     * コンストラクタ
+     */
+    function BattleResult(win) {
+        var _this = _super.call(this) || this;
+        /**
+         * アニメーション終了フラグ
+         */
+        _this.animationEnded = false;
+        /**
+         * アニメーション終了時コールバック
+         */
+        _this.onAnimationEnded = function () { };
+        var textureCacheName = (win)
+            ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin
+            : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultLose;
+        var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureCacheName];
+        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
+        _this.sprite.anchor.set(0.5);
+        _this.sprite.position.x = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.5;
+        _this.sprite.position.y = -(_this.sprite.height * 0.5);
+        _this.addChild(_this.sprite);
+        return _this;
+    }
+    Object.defineProperty(BattleResult, "resourceList", {
+        /**
+         * このエフェクトで使用するリソースリスト
+         */
+        get: function () {
+            return [
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin,
+                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultLose
+            ];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * UpdateObject インターフェース実装
+     * 削除フラグが立っているか返す
+     */
+    BattleResult.prototype.isDestroyed = function () {
+        return this._destroyed;
+    };
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
+    BattleResult.prototype.update = function (_delta) {
+        if (this.animationEnded) {
+            return;
+        }
+        this.sprite.position.y += 4;
+        if (this.sprite.position.y >= managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.height * 0.5) {
+            this.animationEnded = true;
+            this.onAnimationEnded();
+        }
+    };
+    return BattleResult;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+/* harmony default export */ __webpack_exports__["default"] = (BattleResult);
 
 
 /***/ }),
@@ -44895,7 +44994,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var entity_UnitEntity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! entity/UnitEntity */ "./src/entity/UnitEntity.ts");
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
 /* harmony import */ var enum_AttackableState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! enum/AttackableState */ "./src/enum/AttackableState.ts");
-/* harmony import */ var display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/effect/HealthGauge */ "./src/display/battle/effect/HealthGauge.ts");
+/* harmony import */ var display_battle_single_shot_HealthGauge__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/single_shot/HealthGauge */ "./src/display/battle/single_shot/HealthGauge.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -45050,7 +45149,7 @@ var Unit = /** @class */ (function (_super) {
         if (this.healthGauge) {
             this.healthGauge.destroy();
         }
-        this.healthGauge = new display_battle_effect_HealthGauge__WEBPACK_IMPORTED_MODULE_4__["default"](fromPercent, toPercent);
+        this.healthGauge = new display_battle_single_shot_HealthGauge__WEBPACK_IMPORTED_MODULE_4__["default"](fromPercent, toPercent);
         this.healthGauge.position.set(this.sprite.position.x - (this.healthGauge.gaugeWidth * this.sprite.anchor.x), this.sprite.position.y - (this.healthGauge.gaugeHeight * this.sprite.anchor.y));
         return this.healthGauge;
     };
@@ -45162,10 +45261,10 @@ var UnitButton = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/display/battle/effect/AttackSmoke.ts":
-/*!**************************************************!*\
-  !*** ./src/display/battle/effect/AttackSmoke.ts ***!
-  \**************************************************/
+/***/ "./src/display/battle/single_shot/AttackSmoke.ts":
+/*!*******************************************************!*\
+  !*** ./src/display/battle/single_shot/AttackSmoke.ts ***!
+  \*******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45253,109 +45352,10 @@ var AttackSmokeEffect = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/display/battle/effect/BattleResult.ts":
-/*!***************************************************!*\
-  !*** ./src/display/battle/effect/BattleResult.ts ***!
-  \***************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-/**
- * ゲーム結果を表現するエフェクト
- */
-var BattleResult = /** @class */ (function (_super) {
-    __extends(BattleResult, _super);
-    /**
-     * コンストラクタ
-     */
-    function BattleResult(win) {
-        var _this = _super.call(this) || this;
-        /**
-         * アニメーション終了フラグ
-         */
-        _this.animationEnded = false;
-        /**
-         * アニメーション終了時コールバック
-         */
-        _this.onAnimationEnded = function () { };
-        var textureCacheName = (win)
-            ? ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin
-            : ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultLose;
-        var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureCacheName];
-        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](texture);
-        _this.sprite.anchor.set(0.5);
-        _this.sprite.position.x = managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.width * 0.5;
-        _this.sprite.position.y = -(_this.sprite.height * 0.5);
-        _this.addChild(_this.sprite);
-        return _this;
-    }
-    Object.defineProperty(BattleResult, "resourceList", {
-        /**
-         * このエフェクトで使用するリソースリスト
-         */
-        get: function () {
-            return [
-                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultWin,
-                ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Static.BattleResultLose
-            ];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * UpdateObject インターフェース実装
-     * 削除フラグが立っているか返す
-     */
-    BattleResult.prototype.isDestroyed = function () {
-        return this._destroyed;
-    };
-    /**
-     * UpdateObject インターフェース実装
-     * requestAnimationFrame 毎のアップデート処理
-     */
-    BattleResult.prototype.update = function (_delta) {
-        if (this.animationEnded) {
-            return;
-        }
-        this.sprite.position.y += 4;
-        if (this.sprite.position.y >= managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].instance.game.view.height * 0.5) {
-            this.animationEnded = true;
-            this.onAnimationEnded();
-        }
-    };
-    return BattleResult;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
-/* harmony default export */ __webpack_exports__["default"] = (BattleResult);
-
-
-/***/ }),
-
-/***/ "./src/display/battle/effect/CollapseExplodeEffect.ts":
-/*!************************************************************!*\
-  !*** ./src/display/battle/effect/CollapseExplodeEffect.ts ***!
-  \************************************************************/
+/***/ "./src/display/battle/single_shot/CollapseExplodeEffect.ts":
+/*!*****************************************************************!*\
+  !*** ./src/display/battle/single_shot/CollapseExplodeEffect.ts ***!
+  \*****************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45455,10 +45455,10 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/display/battle/effect/Dead.ts":
-/*!*******************************************!*\
-  !*** ./src/display/battle/effect/Dead.ts ***!
-  \*******************************************/
+/***/ "./src/display/battle/single_shot/Dead.ts":
+/*!************************************************!*\
+  !*** ./src/display/battle/single_shot/Dead.ts ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45589,10 +45589,10 @@ var Dead = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/display/battle/effect/HealthGauge.ts":
-/*!**************************************************!*\
-  !*** ./src/display/battle/effect/HealthGauge.ts ***!
-  \**************************************************/
+/***/ "./src/display/battle/single_shot/HealthGauge.ts":
+/*!*******************************************************!*\
+  !*** ./src/display/battle/single_shot/HealthGauge.ts ***!
+  \*******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -47337,10 +47337,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
 /* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
 /* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
-/* harmony import */ var display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/effect/AttackSmoke */ "./src/display/battle/effect/AttackSmoke.ts");
-/* harmony import */ var display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/effect/Dead */ "./src/display/battle/effect/Dead.ts");
-/* harmony import */ var display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/effect/CollapseExplodeEffect */ "./src/display/battle/effect/CollapseExplodeEffect.ts");
-/* harmony import */ var display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/effect/BattleResult */ "./src/display/battle/effect/BattleResult.ts");
+/* harmony import */ var display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/BattleResult */ "./src/display/battle/BattleResult.ts");
+/* harmony import */ var display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/single_shot/AttackSmoke */ "./src/display/battle/single_shot/AttackSmoke.ts");
+/* harmony import */ var display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/single_shot/Dead */ "./src/display/battle/single_shot/Dead.ts");
+/* harmony import */ var display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/single_shot/CollapseExplodeEffect */ "./src/display/battle/single_shot/CollapseExplodeEffect.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47498,22 +47498,22 @@ var BattleScene = /** @class */ (function (_super) {
             var baseResourceUrl = baseResources[i];
             assets.push({ name: baseResourceUrl, url: baseResourceUrl });
         }
-        var attackSmokeResources = display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
+        var attackSmokeResources = display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
         for (var i = 0; i < attackSmokeResources.length; i++) {
             var attackSmokeResourcesUrl = attackSmokeResources[i];
             assets.push({ name: attackSmokeResourcesUrl, url: attackSmokeResourcesUrl });
         }
-        var deadResources = display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList;
+        var deadResources = display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
         for (var i = 0; i < deadResources.length; i++) {
             var deadResourceUrl = deadResources[i];
             assets.push({ name: deadResourceUrl, url: deadResourceUrl });
         }
-        var collapseExplodeResources = display_battle_effect_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList;
+        var collapseExplodeResources = display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
         for (var i = 0; i < collapseExplodeResources.length; i++) {
             var collapseExplodeResourceUrl = collapseExplodeResources[i];
             assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
         }
-        var battleResultResources = display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList;
+        var battleResultResources = display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList;
         for (var i = 0; i < battleResultResources.length; i++) {
             var battleResultResourceUrl = battleResultResources[i];
             assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
@@ -47651,7 +47651,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (entity.unitId) {
             var unit = entity;
             if (unit.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD) {
-                var effect = new display_battle_effect_Dead__WEBPACK_IMPORTED_MODULE_15__["default"](!unit.isPlayer);
+                var effect = new display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!unit.isPlayer);
                 var yAdjust = unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height;
                 effect.position.set(unit.sprite.position.x, unit.sprite.position.y + yAdjust);
                 unit.sprite.parent.addChild(effect);
@@ -47682,7 +47682,7 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.onGameOver = function (isPlayerWon) {
         this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].FINISHED;
-        var result = new display_battle_effect_BattleResult__WEBPACK_IMPORTED_MODULE_17__["default"](isPlayerWon);
+        var result = new display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_14__["default"](isPlayerWon);
         result.onAnimationEnded = this.enableBackToTitle.bind(this);
         this.uiGraphContainer.addChild(result);
         var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle);
@@ -47732,7 +47732,7 @@ var BattleScene = /** @class */ (function (_super) {
         }
         var targetSprite = target.sprite;
         // smoke effect
-        var smoke = new display_battle_effect_AttackSmoke__WEBPACK_IMPORTED_MODULE_14__["default"]();
+        var smoke = new display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"]();
         var xRand = Math.random() * targetSprite.width;
         var yRand = Math.random() * targetSprite.height;
         var xAdjust = targetSprite.width * (0.5 + targetSprite.anchor.x);

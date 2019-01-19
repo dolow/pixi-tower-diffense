@@ -4,7 +4,7 @@ import UpdateObject from 'interfaces/UpdateObject';
 import GameManager from 'managers/GameManager';
 
 /**
- * ゲーム結果を表現するエフェクト
+ * ゲーム結果を表現する
  */
 export default class BattleResult extends PIXI.Container implements UpdateObject {
   /**
