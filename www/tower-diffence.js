@@ -45664,11 +45664,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function initGame() {
+    var width = 1136;
+    var height = 640;
     managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].start({
-        glWidth: 1136,
-        glHeight: 640,
-        canvasWidth: window.innerWidth,
-        canvasHeight: window.innerWidth * (640 / 1136),
+        glWidth: width,
+        glHeight: height,
         option: {
             backgroundColor: 0x222222
         }
@@ -46173,13 +46173,14 @@ var GameManager = /** @class */ (function () {
      */
     GameManager.start = function (params) {
         var game = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"](params.glWidth, params.glHeight, params.option);
-        GameManager.instance = new GameManager(game);
+        var instance = new GameManager(game);
+        GameManager.instance = instance;
         document.body.appendChild(GameManager.instance.game.view);
-        GameManager.instance.game.view.style.width = params.canvasWidth + "px";
-        GameManager.instance.game.view.style.height = params.canvasHeight + "px";
-        GameManager.instance.game.ticker.add(function (delta) {
-            if (GameManager.instance.currentScene) {
-                GameManager.instance.currentScene.update(delta);
+        window.addEventListener('resize', GameManager.resizeCanvas);
+        GameManager.resizeCanvas();
+        instance.game.ticker.add(function (delta) {
+            if (instance.currentScene) {
+                instance.currentScene.update(delta);
             }
         });
     };
@@ -46237,6 +46238,24 @@ var GameManager = /** @class */ (function () {
                 GameManager.transitionInIfPossible(newScene);
             });
         }
+    };
+    GameManager.resizeCanvas = function () {
+        var game = GameManager.instance.game;
+        var renderer = game.renderer;
+        var canvasWidth;
+        var canvasHeight;
+        var rendererHeightRatio = renderer.height / renderer.width;
+        var windowHeightRatio = window.innerHeight / window.innerWidth;
+        if (windowHeightRatio > rendererHeightRatio) {
+            canvasWidth = window.innerWidth;
+            canvasHeight = window.innerWidth * (renderer.height / renderer.width);
+        }
+        else {
+            canvasWidth = window.innerHeight * (renderer.width / renderer.height);
+            canvasHeight = window.innerHeight;
+        }
+        game.view.style.width = canvasWidth + "px";
+        game.view.style.height = canvasHeight + "px";
     };
     /**
      * シーンのリソースロード完了フラグ

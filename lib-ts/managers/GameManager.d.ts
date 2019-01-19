@@ -40,8 +40,6 @@ export default class GameManager {
     static start(params: {
         glWidth: number;
         glHeight: number;
-        canvasWidth: number;
-        canvasHeight: number;
         option?: PIXI.ApplicationOptions;
     }): void;
     /**
@@ -58,4 +56,5 @@ export default class GameManager {
      * いずれも完了したら、新しいシーンのトランジションを開始する
      */
     static loadScene(newScene: Scene): void;
+    static resizeCanvas(): void;
 }
