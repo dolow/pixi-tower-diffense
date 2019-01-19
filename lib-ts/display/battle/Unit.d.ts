@@ -1,32 +1,27 @@
 import * as PIXI from 'pixi.js';
-import UnitEntity from 'entity/UnitEntity';
-import UpdateObject from 'interfaces/UpdateObject';
+import Attackable from 'display/battle/Attackable';
 import HealthGauge from 'display/battle/single_shot/HealthGauge';
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Unit extends UnitEntity implements UpdateObject {
+export default class Unit extends Attackable {
     /**
-     * 表示する PIXI.Sprite インスタンス
+     * ユニット ID
      */
-    sprite: PIXI.Sprite;
+    protected unitId: number;
     /**
      * スポーンした座標
      */
     protected spawnedPosition: PIXI.Point;
     /**
-     * 現在のアニメーション種別
-     */
-    protected animationType: string;
-    /**
      * 現在のアニメーションフレーム
      */
     protected animationFrameIndex: number;
     /**
-     * 経過フレーム数
+     * 再生をリクエストされたアニメーション種別
      */
-    protected elapsedFrameCount: number;
+    protected requestedAnimation: string | null;
     /**
      * 当たり判定が発生するフレームインデックス
      * マスターデータの値
@@ -52,13 +47,9 @@ export default class Unit extends UnitEntity implements UpdateObject {
      */
     protected healthGauge: HealthGauge | null;
     /**
-     * 破棄フラグ
-     */
-    protected destroyed: boolean;
-    /**
      * コンストラクタ
      */
-    constructor(unitId: number, isPlayer: boolean, animationParam: {
+    constructor(unitId: number, animationParam: {
         hitFrame: number;
         animationMaxFrameIndexes: {
             [key: string]: number;
@@ -67,20 +58,25 @@ export default class Unit extends UnitEntity implements UpdateObject {
             [key: string]: number;
         };
     });
-    /**
-     * UpdateObject インターフェース実装
-     * 削除フラグが立っているか返す
-     */
-    isDestroyed(): boolean;
+    resetAnimation(): void;
     /**
      * UpdateObject インターフェース実装
      * requestAnimationFrame 毎のアップデート処理
      */
     update(_dt: number): void;
     /**
+     * 人師種別のアニメーションの再生をリクエストする
+     * リクエストされたアニメーションは再生可能になり次第再生される
+     */
+    requestAnimation(type: string): void;
+    /**
      * 現在の position を生成位置として保持する
      */
     saveSpawnedPosition(): PIXI.Point;
+    /**
+     * spawnedPosition を返す
+     */
+    getSpawnedPosition(): PIXI.Point;
     /**
      * 現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す
      */
@@ -90,27 +86,11 @@ export default class Unit extends UnitEntity implements UpdateObject {
      */
     isAnimationLastFrameTime(type?: string): boolean;
     /**
-     * 現在のアニメーション種別を返す
-     */
-    getAnimationType(): string;
-    /**
      * HealthGauge インスタンスを生成し、座標を設定して返す
      */
     spawnHealthGauge(fromPercent: number, toPercent: number): HealthGauge;
     /**
-     * 接敵しているかどうかを返す
-     */
-    isFoeContact(target: PIXI.Container): boolean;
-    /**
-     * アニメーション時間をリセットする
-     */
-    resetAnimation(): void;
-    /**
      * アニメーションを更新する
      */
     updateAnimation(): void;
-    /**
-     * このオブジェクトと子要素を破棄する
-     */
-    destroy(): void;
 }

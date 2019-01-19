@@ -1,0 +1,82 @@
+[
+  {
+    "unitId":      1,
+    "hitFrame":    4,
+    "maxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 8,
+      "damage": 1
+    },
+    "updateDurations": {
+      "wait": 12,
+      "walk": 8,
+      "attack": 4,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      2,
+    "hitFrame":    2,
+    "maxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 6,
+      "damage": 1
+    },
+    "updateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      3,
+    "hitFrame":    3,
+    "maxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 7,
+      "damage": 1
+    },
+    "updateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      4,
+    "hitFrame":    4,
+    "maxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 11,
+      "damage": 1
+    },
+    "updateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  },
+  {
+    "unitId":      5,
+    "hitFrame":    5,
+    "maxFrameIndexes": {
+      "wait": 2,
+      "walk": 6,
+      "attack": 9,
+      "damage": 1
+    },
+    "updateDurations": {
+      "wait": 4,
+      "walk": 2,
+      "attack": 2,
+      "damage": 4
+    }
+  }
+]

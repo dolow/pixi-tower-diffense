@@ -7,9 +7,4 @@ export default interface UnitMaster {
   maxHealth:   number;
   power:       number;
   speed:       number;
-  wieldFrames: number;
-  hitFrame:    number;
-
-  animationMaxFrameIndexes: { [key: string]: number };
-  animationUpdateDurations: { [key: string]: number };
 }

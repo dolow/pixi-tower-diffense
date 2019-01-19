@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 
+import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import UpdateObject from 'interfaces/UpdateObject';
 import BattleParameter from 'interfaces/BattleParameter';
@@ -24,10 +25,12 @@ import AttackableEntity from 'entity/AttackableEntity';
 import BaseEntity from 'entity/BaseEntity';
 import UnitEntity from 'entity/UnitEntity';
 
-import UnitButton from 'display/battle/UnitButton';
+import Attackable from 'display/battle/Attackable';
 import Unit from 'display/battle/Unit';
-import Field from 'display/battle/Field';
 import Base from 'display/battle/Base';
+
+import UnitButton from 'display/battle/UnitButton';
+import Field from 'display/battle/Field';
 import BattleResult from 'display/battle/BattleResult';
 import AttackSmoke from 'display/battle/single_shot/AttackSmoke';
 import Dead from 'display/battle/single_shot/Dead';
@@ -46,6 +49,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     FIELD: 'battle_scene_field_master',
     AI_WAVE: 'battle_scene_ai_wave_master',
     UNIT: 'battle_scene_unit_master',
+    UNIT_ANIMATION: 'battle_scene_unit_animation_master',
     BASE: 'battle_scene_base_master'
   };
 
@@ -53,7 +57,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * このシーンのステート
    */
   private state!: number;
-
   /**
    * 最大ユニット編成数
    */
@@ -90,6 +93,24 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private field!: Field;
 
+  /**
+   * エンティティの ID で紐付けられた有効な Unit インスタンスのマップ
+   */
+  private attackables: Map<number, Attackable> = new Map();
+  /**
+   * エンティティの ID で紐付けられた有効な Base インスタンスのマップ
+   */
+  private bases: {
+    player: Base | null;
+    ai: Base | null;
+  } = {
+    player: null,
+    ai: null
+  }
+  /**
+   * ユニットアニメーションマスターのキャッシュ
+   */
+  private unitAnimationMasterCache: Map<number, UnitAnimationMaster> = new Map();
   /**
    * Field に最後にユニットを追加した Zline のインデックス
    * ユニットが重なって表示されるのを防ぐ
@@ -198,11 +219,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const fieldMasterUrl = ResourceMaster.Api.Field(this.fieldId);
     const aiWaveMasterUrl = ResourceMaster.Api.AiWave(this.stageId);
     const unitMasterUrl = ResourceMaster.Api.Unit(this.unitIds);
+    const unitAnimationMasterUrl = ResourceMaster.Api.UnitAnimation(this.unitIds);
     const baseMasterUrl = ResourceMaster.Api.Base(this.baseIdMap.player, this.baseIdMap.ai);
 
     assets.push({ name: masterKeys.FIELD, url: fieldMasterUrl });
     assets.push({ name: masterKeys.AI_WAVE, url: aiWaveMasterUrl });
     assets.push({ name: masterKeys.UNIT, url: unitMasterUrl });
+    assets.push({ name: masterKeys.UNIT_ANIMATION, url: unitAnimationMasterUrl });
     assets.push({ name: masterKeys.BASE, url: baseMasterUrl });
 
     const playerBaseTextureUrl = ResourceMaster.Dynamic.Base(this.baseIdMap.player);
@@ -274,10 +297,16 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const masterKeys = BattleScene.MasterResourceKey;
 
-    const fieldMaster   = resources[masterKeys.FIELD].data;
-    const aiWaveMaster  = resources[masterKeys.AI_WAVE].data;
-    const unitMasters   = resources[masterKeys.UNIT].data;
+    const fieldMaster = resources[masterKeys.FIELD].data;
+    const aiWaveMaster = resources[masterKeys.AI_WAVE].data;
+    const unitMasters = resources[masterKeys.UNIT].data;
+    const unitAnimationMasters = resources[masterKeys.UNIT_ANIMATION].data;
     const baseMasterMap = resources[masterKeys.BASE].data;
+
+    for (let i = 0; i < unitAnimationMasters.length; i++) {
+      const master = unitAnimationMasters[i];
+      this.unitAnimationMasterCache.set(master.unitId, master);
+    }
 
     this.field.init({ fieldLength: fieldMaster.length, zLines: fieldMaster.zLines });
 
@@ -338,55 +367,66 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
 
   /**
-   * Base を発生させるときのコールバック
-   * Field に Base のスプライトを追加する
+   * BaseEntity が生成されたときのコールバック
+   * 表示物を生成する
    */
-  public spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null {
-    const fieldMaster = this.manager.getFieldMaster();
-    if (!fieldMaster) {
-      return null;
+  public onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void {
+    const base = new Base(entity.baseId);
+    base.sprite.position.x = basePosition;
+    if (!entity.isPlayer) {
+      base.sprite.scale.x = -1.0;
     }
-
-    const base = new Base(baseId, isPlayer);
-
-    if (isPlayer) {
-      base.init({ x: fieldMaster.playerBase.position.x });
-    } else {
-      base.init({ x: fieldMaster.aiBase.position.x });
-    }
-
     this.field.addChildAsForeBackgroundEffect(base.sprite);
 
     this.registerUpdatingObject(base);
 
-    return base;
+    if (entity.isPlayer) {
+      this.bases.player = base;
+    } else {
+      this.bases.ai = base;
+    }
+
+    this.attackables.set(entity.id, base);
   }
 
   /**
-   * Unit を発生させるときのコールバック
-   * Field に Unit のスプライトを追加する
+   * UnitEntity が生成されたときのコールバック
+   * id に紐つけて表示物を生成する
    */
-  public spawnUnitEntity(
-    unitId: number,
-    baseEntity: BaseEntity,
-    isPlayer: boolean
-  ): UnitEntity | null {
-    const master = this.manager.getUnitMaster(unitId);
+  public onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void {
+    const master = this.unitAnimationMasterCache.get(entity.unitId);
     if (!master) {
-      return null;
+      return;
     }
 
-    const unit = new Unit(unitId, isPlayer, {
-      hitFrame: master.hitFrame,
-      animationMaxFrameIndexes: master.animationMaxFrameIndexes,
-      animationUpdateDurations: master.animationUpdateDurations
-    });
+    const base = (entity.isPlayer) ? this.bases.player : this.bases.ai;
+    if (!base) {
+      return;
+    }
 
-    unit.sprite.position.x = (baseEntity as Base).sprite.position.x;
+    base.spawn(entity.isPlayer);
+
+    const unit = new Unit(entity.unitId, {
+      hitFrame: master.hitFrame,
+      animationMaxFrameIndexes: master.maxFrameIndexes,
+      animationUpdateDurations: master.updateDurations
+    });
+    unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
+    unit.sprite.position.x = basePosition;
+    unit.requestAnimation(ResourceMaster.AnimationTypes.Unit.WALK);
+
+    this.attackables.set(entity.id, unit);
 
     const zLineCount = this.field.zLineCount;
     let index = Math.floor(Math.random() * this.field.zLineCount);
-    const lastAddedZline = isPlayer ? this.fieldLastAddedZline.player : this.fieldLastAddedZline.ai;
+
+    let lastAddedZline;
+    if (entity.isPlayer) {
+      lastAddedZline = this.fieldLastAddedZline.player;
+    } else {
+      lastAddedZline = this.fieldLastAddedZline.ai;
+    }
+
     if (index === lastAddedZline) {
       index++;
       if (index > (zLineCount - 1)) {
@@ -397,7 +437,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     this.field.addChildToZLine(unit.sprite, index);
 
     // 重なって表示されないようにする
-    if (isPlayer) {
+    if (entity.isPlayer) {
       this.fieldLastAddedZline.player = index;
     } else {
       this.fieldLastAddedZline.ai = index;
@@ -405,34 +445,45 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     unit.saveSpawnedPosition();
 
-    (baseEntity as Base).spawn();
-
     this.registerUpdatingObject(unit as UpdateObject);
-
-    return unit;
   }
 
   /**
    * エンティティのステートが変更された際のコールバック
    */
   public onAttackableEntityStateChanged(entity: AttackableEntity, _oldState: number): void {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return;
+    }
+
     if ((entity as UnitEntity).unitId) {
-      const unit = entity as Unit;
+      const unit = attackable as Unit;
+      const animationTypes = ResourceMaster.AnimationTypes.Unit;
+      switch (entity.state) {
+        case AttackableState.IDLE: {
+          unit.requestAnimation(animationTypes.WALK);
+          break;
+        }
+        case AttackableState.LOCKED: {
+          unit.requestAnimation(animationTypes.ATTACK);
+          break;
+        }
+        case AttackableState.DEAD: {
+          const effect = new Dead(!entity.isPlayer);
+          const yAdjust = attackable.sprite.height * (1.0 - attackable.sprite.anchor.y) - effect.height;
+          effect.position.set(attackable.sprite.position.x, attackable.sprite.position.y + yAdjust);
+          attackable.sprite.parent.addChild(effect);
+          this.registerUpdatingObject(effect);
 
-      if (unit.state === AttackableState.DEAD) {
-        const effect = new Dead(!unit.isPlayer);
-        const yAdjust = unit.sprite.height * (1.0 - unit.sprite.anchor.y) - effect.height;
-        effect.position.set(unit.sprite.position.x, unit.sprite.position.y + yAdjust);
-        unit.sprite.parent.addChild(effect);
-        this.registerUpdatingObject(effect);
-
-        unit.destroy();
-      } else {
-        unit.resetAnimation();
+          attackable.destroy();
+          break;
+        }
+        default: break;
       }
     } else {
       if (entity.state === AttackableState.DEAD) {
-        const base = (entity as Base);
+        const base = attackable as Base;
         base.collapse();
         this.field.addChildAsForeForegroundEffect(base.explodeContainer);
       }
@@ -468,6 +519,15 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       sound.play();
     }
 
+    // 攻撃をやめる
+    this.attackables.forEach((attackable) => {
+      const unit = attackable as Unit;
+      if (!unit.requestAnimation) {
+        return;
+      }
+      unit.requestAnimation(ResourceMaster.AnimationTypes.Unit.WAIT);
+    });
+
     this.registerUpdatingObject(result);
   }
 
@@ -475,27 +535,55 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * 渡されたエンティティ同士が接敵可能か返す
    */
   public shouldLockAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean {
-    // 同じプロパティ名だが、実質的には特異実装なので処理を分ける
-    return (attacker as Unit).isFoeContact(
-      ((target as Unit).unitId)
-      ? (target as Unit).sprite
-      : (target as Base).sprite
-    );
+    const attackerAttackable = this.attackables.get(attacker.id);
+    if (!attackerAttackable) {
+      return false;
+    }
+    const targetAttackable = this.attackables.get(target.id);
+    if (!targetAttackable) {
+      return false;
+    }
+
+    return attackerAttackable.isFoeContact(targetAttackable.sprite);
   }
 
   /**
    * 渡されたエンティティ同士が攻撃可能か返す
    */
   public shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean {
-    const attacker = attackerEntity as Unit;
-    const target = targetEntity as Unit;
-
-    if (!attacker.isHitFrame()) {
+    const attackerAttackable = this.attackables.get(attackerEntity.id);
+    if (!attackerAttackable) {
+      return false;
+    }
+    let targetAttackable = this.attackables.get(targetEntity.id);
+    if (!targetAttackable) {
+      return false;
+    }
+    if (!(attackerEntity as UnitEntity).unitId) {
       return false;
     }
 
-    const contact = attacker.isFoeContact(target.sprite);
-    return contact;
+    const unit = attackerAttackable as Unit;
+
+    if (!unit.isHitFrame()) {
+      return false;
+    }
+
+    return unit.isFoeContact(targetAttackable.sprite);
+  }
+
+  /**
+   * 渡された UnitEntity の distance が変化した時に呼ばれる
+   */
+  public onUnitEntityWalked(entity: UnitEntity): void {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return;
+    }
+    const unit = attackable as Unit;
+    const direction = entity.isPlayer ? 1 : -1;
+
+    unit.sprite.position.x = unit.getSpawnedPosition().x + entity.distance * direction;
   }
 
   /**
@@ -516,11 +604,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       sound.play();
     }
 
-    if (!(target as any).sprite) {
+    const targetAttackable = this.attackables.get(target.id);
+    if (!targetAttackable) {
       return;
     }
 
-    const targetSprite = (target as any).sprite;
+    const targetSprite = targetAttackable.sprite;
 
     // smoke effect
     const smoke = new AttackSmoke();
@@ -538,9 +627,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     targetSprite.parent.addChild(smoke);
 
     // HealthGauge を表示させる
-    if ((target as any).unitId) {
-      const unit = target as Unit;
-      const gauge = unit.spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
+    if ((target as UnitEntity).unitId) {
+      const attackable = this.attackables.get(target.id);
+      if (!attackable) {
+        return;
+      }
+      const gauge = (attackable as Unit).spawnHealthGauge(fromHealth / maxHealth, toHealth / maxHealth);
       targetSprite.parent.addChild(gauge);
       this.registerUpdatingObject(gauge);
     }
@@ -551,12 +643,18 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   * 渡されたユニットが移動すべきかどうかを返す
    */
   public shouldUnitWalk(entity: UnitEntity): boolean {
-    const unit = entity as Unit;
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return false;
+    }
+    if (!(entity as UnitEntity).unitId) {
+      return false;
+    }
 
-    if (unit.getAnimationType() === ResourceMaster.AnimationTypes.Unit.WALK) {
+    if (attackable.getAnimationType() === ResourceMaster.AnimationTypes.Unit.WALK) {
       return true;
     }
-    return unit.isAnimationLastFrameTime();
+    return (attackable as Unit).isAnimationLastFrameTime();
   }
 
   /**

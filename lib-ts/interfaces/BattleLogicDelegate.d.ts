@@ -6,17 +6,21 @@ import BaseEntity from 'entity/BaseEntity';
  */
 export default interface BattleLogicDelegate {
     /**
-     * 拠点を生成する
+     * BaseEntity が生成された時のコールバック
      */
-    spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null;
+    onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void;
     /**
-     * ユニットを生成する
+     * UnitEntity が生成された時のコールバック
      */
-    spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null;
+    onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void;
     /**
      * エンティティのステートが変更した際のコールバック
      */
     onAttackableEntityStateChanged(entity: AttackableEntity, oldState: number): void;
+    /**
+     * UnitEntity が生成された時のコールバック
+     */
+    onUnitEntityWalked(entity: UnitEntity): void;
     /**
      * エンティティの health が変動した際のコールバック
      */

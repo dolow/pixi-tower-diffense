@@ -12,6 +12,7 @@ declare const ResourceMaster: Readonly<{
         Field: (fieldId: number) => string;
         AiWave: (stageId: number) => string;
         Unit: (unitIds: number[]) => string;
+        UnitAnimation: (unitIds: number[]) => string;
         Base: (playerBaseId: number, aiBaseId: number) => string;
     };
     /**

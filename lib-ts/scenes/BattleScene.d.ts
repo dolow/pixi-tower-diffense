@@ -52,6 +52,18 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      */
     private field;
     /**
+     * エンティティの ID で紐付けられた有効な Unit インスタンスのマップ
+     */
+    private attackables;
+    /**
+     * エンティティの ID で紐付けられた有効な Base インスタンスのマップ
+     */
+    private bases;
+    /**
+     * ユニットアニメーションマスターのキャッシュ
+     */
+    private unitAnimationMasterCache;
+    /**
      * Field に最後にユニットを追加した Zline のインデックス
      * ユニットが重なって表示されるのを防ぐ
      */
@@ -92,15 +104,15 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      * BattleLogicDelegate 実装
      */
     /**
-     * Base を発生させるときのコールバック
-     * Field に Base のスプライトを追加する
+     * BaseEntity が生成されたときのコールバック
+     * 表示物を生成する
      */
-    spawnBaseEntity(baseId: number, isPlayer: boolean): BaseEntity | null;
+    onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void;
     /**
-     * Unit を発生させるときのコールバック
-     * Field に Unit のスプライトを追加する
+     * UnitEntity が生成されたときのコールバック
+     * id に紐つけて表示物を生成する
      */
-    spawnUnitEntity(unitId: number, baseEntity: BaseEntity, isPlayer: boolean): UnitEntity | null;
+    onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void;
     /**
      * エンティティのステートが変更された際のコールバック
      */
@@ -121,6 +133,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      * 渡されたエンティティ同士が攻撃可能か返す
      */
     shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean;
+    /**
+     * 渡された UnitEntity の distance が変化した時に呼ばれる
+     */
+    onUnitEntityWalked(entity: UnitEntity): void;
     /**
      * 渡されたエンティティの health が増減した場合に呼ばれる
      */

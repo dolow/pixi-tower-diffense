@@ -8,24 +8,22 @@ import BaseEntity from 'entity/BaseEntity';
  * 基本的には何もしない
  */
 export default class DefaultDelegator implements BattleLogicDelegate {
-  public spawnBaseEntity(
-    _baseId: number,
-    _isPlayer: boolean
-  ): BaseEntity | null {
-    return null;
+  public onBaseEntitySpawned(
+    _entity: BaseEntity,
+    _basePosition: number
+  ): void {
   }
-  public spawnUnitEntity(
-    _unitId: number,
-    _baseEntity: BaseEntity,
-    _isPlayer: boolean
-  ): UnitEntity | null {
-    return null;
+  public onUnitEntitySpawned(
+    _entity: UnitEntity,
+    _basePosition: number
+  ): void {
   }
   public onAttackableEntityStateChanged(
     _entity: AttackableEntity,
     _oldState: number
   ): void {
   }
+  public onUnitEntityWalked(_entity: UnitEntity): void {}
   public onAttackableEntityHealthUpdated(
     _attacker: AttackableEntity,
     _target: AttackableEntity,

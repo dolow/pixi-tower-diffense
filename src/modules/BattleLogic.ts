@@ -36,9 +36,9 @@ export default class BattleLogic {
    */
   private availableCost: number = 0;
   /**
-   * 次に割り当てるユニットID
+   * 次に割り当てるエンティティID
    */
-  private nextUnitId: number = 0;
+  private nextEntityId: number = 0;
   /**
    * 生成済みの Unit インスタンスを保持する配列
    */
@@ -52,10 +52,6 @@ export default class BattleLogic {
    * フィールドマスタのキャッシュ
    */
   private fieldMasterCache: FieldMaster | null = null;
-  public getFieldMaster(): FieldMaster | null {
-    return this.fieldMasterCache;
-  }
-
   /**
    * AIWaveMaster をキャッシュするための Map
    */
@@ -64,9 +60,6 @@ export default class BattleLogic {
    * UnitMaster をキャッシュするための Map
    */
   private unitMasterCache: Map<number, UnitMaster> = new Map();
-  public getUnitMaster(unitId: number): UnitMaster | null {
-    return this.unitMasterCache.get(unitId) || null;
-  }
   /**
    * BaseMaster をキャッシュするための Map
    */
@@ -127,17 +120,18 @@ export default class BattleLogic {
     this.baseMasterCache.set(playerBaseMaster.baseId, playerBaseMaster);
     this.baseMasterCache.set(aiBaseMaster.baseId, aiBaseMaster);
 
-    // 拠点エンティティの生成リクエスト
-    const playerBase = this.delegator.spawnBaseEntity(playerBaseMaster.baseId, true);
-    const aiBase = this.delegator.spawnBaseEntity(aiBaseMaster.baseId, false);
+    const playerBase = new BaseEntity(playerBaseMaster.baseId, true);
+    const aiBase = new BaseEntity(aiBaseMaster.baseId, false);
 
-    if (!playerBase || !aiBase) {
-      throw new Error('base could not be initialized');
-    }
-
+    // 拠点エンティティの ID 割当て
+    playerBase.id = this.nextEntityId++;
+    aiBase.id = this.nextEntityId++;
     // 拠点エンティティの health 設定
     playerBase.currentHealth = playerBaseMaster.maxHealth;
     aiBase.currentHealth = aiBaseMaster.maxHealth;
+
+    this.delegator.onBaseEntitySpawned(playerBase, this.fieldMasterCache.playerBase.position.x);
+    this.delegator.onBaseEntitySpawned(aiBase, this.fieldMasterCache.aiBase.position.x);
 
     // 拠点エンティティの保持
     this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBase;
@@ -314,14 +308,15 @@ export default class BattleLogic {
 
     if (this.delegator.shouldUnitWalk(unit)) {
       unit.distance += master.speed;
+      this.delegator.onUnitEntityWalked(unit);
     }
   }
 
   /**
    * 死亡時のステート更新処理
    */
-  private updateUnitDeadState(_unit: UnitEntity): void {
-    // NOOP
+  private updateUnitDeadState(unit: UnitEntity): void {
+    unit.id = INVALID_UNIT_ID;
   }
   /**
    * 接敵時のステート更新処理
@@ -335,7 +330,6 @@ export default class BattleLogic {
 
     // 自身の DEAD 判定
     if (unit.currentHealth <= 0) {
-      unit.id           = INVALID_UNIT_ID;
       unit.lockedEntity = null;
       unit.state        = AttackableState.DEAD;
     }
@@ -423,6 +417,10 @@ export default class BattleLogic {
       return;
     }
 
+    if (!this.fieldMasterCache) {
+      return;
+    }
+
     let tmpCost = this.availableCost;
 
     for (let i = 0; i < this.spawnRequestedUnitUnitIds.length; i++) {
@@ -433,7 +431,7 @@ export default class BattleLogic {
         continue;
       }
 
-      let baseEntity;
+      let basePosition;
       if (reservedUnit.isPlayer) {
         if ((tmpCost - master.cost) < 0) {
           continue;
@@ -441,22 +439,18 @@ export default class BattleLogic {
 
         tmpCost -= master.cost;
 
-        baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
+        basePosition = this.fieldMasterCache.playerBase.position.x;
       } else {
-        baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
+        basePosition = this.fieldMasterCache.aiBase.position.x;
       }
 
-      const entity = this.delegator.spawnUnitEntity(
-        reservedUnit.unitId,
-        baseEntity,
-        reservedUnit.isPlayer
-      );
-      if (entity) {
-        entity.id = this.nextUnitId++;
-        entity.currentHealth = master.maxHealth;
-        entity.state = AttackableState.IDLE;
-        this.unitEntities.push(entity);
-      }
+      const entity = new UnitEntity(reservedUnit.unitId, reservedUnit.isPlayer);
+      entity.id = this.nextEntityId++;
+      entity.currentHealth = master.maxHealth;
+      entity.state = AttackableState.IDLE;
+      this.unitEntities.push(entity);
+
+      this.delegator.onUnitEntitySpawned(entity, basePosition);
     }
 
     this.updateAvailableCost(tmpCost);

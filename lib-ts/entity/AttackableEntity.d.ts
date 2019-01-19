@@ -3,6 +3,11 @@
  */
 export default class AttackableEntity {
     /**
+     * 一意の ID
+     * エンティティ生成順に動的に割り当てられる
+     */
+    id: number;
+    /**
      * プレイヤー側のユニットかどうか
      */
     isPlayer: boolean;

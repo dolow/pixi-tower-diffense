@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>UnitMaster | tower-diffence</title>
+	<title>UnitAnimationMaster | tower-diffence</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="unitmaster.html">UnitMaster</a>
+					<a href="unitanimationmaster.html">UnitAnimationMaster</a>
 				</li>
 			</ul>
-			<h1>Interface UnitMaster</h1>
+			<h1>Interface UnitAnimationMaster</h1>
 		</div>
 	</div>
 </header>
@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>ユニットパラメータマスターのスキーマ定義</p>
+						<p>ユニットアニメーションマスターのスキーマ定義</p>
 					</div>
 				</div>
 			</section>
@@ -75,7 +75,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">UnitMaster</span>
+						<span class="target">UnitAnimationMaster</span>
 					</li>
 				</ul>
 			</section>
@@ -86,11 +86,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitmaster.html#cost" class="tsd-kind-icon">cost</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitmaster.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitmaster.html#power" class="tsd-kind-icon">power</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitmaster.html#speed" class="tsd-kind-icon">speed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitmaster.html#unitid" class="tsd-kind-icon">unit<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitanimationmaster.html#hitframe" class="tsd-kind-icon">hit<wbr>Frame</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitanimationmaster.html#maxframeindexes" class="tsd-kind-icon">max<wbr>Frame<wbr>Indexes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitanimationmaster.html#unitid" class="tsd-kind-icon">unit<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="unitanimationmaster.html#updatedurations" class="tsd-kind-icon">update<wbr>Durations</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,44 +98,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cost" class="tsd-anchor"></a>
-					<h3>cost</h3>
-					<div class="tsd-signature tsd-kind-icon">cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="hitframe" class="tsd-anchor"></a>
+					<h3>hit<wbr>Frame</h3>
+					<div class="tsd-signature tsd-kind-icon">hit<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/master/UnitMaster.ts#L6">interfaces/master/UnitMaster.ts:6</a></li>
+							<li>Defined in interfaces/master/UnitAnimationMaster.ts:6</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="maxhealth" class="tsd-anchor"></a>
-					<h3>max<wbr>Health</h3>
-					<div class="tsd-signature tsd-kind-icon">max<wbr>Health<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="maxframeindexes" class="tsd-anchor"></a>
+					<h3>max<wbr>Frame<wbr>Indexes</h3>
+					<div class="tsd-signature tsd-kind-icon">max<wbr>Frame<wbr>Indexes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/master/UnitMaster.ts#L7">interfaces/master/UnitMaster.ts:7</a></li>
+							<li>Defined in interfaces/master/UnitAnimationMaster.ts:7</li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="power" class="tsd-anchor"></a>
-					<h3>power</h3>
-					<div class="tsd-signature tsd-kind-icon">power<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/master/UnitMaster.ts#L8">interfaces/master/UnitMaster.ts:8</a></li>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
 						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="speed" class="tsd-anchor"></a>
-					<h3>speed</h3>
-					<div class="tsd-signature tsd-kind-icon">speed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/master/UnitMaster.ts#L9">interfaces/master/UnitMaster.ts:9</a></li>
-						</ul>
-					</aside>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="unitid" class="tsd-anchor"></a>
@@ -144,9 +131,27 @@
 					<div class="tsd-signature tsd-kind-icon">unit<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/master/UnitMaster.ts#L5">interfaces/master/UnitMaster.ts:5</a></li>
+							<li>Defined in interfaces/master/UnitAnimationMaster.ts:5</li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="updatedurations" class="tsd-anchor"></a>
+					<h3>update<wbr>Durations</h3>
+					<div class="tsd-signature tsd-kind-icon">update<wbr>Durations<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in interfaces/master/UnitAnimationMaster.ts:8</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -163,22 +168,19 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="unitmaster.html" class="tsd-kind-icon">Unit<wbr>Master</a>
+						<a href="unitanimationmaster.html" class="tsd-kind-icon">Unit<wbr>Animation<wbr>Master</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="unitmaster.html#cost" class="tsd-kind-icon">cost</a>
+								<a href="unitanimationmaster.html#hitframe" class="tsd-kind-icon">hit<wbr>Frame</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="unitmaster.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a>
+								<a href="unitanimationmaster.html#maxframeindexes" class="tsd-kind-icon">max<wbr>Frame<wbr>Indexes</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="unitmaster.html#power" class="tsd-kind-icon">power</a>
+								<a href="unitanimationmaster.html#unitid" class="tsd-kind-icon">unit<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="unitmaster.html#speed" class="tsd-kind-icon">speed</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="unitmaster.html#unitid" class="tsd-kind-icon">unit<wbr>Id</a>
+								<a href="unitanimationmaster.html#updatedurations" class="tsd-kind-icon">update<wbr>Durations</a>
 							</li>
 						</ul>
 					</li>

@@ -1,8 +1,7 @@
 import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import SoundManager from 'managers/SoundManager';
-import BaseEntity from 'entity/BaseEntity';
-import UpdateObject from 'interfaces/UpdateObject';
+import Attackable from 'display/battle/Attackable';
 import CollapseExplodeEffect from 'display/battle/single_shot/CollapseExplodeEffect';
 
 const baseId1SpawnFrameCount = 16;
@@ -11,28 +10,21 @@ const baseId1SpawnFrameCount = 16;
  * 拠点の振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Base extends BaseEntity implements UpdateObject {
-  /**
-   * 表示する PIXI.Sprite インスタンス
-   */
-  public sprite!: PIXI.Sprite;
+export default class Base extends Attackable {
   /**
    * 爆発エフェクト用コンテナ
    */
   public explodeContainer: PIXI.Container = new PIXI.Container();
 
   /**
+   * 拠点 ID
+   */
+  protected baseId!: number;
+
+  /**
    * 初期座標、アニメーションなどで更新されるため覚えておく
    */
   protected originalPositon: PIXI.Point = new PIXI.Point();
-  /**
-   * 現在のアニメーション種別
-   */
-  protected animationType: string = ResourceMaster.AnimationTypes.Base.IDLE;
-  /**
-   * 経過フレーム数
-   */
-  protected elapsedFrameCount: number = 0;
 
   /**
    * このクラスで利用するリソースリスト
@@ -44,24 +36,25 @@ export default class Base extends BaseEntity implements UpdateObject {
   /**
    * コンストラクタ
    */
-  constructor(baseId: number, isPlayer: boolean) {
-    super(baseId, isPlayer);
+  constructor(baseId: number) {
+    super();
+
+    this.baseId = baseId;
+
+    this.animationType = ResourceMaster.AnimationTypes.Base.IDLE;
 
     this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.Base(baseId));
-    if (!isPlayer) {
-      this.sprite.scale.x  = -1.0;
-    }
 
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
-  }
 
-  /**
-   * UpdateObject インターフェース実装
-   * 削除フラグが立っているか返す
-   */
-  public isDestroyed(): boolean {
-    return false;
+    switch (baseId) {
+      case 1: this.sprite.position.y = 300; break;
+      case 2:
+      default: this.sprite.position.y = 200; break;
+    }
+
+    this.originalPositon.set(this.sprite.position.x, this.sprite.position.y);
   }
 
   /**
@@ -70,24 +63,6 @@ export default class Base extends BaseEntity implements UpdateObject {
    */
   public update(_dt: number): void {
     this.updateAnimation();
-  }
-
-  /**
-   * 初期化処理
-   * 主に座標周りを初期化する
-   */
-  public init(options?: any): void {
-    switch (this.baseId) {
-      case 1: this.sprite.position.y = 300; break;
-      case 2:
-      default: this.sprite.position.y = 200; break;
-    }
-
-    if (options && options.x) {
-      this.sprite.position.x = options.x;
-    }
-
-    this.originalPositon.set(this.sprite.position.x, this.sprite.position.y);
   }
 
   /**
@@ -108,8 +83,8 @@ export default class Base extends BaseEntity implements UpdateObject {
   /**
    * ユニット生成状態にする
    */
-  public spawn(): void {
-    if (this.isPlayer) {
+  public spawn(playSe: boolean): void {
+    if (playSe) {
       const sound = SoundManager.getSound(ResourceMaster.Audio.Se.UnitSpawn);
       if (sound) {
         sound.play();

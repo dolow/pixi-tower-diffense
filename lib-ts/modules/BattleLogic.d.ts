@@ -26,9 +26,9 @@ export default class BattleLogic {
      */
     private availableCost;
     /**
-     * 次に割り当てるユニットID
+     * 次に割り当てるエンティティID
      */
-    private nextUnitId;
+    private nextEntityId;
     /**
      * 生成済みの Unit インスタンスを保持する配列
      */
@@ -41,7 +41,6 @@ export default class BattleLogic {
      * フィールドマスタのキャッシュ
      */
     private fieldMasterCache;
-    getFieldMaster(): FieldMaster | null;
     /**
      * AIWaveMaster をキャッシュするための Map
      */
@@ -50,7 +49,6 @@ export default class BattleLogic {
      * UnitMaster をキャッシュするための Map
      */
     private unitMasterCache;
-    getUnitMaster(unitId: number): UnitMaster | null;
     /**
      * BaseMaster をキャッシュするための Map
      */

@@ -29,6 +29,10 @@ const ResourceMaster = Object.freeze({
       const joinedUnitIds = unitIds.join('&unitId[]=');
       return `${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]=${joinedUnitIds}`;
     },
+    UnitAnimation: (unitIds: number[]): string => {
+      const joinedUnitIds = unitIds.join('&unitId[]=');
+      return `${Config.ResourceBaseUrl}/master/unit_animation_master.json?unitId[]=${joinedUnitIds}`;
+    },
     Base: (playerBaseId: number, aiBaseId: number): string => {
       const query = `?playerBaseId=${playerBaseId}&aiBaseId=${aiBaseId}`;
       return `${Config.ResourceBaseUrl}/master/base_master.json${query}`;

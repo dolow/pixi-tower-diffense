@@ -1,31 +1,22 @@
 import * as PIXI from 'pixi.js';
-import BaseEntity from 'entity/BaseEntity';
-import UpdateObject from 'interfaces/UpdateObject';
+import Attackable from 'display/battle/Attackable';
 /**
  * 拠点の振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Base extends BaseEntity implements UpdateObject {
-    /**
-     * 表示する PIXI.Sprite インスタンス
-     */
-    sprite: PIXI.Sprite;
+export default class Base extends Attackable {
     /**
      * 爆発エフェクト用コンテナ
      */
     explodeContainer: PIXI.Container;
     /**
+     * 拠点 ID
+     */
+    protected baseId: number;
+    /**
      * 初期座標、アニメーションなどで更新されるため覚えておく
      */
     protected originalPositon: PIXI.Point;
-    /**
-     * 現在のアニメーション種別
-     */
-    protected animationType: string;
-    /**
-     * 経過フレーム数
-     */
-    protected elapsedFrameCount: number;
     /**
      * このクラスで利用するリソースリスト
      */
@@ -33,22 +24,12 @@ export default class Base extends BaseEntity implements UpdateObject {
     /**
      * コンストラクタ
      */
-    constructor(baseId: number, isPlayer: boolean);
-    /**
-     * UpdateObject インターフェース実装
-     * 削除フラグが立っているか返す
-     */
-    isDestroyed(): boolean;
+    constructor(baseId: number);
     /**
      * UpdateObject インターフェース実装
      * requestAnimationFrame 毎のアップデート処理
      */
     update(_dt: number): void;
-    /**
-     * 初期化処理
-     * 主に座標周りを初期化する
-     */
-    init(options?: any): void;
     /**
      * アニメーションを初期化する
      */
@@ -60,7 +41,7 @@ export default class Base extends BaseEntity implements UpdateObject {
     /**
      * ユニット生成状態にする
      */
-    spawn(): void;
+    spawn(playSe: boolean): void;
     /**
      * アニメーションを更新する
      */

@@ -7,9 +7,10 @@ import BaseEntity from 'entity/BaseEntity';
  * 基本的には何もしない
  */
 export default class DefaultDelegator implements BattleLogicDelegate {
-    spawnBaseEntity(_baseId: number, _isPlayer: boolean): BaseEntity | null;
-    spawnUnitEntity(_unitId: number, _baseEntity: BaseEntity, _isPlayer: boolean): UnitEntity | null;
+    onBaseEntitySpawned(_entity: BaseEntity, _basePosition: number): void;
+    onUnitEntitySpawned(_entity: UnitEntity, _basePosition: number): void;
     onAttackableEntityStateChanged(_entity: AttackableEntity, _oldState: number): void;
+    onUnitEntityWalked(_entity: UnitEntity): void;
     onAttackableEntityHealthUpdated(_attacker: AttackableEntity, _target: AttackableEntity, _fromHealth: number, _toHealth: number, _maxHealth: number): void;
     onAvailableCostUpdated(_cost: number): void;
     onGameOver(_isPlayerWon: boolean): void;

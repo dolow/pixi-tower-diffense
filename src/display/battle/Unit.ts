@@ -1,37 +1,30 @@
 import * as PIXI from 'pixi.js';
-import UnitEntity from 'entity/UnitEntity';
 import ResourceMaster from 'ResourceMaster';
-import AttackableState from 'enum/AttackableState';
-import UpdateObject from 'interfaces/UpdateObject';
+import Attackable from 'display/battle/Attackable';
 import HealthGauge from 'display/battle/single_shot/HealthGauge';
 
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Unit extends UnitEntity implements UpdateObject {
+export default class Unit extends Attackable {
   /**
-   * 表示する PIXI.Sprite インスタンス
+   * ユニット ID
    */
-  public sprite!: PIXI.Sprite;
-
+  protected unitId!: number;
   /**
    * スポーンした座標
    */
   protected spawnedPosition: PIXI.Point = new PIXI.Point(0, 0);
 
   /**
-   * 現在のアニメーション種別
-   */
-  protected animationType: string = ResourceMaster.AnimationTypes.Unit.WAIT;
-  /**
    * 現在のアニメーションフレーム
    */
   protected animationFrameIndex: number = 1;
   /**
-   * 経過フレーム数
+   * 再生をリクエストされたアニメーション種別
    */
-  protected elapsedFrameCount: number = 0;
+  protected requestedAnimation: string | null = null;
 
   /**
    * 当たり判定が発生するフレームインデックス
@@ -56,42 +49,34 @@ export default class Unit extends UnitEntity implements UpdateObject {
   protected healthGauge: HealthGauge | null = null;
 
   /**
-   * 破棄フラグ
-   */
-  protected destroyed: boolean = false;
-
-  /**
    * コンストラクタ
    */
   constructor(
     unitId: number,
-    isPlayer: boolean,
     animationParam: {
       hitFrame: number,
       animationMaxFrameIndexes: { [key: string]: number },
       animationUpdateDurations: { [key: string]: number }
     }
   ) {
-    super(unitId, isPlayer);
+    super();
+
+    this.animationType = ResourceMaster.AnimationTypes.Unit.WAIT;
+
+    this.unitId = unitId;
 
     this.hitFrame = animationParam.hitFrame;
     this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
     this.animationUpdateDurations = animationParam.animationUpdateDurations;
 
     this.sprite = new PIXI.Sprite();
-    if (!this.isPlayer) {
-      this.sprite.scale.x = -1;
-    }
-
     this.sprite.anchor.x = 0.5;
   }
 
-  /**
-   * UpdateObject インターフェース実装
-   * 削除フラグが立っているか返す
-   */
-  public isDestroyed(): boolean {
-    return this.destroyed;
+  public resetAnimation(): void {
+    this.requestedAnimation = null;
+    this.elapsedFrameCount   = 0;
+    this.animationFrameIndex = 1;
   }
 
   /**
@@ -101,28 +86,36 @@ export default class Unit extends UnitEntity implements UpdateObject {
   public update(_dt: number): void {
     const animationTypes = ResourceMaster.AnimationTypes.Unit;
 
-    switch (this.state) {
-      case AttackableState.IDLE: {
-        if (this.animationType !== animationTypes.WALK) {
-          if (this.isAnimationLastFrameTime()) {
-            this.animationType = animationTypes.WALK;
-            this.resetAnimation();
+    if (this.requestedAnimation) {
+      switch (this.requestedAnimation) {
+        case animationTypes.WAIT:
+        case animationTypes.WALK: {
+          if (this.animationType !== animationTypes.WALK) {
+            if (this.isAnimationLastFrameTime()) {
+              this.animationType = this.requestedAnimation;
+              this.resetAnimation();
+            }
           }
-        } else {
-          const direction = this.isPlayer ? 1 : -1;
-          this.sprite.position.x = this.spawnedPosition.x + this.distance * direction;
+          break;
         }
-        break;
+        case animationTypes.ATTACK: {
+          this.animationType = animationTypes.ATTACK;
+          this.resetAnimation();
+          break;
+        }
+        default: break;
       }
-      case AttackableState.LOCKED: {
-        this.animationType = animationTypes.ATTACK;
-        break;
-      }
-      case AttackableState.DEAD:
-      default: break;
     }
 
     this.updateAnimation();
+  }
+
+  /**
+   * 人師種別のアニメーションの再生をリクエストする
+   * リクエストされたアニメーションは再生可能になり次第再生される
+   */
+  public requestAnimation(type: string): void {
+    this.requestedAnimation = type;
   }
 
   /**
@@ -131,6 +124,12 @@ export default class Unit extends UnitEntity implements UpdateObject {
   public saveSpawnedPosition(): PIXI.Point {
     this.spawnedPosition.x = this.sprite.position.x;
     this.spawnedPosition.y = this.sprite.position.y;
+    return this.spawnedPosition;
+  }
+  /**
+   * spawnedPosition を返す
+   */
+  public getSpawnedPosition(): PIXI.Point {
     return this.spawnedPosition;
   }
 
@@ -153,13 +152,6 @@ export default class Unit extends UnitEntity implements UpdateObject {
   }
 
   /**
-   * 現在のアニメーション種別を返す
-   */
-  public getAnimationType(): string {
-    return this.animationType;
-  }
-
-  /**
    * HealthGauge インスタンスを生成し、座標を設定して返す
    */
   public spawnHealthGauge(fromPercent: number, toPercent: number): HealthGauge {
@@ -174,24 +166,6 @@ export default class Unit extends UnitEntity implements UpdateObject {
     );
 
     return this.healthGauge;
-  }
-
-  /**
-   * 接敵しているかどうかを返す
-   */
-  public isFoeContact(target: PIXI.Container): boolean {
-    const rangeDistance = this.sprite.width * 0.5 + target.width * 0.5;
-    return (this.isPlayer)
-      ? (this.sprite.position.x + rangeDistance) >= target.position.x
-      : (target.position.x + rangeDistance) >= this.sprite.position.x;
-  }
-
-  /**
-   * アニメーション時間をリセットする
-   */
-  public resetAnimation(): void {
-    this.elapsedFrameCount   = 0;
-    this.animationFrameIndex = 1;
   }
 
   /**
@@ -214,13 +188,5 @@ export default class Unit extends UnitEntity implements UpdateObject {
     }
 
     this.elapsedFrameCount++;
-  }
-
-  /**
-   * このオブジェクトと子要素を破棄する
-   */
-  public destroy(): void {
-    this.sprite.destroy();
-    this.destroyed = true;
   }
 }
