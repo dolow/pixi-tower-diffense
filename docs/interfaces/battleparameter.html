@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>UpdateObject | tower-diffence</title>
+	<title>BattleParameter | tower-diffence</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="updateobject.html">UpdateObject</a>
+					<a href="battleparameter.html">BattleParameter</a>
 				</li>
 			</ul>
-			<h1>Interface UpdateObject</h1>
+			<h1>Interface BattleParameter</h1>
 		</div>
 	</div>
 </header>
@@ -68,20 +68,8 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">UpdateObject</span>
+						<span class="target">BattleParameter</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/attacksmokeeffect.html" class="tsd-signature-type">AttackSmokeEffect</a></li>
-					<li><a href="../classes/base.html" class="tsd-signature-type">Base</a></li>
-					<li><a href="../classes/battleresult.html" class="tsd-signature-type">BattleResult</a></li>
-					<li><a href="../classes/collapseexplodeeffect.html" class="tsd-signature-type">CollapseExplodeEffect</a></li>
-					<li><a href="../classes/dead.html" class="tsd-signature-type">Dead</a></li>
-					<li><a href="../classes/healthgaugeeffect.html" class="tsd-signature-type">HealthGaugeEffect</a></li>
-					<li><a href="../classes/unit.html" class="tsd-signature-type">Unit</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -89,56 +77,121 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Methods</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="updateobject.html#isdestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="updateobject.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="battleparameter.html#baseidmap" class="tsd-kind-icon">base<wbr>IdMap</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="battleparameter.html#cost" class="tsd-kind-icon">cost</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="battleparameter.html#fieldid" class="tsd-kind-icon">field<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="battleparameter.html#maxunitslotcount" class="tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="battleparameter.html#playerbaseparams" class="tsd-kind-icon">player<wbr>Base<wbr>Params</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="battleparameter.html#stageid" class="tsd-kind-icon">stage<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="battleparameter.html#unitids" class="tsd-kind-icon">unit<wbr>Ids</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="isdestroyed" class="tsd-anchor"></a>
-					<h3>is<wbr>Destroyed</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Destroyed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/UpdateObject.ts#L2">interfaces/UpdateObject.ts:2</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="baseidmap" class="tsd-anchor"></a>
+					<h3>base<wbr>IdMap</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>IdMap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleParameter.ts#L6">interfaces/BattleParameter.ts:6</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>ai<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>player<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="update" class="tsd-anchor"></a>
-					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>_dt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/UpdateObject.ts#L3">interfaces/UpdateObject.ts:3</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>_dt: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="cost" class="tsd-anchor"></a>
+					<h3>cost</h3>
+					<div class="tsd-signature tsd-kind-icon">cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleParameter.ts#L13">interfaces/BattleParameter.ts:13</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>recovery<wbr>Per<wbr>Frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="fieldid" class="tsd-anchor"></a>
+					<h3>field<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">field<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleParameter.ts#L3">interfaces/BattleParameter.ts:3</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="maxunitslotcount" class="tsd-anchor"></a>
+					<h3>max<wbr>Unit<wbr>Slot<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleParameter.ts#L2">interfaces/BattleParameter.ts:2</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="playerbaseparams" class="tsd-anchor"></a>
+					<h3>player<wbr>Base<wbr>Params</h3>
+					<div class="tsd-signature tsd-kind-icon">player<wbr>Base<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleParameter.ts#L10">interfaces/BattleParameter.ts:10</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>max<wbr>Health<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="stageid" class="tsd-anchor"></a>
+					<h3>stage<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">stage<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleParameter.ts#L4">interfaces/BattleParameter.ts:4</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="unitids" class="tsd-anchor"></a>
+					<h3>unit<wbr>Ids</h3>
+					<div class="tsd-signature tsd-kind-icon">unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleParameter.ts#L5">interfaces/BattleParameter.ts:5</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -155,13 +208,28 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a>
+						<a href="battleparameter.html" class="tsd-kind-icon">Battle<wbr>Parameter</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="updateobject.html#isdestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="battleparameter.html#baseidmap" class="tsd-kind-icon">base<wbr>IdMap</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="updateobject.html#update" class="tsd-kind-icon">update</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="battleparameter.html#cost" class="tsd-kind-icon">cost</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="battleparameter.html#fieldid" class="tsd-kind-icon">field<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="battleparameter.html#maxunitslotcount" class="tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="battleparameter.html#playerbaseparams" class="tsd-kind-icon">player<wbr>Base<wbr>Params</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="battleparameter.html#stageid" class="tsd-kind-icon">stage<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="battleparameter.html#unitids" class="tsd-kind-icon">unit<wbr>Ids</a>
 							</li>
 						</ul>
 					</li>

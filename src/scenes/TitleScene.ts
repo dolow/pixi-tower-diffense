@@ -2,10 +2,29 @@ import ResourceMaster from 'ResourceMaster';
 import GameManager from 'managers/GameManager';
 import SoundManager from 'managers/SoundManager';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
+import BattleParameter from 'interfaces/BattleParameter';
 import Scene from 'scenes/Scene';
 import BattleScene from 'scenes/BattleScene';
 import FadeIn from 'scenes/transition/FadeIn';
 import FadeOut from 'scenes/transition/FadeOut';
+
+const debugParams: BattleParameter = {
+  maxUnitSlotCount: 5,
+  fieldId: 1,
+  stageId: 1,
+  unitIds: [1, -1, 3, -1, 5],
+  baseIdMap: {
+    player: 1,
+    ai: 2
+  },
+  playerBaseParams: {
+    maxHealth: 100
+  },
+  cost: {
+    recoveryPerFrame: 0.05,
+    max: 100
+  }
+};
 
 /**
  * タイトルシーン
@@ -52,6 +71,8 @@ export default class TitleScene extends Scene  {
 
     soundManager.unregisterSound(ResourceMaster.Audio.Bgm.Title);
 
-    GameManager.loadScene(new BattleScene());
+    const params: BattleParameter = debugParams;
+
+    GameManager.loadScene(new BattleScene(params));
   }
 }

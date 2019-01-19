@@ -127,7 +127,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#children" class="tsd-kind-icon">children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#cursor" class="tsd-kind-icon">cursor</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#destroylist" class="tsd-kind-icon">destroy<wbr>List</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#field" class="tsd-kind-icon">field</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="battlescene.html#fieldid" class="tsd-kind-icon">field<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="battlescene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a></li>
@@ -267,16 +266,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Battle<wbr>Scene<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="battlescene.html" class="tsd-signature-type">BattleScene</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Battle<wbr>Scene<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/battleparameter.html" class="tsd-signature-type">BattleParameter</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="battlescene.html" class="tsd-signature-type">BattleScene</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L305">scenes/BattleScene.ts:305</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L94">scenes/BattleScene.ts:94</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>params: <a href="../interfaces/battleparameter.html" class="tsd-signature-type">BattleParameter</a></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="battlescene.html" class="tsd-signature-type">BattleScene</a></h4>
 						</li>
 					</ul>
@@ -455,7 +460,7 @@
 					<div class="tsd-signature tsd-kind-icon">base<wbr>IdMap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L92">scenes/BattleScene.ts:92</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L79">scenes/BattleScene.ts:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -531,27 +536,12 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="destroylist" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> destroy<wbr>List</h3>
-					<div class="tsd-signature tsd-kind-icon">destroy<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L112">scenes/BattleScene.ts:112</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>削除予定のコンテナ</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="field" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> field</h3>
 					<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <a href="field.html" class="tsd-signature-type">Field</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L107">scenes/BattleScene.ts:107</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L94">scenes/BattleScene.ts:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -566,7 +556,7 @@
 					<div class="tsd-signature tsd-kind-icon">field<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L75">scenes/BattleScene.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L62">scenes/BattleScene.ts:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -674,7 +664,7 @@
 					<div class="tsd-signature tsd-kind-icon">manager<span class="tsd-signature-symbol">:</span> <a href="battlemanager.html" class="tsd-signature-type">BattleManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L103">scenes/BattleScene.ts:103</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L90">scenes/BattleScene.ts:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -700,7 +690,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L70">scenes/BattleScene.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L57">scenes/BattleScene.ts:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -791,7 +781,7 @@
 					<div class="tsd-signature tsd-kind-icon">player<wbr>Base<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L83">scenes/BattleScene.ts:83</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L70">scenes/BattleScene.ts:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -869,7 +859,7 @@
 					<div class="tsd-signature tsd-kind-icon">stage<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L79">scenes/BattleScene.ts:79</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L66">scenes/BattleScene.ts:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -884,7 +874,7 @@
 					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L99">scenes/BattleScene.ts:99</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L86">scenes/BattleScene.ts:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1003,7 +993,7 @@
 					<div class="tsd-signature tsd-kind-icon">unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L87">scenes/BattleScene.ts:87</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L74">scenes/BattleScene.ts:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1517,7 +1507,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L565">scenes/BattleScene.ts:565</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L538">scenes/BattleScene.ts:538</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1535,7 +1525,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#begintransitionin">beginTransitionIn</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L481">scenes/BattleScene.ts:481</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L460">scenes/BattleScene.ts:460</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1661,7 +1651,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#createresourcelist">createResourceList</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L338">scenes/BattleScene.ts:338</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L317">scenes/BattleScene.ts:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1766,7 +1756,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L560">scenes/BattleScene.ts:560</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L533">scenes/BattleScene.ts:533</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1906,7 +1896,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#getcustomuigraphfactory">getCustomUiGraphFactory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L494">scenes/BattleScene.ts:494</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L473">scenes/BattleScene.ts:473</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1989,7 +1979,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L555">scenes/BattleScene.ts:555</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L528">scenes/BattleScene.ts:528</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2265,7 +2255,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onattackableentityhealthupdated">onAttackableEntityHealthUpdated</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L262">scenes/BattleScene.ts:262</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L268">scenes/BattleScene.ts:268</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2301,7 +2291,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onavailablecostupdated">onAvailableCostUpdated</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L204">scenes/BattleScene.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L210">scenes/BattleScene.ts:210</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2331,7 +2321,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onbasestatechanged">onBaseStateChanged</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L174">scenes/BattleScene.ts:174</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L180">scenes/BattleScene.ts:180</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2364,7 +2354,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#ongameover">onGameOver</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L212">scenes/BattleScene.ts:212</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L218">scenes/BattleScene.ts:218</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2394,7 +2384,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#onresourceloaded">onResourceLoaded</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L424">scenes/BattleScene.ts:424</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L403">scenes/BattleScene.ts:403</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2458,7 +2448,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L541">scenes/BattleScene.ts:541</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L514">scenes/BattleScene.ts:514</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2488,7 +2478,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#onunitstatechanged">onUnitStateChanged</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L186">scenes/BattleScene.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L192">scenes/BattleScene.ts:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2977,7 +2967,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shoulddamage">shouldDamage</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L250">scenes/BattleScene.ts:250</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L256">scenes/BattleScene.ts:256</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3010,7 +3000,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldlockbase">shouldLockBase</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L242">scenes/BattleScene.ts:242</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L248">scenes/BattleScene.ts:248</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3037,7 +3027,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldlockunit">shouldLockUnit</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L238">scenes/BattleScene.ts:238</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L244">scenes/BattleScene.ts:244</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3070,7 +3060,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#shouldunitwalk">shouldUnitWalk</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L298">scenes/BattleScene.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L304">scenes/BattleScene.ts:304</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3094,7 +3084,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#spawnbaseentity">spawnBaseEntity</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L119">scenes/BattleScene.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L125">scenes/BattleScene.ts:125</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3131,7 +3121,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/battlemanagerdelegate.html">BattleManagerDelegate</a>.<a href="../interfaces/battlemanagerdelegate.html#spawnunitentity">spawnUnitEntity</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L145">scenes/BattleScene.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L151">scenes/BattleScene.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3308,7 +3298,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L505">scenes/BattleScene.ts:505</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L484">scenes/BattleScene.ts:484</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3379,7 +3369,7 @@
 					<div class="tsd-signature tsd-kind-icon">Master<wbr>Resource<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L60">scenes/BattleScene.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L47">scenes/BattleScene.ts:47</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3388,7 +3378,7 @@
 						<div class="tsd-signature tsd-kind-icon">AI_<wbr>WAVE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;battle_scene_ai_wave_master&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L62">scenes/BattleScene.ts:62</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L49">scenes/BattleScene.ts:49</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3398,7 +3388,7 @@
 						<div class="tsd-signature tsd-kind-icon">BASE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;battle_scene_base_master&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L64">scenes/BattleScene.ts:64</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L51">scenes/BattleScene.ts:51</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3408,7 +3398,7 @@
 						<div class="tsd-signature tsd-kind-icon">FIELD<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;battle_scene_field_master&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L61">scenes/BattleScene.ts:61</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L48">scenes/BattleScene.ts:48</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3418,7 +3408,7 @@
 						<div class="tsd-signature tsd-kind-icon">UNIT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;battle_scene_unit_master&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L63">scenes/BattleScene.ts:63</a></li>
+								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/BattleScene.ts#L50">scenes/BattleScene.ts:50</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3505,9 +3495,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="battlescene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="battlescene.html#destroylist" class="tsd-kind-icon">destroy<wbr>List</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="battlescene.html#field" class="tsd-kind-icon">field</a>

@@ -1,4 +1,5 @@
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
+import BattleParameter from 'interfaces/BattleParameter';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'scenes/Scene';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
@@ -47,10 +48,7 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
      * 背景の PIXI.Container
      */
     private field;
-    /**
-     * 削除予定のコンテナ
-     */
-    private destroyList;
+    constructor(params: BattleParameter);
     /**
      * GameManagerDelegate 実装
      * Base を発生させるときのコールバック
@@ -96,7 +94,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean;
     onAttackableEntityHealthUpdated(_attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void;
     shouldUnitWalk(entity: UnitEntity): boolean;
-    constructor();
     /**
      * リソースリストの作成
      * ユーザが選択したユニットとフィールドのリソース情報も加える

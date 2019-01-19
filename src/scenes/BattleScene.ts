@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import ResourceMaster from 'ResourceMaster';
 import BattleManagerDelegate from 'interfaces/BattleManagerDelegate';
 import UpdateObject from 'interfaces/UpdateObject';
+import BattleParameter from 'interfaces/BattleParameter';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import BaseState from 'enum/BaseState';
 import UnitState from 'enum/UnitState';
@@ -25,20 +26,6 @@ import AttackSmoke from 'display/battle/effect/AttackSmoke';
 import Dead from 'display/battle/effect/Dead';
 import CollapseExplodeEffect from 'display/battle/effect/CollapseExplodeEffect';
 import BattleResult from 'display/battle/effect/BattleResult';
-
-const debugMaxUnitCount = 5;
-const debugField: number = 1;
-const debugStage: number = 1;
-const debugUnits: number[] = [1, -1, 3, -1, 5];
-const debugBaseIdMap = {
-  player: 1,
-  ai: 2
-};
-const debugPlayerBaseParams = {
-  maxHealth: 100
-};
-const debugCostRecoveryPerFrame = 0.05;
-const debugMaxAvailableCost     = 100;
 
 /**
  * BattleScene のステートのリスト
@@ -106,10 +93,29 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
    */
   private field!: Field;
 
-  /**
-   * 削除予定のコンテナ
-   */
-  private destroyList: PIXI.Container[] = [];
+  constructor(params: BattleParameter) {
+    super();
+
+    this.transitionIn  = new FadeIn();
+    this.transitionOut = new FadeOut();
+
+    // BattleManager インスタンスの作成とコールバックの登録
+    this.manager = new BattleManager();
+
+    // Background インスタンスの作成
+    this.field = new Field();
+    // デフォルトのシーンステート
+    this.state = BattleState.LOADING_RESOURCES;
+
+    this.maxUnitSlotCount = params.maxUnitSlotCount;
+    this.fieldId   = params.fieldId;
+    this.stageId   = params.stageId;
+    this.unitIds   = params.unitIds;
+    this.baseIdMap = params.baseIdMap;
+    this.playerBaseParams = params.playerBaseParams;
+    this.manager.costRecoveryPerFrame = params.cost.recoveryPerFrame;
+    this.manager.maxAvailableCost     = params.cost.max;
+  }
 
   /**
    * GameManagerDelegate 実装
@@ -302,33 +308,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
       return true;
     }
     return unit.isAnimationLastFrameTime();
-  }
-
-
-  constructor() {
-    super();
-
-    this.transitionIn  = new FadeIn();
-    this.transitionOut = new FadeOut();
-
-    // BattleManager インスタンスの作成とコールバックの登録
-    this.manager = new BattleManager();
-
-    // Background インスタンスの作成
-    this.field = new Field();
-    // デフォルトのシーンステート
-    this.state = BattleState.LOADING_RESOURCES;
-
-    Debug: {
-      this.maxUnitSlotCount = debugMaxUnitCount;
-      this.fieldId   = debugField;
-      this.stageId   = debugStage;
-      this.unitIds   = debugUnits;
-      this.baseIdMap = debugBaseIdMap;
-      this.playerBaseParams = debugPlayerBaseParams;
-      this.manager.costRecoveryPerFrame = debugCostRecoveryPerFrame;
-      this.manager.maxAvailableCost     = debugMaxAvailableCost;
-    }
   }
 
   /**
@@ -526,12 +505,6 @@ export default class BattleScene extends Scene implements BattleManagerDelegate 
     } else if (this.transitionOut.isActive()) {
       this.transitionOut.update(delta);
     }
-
-    for (let i = 0; i < this.destroyList.length; i++) {
-      this.destroyList[i].destroy();
-    }
-
-    this.destroyList = [];
   }
 
   /**

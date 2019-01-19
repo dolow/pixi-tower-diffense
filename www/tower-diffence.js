@@ -46895,19 +46895,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-var debugMaxUnitCount = 5;
-var debugField = 1;
-var debugStage = 1;
-var debugUnits = [1, -1, 3, -1, 5];
-var debugBaseIdMap = {
-    player: 1,
-    ai: 2
-};
-var debugPlayerBaseParams = {
-    maxHealth: 100
-};
-var debugCostRecoveryPerFrame = 0.05;
-var debugMaxAvailableCost = 100;
 /**
  * BattleScene のステートのリスト
  */
@@ -46924,12 +46911,8 @@ var BattleState = Object.freeze({
  */
 var BattleScene = /** @class */ (function (_super) {
     __extends(BattleScene, _super);
-    function BattleScene() {
+    function BattleScene(params) {
         var _this = _super.call(this) || this;
-        /**
-         * 削除予定のコンテナ
-         */
-        _this.destroyList = [];
         _this.transitionIn = new scenes_transition_FadeIn__WEBPACK_IMPORTED_MODULE_9__["default"]();
         _this.transitionOut = new scenes_transition_FadeOut__WEBPACK_IMPORTED_MODULE_10__["default"]();
         // BattleManager インスタンスの作成とコールバックの登録
@@ -46938,16 +46921,14 @@ var BattleScene = /** @class */ (function (_super) {
         _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"]();
         // デフォルトのシーンステート
         _this.state = BattleState.LOADING_RESOURCES;
-        Debug: {
-            _this.maxUnitSlotCount = debugMaxUnitCount;
-            _this.fieldId = debugField;
-            _this.stageId = debugStage;
-            _this.unitIds = debugUnits;
-            _this.baseIdMap = debugBaseIdMap;
-            _this.playerBaseParams = debugPlayerBaseParams;
-            _this.manager.costRecoveryPerFrame = debugCostRecoveryPerFrame;
-            _this.manager.maxAvailableCost = debugMaxAvailableCost;
-        }
+        _this.maxUnitSlotCount = params.maxUnitSlotCount;
+        _this.fieldId = params.fieldId;
+        _this.stageId = params.stageId;
+        _this.unitIds = params.unitIds;
+        _this.baseIdMap = params.baseIdMap;
+        _this.playerBaseParams = params.playerBaseParams;
+        _this.manager.costRecoveryPerFrame = params.cost.recoveryPerFrame;
+        _this.manager.maxAvailableCost = params.cost.max;
         return _this;
     }
     /**
@@ -47275,10 +47256,6 @@ var BattleScene = /** @class */ (function (_super) {
         else if (this.transitionOut.isActive()) {
             this.transitionOut.update(delta);
         }
-        for (var i = 0; i < this.destroyList.length; i++) {
-            this.destroyList[i].destroy();
-        }
-        this.destroyList = [];
     };
     /**
      * UnitButton 用のコールバック
@@ -47587,6 +47564,23 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+var debugParams = {
+    maxUnitSlotCount: 5,
+    fieldId: 1,
+    stageId: 1,
+    unitIds: [1, -1, 3, -1, 5],
+    baseIdMap: {
+        player: 1,
+        ai: 2
+    },
+    playerBaseParams: {
+        maxHealth: 100
+    },
+    cost: {
+        recoveryPerFrame: 0.05,
+        max: 100
+    }
+};
 /**
  * タイトルシーン
  */
@@ -47626,7 +47620,8 @@ var TitleScene = /** @class */ (function (_super) {
             soundManager.fade(bgm, 0.01, 0.5, true);
         }
         soundManager.unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_4__["default"]());
+        var params = debugParams;
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_4__["default"](params));
     };
     return TitleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_3__["default"]));
