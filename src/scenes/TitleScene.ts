@@ -2,34 +2,22 @@ import ResourceMaster from 'ResourceMaster';
 import GameManager from 'managers/GameManager';
 import SoundManager from 'managers/SoundManager';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
-import BattleParameter from 'interfaces/BattleParameter';
 import Scene from 'scenes/Scene';
-import BattleScene from 'scenes/BattleScene';
+import OrderScene from 'scenes/OrderScene';
 import Fade from 'scenes/transition/Fade';
-
-// デバッグ用パラメータ
-const debugParams: BattleParameter = {
-  maxUnitSlotCount: 5,
-  fieldId: 1,
-  stageId: 1,
-  unitIds: [1, -1, 3, -1, 5],
-  baseIdMap: {
-    player: 1,
-    ai: 2
-  },
-  playerBaseParams: {
-    maxHealth: 100
-  },
-  cost: {
-    recoveryPerFrame: 0.05,
-    max: 100
-  }
-};
 
 /**
  * タイトルシーン
  */
 export default class TitleScene extends Scene  {
+  /**
+   * TOUCH TO START テキストの明滅感覚
+   */
+  private readonly textAppealDuration: number = 20;
+
+  /**
+   * コンストラクタ
+   */
   constructor() {
     super();
 
@@ -37,7 +25,7 @@ export default class TitleScene extends Scene  {
     this.transitionOut = new Fade(0.0, 1.0, 0.02);
 
     this.interactive = true;
-    this.on('pointerup', () => this.startBattle());
+    this.on('pointerup', () => this.startOrder());
   }
 
   /**
@@ -63,22 +51,25 @@ export default class TitleScene extends Scene  {
   }
 
   /**
-   * ゲーム開始ボタン押下が離されたされたときのコールバック
+   * 毎フレームの更新処理
    */
-  public startBattle(): void {
+  public update(dt: number): void {
+    super.update(dt);
+
+    if (this.elapsedFrameCount % this.textAppealDuration === 0) {
+      const visible = this.uiGraph.touch_to_start.visible;
+      this.uiGraph.touch_to_start.visible = !visible;
+    }
+  }
+
+  /**
+   * 編成ボタンが離されたときのコールバック
+   */
+  public startOrder(): void {
     if (this.transitionIn.isActive() || this.transitionOut.isActive()) {
       return;
     }
 
-    const bgm = SoundManager.getSound(ResourceMaster.Audio.Bgm.Title);
-    if (bgm) {
-      SoundManager.fade(bgm, 0.01, 0.5, true);
-    }
-
-    SoundManager.unregisterSound(ResourceMaster.Audio.Bgm.Title);
-
-    const params: BattleParameter = debugParams;
-
-    GameManager.loadScene(new BattleScene(params));
+    GameManager.loadScene(new OrderScene());
   }
 }

@@ -2,15 +2,12 @@
  * バトル開始時に渡すパラメータのインターフェース
  */
 export default interface BattleParameter {
-  maxUnitSlotCount: number;
+  unitSlotCount: number;
   fieldId: number;
   stageId: number;
   unitIds: number[];
-  baseIdMap: {
-    player: number;
-    ai: number;
-  };
-  playerBaseParams: {
+  playerBase: {
+    baseId: number;
     maxHealth: number;
   };
   cost: {

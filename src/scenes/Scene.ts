@@ -16,6 +16,10 @@ import Immediate from 'scenes/transition/Immediate';
  */
 export default abstract class Scene extends PIXI.Container {
   /**
+   * 経過フレーム数
+   */
+  protected elapsedFrameCount: number = 0;
+  /**
    * UiGraph を利用して読み込む UI があるかどうか
    */
   protected hasSceneUiGraph: boolean = true;
@@ -46,6 +50,8 @@ export default abstract class Scene extends PIXI.Container {
    * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
    */
   public update(delta: number): void {
+    this.elapsedFrameCount++;
+
     this.updateRegisteredObjects(delta);
 
     if (this.transitionIn.isActive()) {
@@ -169,15 +175,15 @@ export default abstract class Scene extends PIXI.Container {
     if (assets.length <= 0) {
       onLoaded();
     } else {
-      const newAssets = [];
+      const newAssets = new Map<string, LoaderAddParam>();
       for (let i = 0; i < assets.length; i++) {
         const asset = assets[i];
-        if (!PIXI.loader.resources[asset.name]) {
-          newAssets.push(asset);
+        if (!PIXI.loader.resources[asset.name] && !newAssets.has(asset.name)) {
+          newAssets.set(asset.name, asset);
         }
       }
-      if (newAssets.length > 0) {
-        PIXI.loader.add(newAssets).load(() => onLoaded());
+      if (newAssets.size > 0) {
+        PIXI.loader.add(Array.from(newAssets.values())).load(() => onLoaded());
       } else {
         onLoaded();
       }

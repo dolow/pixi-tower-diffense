@@ -20,9 +20,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      */
     private state;
     /**
-     * 最大ユニット編成数
+     * ユニット編成数
      */
-    private maxUnitSlotCount;
+    private unitSlotCount;
     /**
      * 利用するフィールドID
      */
@@ -34,15 +34,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
      * 編成した拠点パラメータ
      */
-    private playerBaseParams;
+    private playerBase;
     /**
      * 編成したユニットID配列
      */
     private unitIds;
-    /**
-     * 指定された拠点ID
-     */
-    private baseIdMap;
     /**
      * ゲームロジックを処理する BattleLogic のインスタンス
      */
@@ -154,9 +150,17 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      */
     onUnitButtonTapped(buttonIndex: number): void;
     /**
+     * サウンドの初期化
+     */
+    private initSound;
+    /**
+     * ユニットボタンの初期化
+     */
+    private initUnitButtons;
+    /**
      * ボタンインデックスから UnitButton インスタンスを返す
      */
     private getUiGraphUnitButton;
-    private enableBackToTitle;
-    private backToTitle;
+    private enableBackToOrderScene;
+    private backToOrderScene;
 }

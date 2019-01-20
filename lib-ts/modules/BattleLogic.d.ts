@@ -1,7 +1,6 @@
 import FieldMaster from 'interfaces/master/FieldMaster';
 import AIWaveMaster from 'interfaces/master/AIWaveMaster';
 import UnitMaster from 'interfaces/master/UnitMaster';
-import BaseMaster from 'interfaces/master/BaseMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import UnitEntity from 'entity/UnitEntity';
 /**
@@ -50,10 +49,6 @@ export default class BattleLogic {
      */
     private unitMasterCache;
     /**
-     * BaseMaster をキャッシュするための Map
-     */
-    private baseMasterCache;
-    /**
      * 外部から生成をリクエストされたユニット情報を保持する配列
      */
     private spawnRequestedUnitUnitIds;
@@ -73,9 +68,9 @@ export default class BattleLogic {
         aiWaveMaster: AIWaveMaster;
         fieldMaster: FieldMaster;
         unitMasters: UnitMaster[];
-        baseMasterMap: {
-            player: BaseMaster;
-            ai: BaseMaster;
+        playerBase: {
+            baseId: number;
+            health: number;
         };
     }): void;
     /**

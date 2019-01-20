@@ -84,6 +84,7 @@
 								<li class="tsd-kind-class"><a href="classes/gamemanager.html" class="tsd-kind-icon">Game<wbr>Manager</a></li>
 								<li class="tsd-kind-class"><a href="classes/healthgaugeeffect.html" class="tsd-kind-icon">Health<wbr>Gauge<wbr>Effect</a></li>
 								<li class="tsd-kind-class"><a href="classes/immediate.html" class="tsd-kind-icon">Immediate</a></li>
+								<li class="tsd-kind-class"><a href="classes/orderscene.html" class="tsd-kind-icon">Order<wbr>Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/scene.html" class="tsd-kind-icon">Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/sound.html" class="tsd-kind-icon">Sound</a></li>
 								<li class="tsd-kind-class"><a href="classes/soundmanager.html" class="tsd-kind-icon">Sound<wbr>Manager</a></li>
@@ -102,7 +103,6 @@
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface"><a href="interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/basemaster.html" class="tsd-kind-icon">Base<wbr>Master</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/battlelogicdelegate.html" class="tsd-kind-icon">Battle<wbr>Logic<wbr>Delegate</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/battleparameter.html" class="tsd-kind-icon">Battle<wbr>Parameter</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/event.html" class="tsd-kind-icon">Event</a></li>
@@ -120,6 +120,7 @@
 								<li class="tsd-kind-interface"><a href="interfaces/unitanimationmaster.html" class="tsd-kind-icon">Unit<wbr>Animation<wbr>Master</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/unitmaster.html" class="tsd-kind-icon">Unit<wbr>Master</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/userbattle.html" class="tsd-kind-icon">User<wbr>Battle</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -130,6 +131,7 @@
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#base_entities_player_index" class="tsd-kind-icon">BASE_<wbr>ENTITIES_<wbr>PLAYER_<wbr>INDEX</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#battlescenestate" class="tsd-kind-icon">Battle<wbr>Scene<wbr>State</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#config" class="tsd-kind-icon">Config</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#dummy_user_id" class="tsd-kind-icon">DUMMY_<wbr>USER_<wbr>ID</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#invalid_unit_id" class="tsd-kind-icon">INVALID_<wbr>UNIT_<wbr>ID</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#resourcemaster" class="tsd-kind-icon">Resource<wbr>Master</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#supported_extensions" class="tsd-kind-icon">SUPPORTED_<wbr>EXTENSIONS</a></li>
@@ -143,12 +145,6 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#initgame" class="tsd-kind-icon">init<wbr>Game</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Object literals</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-object-literal tsd-is-not-exported"><a href="globals.html#debugparams" class="tsd-kind-icon">debug<wbr>Params</a></li>
 							</ul>
 						</section>
 					</div>
@@ -182,7 +178,7 @@
 					<div class="tsd-signature tsd-kind-icon">BASE_<wbr>ENTITIES_<wbr>AI_<wbr>INDEX<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L13">modules/BattleLogic.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L12">modules/BattleLogic.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -192,7 +188,7 @@
 					<div class="tsd-signature tsd-kind-icon">BASE_<wbr>ENTITIES_<wbr>PLAYER_<wbr>INDEX<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L12">modules/BattleLogic.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L11">modules/BattleLogic.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -219,7 +215,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="config" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Config</h3>
-					<div class="tsd-signature tsd-kind-icon">Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({// リソースのエントリーポイントResourceBaseUrl: &#x27;assets/&#x27;})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({// リソースのエントリーポイントResourceBaseUrl: &#x27;assets/&#x27;,MaxUnitSlotCount: 5})</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/Config.ts#L4">Config.ts:4</a></li>
@@ -237,19 +233,29 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="dummy_user_id" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> DUMMY_<wbr>USER_<wbr>ID</h3>
+					<div class="tsd-signature tsd-kind-icon">DUMMY_<wbr>USER_<wbr>ID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in scenes/OrderScene.ts:17</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
 					<a name="invalid_unit_id" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> INVALID_<wbr>UNIT_<wbr>ID</h3>
 					<div class="tsd-signature tsd-kind-icon">INVALID_<wbr>UNIT_<wbr>ID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">-1</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L11">modules/BattleLogic.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/BattleLogic.ts#L10">modules/BattleLogic.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="resourcemaster" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Resource<wbr>Master</h3>
-					<div class="tsd-signature tsd-kind-icon">Resource<wbr>Master<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({/*** マスターデータ API 情報を有するオブジェクト*/Api: {SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json&#x60;;},Field: (fieldId: number): string &#x3D;&gt; {const query &#x3D; &#x60;?fieldId&#x3D;${fieldId}&#x60;;return &#x60;${Config.ResourceBaseUrl}/master/field_master.json${query}&#x60;;},AiWave: (stageId: number): string &#x3D;&gt; {const query &#x3D; &#x60;?stageId&#x3D;${stageId}&#x60;;return &#x60;${Config.ResourceBaseUrl}/master/ai_wave_master.json${query}&#x60;;},Unit: (unitIds: number[]): string &#x3D;&gt; {const joinedUnitIds &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]&#x3D;${joinedUnitIds}&#x60;;},UnitAnimation: (unitIds: number[]): string &#x3D;&gt; {const joinedUnitIds &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${Config.ResourceBaseUrl}/master/unit_animation_master.json?unitId[]&#x3D;${joinedUnitIds}&#x60;;},Base: (playerBaseId: number, aiBaseId: number): string &#x3D;&gt; {const query &#x3D; &#x60;?playerBaseId&#x3D;${playerBaseId}&amp;aiBaseId&#x3D;${aiBaseId}&#x60;;return &#x60;${Config.ResourceBaseUrl}/master/base_master.json${query}&#x60;;}},/*** 渡されたパラメータによって動的に変わる url を有するオブジェクト*/Dynamic: {Unit: (unitId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/units/${unitId}.json&#x60;;},UnitPanel: (unitId?: number): string &#x3D;&gt; {const id &#x3D; unitId ? unitId : &#x27;empty&#x27;;return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${id}.png&#x60;;},Base: (baseId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/base/${baseId}.json&#x60;;}},/*** 静的なリソースを有するオブジェクト*/Static: {BattleBgFores: [&#x60;${Config.ResourceBaseUrl}/battle/bg_1_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_3.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_4.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_5.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_6.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_7.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_8.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_9.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_10.png&#x60;],BattleBgMiddles: [&#x60;${Config.ResourceBaseUrl}/battle/bg_2_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_3.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_4.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_5.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_6.png&#x60;],BattleBgBacks: [&#x60;${Config.ResourceBaseUrl}/battle/bg_3_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_3_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_3_3.png&#x60;],AttackSmoke:&#x60;${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json&#x60;,DeadBucket:&#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png&#x60;,DeadSpirit:&#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png&#x60;,CollapseExplode:&#x60;${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json&#x60;,BattleResultWin:&#x60;${Config.ResourceBaseUrl}/ui/battle_win.png&#x60;,BattleResultLose:&#x60;${Config.ResourceBaseUrl}/ui/battle_lose.png&#x60;},/*** サウンドリソースの静的な url を有するオブジェクト*/Audio: {Bgm: {Title: &#x60;${Config.ResourceBaseUrl}/audio/bgm_title.mp3&#x60;,Battle: &#x60;${Config.ResourceBaseUrl}/audio/bgm_battle.mp3&#x60;},Se: {Attack1: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_1.mp3&#x60;,Attack2: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_2.mp3&#x60;,Bomb: &#x60;${Config.ResourceBaseUrl}/audio/se_bomb.mp3&#x60;,UnitSpawn: &#x60;${Config.ResourceBaseUrl}/audio/se_unit_spawn.mp3&#x60;,Win: &#x60;${Config.ResourceBaseUrl}/audio/se_win.mp3&#x60;,Lose: &#x60;${Config.ResourceBaseUrl}/audio/se_lose.mp3&#x60;}},/*** テクスチャのフレーム名を返す関数を有するオブジェクト*/TextureFrame: {Unit: (unitActionType: string, unitId: number, index: number): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;unit_${unitId}_${unitActionType}_${index}.png&#x60;];},Base: (baseId: number, index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;base_${baseId}_${index}.png&#x60;];},CollapseExplode: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_1_${index}.png&#x60;];},AttackSmoke: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_2_${index}.png&#x60;];}},/*** アニメーション種別の識別子を有するオブジェクト*/AnimationTypes: {Unit: Object.freeze({WAIT: &#x27;wait&#x27;,WALK: &#x27;walk&#x27;,ATTACK: &#x27;attack&#x27;,DAMAGE: &#x27;damage&#x27;}),Base: Object.freeze({IDLE: &#x27;idle&#x27;,SPAWN: &#x27;spawn&#x27;,COLLAPSE: &#x27;collapse&#x27;})},/*** スプライトシートの最大フレーム数を返す関数*/MaxFrameIndex: (resourceKey: string): number &#x3D;&gt; {const json &#x3D; PIXI.loader.resources[resourceKey];if (!json || !json.data || !json.data.frames) {return -1;}return Object.keys(json.data.frames).length;}})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Resource<wbr>Master<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({/*** マスターデータ API 情報を有するオブジェクト*/Api: {UserBattle: (userId: number): string &#x3D;&gt; {const query &#x3D; &#x60;?userId&#x3D;${userId}&#x60;;return &#x60;${Config.ResourceBaseUrl}/api_mock/user_battle.json${query}&#x60;;},SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json&#x60;;},Field: (fieldId: number): string &#x3D;&gt; {const query &#x3D; &#x60;?fieldId&#x3D;${fieldId}&#x60;;return &#x60;${Config.ResourceBaseUrl}/master/field_master.json${query}&#x60;;},AiWave: (stageId: number): string &#x3D;&gt; {const query &#x3D; &#x60;?stageId&#x3D;${stageId}&#x60;;return &#x60;${Config.ResourceBaseUrl}/master/ai_wave_master.json${query}&#x60;;},Unit: (unitIds: number[]): string &#x3D;&gt; {const query &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]&#x3D;${query}&#x60;;},AllUnit: (): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/master/unit_master.json&#x60;;},UnitAnimation: (unitIds: number[]): string &#x3D;&gt; {const query &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;${Config.ResourceBaseUrl}/master/unit_animation_master.json?unitId[]&#x3D;${query}&#x60;;}},/*** 渡されたパラメータによって動的に変わる url を有するオブジェクト*/Dynamic: {Unit: (unitId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/units/${unitId}.json&#x60;;},UnitPanel: (unitId: number): string &#x3D;&gt; {const id &#x3D; (unitId &gt; 0) ? unitId : &#x27;empty&#x27;;return &#x60;${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${id}.png&#x60;;},Base: (baseId: number): string &#x3D;&gt; {return &#x60;${Config.ResourceBaseUrl}/battle/base/${baseId}.json&#x60;;}},/*** 静的なリソースを有するオブジェクト*/Static: {BattleBgFores: [&#x60;${Config.ResourceBaseUrl}/battle/bg_1_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_3.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_4.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_5.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_6.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_7.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_8.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_9.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_1_10.png&#x60;],BattleBgMiddles: [&#x60;${Config.ResourceBaseUrl}/battle/bg_2_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_3.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_4.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_5.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_2_6.png&#x60;],BattleBgBacks: [&#x60;${Config.ResourceBaseUrl}/battle/bg_3_1.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_3_2.png&#x60;,&#x60;${Config.ResourceBaseUrl}/battle/bg_3_3.png&#x60;],AttackSmoke:&#x60;${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json&#x60;,DeadBucket:&#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png&#x60;,DeadSpirit:&#x60;${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png&#x60;,CollapseExplode:&#x60;${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json&#x60;,BattleResultWin:&#x60;${Config.ResourceBaseUrl}/ui/battle_win.png&#x60;,BattleResultLose:&#x60;${Config.ResourceBaseUrl}/ui/battle_lose.png&#x60;},/*** サウンドリソースの静的な url を有するオブジェクト*/Audio: {Bgm: {Title: &#x60;${Config.ResourceBaseUrl}/audio/bgm_title.mp3&#x60;,Battle: &#x60;${Config.ResourceBaseUrl}/audio/bgm_battle.mp3&#x60;},Se: {Attack1: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_1.mp3&#x60;,Attack2: &#x60;${Config.ResourceBaseUrl}/audio/se_attack_2.mp3&#x60;,Bomb: &#x60;${Config.ResourceBaseUrl}/audio/se_bomb.mp3&#x60;,UnitSpawn: &#x60;${Config.ResourceBaseUrl}/audio/se_unit_spawn.mp3&#x60;,Win: &#x60;${Config.ResourceBaseUrl}/audio/se_win.mp3&#x60;,Lose: &#x60;${Config.ResourceBaseUrl}/audio/se_lose.mp3&#x60;}},/*** テクスチャのフレーム名を返す関数を有するオブジェクト*/TextureFrame: {Unit: (unitActionType: string, unitId: number, index: number): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;unit_${unitId}_${unitActionType}_${index}.png&#x60;];},Base: (baseId: number, index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;base_${baseId}_${index}.png&#x60;];},CollapseExplode: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_1_${index}.png&#x60;];},AttackSmoke: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_2_${index}.png&#x60;];}},/*** アニメーション種別の識別子を有するオブジェクト*/AnimationTypes: {Unit: Object.freeze({WAIT: &#x27;wait&#x27;,WALK: &#x27;walk&#x27;,ATTACK: &#x27;attack&#x27;,DAMAGE: &#x27;damage&#x27;}),Base: Object.freeze({IDLE: &#x27;idle&#x27;,SPAWN: &#x27;spawn&#x27;,COLLAPSE: &#x27;collapse&#x27;})},/*** スプライトシートの最大フレーム数を返す関数*/MaxFrameIndex: (resourceKey: string): number &#x3D;&gt; {const json &#x3D; PIXI.loader.resources[resourceKey];if (!json || !json.data || !json.data.frames) {return -1;}return Object.keys(json.data.frames).length;}})</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/ResourceMaster.ts#L7">ResourceMaster.ts:7</a></li>
@@ -342,139 +348,6 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Object literals</h2>
-				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-is-not-exported">
-					<a name="debugparams" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> debug<wbr>Params</h3>
-					<div class="tsd-signature tsd-kind-icon">debug<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L11">scenes/TitleScene.ts:11</a></li>
-						</ul>
-					</aside>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="debugparams.fieldid" class="tsd-anchor"></a>
-						<h3>field<wbr>Id</h3>
-						<div class="tsd-signature tsd-kind-icon">field<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L13">scenes/TitleScene.ts:13</a></li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="debugparams.maxunitslotcount" class="tsd-anchor"></a>
-						<h3>max<wbr>Unit<wbr>Slot<wbr>Count</h3>
-						<div class="tsd-signature tsd-kind-icon">max<wbr>Unit<wbr>Slot<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;5</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L12">scenes/TitleScene.ts:12</a></li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="debugparams.stageid" class="tsd-anchor"></a>
-						<h3>stage<wbr>Id</h3>
-						<div class="tsd-signature tsd-kind-icon">stage<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L14">scenes/TitleScene.ts:14</a></li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="debugparams.unitids" class="tsd-anchor"></a>
-						<h3>unit<wbr>Ids</h3>
-						<div class="tsd-signature tsd-kind-icon">unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[1, -1, 3, -1, 5]</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L15">scenes/TitleScene.ts:15</a></li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="debugparams.baseidmap" class="tsd-anchor"></a>
-						<h3>base<wbr>IdMap</h3>
-						<div class="tsd-signature tsd-kind-icon">base<wbr>IdMap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L16">scenes/TitleScene.ts:16</a></li>
-							</ul>
-						</aside>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="debugparams.baseidmap.ai" class="tsd-anchor"></a>
-							<h3>ai</h3>
-							<div class="tsd-signature tsd-kind-icon">ai<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L18">scenes/TitleScene.ts:18</a></li>
-								</ul>
-							</aside>
-						</section>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="debugparams.baseidmap.player" class="tsd-anchor"></a>
-							<h3>player</h3>
-							<div class="tsd-signature tsd-kind-icon">player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L17">scenes/TitleScene.ts:17</a></li>
-								</ul>
-							</aside>
-						</section>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="debugparams.cost" class="tsd-anchor"></a>
-						<h3>cost</h3>
-						<div class="tsd-signature tsd-kind-icon">cost<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L23">scenes/TitleScene.ts:23</a></li>
-							</ul>
-						</aside>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="debugparams.cost.max" class="tsd-anchor"></a>
-							<h3>max</h3>
-							<div class="tsd-signature tsd-kind-icon">max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L25">scenes/TitleScene.ts:25</a></li>
-								</ul>
-							</aside>
-						</section>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="debugparams.cost.recoveryperframe" class="tsd-anchor"></a>
-							<h3>recovery<wbr>Per<wbr>Frame</h3>
-							<div class="tsd-signature tsd-kind-icon">recovery<wbr>Per<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.05</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L24">scenes/TitleScene.ts:24</a></li>
-								</ul>
-							</aside>
-						</section>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="debugparams.playerbaseparams" class="tsd-anchor"></a>
-						<h3>player<wbr>Base<wbr>Params</h3>
-						<div class="tsd-signature tsd-kind-icon">player<wbr>Base<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L20">scenes/TitleScene.ts:20</a></li>
-							</ul>
-						</aside>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="debugparams.playerbaseparams.maxhealth" class="tsd-anchor"></a>
-							<h3>max<wbr>Health</h3>
-							<div class="tsd-signature tsd-kind-icon">max<wbr>Health<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L21">scenes/TitleScene.ts:21</a></li>
-								</ul>
-							</aside>
-						</section>
-					</section>
-				</section>
-			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
@@ -535,6 +408,9 @@
 						<a href="classes/immediate.html" class="tsd-kind-icon">Immediate</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/orderscene.html" class="tsd-kind-icon">Order<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/scene.html" class="tsd-kind-icon">Scene</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -572,9 +448,6 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/aiwavemaster.html" class="tsd-kind-icon">AIWave<wbr>Master</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/basemaster.html" class="tsd-kind-icon">Base<wbr>Master</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/battlelogicdelegate.html" class="tsd-kind-icon">Battle<wbr>Logic<wbr>Delegate</a>
@@ -627,6 +500,9 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/updateobject.html" class="tsd-kind-icon">Update<wbr>Object</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/userbattle.html" class="tsd-kind-icon">User<wbr>Battle</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#attackablestate" class="tsd-kind-icon">Attackable<wbr>State</a>
 					</li>
@@ -641,6 +517,9 @@
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#config" class="tsd-kind-icon">Config</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#dummy_user_id" class="tsd-kind-icon">DUMMY_<wbr>USER_<wbr>ID</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#invalid_unit_id" class="tsd-kind-icon">INVALID_<wbr>UNIT_<wbr>ID</a>
@@ -665,9 +544,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#initgame" class="tsd-kind-icon">init<wbr>Game</a>
-					</li>
-					<li class=" tsd-kind-object-literal tsd-is-not-exported">
-						<a href="globals.html#debugparams" class="tsd-kind-icon">debug<wbr>Params</a>
 					</li>
 				</ul>
 			</nav>

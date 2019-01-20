@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 /**
  * ユニット生成をリクエストするための UI 用のボタン
  */
-export default class UnitButton extends PIXI.Sprite {
+export default class UnitButton extends PIXI.Container {
     /**
      * ボタン枠のインデックス
      */
@@ -12,7 +12,22 @@ export default class UnitButton extends PIXI.Sprite {
      */
     unitId: number;
     /**
+     * 表示するユニットコスト
+     */
+    cost: number;
+    /**
+     * ボタン画像
+     */
+    private button;
+    /**
+     * コストテキスト
+     */
+    private text;
+    constructor(texture?: PIXI.Texture);
+    /**
      * ボタン枠インデックスとユニット ID で初期化する
      */
-    init(slotIndex: number, unitId: number): void;
+    init(slotIndex: number, unitId?: number, cost?: number): void;
+    changeUnit(unitId?: number, cost?: number): void;
+    private getTexture;
 }

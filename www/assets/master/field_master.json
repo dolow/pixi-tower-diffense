@@ -8,6 +8,7 @@
     }
   },
   "aiBase": {
+    "baseId": 2,
     "position": {
       "x": 2000
     },

@@ -1,7 +1,6 @@
 import FieldMaster from 'interfaces/master/FieldMaster';
 import AIWaveMaster from 'interfaces/master/AIWaveMaster';
 import UnitMaster from 'interfaces/master/UnitMaster';
-import BaseMaster from 'interfaces/master/BaseMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import AttackableState from 'enum/AttackableState';
 import BattleLogicDefaultDelegator from 'modules/BattleLogicDefaultDelegator';
@@ -61,10 +60,6 @@ export default class BattleLogic {
    */
   private unitMasterCache: Map<number, UnitMaster> = new Map();
   /**
-   * BaseMaster をキャッシュするための Map
-   */
-  private baseMasterCache: Map<number, BaseMaster> = new Map();
-  /**
    * 外部から生成をリクエストされたユニット情報を保持する配列
    */
   private spawnRequestedUnitUnitIds: { unitId: number, isPlayer: boolean }[] = [];
@@ -86,9 +81,9 @@ export default class BattleLogic {
     aiWaveMaster: AIWaveMaster,
     fieldMaster: FieldMaster,
     unitMasters: UnitMaster[],
-    baseMasterMap: {
-      player: BaseMaster,
-      ai: BaseMaster
+    playerBase: {
+      baseId: number,
+      health: number
     }
   }): void {
     // デリゲータのセット
@@ -96,7 +91,6 @@ export default class BattleLogic {
 
     // キャッシュクリア
     this.aiWaveMasterCache.clear();
-    this.baseMasterCache.clear();
     this.unitMasterCache.clear();
 
     // マスターのキャッシュ処理
@@ -114,28 +108,28 @@ export default class BattleLogic {
       this.unitMasterCache.set(unit.unitId, unit);
     }
 
-    const playerBaseMaster = params.baseMasterMap.player;
-    const aiBaseMaster = params.baseMasterMap.ai;
-
-    this.baseMasterCache.set(playerBaseMaster.baseId, playerBaseMaster);
-    this.baseMasterCache.set(aiBaseMaster.baseId, aiBaseMaster);
-
-    const playerBase = new BaseEntity(playerBaseMaster.baseId, true);
-    const aiBase = new BaseEntity(aiBaseMaster.baseId, false);
+    const playerBaseEntity = new BaseEntity(params.playerBase.baseId, true);
+    const aiBaseEntity = new BaseEntity(this.fieldMasterCache.aiBase.baseId, false);
 
     // 拠点エンティティの ID 割当て
-    playerBase.id = this.nextEntityId++;
-    aiBase.id = this.nextEntityId++;
+    playerBaseEntity.id = this.nextEntityId++;
+    aiBaseEntity.id = this.nextEntityId++;
     // 拠点エンティティの health 設定
-    playerBase.currentHealth = playerBaseMaster.maxHealth;
-    aiBase.currentHealth = aiBaseMaster.maxHealth;
+    playerBaseEntity.currentHealth = params.playerBase.health;
+    aiBaseEntity.currentHealth = this.fieldMasterCache.aiBase.health;
 
-    this.delegator.onBaseEntitySpawned(playerBase, this.fieldMasterCache.playerBase.position.x);
-    this.delegator.onBaseEntitySpawned(aiBase, this.fieldMasterCache.aiBase.position.x);
+    this.delegator.onBaseEntitySpawned(
+      playerBaseEntity,
+      this.fieldMasterCache.playerBase.position.x
+    );
+    this.delegator.onBaseEntitySpawned(
+      aiBaseEntity,
+      this.fieldMasterCache.aiBase.position.x
+    );
 
     // 拠点エンティティの保持
-    this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBase;
-    this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBase;
+    this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBaseEntity;
+    this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBaseEntity;
   }
 
   /**

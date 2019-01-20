@@ -11,6 +11,7 @@ export default interface FieldMaster {
         };
     };
     aiBase: {
+        baseId: number;
         position: {
             x: number;
         };

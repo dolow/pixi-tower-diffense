@@ -4,6 +4,13 @@ import Scene from 'scenes/Scene';
  * タイトルシーン
  */
 export default class TitleScene extends Scene {
+    /**
+     * TOUCH TO START テキストの明滅感覚
+     */
+    private readonly textAppealDuration;
+    /**
+     * コンストラクタ
+     */
     constructor();
     /**
      * リソースリストを作成し返却する
@@ -14,7 +21,11 @@ export default class TitleScene extends Scene {
      */
     protected onResourceLoaded(): void;
     /**
-     * ゲーム開始ボタン押下が離されたされたときのコールバック
+     * 毎フレームの更新処理
      */
-    startBattle(): void;
+    update(dt: number): void;
+    /**
+     * 編成ボタンが離されたときのコールバック
+     */
+    startOrder(): void;
 }

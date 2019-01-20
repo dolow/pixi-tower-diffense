@@ -8,19 +8,20 @@ declare const ResourceMaster: Readonly<{
      * マスターデータ API 情報を有するオブジェクト
      */
     Api: {
+        UserBattle: (userId: number) => string;
         SceneUiGraph: (scene: Scene) => string;
         Field: (fieldId: number) => string;
         AiWave: (stageId: number) => string;
         Unit: (unitIds: number[]) => string;
+        AllUnit: () => string;
         UnitAnimation: (unitIds: number[]) => string;
-        Base: (playerBaseId: number, aiBaseId: number) => string;
     };
     /**
      * 渡されたパラメータによって動的に変わる url を有するオブジェクト
      */
     Dynamic: {
         Unit: (unitId: number) => string;
-        UnitPanel: (unitId?: number | undefined) => string;
+        UnitPanel: (unitId: number) => string;
         Base: (baseId: number) => string;
     };
     /**

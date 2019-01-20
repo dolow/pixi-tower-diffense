@@ -3,7 +3,8 @@
  */
 const Config = Object.freeze({
   // リソースのエントリーポイント
-  ResourceBaseUrl: 'assets/'
+  ResourceBaseUrl: 'assets/',
+  MaxUnitSlotCount: 5
 });
 
 export default Config;

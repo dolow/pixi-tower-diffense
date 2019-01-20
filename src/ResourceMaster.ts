@@ -9,6 +9,10 @@ const ResourceMaster = Object.freeze({
    * マスターデータ API 情報を有するオブジェクト
    */
   Api: {
+    UserBattle: (userId: number): string => {
+      const query = `?userId=${userId}`;
+      return `${Config.ResourceBaseUrl}/api_mock/user_battle.json${query}`;
+    },
     SceneUiGraph: (scene: Scene): string => {
       const snake_case = scene.constructor.name.replace(
         /([A-Z])/g,
@@ -26,16 +30,15 @@ const ResourceMaster = Object.freeze({
       return `${Config.ResourceBaseUrl}/master/ai_wave_master.json${query}`;
     },
     Unit: (unitIds: number[]): string => {
-      const joinedUnitIds = unitIds.join('&unitId[]=');
-      return `${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]=${joinedUnitIds}`;
+      const query = unitIds.join('&unitId[]=');
+      return `${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]=${query}`;
+    },
+    AllUnit: (): string => {
+      return `${Config.ResourceBaseUrl}/master/unit_master.json`;
     },
     UnitAnimation: (unitIds: number[]): string => {
-      const joinedUnitIds = unitIds.join('&unitId[]=');
-      return `${Config.ResourceBaseUrl}/master/unit_animation_master.json?unitId[]=${joinedUnitIds}`;
-    },
-    Base: (playerBaseId: number, aiBaseId: number): string => {
-      const query = `?playerBaseId=${playerBaseId}&aiBaseId=${aiBaseId}`;
-      return `${Config.ResourceBaseUrl}/master/base_master.json${query}`;
+      const query = unitIds.join('&unitId[]=');
+      return `${Config.ResourceBaseUrl}/master/unit_animation_master.json?unitId[]=${query}`;
     }
   },
 
@@ -46,8 +49,8 @@ const ResourceMaster = Object.freeze({
     Unit: (unitId: number): string => {
       return `${Config.ResourceBaseUrl}/units/${unitId}.json`;
     },
-    UnitPanel: (unitId?: number): string => {
-      const id = unitId ? unitId : 'empty';
+    UnitPanel: (unitId: number): string => {
+      const id = (unitId > 0) ? unitId : 'empty';
       return `${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${id}.png`;
     },
     Base: (baseId: number): string => {

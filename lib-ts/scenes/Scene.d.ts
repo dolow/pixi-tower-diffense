@@ -12,6 +12,10 @@ import UpdateObject from 'interfaces/UpdateObject';
  */
 export default abstract class Scene extends PIXI.Container {
     /**
+     * 経過フレーム数
+     */
+    protected elapsedFrameCount: number;
+    /**
      * UiGraph を利用して読み込む UI があるかどうか
      */
     protected hasSceneUiGraph: boolean;

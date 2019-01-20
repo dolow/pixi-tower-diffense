@@ -101,7 +101,7 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="titlescene.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="titlescene.html#_bounds" class="tsd-kind-icon">_bounds</a></li>
@@ -124,6 +124,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#children" class="tsd-kind-icon">children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#cursor" class="tsd-kind-icon">cursor</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="titlescene.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#filters" class="tsd-kind-icon">filters</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="titlescene.html#hassceneuigraph" class="tsd-kind-icon">has<wbr>Scene<wbr>UiGraph</a></li>
@@ -144,6 +145,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#scale" class="tsd-kind-icon">scale</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#skew" class="tsd-kind-icon">skew</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="titlescene.html#textappealduration" class="tsd-kind-icon">text<wbr>Appeal<wbr>Duration</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#transform" class="tsd-kind-icon">transform</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="titlescene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a></li>
@@ -217,11 +219,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="titlescene.html#startbattle" class="tsd-kind-icon">start<wbr>Battle</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="titlescene.html#startorder" class="tsd-kind-icon">start<wbr>Order</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="titlescene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="titlescene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="titlescene.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="titlescene.html#update" class="tsd-kind-icon">update</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="titlescene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="titlescene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
 							</ul>
@@ -242,15 +244,20 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L32">scenes/TitleScene.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L16">scenes/TitleScene.ts:16</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>コンストラクタ</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="titlescene.html" class="tsd-signature-type">TitleScene</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="_bounds" class="tsd-anchor"></a>
@@ -472,6 +479,22 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="elapsedframecount" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> elapsed<wbr>Frame<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">elapsed<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#elapsedframecount">elapsedFrameCount</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L21">scenes/Scene.ts:21</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>経過フレーム数</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="filterarea" class="tsd-anchor"></a>
 					<h3>filter<wbr>Area</h3>
@@ -501,7 +524,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#hassceneuigraph">hasSceneUiGraph</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L21">scenes/Scene.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L25">scenes/Scene.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -594,7 +617,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#objectstoupdate">objectsToUpdate</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L34">scenes/Scene.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L38">scenes/Scene.ts:38</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -723,6 +746,21 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="textappealduration" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> text<wbr>Appeal<wbr>Duration</h3>
+					<div class="tsd-signature tsd-kind-icon">text<wbr>Appeal<wbr>Duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;20</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L16">scenes/TitleScene.ts:16</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>TOUCH TO START テキストの明滅感覚</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="trackedpointers" class="tsd-anchor"></a>
 					<h3>tracked<wbr>Pointers</h3>
@@ -760,7 +798,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#transitionin">transitionIn</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L39">scenes/Scene.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L43">scenes/Scene.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -776,7 +814,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#transitionout">transitionOut</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L43">scenes/Scene.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L47">scenes/Scene.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -792,7 +830,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#uigraph">uiGraph</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L25">scenes/Scene.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L29">scenes/Scene.ts:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -816,7 +854,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#uigraphcontainer">uiGraphContainer</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L30">scenes/Scene.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L34">scenes/Scene.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1332,7 +1370,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#begintransitionin">beginTransitionIn</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L88">scenes/Scene.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L94">scenes/Scene.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1380,7 +1418,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#begintransitionout">beginTransitionOut</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L103">scenes/Scene.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L109">scenes/Scene.ts:109</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1464,7 +1502,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#createresourcelist">createResourceList</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L46">scenes/TitleScene.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L34">scenes/TitleScene.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1691,7 +1729,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#getcustomuigraphfactory">getCustomUiGraphFactory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L230">scenes/Scene.ts:230</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L236">scenes/Scene.ts:236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1837,7 +1875,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#loadresource">loadResource</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L126">scenes/Scene.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L132">scenes/Scene.ts:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1879,7 +1917,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#loaduigraph">loadUiGraph</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L143">scenes/Scene.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L149">scenes/Scene.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2023,7 +2061,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#onresourceloaded">onResourceLoaded</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L56">scenes/TitleScene.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L44">scenes/TitleScene.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2046,7 +2084,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#onuigraphloaded">onUiGraphLoaded</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L155">scenes/Scene.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L161">scenes/Scene.ts:161</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2159,7 +2197,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#prepareuigraphcontainer">prepareUiGraphContainer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L201">scenes/Scene.ts:201</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L207">scenes/Scene.ts:207</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2188,7 +2226,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#registerupdatingobject">registerUpdatingObject</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L61">scenes/Scene.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L67">scenes/Scene.ts:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2538,10 +2576,10 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="startbattle" class="tsd-anchor"></a>
-					<h3>start<wbr>Battle</h3>
+					<a name="startorder" class="tsd-anchor"></a>
+					<h3>start<wbr>Order</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">start<wbr>Battle<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">start<wbr>Order<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -2552,7 +2590,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>ゲーム開始ボタン押下が離されたされたときのコールバック</p>
+									<p>編成ボタンが離されたときのコールバック</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2696,29 +2734,29 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>dt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#update">update</a></p>
+								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L48">scenes/Scene.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/TitleScene.ts#L56">scenes/TitleScene.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>GameManager によって requestAnimationFrame 毎に呼び出されるメソッド</p>
+									<p>毎フレームの更新処理</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>delta: <span class="tsd-signature-type">number</span></h5>
+									<h5>dt: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2736,7 +2774,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#updateregisteredobjects">updateRegisteredObjects</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L68">scenes/Scene.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L74">scenes/Scene.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2853,6 +2891,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="titlescene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="titlescene.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="titlescene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a>
 							</li>
@@ -2912,6 +2953,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="titlescene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="titlescene.html#textappealduration" class="tsd-kind-icon">text<wbr>Appeal<wbr>Duration</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="titlescene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a>
@@ -3118,7 +3162,7 @@
 								<a href="titlescene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="titlescene.html#startbattle" class="tsd-kind-icon">start<wbr>Battle</a>
+								<a href="titlescene.html#startorder" class="tsd-kind-icon">start<wbr>Order</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="titlescene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a>
@@ -3129,7 +3173,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 								<a href="titlescene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="titlescene.html#update" class="tsd-kind-icon">update</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
