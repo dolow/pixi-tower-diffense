@@ -48538,6 +48538,9 @@ var OrderScene = /** @class */ (function (_super) {
             cost: this.userBattle.cost
         };
     };
+    /**
+     * タップ時のサウンドを再生する
+     */
     OrderScene.prototype.playTapSe = function () {
         var se = managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
         if (se) {

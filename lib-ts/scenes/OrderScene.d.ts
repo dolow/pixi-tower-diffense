@@ -91,5 +91,8 @@ export default class OrderScene extends Scene {
      * バトル用のパラメータを作成する
      */
     private createBattleParameter;
+    /**
+     * タップ時のサウンドを再生する
+     */
     private playTapSe;
 }

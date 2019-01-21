@@ -371,6 +371,9 @@ export default class OrderScene extends Scene  {
     };
   }
 
+  /**
+   * タップ時のサウンドを再生する
+   */
   private playTapSe(): void {
     const se = SoundManager.getSound(ResourceMaster.Audio.Se.UnitSpawn);
     if (se) {
