@@ -42,6 +42,7 @@ export default class GameManager {
         glHeight: number;
         option?: PIXI.ApplicationOptions;
     }): void;
+    private static requestFullScreen;
     /**
      * シーンがロード中、あるいはトランジション中であるかを返す
      */

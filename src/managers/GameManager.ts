@@ -68,11 +68,20 @@ export default class GameManager {
     window.addEventListener('resize', GameManager.resizeCanvas);
     GameManager.resizeCanvas();
 
+    const eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+    document.body.addEventListener(eventName, GameManager.requestFullScreen);
+
     instance.game.ticker.add((delta: number) => {
       if (instance.currentScene) {
         instance.currentScene.update(delta);
       }
     });
+  }
+
+  private static requestFullScreen(): void {
+    const body = window.document.body as any;
+    const requestFullScreen = body.requestFullScreen || body.webkitRequestFullScreen;
+    requestFullScreen.call(body);
   }
 
   /**

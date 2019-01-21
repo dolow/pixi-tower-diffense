@@ -46113,11 +46113,18 @@ var GameManager = /** @class */ (function () {
         document.body.appendChild(GameManager.instance.game.view);
         window.addEventListener('resize', GameManager.resizeCanvas);
         GameManager.resizeCanvas();
+        var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+        document.body.addEventListener(eventName, GameManager.requestFullScreen);
         instance.game.ticker.add(function (delta) {
             if (instance.currentScene) {
                 instance.currentScene.update(delta);
             }
         });
+    };
+    GameManager.requestFullScreen = function () {
+        var body = window.document.body;
+        var requestFullScreen = body.requestFullScreen || body.webkitRequestFullScreen;
+        requestFullScreen.call(body);
     };
     Object.defineProperty(GameManager, "isSceneLoading", {
         /**
