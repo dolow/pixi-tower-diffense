@@ -44340,13 +44340,9 @@ var ResourceMaster = Object.freeze({
             var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
         },
-        Field: function (fieldId) {
-            var query = "?fieldId=" + fieldId;
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/field_master.json" + query;
-        },
-        AiWave: function (stageId) {
+        Stage: function (stageId) {
             var query = "?stageId=" + stageId;
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/ai_wave_master.json" + query;
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/stage_master.json" + query;
         },
         Unit: function (unitIds) {
             var query = unitIds.join('&unitId[]=');
@@ -46267,10 +46263,10 @@ var IndexedDBManager = /** @class */ (function () {
         var record = IndexedDBManager.createRecordObject(key, data);
         var request = store.put(record);
         if (onSuccess) {
-            request.onsuccess = function (e) { return onSuccess(e); };
+            request.onsuccess = function (e) { onSuccess(e); };
         }
         if (onError) {
-            request.onerror = function (e) { return onError(e); };
+            request.onerror = function (e) { onError(e); };
         }
     };
     /**
@@ -46288,15 +46284,12 @@ var IndexedDBManager = /** @class */ (function () {
         var request = store.get(key);
         request.onsuccess = function (e) {
             var result = e.target.result;
-            if (result) {
-                onSuccess(result.value, result.key);
-            }
-            else {
-                onSuccess(undefined, undefined);
-            }
+            (result)
+                ? onSuccess(result.value, result.key)
+                : onSuccess(undefined, undefined);
         };
         if (onError) {
-            request.onerror = function (e) { return onError(e); };
+            request.onerror = function (e) { onError(e); };
         }
     };
     /**
@@ -46312,10 +46305,10 @@ var IndexedDBManager = /** @class */ (function () {
         }
         var request = store.delete(key);
         if (onSuccess) {
-            request.onsuccess = function (e) { return onSuccess(e); };
+            request.onsuccess = function (e) { onSuccess(e); };
         }
         if (onError) {
-            request.onerror = function (e) { return onError(e); };
+            request.onerror = function (e) { onError(e); };
         }
     };
     /**
@@ -46331,10 +46324,10 @@ var IndexedDBManager = /** @class */ (function () {
         }
         var request = store.clear();
         if (onSuccess) {
-            request.onsuccess = function (e) { return onSuccess(e); };
+            request.onsuccess = function (e) { onSuccess(e); };
         }
         if (onError) {
-            request.onerror = function (e) { return onError(e); };
+            request.onerror = function (e) { onError(e); };
         }
     };
     /**
@@ -46361,10 +46354,7 @@ var IndexedDBManager = /** @class */ (function () {
      * Key/Value をこのマネージャが扱うオブジェクトに変換する
      */
     IndexedDBManager.createRecordObject = function (key, value) {
-        return {
-            key: key,
-            value: value
-        };
+        return { key: key, value: value };
     };
     /**
      * このマネージャが扱う固定データベース名
@@ -46716,15 +46706,15 @@ var BattleLogic = /** @class */ (function () {
         /**
          * フィールドマスタのキャッシュ
          */
-        this.fieldMasterCache = null;
-        /**
-         * AIWaveMaster をキャッシュするための Map
-         */
-        this.aiWaveMasterCache = new Map();
+        this.stageMasterCache = null;
         /**
          * UnitMaster をキャッシュするための Map
          */
         this.unitMasterCache = new Map();
+        /**
+         * StageMaster.waves をキャッシュするための Map
+         */
+        this.aiWaveCache = new Map();
         /**
          * 外部から生成をリクエストされたユニット情報を保持する配列
          */
@@ -46745,30 +46735,30 @@ var BattleLogic = /** @class */ (function () {
         // デリゲータのセット
         this.delegator = params.delegator;
         // キャッシュクリア
-        this.aiWaveMasterCache.clear();
+        this.aiWaveCache.clear();
         this.unitMasterCache.clear();
         // マスターのキャッシュ処理
-        this.fieldMasterCache = params.fieldMaster;
-        var waves = params.aiWaveMaster.waves;
+        this.stageMasterCache = params.stageMaster;
+        var waves = this.stageMasterCache.waves;
         var keys = Object.keys(waves);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            this.aiWaveMasterCache.set(Number.parseInt(key, 10), waves[key]);
+            this.aiWaveCache.set(Number.parseInt(key, 10), waves[key]);
         }
         for (var i = 0; i < params.unitMasters.length; i++) {
             var unit = params.unitMasters[i];
             this.unitMasterCache.set(unit.unitId, unit);
         }
         var playerBaseEntity = new entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__["default"](params.playerBase.baseId, true);
-        var aiBaseEntity = new entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__["default"](this.fieldMasterCache.aiBase.baseId, false);
+        var aiBaseEntity = new entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__["default"](this.stageMasterCache.aiBase.baseId, false);
         // 拠点エンティティの ID 割当て
         playerBaseEntity.id = this.nextEntityId++;
         aiBaseEntity.id = this.nextEntityId++;
         // 拠点エンティティの health 設定
         playerBaseEntity.currentHealth = params.playerBase.health;
-        aiBaseEntity.currentHealth = this.fieldMasterCache.aiBase.health;
-        this.delegator.onBaseEntitySpawned(playerBaseEntity, this.fieldMasterCache.playerBase.position.x);
-        this.delegator.onBaseEntitySpawned(aiBaseEntity, this.fieldMasterCache.aiBase.position.x);
+        aiBaseEntity.currentHealth = this.stageMasterCache.aiBase.health;
+        this.delegator.onBaseEntitySpawned(playerBaseEntity, this.stageMasterCache.playerBase.position.x);
+        this.delegator.onBaseEntitySpawned(aiBaseEntity, this.stageMasterCache.aiBase.position.x);
         // 拠点エンティティの保持
         this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBaseEntity;
         this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBaseEntity;
@@ -47002,7 +46992,7 @@ var BattleLogic = /** @class */ (function () {
      * 必要であれば AI ユニットを生成させる
      */
     BattleLogic.prototype.requestAISpawn = function (targetFrame) {
-        var waves = this.aiWaveMasterCache.get(targetFrame);
+        var waves = this.aiWaveCache.get(targetFrame);
         if (!waves) {
             return;
         }
@@ -47020,7 +47010,7 @@ var BattleLogic = /** @class */ (function () {
         if (this.spawnRequestedUnitUnitIds.length === 0) {
             return;
         }
-        if (!this.fieldMasterCache) {
+        if (!this.stageMasterCache) {
             return;
         }
         var tmpCost = this.availableCost;
@@ -47036,10 +47026,10 @@ var BattleLogic = /** @class */ (function () {
                     continue;
                 }
                 tmpCost -= master.cost;
-                basePosition = this.fieldMasterCache.playerBase.position.x;
+                basePosition = this.stageMasterCache.playerBase.position.x;
             }
             else {
-                basePosition = this.fieldMasterCache.aiBase.position.x;
+                basePosition = this.stageMasterCache.aiBase.position.x;
             }
             var entity = new entity_UnitEntity__WEBPACK_IMPORTED_MODULE_2__["default"](reservedUnit.unitId, reservedUnit.isPlayer);
             entity.id = this.nextEntityId++;
@@ -47665,7 +47655,6 @@ var BattleScene = /** @class */ (function (_super) {
         _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"]();
         // ユーザパラメータの設定
         _this.unitSlotCount = params.unitSlotCount;
-        _this.fieldId = params.fieldId;
         _this.stageId = params.stageId;
         _this.unitIds = params.unitIds;
         _this.playerBase = params.playerBase;
@@ -47735,12 +47724,10 @@ var BattleScene = /** @class */ (function (_super) {
             }
         }
         var masterKeys = BattleScene.MasterResourceKey;
-        var fieldMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Field(this.fieldId);
-        var aiWaveMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.AiWave(this.stageId);
+        var stageMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Stage(this.stageId);
         var unitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Unit(this.unitIds);
         var unitAnimationMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.UnitAnimation(this.unitIds);
-        assets.push({ name: masterKeys.FIELD, url: fieldMasterUrl });
-        assets.push({ name: masterKeys.AI_WAVE, url: aiWaveMasterUrl });
+        assets.push({ name: masterKeys.STAGE, url: stageMasterUrl });
         assets.push({ name: masterKeys.UNIT, url: unitMasterUrl });
         assets.push({ name: masterKeys.UNIT_ANIMATION, url: unitAnimationMasterUrl });
         var playerBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Base(this.playerBase.baseId);
@@ -47794,10 +47781,9 @@ var BattleScene = /** @class */ (function (_super) {
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
         var sceneUiGraphName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
         this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
-        var masterKeys = BattleScene.MasterResourceKey;
-        var fieldMaster = resources[masterKeys.FIELD].data;
-        this.field.init({ fieldLength: fieldMaster.length, zLines: fieldMaster.zLines });
-        var unitAnimationMasters = resources[masterKeys.UNIT_ANIMATION].data;
+        var stageMaster = resources[BattleScene.MasterResourceKey.STAGE].data;
+        this.field.init({ fieldLength: stageMaster.length, zLines: stageMaster.zLines });
+        var unitAnimationMasters = resources[BattleScene.MasterResourceKey.UNIT_ANIMATION].data;
         for (var i = 0; i < unitAnimationMasters.length; i++) {
             var master = unitAnimationMasters[i];
             this.unitAnimationMasterCache.set(master.unitId, master);
@@ -47811,11 +47797,9 @@ var BattleScene = /** @class */ (function (_super) {
          * 追加リソースがなければそのまま実行する
          */
         var onDependencyResourceLoaded = function () {
-            var aiWaveMaster = resources[BattleScene.MasterResourceKey.AI_WAVE].data;
             var unitMasters = resources[BattleScene.MasterResourceKey.UNIT].data;
             _this.manager.init({
-                aiWaveMaster: aiWaveMaster,
-                fieldMaster: fieldMaster,
+                stageMaster: stageMaster,
                 unitMasters: unitMasters,
                 delegator: _this,
                 playerBase: {
@@ -47830,7 +47814,7 @@ var BattleScene = /** @class */ (function (_super) {
                 _this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].RESOURCE_LOADED;
             }
         };
-        var aiBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Base(fieldMaster.aiBase.baseId);
+        var aiBaseTextureUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Base(stageMaster.aiBase.baseId);
         if (!resources[aiBaseTextureUrl]) {
             pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add({ name: aiBaseTextureUrl, url: aiBaseTextureUrl }).load(function () {
                 onDependencyResourceLoaded();
@@ -48189,8 +48173,7 @@ var BattleScene = /** @class */ (function (_super) {
      * マスターデータを保存する PIXI.loaders.resource のキー
      */
     BattleScene.MasterResourceKey = {
-        FIELD: 'battle_scene_field_master',
-        AI_WAVE: 'battle_scene_ai_wave_master',
+        STAGE: 'battle_scene_stage_master',
         UNIT: 'battle_scene_unit_master',
         UNIT_ANIMATION: 'battle_scene_unit_animation_master',
         BASE: 'battle_scene_base_master'
@@ -48341,6 +48324,10 @@ var OrderScene = /** @class */ (function (_super) {
         if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].hasSound(bgmTitleName)) {
             assets.push({ name: bgmTitleName, url: bgmTitleName });
         }
+        var seUnitSpawn = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn;
+        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].hasSound(seUnitSpawn)) {
+            assets.push({ name: seUnitSpawn, url: seUnitSpawn });
+        }
         return assets;
     };
     /**
@@ -48362,6 +48349,8 @@ var OrderScene = /** @class */ (function (_super) {
             var unitMaster = allUnitMaster[i];
             this.unitMasterCache.set(unitMaster.unitId, unitMaster);
         }
+        var seKey = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn;
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].createSound(seKey, resources[seKey].buffer);
         var dependencyAssets = [];
         for (var i = 0; i < this.userBattle.unlockedUnitIds.length; i++) {
             var unitId = this.userBattle.unlockedUnitIds[i];
@@ -48408,6 +48397,7 @@ var OrderScene = /** @class */ (function (_super) {
         if (!unitButton) {
             return;
         }
+        this.playTapSe();
         var availableUnitIds = this.userBattle.unlockedUnitIds;
         var nextIndex = availableUnitIds.indexOf(unitButton.unitId) + addValue;
         if (nextIndex >= availableUnitIds.length) {
@@ -48433,6 +48423,7 @@ var OrderScene = /** @class */ (function (_super) {
         if (!this.userBattle) {
             return;
         }
+        this.playTapSe();
         var newStageId;
         var maxStageId = this.userBattle.unlockedStageId;
         if (maxStageId === 1) {
@@ -48454,6 +48445,7 @@ var OrderScene = /** @class */ (function (_super) {
      */
     OrderScene.prototype.onOkButtonDown = function () {
         this.uiGraph.ok_button_off.visible = false;
+        this.playTapSe();
     };
     /**
      * OK ボタン押下が離されたされたときのコールバック
@@ -48541,11 +48533,16 @@ var OrderScene = /** @class */ (function (_super) {
         return {
             unitIds: unitIds,
             unitSlotCount: Config__WEBPACK_IMPORTED_MODULE_0__["default"].MaxUnitSlotCount,
-            fieldId: this.currentStageId,
             stageId: this.currentStageId,
             playerBase: this.userBattle.base,
             cost: this.userBattle.cost
         };
+    };
+    OrderScene.prototype.playTapSe = function () {
+        var se = managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+        if (se) {
+            se.play();
+        }
     };
     return OrderScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_6__["default"]));

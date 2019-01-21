@@ -21,13 +21,9 @@ const ResourceMaster = Object.freeze({
 
       return `${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json`;
     },
-    Field: (fieldId: number): string => {
-      const query = `?fieldId=${fieldId}`;
-      return `${Config.ResourceBaseUrl}/master/field_master.json${query}`;
-    },
-    AiWave: (stageId: number): string => {
+    Stage: (stageId: number): string => {
       const query = `?stageId=${stageId}`;
-      return `${Config.ResourceBaseUrl}/master/ai_wave_master.json${query}`;
+      return `${Config.ResourceBaseUrl}/master/stage_master.json${query}`;
     },
     Unit: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');

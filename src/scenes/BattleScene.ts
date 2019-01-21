@@ -46,8 +46,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * マスターデータを保存する PIXI.loaders.resource のキー
    */
   private static readonly MasterResourceKey = {
-    FIELD: 'battle_scene_field_master',
-    AI_WAVE: 'battle_scene_ai_wave_master',
+    STAGE: 'battle_scene_stage_master',
     UNIT: 'battle_scene_unit_master',
     UNIT_ANIMATION: 'battle_scene_unit_animation_master',
     BASE: 'battle_scene_base_master'
@@ -61,10 +60,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * ユニット編成数
    */
   private unitSlotCount!: number;
-  /**
-   * 利用するフィールドID
-   */
-  private fieldId!: number;
   /**
    * 挑戦するステージID
    */
@@ -137,7 +132,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     // ユーザパラメータの設定
     this.unitSlotCount = params.unitSlotCount;
-    this.fieldId   = params.fieldId;
     this.stageId   = params.stageId;
     this.unitIds   = params.unitIds;
     this.playerBase = params.playerBase;
@@ -215,13 +209,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const masterKeys = BattleScene.MasterResourceKey;
 
-    const fieldMasterUrl = ResourceMaster.Api.Field(this.fieldId);
-    const aiWaveMasterUrl = ResourceMaster.Api.AiWave(this.stageId);
+    const stageMasterUrl = ResourceMaster.Api.Stage(this.stageId);
     const unitMasterUrl = ResourceMaster.Api.Unit(this.unitIds);
     const unitAnimationMasterUrl = ResourceMaster.Api.UnitAnimation(this.unitIds);
 
-    assets.push({ name: masterKeys.FIELD, url: fieldMasterUrl });
-    assets.push({ name: masterKeys.AI_WAVE, url: aiWaveMasterUrl });
+    assets.push({ name: masterKeys.STAGE, url: stageMasterUrl });
     assets.push({ name: masterKeys.UNIT, url: unitMasterUrl });
     assets.push({ name: masterKeys.UNIT_ANIMATION, url: unitAnimationMasterUrl });
 
@@ -286,12 +278,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const sceneUiGraphName = ResourceMaster.Api.SceneUiGraph(this);
     this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
 
-    const masterKeys = BattleScene.MasterResourceKey;
+    const stageMaster = resources[BattleScene.MasterResourceKey.STAGE].data;
+    this.field.init({ fieldLength: stageMaster.length, zLines: stageMaster.zLines });
 
-    const fieldMaster = resources[masterKeys.FIELD].data;
-    this.field.init({ fieldLength: fieldMaster.length, zLines: fieldMaster.zLines });
-
-    const unitAnimationMasters = resources[masterKeys.UNIT_ANIMATION].data;
+    const unitAnimationMasters = resources[BattleScene.MasterResourceKey.UNIT_ANIMATION].data;
     for (let i = 0; i < unitAnimationMasters.length; i++) {
       const master = unitAnimationMasters[i];
       this.unitAnimationMasterCache.set(master.unitId, master);
@@ -309,12 +299,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      * 追加リソースがなければそのまま実行する
      */
     const onDependencyResourceLoaded = () => {
-      const aiWaveMaster = resources[BattleScene.MasterResourceKey.AI_WAVE].data;
       const unitMasters = resources[BattleScene.MasterResourceKey.UNIT].data;
 
       this.manager.init({
-        aiWaveMaster,
-        fieldMaster,
+        stageMaster,
         unitMasters,
         delegator: this,
         playerBase: {
@@ -330,7 +318,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
     };
 
-    const aiBaseTextureUrl = ResourceMaster.Dynamic.Base(fieldMaster.aiBase.baseId);
+    const aiBaseTextureUrl = ResourceMaster.Dynamic.Base(stageMaster.aiBase.baseId);
     if (!resources[aiBaseTextureUrl]) {
       PIXI.loader.add({ name: aiBaseTextureUrl, url: aiBaseTextureUrl }).load(() => {
         onDependencyResourceLoaded();

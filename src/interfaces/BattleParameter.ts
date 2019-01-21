@@ -3,7 +3,6 @@
  */
 export default interface BattleParameter {
   unitSlotCount: number;
-  fieldId: number;
   stageId: number;
   unitIds: number[];
   playerBase: {

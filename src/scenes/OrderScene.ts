@@ -120,6 +120,11 @@ export default class OrderScene extends Scene  {
       assets.push({ name: bgmTitleName, url: bgmTitleName });
     }
 
+    const seUnitSpawn = ResourceMaster.Audio.Se.UnitSpawn;
+    if (!SoundManager.hasSound(seUnitSpawn)) {
+      assets.push({ name: seUnitSpawn, url: seUnitSpawn });
+    }
+
     return assets;
   }
 
@@ -146,6 +151,9 @@ export default class OrderScene extends Scene  {
       const unitMaster = allUnitMaster[i];
       this.unitMasterCache.set(unitMaster.unitId, unitMaster);
     }
+
+    const seKey = ResourceMaster.Audio.Se.UnitSpawn;
+    SoundManager.createSound(seKey, (resources[seKey] as any).buffer);
 
     const dependencyAssets = [];
 
@@ -199,6 +207,8 @@ export default class OrderScene extends Scene  {
       return;
     }
 
+    this.playTapSe();
+
     const availableUnitIds = this.userBattle.unlockedUnitIds;
 
     let nextIndex = availableUnitIds.indexOf(unitButton.unitId) + addValue;
@@ -228,6 +238,8 @@ export default class OrderScene extends Scene  {
       return;
     }
 
+    this.playTapSe();
+
     let newStageId;
 
     const maxStageId = this.userBattle.unlockedStageId;
@@ -251,6 +263,7 @@ export default class OrderScene extends Scene  {
    */
   public onOkButtonDown(): void {
     this.uiGraph.ok_button_off.visible = false;
+    this.playTapSe();
   }
 
   /**
@@ -352,10 +365,16 @@ export default class OrderScene extends Scene  {
     return {
       unitIds,
       unitSlotCount: Config.MaxUnitSlotCount,
-      fieldId: this.currentStageId,
       stageId: this.currentStageId,
       playerBase: this.userBattle.base,
       cost: this.userBattle.cost
     };
+  }
+
+  private playTapSe(): void {
+    const se = SoundManager.getSound(ResourceMaster.Audio.Se.UnitSpawn);
+    if (se) {
+      se.play();
+    }
   }
 }

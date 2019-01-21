@@ -165,7 +165,7 @@
     {
       "id": "unit_1_left",
       "type": "sprite",
-      "position": [86, 234],
+      "position": [80, 234],
       "params": {
         "textureName": "/assets/ui/arrow_left.png",
         "url": "/assets/ui/arrow_left.png"
@@ -181,7 +181,7 @@
     {
       "id": "unit_2_left",
       "type": "sprite",
-      "position": [286, 234],
+      "position": [280, 234],
       "params": {
         "textureName": "/assets/ui/arrow_left.png",
         "url": "/assets/ui/arrow_left.png"
@@ -197,7 +197,7 @@
     {
       "id": "unit_3_left",
       "type": "sprite",
-      "position": [486, 234],
+      "position": [480, 234],
       "params": {
         "textureName": "/assets/ui/arrow_left.png",
         "url": "/assets/ui/arrow_left.png"
@@ -213,7 +213,7 @@
     {
       "id": "unit_4_left",
       "type": "sprite",
-      "position": [686, 234],
+      "position": [680, 234],
       "params": {
         "textureName": "/assets/ui/arrow_left.png",
         "url": "/assets/ui/arrow_left.png"
@@ -229,7 +229,7 @@
     {
       "id": "unit_5_left",
       "type": "sprite",
-      "position": [886, 234],
+      "position": [880, 234],
       "params": {
         "textureName": "/assets/ui/arrow_left.png",
         "url": "/assets/ui/arrow_left.png"
@@ -245,7 +245,7 @@
     {
       "id": "unit_1_right",
       "type": "sprite",
-      "position": [230, 234],
+      "position": [236, 234],
       "params": {
         "textureName": "/assets/ui/arrow_right.png",
         "url": "/assets/ui/arrow_right.png"
@@ -261,7 +261,7 @@
     {
       "id": "unit_2_right",
       "type": "sprite",
-      "position": [430, 234],
+      "position": [436, 234],
       "params": {
         "textureName": "/assets/ui/arrow_right.png",
         "url": "/assets/ui/arrow_right.png"
@@ -277,7 +277,7 @@
     {
       "id": "unit_3_right",
       "type": "sprite",
-      "position": [630, 234],
+      "position": [636, 234],
       "params": {
         "textureName": "/assets/ui/arrow_right.png",
         "url": "/assets/ui/arrow_right.png"
@@ -293,7 +293,7 @@
     {
       "id": "unit_4_right",
       "type": "sprite",
-      "position": [830, 234],
+      "position": [836, 234],
       "params": {
         "textureName": "/assets/ui/arrow_right.png",
         "url": "/assets/ui/arrow_right.png"
@@ -309,7 +309,7 @@
     {
       "id": "unit_5_right",
       "type": "sprite",
-      "position": [1030, 234],
+      "position": [1036, 234],
       "params": {
         "textureName": "/assets/ui/arrow_right.png",
         "url": "/assets/ui/arrow_right.png"

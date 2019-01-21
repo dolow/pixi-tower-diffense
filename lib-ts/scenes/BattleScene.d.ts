@@ -24,10 +24,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      */
     private unitSlotCount;
     /**
-     * 利用するフィールドID
-     */
-    private fieldId;
-    /**
      * 挑戦するステージID
      */
     private stageId;

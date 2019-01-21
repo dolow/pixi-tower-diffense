@@ -80,10 +80,10 @@ export default class IndexedDBManager {
     const record = IndexedDBManager.createRecordObject(key, data);
     const request = store.put(record);
     if (onSuccess) {
-      request.onsuccess = (e) => onSuccess(e);
+      request.onsuccess = (e) => { onSuccess(e); };
     }
     if (onError) {
-      request.onerror = (e) => onError(e);
+      request.onerror = (e) => { onError(e); };
     }
   }
 
@@ -107,14 +107,12 @@ export default class IndexedDBManager {
     const request = store.get(key);
     request.onsuccess = (e) => {
       const result = (e.target as IDBRequest).result as IndexedDBManagerRecord;
-      if (result) {
-        onSuccess(result.value, result.key);
-      } else {
-        onSuccess(undefined, undefined);
-      }
+      (result)
+        ? onSuccess(result.value, result.key)
+        : onSuccess(undefined, undefined);
     };
     if (onError) {
-      request.onerror = (e) => onError(e);
+      request.onerror = (e) => { onError(e); };
     }
   }
 
@@ -136,10 +134,10 @@ export default class IndexedDBManager {
 
     const request = store.delete(key);
     if (onSuccess) {
-      request.onsuccess = (e) => onSuccess(e);
+      request.onsuccess = (e) => { onSuccess(e); };
     }
     if (onError) {
-      request.onerror = (e) => onError(e);
+      request.onerror = (e) => { onError(e); };
     }
   }
 
@@ -157,10 +155,10 @@ export default class IndexedDBManager {
 
     const request = store.clear();
     if (onSuccess) {
-      request.onsuccess = (e) => onSuccess(e);
+      request.onsuccess = (e) => { onSuccess(e); };
     }
     if (onError) {
-      request.onerror = (e) => onError(e);
+      request.onerror = (e) => { onError(e); };
     }
   }
 
@@ -182,7 +180,7 @@ export default class IndexedDBManager {
     if (!IndexedDBManager.db) {
       return null;
     }
-    const storeName = IndexedDBManager.storeName
+    const storeName = IndexedDBManager.storeName;
     const transaction = IndexedDBManager.db.transaction(storeName, 'readwrite');
     return transaction.objectStore(storeName);
   }
@@ -191,9 +189,6 @@ export default class IndexedDBManager {
    * Key/Value をこのマネージャが扱うオブジェクトに変換する
    */
   private static createRecordObject(key: string, value: any): IndexedDBManagerRecord {
-    return {
-      key: key,
-      value: value
-    };
+    return { key, value };
   }
 }

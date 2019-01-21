@@ -10,8 +10,7 @@ declare const ResourceMaster: Readonly<{
     Api: {
         UserBattle: (userId: number) => string;
         SceneUiGraph: (scene: Scene) => string;
-        Field: (fieldId: number) => string;
-        AiWave: (stageId: number) => string;
+        Stage: (stageId: number) => string;
         Unit: (unitIds: number[]) => string;
         AllUnit: () => string;
         UnitAnimation: (unitIds: number[]) => string;

@@ -1,5 +1,4 @@
-import FieldMaster from 'interfaces/master/FieldMaster';
-import AIWaveMaster from 'interfaces/master/AIWaveMaster';
+import StageMaster from 'interfaces/master/StageMaster';
 import UnitMaster from 'interfaces/master/UnitMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import AttackableState from 'enum/AttackableState';
@@ -50,15 +49,15 @@ export default class BattleLogic {
   /**
    * フィールドマスタのキャッシュ
    */
-  private fieldMasterCache: FieldMaster | null = null;
-  /**
-   * AIWaveMaster をキャッシュするための Map
-   */
-  private aiWaveMasterCache: Map<number, { unitId: number }[]> = new Map();
+  private stageMasterCache: StageMaster | null = null;
   /**
    * UnitMaster をキャッシュするための Map
    */
   private unitMasterCache: Map<number, UnitMaster> = new Map();
+  /**
+   * StageMaster.waves をキャッシュするための Map
+   */
+  private aiWaveCache: Map<number, { unitId: number }[]> = new Map();
   /**
    * 外部から生成をリクエストされたユニット情報を保持する配列
    */
@@ -78,8 +77,7 @@ export default class BattleLogic {
    */
   public init(params: {
     delegator: BattleLogicDelegate,
-    aiWaveMaster: AIWaveMaster,
-    fieldMaster: FieldMaster,
+    stageMaster: StageMaster,
     unitMasters: UnitMaster[],
     playerBase: {
       baseId: number,
@@ -90,17 +88,17 @@ export default class BattleLogic {
     this.delegator = params.delegator;
 
     // キャッシュクリア
-    this.aiWaveMasterCache.clear();
+    this.aiWaveCache.clear();
     this.unitMasterCache.clear();
 
     // マスターのキャッシュ処理
-    this.fieldMasterCache = params.fieldMaster;
+    this.stageMasterCache = params.stageMaster;
 
-    const waves = params.aiWaveMaster.waves;
+    const waves = this.stageMasterCache.waves;
     const keys = Object.keys(waves);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      this.aiWaveMasterCache.set(Number.parseInt(key, 10), waves[key]);
+      this.aiWaveCache.set(Number.parseInt(key, 10), waves[key]);
     }
 
     for (let i = 0; i < params.unitMasters.length; i++) {
@@ -109,22 +107,22 @@ export default class BattleLogic {
     }
 
     const playerBaseEntity = new BaseEntity(params.playerBase.baseId, true);
-    const aiBaseEntity = new BaseEntity(this.fieldMasterCache.aiBase.baseId, false);
+    const aiBaseEntity = new BaseEntity(this.stageMasterCache.aiBase.baseId, false);
 
     // 拠点エンティティの ID 割当て
     playerBaseEntity.id = this.nextEntityId++;
     aiBaseEntity.id = this.nextEntityId++;
     // 拠点エンティティの health 設定
     playerBaseEntity.currentHealth = params.playerBase.health;
-    aiBaseEntity.currentHealth = this.fieldMasterCache.aiBase.health;
+    aiBaseEntity.currentHealth = this.stageMasterCache.aiBase.health;
 
     this.delegator.onBaseEntitySpawned(
       playerBaseEntity,
-      this.fieldMasterCache.playerBase.position.x
+      this.stageMasterCache.playerBase.position.x
     );
     this.delegator.onBaseEntitySpawned(
       aiBaseEntity,
-      this.fieldMasterCache.aiBase.position.x
+      this.stageMasterCache.aiBase.position.x
     );
 
     // 拠点エンティティの保持
@@ -390,7 +388,7 @@ export default class BattleLogic {
    * 必要であれば AI ユニットを生成させる
    */
   private requestAISpawn(targetFrame: number): void {
-    const waves = this.aiWaveMasterCache.get(targetFrame);
+    const waves = this.aiWaveCache.get(targetFrame);
     if (!waves) {
       return;
     }
@@ -411,7 +409,7 @@ export default class BattleLogic {
       return;
     }
 
-    if (!this.fieldMasterCache) {
+    if (!this.stageMasterCache) {
       return;
     }
 
@@ -433,9 +431,9 @@ export default class BattleLogic {
 
         tmpCost -= master.cost;
 
-        basePosition = this.fieldMasterCache.playerBase.position.x;
+        basePosition = this.stageMasterCache.playerBase.position.x;
       } else {
-        basePosition = this.fieldMasterCache.aiBase.position.x;
+        basePosition = this.stageMasterCache.aiBase.position.x;
       }
 
       const entity = new UnitEntity(reservedUnit.unitId, reservedUnit.isPlayer);
