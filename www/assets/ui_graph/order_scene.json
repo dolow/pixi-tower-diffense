@@ -317,7 +317,7 @@
       "events": [
         {
           "type": "pointerdown",
-          "callback": "changeUnit",
+          "callback": "onUnitArrowTapped",
           "arguments": [4, 1]
         }
       ]

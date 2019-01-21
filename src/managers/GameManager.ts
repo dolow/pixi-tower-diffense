@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import IndexedDBManager from 'managers/IndexedDBManager';
 import SoundManager from 'managers/SoundManager';
 import Scene from 'scenes/Scene';
 
@@ -44,6 +45,9 @@ export default class GameManager {
 
     this.game = app;
 
+    IndexedDBManager.init((_e) => {
+      console.debug('indexed db could not be initialized');
+    });
     SoundManager.init();
   }
 

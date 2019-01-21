@@ -1,6 +1,7 @@
 import Config from  'Config';
 import ResourceMaster from 'ResourceMaster';
 import GameManager from 'managers/GameManager';
+import IndexedDBManager from 'managers/IndexedDBManager';
 import SoundManager from 'managers/SoundManager';
 import UserBattle from 'interfaces/api/UserBattle';
 import UnitMaster from 'interfaces/master/UnitMaster';
@@ -40,6 +41,10 @@ export default class OrderScene extends Scene  {
    * 選択中のステージID
    */
   private currentStageId: number = 1;
+  /**
+   * 前回編成したユニットID配列
+   */
+  private lastUnitIds: number[] = [];
 
   /**
    * コンストラクタ
@@ -49,6 +54,42 @@ export default class OrderScene extends Scene  {
 
     this.transitionIn  = new Fade(1.0, 0.0, -0.02);
     this.transitionOut = new Fade(0.0, 1.0, 0.02);
+  }
+
+  /**
+   * リソースをロードする
+   * 基本実装をオーバーライドし、 indexed db のレコードを取得する
+   */
+  public loadResource(onResourceLoaded: () => void): void {
+    new Promise((resolve) => {
+      IndexedDBManager.get('lastStageId', (value) => {
+        if (value) {
+          this.currentStageId = value;
+        }
+        resolve();
+      });
+    }).then(() => {
+      return new Promise((resolve) => {
+        IndexedDBManager.get('lastUnitOrder', (value) => {
+          if (value) {
+            this.lastUnitIds = value;
+          }
+          resolve();
+        });
+      });
+    }).then(() => {
+      return new Promise((resolve) => {
+        this.loadUiGraph(() => resolve());
+      });
+    }).then(() => {
+      return new Promise((resolve) => {
+        this.onUiGraphLoaded(() => resolve());
+      });
+    }).then(() => {
+      onResourceLoaded();
+    }).then(() => {
+      this.onResourceLoaded();
+    });
   }
 
   /**
@@ -141,7 +182,6 @@ export default class OrderScene extends Scene  {
     this.initUnitButtons();
 
     this.playBgmIfNeeded();
-
   }
 
   /**
@@ -259,7 +299,11 @@ export default class OrderScene extends Scene  {
       const entity = this.uiGraph[key];
       if (entity.constructor.name === 'UnitButton') {
         const unitButton = (entity as UnitButton);
-        unitButton.init(slotIndex);
+        if (this.lastUnitIds.length >= slotIndex + 1) {
+          unitButton.init(slotIndex, this.lastUnitIds[slotIndex]);
+        } else {
+          unitButton.init(slotIndex);
+        }
         this.unitButtons.set(slotIndex, unitButton);
         slotIndex++;
         if (slotIndex >= Config.MaxUnitSlotCount) {
@@ -301,6 +345,9 @@ export default class OrderScene extends Scene  {
     this.unitButtons.forEach((unitButton) => {
       unitIds.push(unitButton.unitId);
     });
+
+    IndexedDBManager.put('lastStageId', this.currentStageId);
+    IndexedDBManager.put('lastUnitOrder', unitIds);
 
     return {
       unitIds,
