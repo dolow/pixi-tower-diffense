@@ -46082,7 +46082,9 @@ window.onload = function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/IndexedDBManager */ "./src/managers/IndexedDBManager.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+
 
 
 /**
@@ -46099,7 +46101,10 @@ var GameManager = /** @class */ (function () {
             throw new Error('GameManager can be instantiate only once');
         }
         this.game = app;
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_1__["default"].init();
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_1__["default"].init(function (_e) {
+            console.debug('indexed db could not be initialized');
+        });
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].init();
     }
     /**
      * ゲームを起動する
@@ -46207,6 +46212,183 @@ var GameManager = /** @class */ (function () {
     return GameManager;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (GameManager);
+
+
+/***/ }),
+
+/***/ "./src/managers/IndexedDBManager.ts":
+/*!******************************************!*\
+  !*** ./src/managers/IndexedDBManager.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * ブラウザの indexed db API
+ */
+var indexedDb = window.indexedDB || window.webkitIndexedDB;
+/**
+ * indexed db マネージャ
+ * レコードを KVS 形式のインターフェースで取り扱う
+ */
+var IndexedDBManager = /** @class */ (function () {
+    function IndexedDBManager() {
+    }
+    /**
+     * マネージャを初期化する
+     */
+    IndexedDBManager.init = function (onError) {
+        if (!indexedDb) {
+            console.log('indexed db is not supported');
+        }
+        var request = indexedDb.open(IndexedDBManager.dbName, IndexedDBManager.dbVersion);
+        request.onupgradeneeded = function (e) {
+            IndexedDBManager.upgradeDB(e);
+        };
+        request.onsuccess = function (e) {
+            var db = e.target.result;
+            IndexedDBManager.db = db;
+        };
+        request.onerror = function (e) { return onError(e); };
+    };
+    /**
+     * レコードを保存する
+     */
+    IndexedDBManager.put = function (key, data, onSuccess, onError) {
+        var store = IndexedDBManager.getStoreObject();
+        if (!store) {
+            if (onError) {
+                onError();
+            }
+            return;
+        }
+        var record = IndexedDBManager.createRecordObject(key, data);
+        var request = store.put(record);
+        if (onSuccess) {
+            request.onsuccess = function (e) { return onSuccess(e); };
+        }
+        if (onError) {
+            request.onerror = function (e) { return onError(e); };
+        }
+    };
+    /**
+     * レコードを取得する
+     * レコードが存在しなければ undefined を返す
+     */
+    IndexedDBManager.get = function (key, onSuccess, onError) {
+        var store = IndexedDBManager.getStoreObject();
+        if (!store) {
+            if (onError) {
+                onError();
+            }
+            return;
+        }
+        var request = store.get(key);
+        request.onsuccess = function (e) {
+            var result = e.target.result;
+            if (result) {
+                onSuccess(result.value, result.key);
+            }
+            else {
+                onSuccess(undefined, undefined);
+            }
+        };
+        if (onError) {
+            request.onerror = function (e) { return onError(e); };
+        }
+    };
+    /**
+     * レコードを削除する
+     */
+    IndexedDBManager.delete = function (key, onSuccess, onError) {
+        var store = IndexedDBManager.getStoreObject();
+        if (!store) {
+            if (onError) {
+                onError();
+            }
+            return;
+        }
+        var request = store.delete(key);
+        if (onSuccess) {
+            request.onsuccess = function (e) { return onSuccess(e); };
+        }
+        if (onError) {
+            request.onerror = function (e) { return onError(e); };
+        }
+    };
+    /**
+     * すべてのレコードを削除する
+     */
+    IndexedDBManager.clear = function (onSuccess, onError) {
+        var store = IndexedDBManager.getStoreObject();
+        if (!store) {
+            if (onError) {
+                onError();
+            }
+            return;
+        }
+        var request = store.clear();
+        if (onSuccess) {
+            request.onsuccess = function (e) { return onSuccess(e); };
+        }
+        if (onError) {
+            request.onerror = function (e) { return onError(e); };
+        }
+    };
+    /**
+     * onupgradeneeded コールバックを処理しなければならない時に実行するメソッド
+     */
+    IndexedDBManager.upgradeDB = function (e) {
+        var db = e.target.result;
+        var index = IndexedDBManager.storeIndex;
+        var store = db.createObjectStore(IndexedDBManager.storeName, { keyPath: index });
+        store.createIndex(index, index, { unique: true });
+    };
+    /**
+     * トランザクションを生成し、ストアオブジェクトを返す
+     */
+    IndexedDBManager.getStoreObject = function () {
+        if (!IndexedDBManager.db) {
+            return null;
+        }
+        var storeName = IndexedDBManager.storeName;
+        var transaction = IndexedDBManager.db.transaction(storeName, 'readwrite');
+        return transaction.objectStore(storeName);
+    };
+    /**
+     * Key/Value をこのマネージャが扱うオブジェクトに変換する
+     */
+    IndexedDBManager.createRecordObject = function (key, value) {
+        return {
+            key: key,
+            value: value
+        };
+    };
+    /**
+     * このマネージャが扱う固定データベース名
+     */
+    IndexedDBManager.dbName = 'sample-game-db';
+    /**
+     * このマネージャが扱うデータベースバージョン
+     */
+    IndexedDBManager.dbVersion = 1;
+    /**
+     * このマネージャが扱う固定ストア名
+     */
+    IndexedDBManager.storeName = 'sample-game-store';
+    /**
+     * このマネージャが扱う固定ストアのインデックス名称
+     */
+    IndexedDBManager.storeIndex = 'key';
+    /**
+     * IDBDatabase インスタンス
+     */
+    IndexedDBManager.db = null;
+    return IndexedDBManager;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (IndexedDBManager);
 
 
 /***/ }),
@@ -48032,11 +48214,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! Config */ "./src/Config.ts");
 /* harmony import */ var ResourceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ResourceMaster */ "./src/ResourceMaster.ts");
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
-/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
+/* harmony import */ var managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/IndexedDBManager */ "./src/managers/IndexedDBManager.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
+/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -48050,6 +48233,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -48090,17 +48274,57 @@ var OrderScene = /** @class */ (function (_super) {
          * 選択中のステージID
          */
         _this.currentStageId = 1;
-        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_7__["default"](1.0, 0.0, -0.02);
-        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_7__["default"](0.0, 1.0, 0.02);
+        /**
+         * 前回編成したユニットID配列
+         */
+        _this.lastUnitIds = [];
+        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](1.0, 0.0, -0.02);
+        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](0.0, 1.0, 0.02);
         return _this;
     }
+    /**
+     * リソースをロードする
+     * 基本実装をオーバーライドし、 indexed db のレコードを取得する
+     */
+    OrderScene.prototype.loadResource = function (onResourceLoaded) {
+        var _this = this;
+        new Promise(function (resolve) {
+            managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastStageId', function (value) {
+                if (value) {
+                    _this.currentStageId = value;
+                }
+                resolve();
+            });
+        }).then(function () {
+            return new Promise(function (resolve) {
+                managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastUnitOrder', function (value) {
+                    if (value) {
+                        _this.lastUnitIds = value;
+                    }
+                    resolve();
+                });
+            });
+        }).then(function () {
+            return new Promise(function (resolve) {
+                _this.loadUiGraph(function () { return resolve(); });
+            });
+        }).then(function () {
+            return new Promise(function (resolve) {
+                _this.onUiGraphLoaded(function () { return resolve(); });
+            });
+        }).then(function () {
+            onResourceLoaded();
+        }).then(function () {
+            _this.onResourceLoaded();
+        });
+    };
     /**
      * 独自 UiGraph 要素のファクトリを返す
      * OrderScene は BattleScene と UnitButton を共用している
      */
     OrderScene.prototype.getCustomUiGraphFactory = function (type) {
         if (type === 'unit_button') {
-            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_4__["default"]();
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__["default"]();
         }
         return null;
     };
@@ -48114,7 +48338,7 @@ var OrderScene = /** @class */ (function (_super) {
         var allUnitMasterUrl = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Api.AllUnit();
         assets.push({ name: allUnitMasterUrl, url: allUnitMasterUrl });
         var bgmTitleName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title;
-        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].hasSound(bgmTitleName)) {
+        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].hasSound(bgmTitleName)) {
             assets.push({ name: bgmTitleName, url: bgmTitleName });
         }
         return assets;
@@ -48249,12 +48473,12 @@ var OrderScene = /** @class */ (function (_super) {
         if (!params) {
             return false;
         }
-        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].getSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
         if (bgm) {
-            managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].fade(bgm, 0.01, 0.5, true);
+            managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].fade(bgm, 0.01, 0.5, true);
         }
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_6__["default"](params));
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].unregisterSound(ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_7__["default"](params));
         return true;
     };
     /**
@@ -48269,7 +48493,12 @@ var OrderScene = /** @class */ (function (_super) {
             var entity = this.uiGraph[key];
             if (entity.constructor.name === 'UnitButton') {
                 var unitButton = entity;
-                unitButton.init(slotIndex);
+                if (this.lastUnitIds.length >= slotIndex + 1) {
+                    unitButton.init(slotIndex, this.lastUnitIds[slotIndex]);
+                }
+                else {
+                    unitButton.init(slotIndex);
+                }
                 this.unitButtons.set(slotIndex, unitButton);
                 slotIndex++;
                 if (slotIndex >= Config__WEBPACK_IMPORTED_MODULE_0__["default"].MaxUnitSlotCount) {
@@ -48283,9 +48512,9 @@ var OrderScene = /** @class */ (function (_super) {
      */
     OrderScene.prototype.playBgmIfNeeded = function () {
         var bgmTitleName = ResourceMaster__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title;
-        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].hasSound(bgmTitleName)) {
+        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].hasSound(bgmTitleName)) {
             var resource = PIXI.loader.resources[bgmTitleName];
-            var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].createSound(bgmTitleName, resource.buffer);
+            var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].createSound(bgmTitleName, resource.buffer);
             bgm.play(true);
         }
     };
@@ -48307,6 +48536,8 @@ var OrderScene = /** @class */ (function (_super) {
         this.unitButtons.forEach(function (unitButton) {
             unitIds.push(unitButton.unitId);
         });
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].put('lastStageId', this.currentStageId);
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].put('lastUnitOrder', unitIds);
         return {
             unitIds: unitIds,
             unitSlotCount: Config__WEBPACK_IMPORTED_MODULE_0__["default"].MaxUnitSlotCount,
@@ -48317,7 +48548,7 @@ var OrderScene = /** @class */ (function (_super) {
         };
     };
     return OrderScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_5__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_6__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (OrderScene);
 
 

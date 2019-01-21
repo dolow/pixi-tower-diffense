@@ -26,9 +26,18 @@ export default class OrderScene extends Scene {
      */
     private currentStageId;
     /**
+     * 前回編成したユニットID配列
+     */
+    private lastUnitIds;
+    /**
      * コンストラクタ
      */
     constructor();
+    /**
+     * リソースをロードする
+     * 基本実装をオーバーライドし、 indexed db のレコードを取得する
+     */
+    loadResource(onResourceLoaded: () => void): void;
     /**
      * 独自 UiGraph 要素のファクトリを返す
      * OrderScene は BattleScene と UnitButton を共用している
