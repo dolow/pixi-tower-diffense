@@ -42,7 +42,7 @@ export default class Field extends PIXI.Container {
    * このクラスで利用するリソースリスト
    */
   public static get resourceList(): string[] {
-    let list: string[] = ([] as string[]).concat(
+    const list: string[] = ([] as string[]).concat(
       Resource.Static.BattleBgFores,
       Resource.Static.BattleBgMiddles,
       Resource.Static.BattleBgBacks

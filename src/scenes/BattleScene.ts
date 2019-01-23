@@ -180,7 +180,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * リソースリストの作成
    */
-  protected createInitialResourceList(): Array<LoaderAddParam | string> {
+  protected createInitialResourceList(): (LoaderAddParam | string)[] {
     let assets = super.createInitialResourceList();
     assets = assets.concat(
       Field.resourceList,
@@ -209,7 +209,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * リソースロード完了コールバック
    * BattleLogic にユニットマスタ情報を渡し、フィールドやユニットボタンの初期化を行う
    */
-  protected onInitialResourceLoaded(): Array<LoaderAddParam | string> {
+  protected onInitialResourceLoaded(): (LoaderAddParam | string)[] {
     const additionalAssets = super.onInitialResourceLoaded();
 
     const resources = PIXI.loader.resources as any;
@@ -226,7 +226,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       for (let j = 0; j < wave.length; j++) {
         const unitId = wave[j].unitId;
         if (this.unitIds.indexOf(unitId) === -1) {
-          this.unitIds.push(unitId)
+          this.unitIds.push(unitId);
         }
       }
     }
@@ -472,7 +472,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 渡されたエンティティ同士が接敵可能か返す
    */
-  public shouldEngageAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean {
+  public shouldEngageAttackableEntity(
+    attacker: AttackableEntity,
+    target: AttackableEntity
+  ): boolean {
     const attackerAttackable = this.attackables.get(attacker.id);
     if (!attackerAttackable) {
       return false;

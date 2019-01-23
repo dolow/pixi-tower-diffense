@@ -122,7 +122,7 @@ export default abstract class Scene extends PIXI.Container {
    * loadResource に用いるリソースリストを作成するメソッド
    * デフォルトでは UiGraph のリソースリストを作成する
    */
-  protected createInitialResourceList(): Array<LoaderAddParam | string> {
+  protected createInitialResourceList(): (LoaderAddParam | string)[] {
     return [];
   }
 
@@ -167,7 +167,7 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * loadInitialResource 完了時のコールバックメソッド
    */
-  protected onInitialResourceLoaded(): Array<LoaderAddParam | string> {
+  protected onInitialResourceLoaded(): (LoaderAddParam | string)[] {
     const additionalAssets = [];
 
     const name = Resource.Api.SceneUiGraph(this);
@@ -187,7 +187,7 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * 初回リソースロードで発生した追加のリソースをロードする
    */
-  protected loadAdditionalResource(assets: Array<LoaderAddParam | string>, onLoaded: () => void) {
+  protected loadAdditionalResource(assets: (LoaderAddParam | string)[], onLoaded: () => void) {
     if (assets.length <= 0) {
       this.onAdditionalResourceLoaded(onLoaded);
       return;
@@ -200,7 +200,7 @@ export default abstract class Scene extends PIXI.Container {
         this.onAdditionalResourceLoaded(onLoaded);
       });
     } else {
-      this.onAdditionalResourceLoaded(onLoaded)
+      this.onAdditionalResourceLoaded(onLoaded);
     }
   }
 
@@ -261,7 +261,7 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * 渡されたアセットのリストからロード済みのものをフィルタリングする
    */
-  private filterLoadedAssets(assets: Array<LoaderAddParam | string>): LoaderAddParam[] {
+  private filterLoadedAssets(assets: (LoaderAddParam | string)[]): LoaderAddParam[] {
     const assetMap = new Map<string, LoaderAddParam>();
 
     for (let i = 0; i < assets.length; i++) {

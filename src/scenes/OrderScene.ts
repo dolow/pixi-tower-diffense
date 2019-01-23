@@ -59,8 +59,8 @@ export default class OrderScene extends Scene  {
   /**
    * リソースリストを作成し返却する
    */
-  protected createInitialResourceList(): Array<LoaderAddParam | string> {
-    let assets = super.createInitialResourceList();
+  protected createInitialResourceList(): (LoaderAddParam | string)[] {
+    const assets = super.createInitialResourceList();
     assets.push(Resource.Api.UserBattle(DUMMY_USER_ID));
     assets.push(Resource.Api.AllUnit());
     assets.push(Resource.Audio.Bgm.Title);
@@ -79,13 +79,13 @@ export default class OrderScene extends Scene  {
       new Promise((resolve) => {
         this.loadStageIdFromDB((stageId) => {
           this.currentStageId = stageId || 1;
-          resolve()
+          resolve();
         });
       }),
       new Promise((resolve) => {
         this.loadUnitIdsFromDB((unitIds) => {
           this.lastUnitIds = unitIds || [];
-          resolve()
+          resolve();
         });
       })
     ]).then(() => {
@@ -96,8 +96,8 @@ export default class OrderScene extends Scene  {
   /**
    * リソースがロードされた時のコールバック
    */
-  protected onInitialResourceLoaded(): Array<LoaderAddParam | string> {
-    let additionalAssets = super.onInitialResourceLoaded();
+  protected onInitialResourceLoaded(): (LoaderAddParam | string)[] {
+    const additionalAssets = super.onInitialResourceLoaded();
 
     const resources = PIXI.loader.resources;
 
@@ -344,7 +344,7 @@ export default class OrderScene extends Scene  {
    * DB からユニットID配列を取得する
    */
   private loadUnitIdsFromDB(callback: (unitIds: number[]) => void): void {
-    IndexedDBManager.get('lastUnitOrder', (unitIds) => callback(unitIds));
+    IndexedDBManager.get('lastUnitOrder', (unitIds) => { callback(unitIds); });
   }
   /**
    * DB へステージIDを保存する
@@ -356,7 +356,7 @@ export default class OrderScene extends Scene  {
    * DB からステージIDを取得する
    */
   private loadStageIdFromDB(callback: (stageId: number) => void): void {
-    IndexedDBManager.get('lastStageId', (stageId) => callback(stageId));
+    IndexedDBManager.get('lastStageId', (stageId) => { callback(stageId); });
   }
 
   /**

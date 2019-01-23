@@ -94,7 +94,7 @@ export default class SoundManager {
     // 削除予定のサウンドがあれば削除する
     const killingSounds = SoundManager.instance.killingSounds;
     if (killingSounds.length > 0) {
-      const remainedSounds = []
+      const remainedSounds = [];
 
       for (let i = 0; i < killingSounds.length; i++) {
         const item = killingSounds[i];
