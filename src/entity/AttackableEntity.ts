@@ -16,7 +16,11 @@ export default class AttackableEntity {
    */
   public state: number = 0;
   /**
-   * 現在のヒットポイント
+   * 最大体力
+   */
+  public maxHealth: number = 0;
+  /**
+   * 現在の体力
    */
   public currentHealth: number = 0;
   /**

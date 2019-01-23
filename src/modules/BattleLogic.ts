@@ -118,6 +118,8 @@ export default class BattleLogic {
     playerBaseEntity.id = this.nextEntityId++;
     aiBaseEntity.id = this.nextEntityId++;
     // 拠点エンティティの health 設定
+    playerBaseEntity.maxHealth = params.playerBase.health;
+    aiBaseEntity.maxHealth = this.stageMasterCache.aiBase.health;
     playerBaseEntity.currentHealth = params.playerBase.health;
     aiBaseEntity.currentHealth = this.stageMasterCache.aiBase.health;
 
@@ -290,7 +292,7 @@ export default class BattleLogic {
         unit.engagedEntity,
         unit.engagedEntity.currentHealth + master.power,
         unit.engagedEntity.currentHealth,
-        master.maxHealth
+        unit.engagedEntity.maxHealth
       );
     }
   }
@@ -469,6 +471,7 @@ export default class BattleLogic {
 
       const entity = new UnitEntity(reservedUnit.unitId, reservedUnit.isPlayer);
       entity.id = this.nextEntityId++;
+      entity.maxHealth = master.maxHealth;
       entity.currentHealth = master.maxHealth;
       entity.state = AttackableState.IDLE;
       this.unitEntities.push(entity);

@@ -145,6 +145,8 @@ export default class OrderScene extends Scene  {
 
     this.initUnitButtons();
 
+    this.updateCurrentStageId(this.currentStageId);
+
     this.playBgmIfNeeded();
   }
 

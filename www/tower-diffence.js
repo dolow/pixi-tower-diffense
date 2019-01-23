@@ -44342,8 +44342,7 @@ var Resource = Object.freeze({
             return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
         },
         Stage: function (stageId) {
-            var query = "?stageId=" + stageId;
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/stage_master.json" + query;
+            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/stage_master_" + stageId + ".json";
         },
         Unit: function (unitIds) {
             var query = unitIds.join('&unitId[]=');
@@ -44627,7 +44626,6 @@ var Base = /** @class */ (function (_super) {
             case 1:
                 _this.sprite.position.y = 300;
                 break;
-            case 2:
             default:
                 _this.sprite.position.y = 200;
                 break;
@@ -45002,7 +45000,7 @@ var Field = /** @class */ (function (_super) {
      * 指定した zLine インデックスの PIXI.Container に addChild する
      */
     Field.prototype.addChildToZLine = function (container, zlineIndex) {
-        container.position.y = 260 + zlineIndex * 16;
+        container.position.y = 300 + zlineIndex * 16;
         this.foreZLines[zlineIndex].addChild(container);
     };
     /**
@@ -45871,7 +45869,11 @@ var AttackableEntity = /** @class */ (function () {
          */
         this.state = 0;
         /**
-         * 現在のヒットポイント
+         * 最大体力
+         */
+        this.maxHealth = 0;
+        /**
+         * 現在の体力
          */
         this.currentHealth = 0;
         /**
@@ -46548,20 +46550,24 @@ var SoundManager = /** @class */ (function () {
         if (SoundManager.loaderMiddlewareAdded) {
             return;
         }
+        // xhr でバイナリ取得する拡張子を登録
         for (var i = 0; i < SUPPORTED_EXTENSIONS.length; i++) {
             var extension = SUPPORTED_EXTENSIONS[i];
-            var Resource = PIXI.loaders.Loader.Resource;
-            Resource.setExtensionXhrType(extension, Resource.XHR_RESPONSE_TYPE.BUFFER);
-            Resource.setExtensionLoadType(extension, Resource.LOAD_TYPE.XHR);
+            var PixiResource = PIXI.loaders.Loader.Resource;
+            PixiResource.setExtensionXhrType(extension, PixiResource.XHR_RESPONSE_TYPE.BUFFER);
+            PixiResource.setExtensionLoadType(extension, PixiResource.LOAD_TYPE.XHR);
         }
+        // Chrome の一部バージョンでサウンドのデコード方法が異なるためメソッドを変える
         var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
         var methodName = 'decodeAudio';
         if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
             methodName = 'decodeAudioWithPromise';
         }
+        // resource-loader ミドルウェアの登録
         PIXI.loader.use(function (resource, next) {
             var extension = resource.url.split('?')[0].split('.')[1];
             if (extension && SUPPORTED_EXTENSIONS.indexOf(extension) !== -1) {
+                // リソースオブジェクトに buffer という名前でプロパティを生やす
                 SoundManager[methodName](resource.data, function (buf) {
                     resource.buffer = buf;
                     next();
@@ -46844,6 +46850,8 @@ var BattleLogic = /** @class */ (function () {
         playerBaseEntity.id = this.nextEntityId++;
         aiBaseEntity.id = this.nextEntityId++;
         // 拠点エンティティの health 設定
+        playerBaseEntity.maxHealth = params.playerBase.health;
+        aiBaseEntity.maxHealth = this.stageMasterCache.aiBase.health;
         playerBaseEntity.currentHealth = params.playerBase.health;
         aiBaseEntity.currentHealth = this.stageMasterCache.aiBase.health;
         // 拠点エンティティの保持
@@ -46989,7 +46997,7 @@ var BattleLogic = /** @class */ (function () {
         if (this.delegator.shouldDamage(unit, unit.engagedEntity)) {
             unit.engagedEntity.currentHealth = unit.engagedEntity.currentHealth - master.power;
             // ダメージを与えた後の処理をデリゲータに委譲する
-            this.delegator.onAttackableEntityHealthUpdated(unit, unit.engagedEntity, unit.engagedEntity.currentHealth + master.power, unit.engagedEntity.currentHealth, master.maxHealth);
+            this.delegator.onAttackableEntityHealthUpdated(unit, unit.engagedEntity, unit.engagedEntity.currentHealth + master.power, unit.engagedEntity.currentHealth, unit.engagedEntity.maxHealth);
         }
     };
     /**
@@ -47147,6 +47155,7 @@ var BattleLogic = /** @class */ (function () {
             }
             var entity = new entity_UnitEntity__WEBPACK_IMPORTED_MODULE_2__["default"](reservedUnit.unitId, reservedUnit.isPlayer);
             entity.id = this.nextEntityId++;
+            entity.maxHealth = master.maxHealth;
             entity.currentHealth = master.maxHealth;
             entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
             this.unitEntities.push(entity);
@@ -48419,6 +48428,7 @@ var OrderScene = /** @class */ (function (_super) {
             this.unitButtonTexturesCache.set(unitId, PIXI.loader.resources[url].texture);
         }
         this.initUnitButtons();
+        this.updateCurrentStageId(this.currentStageId);
         this.playBgmIfNeeded();
     };
     /**
@@ -48593,7 +48603,7 @@ var OrderScene = /** @class */ (function (_super) {
      * DB からユニットID配列を取得する
      */
     OrderScene.prototype.loadUnitIdsFromDB = function (callback) {
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastUnitOrder', function (unitIds) { return callback(unitIds); });
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastUnitOrder', function (unitIds) { callback(unitIds); });
     };
     /**
      * DB へステージIDを保存する
@@ -48605,7 +48615,7 @@ var OrderScene = /** @class */ (function (_super) {
      * DB からステージIDを取得する
      */
     OrderScene.prototype.loadStageIdFromDB = function (callback) {
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastStageId', function (stageId) { return callback(stageId); });
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastStageId', function (stageId) { callback(stageId); });
     };
     /**
      * BGM をフェードアウトする

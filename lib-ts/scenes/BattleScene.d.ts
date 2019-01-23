@@ -76,12 +76,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
      * リソースリストの作成
      */
-    protected createInitialResourceList(): Array<LoaderAddParam | string>;
+    protected createInitialResourceList(): (LoaderAddParam | string)[];
     /**
      * リソースロード完了コールバック
      * BattleLogic にユニットマスタ情報を渡し、フィールドやユニットボタンの初期化を行う
      */
-    protected onInitialResourceLoaded(): Array<LoaderAddParam | string>;
+    protected onInitialResourceLoaded(): (LoaderAddParam | string)[];
     /**
      * リソースロード完了時のコールバック
      */

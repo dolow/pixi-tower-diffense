@@ -51,7 +51,6 @@ export default class Base extends Attackable {
     // 本来はアニメーション系ミドルウェアで設定する部分
     switch (baseId) {
       case 1: this.sprite.position.y = 300; break;
-      case 2:
       default: this.sprite.position.y = 200; break;
     }
 

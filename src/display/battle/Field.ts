@@ -134,7 +134,7 @@ export default class Field extends PIXI.Container {
    * 指定した zLine インデックスの PIXI.Container に addChild する
    */
   public addChildToZLine(container: PIXI.Container, zlineIndex: number): void {
-    container.position.y = 260 + zlineIndex * 16;
+    container.position.y = 300 + zlineIndex * 16;
     this.foreZLines[zlineIndex].addChild(container);
   }
 

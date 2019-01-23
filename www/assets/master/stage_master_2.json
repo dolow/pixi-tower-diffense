@@ -1,0 +1,48 @@
+{
+  "id": 2,
+  "length": 3000,
+  "zLines": 10,
+  "playerBase": {
+    "position": {
+      "x": 200
+    }
+  },
+  "aiBase": {
+    "baseId": 3,
+    "position": {
+      "x": 3000
+    },
+    "health": 400
+  },
+  "waves": {
+    "60": [
+      { "unitId": 1 }
+    ],
+    "120": [
+      { "unitId": 1 }
+    ],
+    "180": [
+      { "unitId": 1 }
+    ],
+    "600": [
+      { "unitId": 2 }
+    ],
+    "720": [
+      { "unitId": 2 }
+    ],
+    "900": [
+      { "unitId": 1 },
+      { "unitId": 1 }
+    ],
+    "1080": [
+      { "unitId": 2 }
+    ],
+    "1140": [
+      { "unitId": 2 }
+    ],
+    "1320": [
+      { "unitId": 2 },
+      { "unitId": 2 }
+    ]
+  }
+}

@@ -36,7 +36,7 @@ export default class OrderScene extends Scene {
     /**
      * リソースリストを作成し返却する
      */
-    protected createInitialResourceList(): Array<LoaderAddParam | string>;
+    protected createInitialResourceList(): (LoaderAddParam | string)[];
     /**
      * リソースをロードする
      * 基本実装をオーバーライドし、 indexed db のレコードを取得する
@@ -45,7 +45,7 @@ export default class OrderScene extends Scene {
     /**
      * リソースがロードされた時のコールバック
      */
-    protected onInitialResourceLoaded(): Array<LoaderAddParam | string>;
+    protected onInitialResourceLoaded(): (LoaderAddParam | string)[];
     /**
      * 追加リソースダウンロード完了時コールバック
      */

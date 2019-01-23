@@ -1,6 +1,6 @@
 {
   "unlockedUnitIds": [-1, 1, 2, 3, 4, 5],
-  "unlockedStageId": 1,
+  "unlockedStageId": 3,
   "base": {
     "baseId": 1,
     "maxHealth": 100

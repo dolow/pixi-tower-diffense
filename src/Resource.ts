@@ -22,8 +22,7 @@ const Resource = Object.freeze({
       return `${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json`;
     },
     Stage: (stageId: number): string => {
-      const query = `?stageId=${stageId}`;
-      return `${Config.ResourceBaseUrl}/master/stage_master.json${query}`;
+      return `${Config.ResourceBaseUrl}/master/stage_master_${stageId}.json`;
     },
     Unit: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');

@@ -25,10 +25,10 @@
       "damage": 1
     },
     "updateDurations": {
-      "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
+      "wait": 12,
+      "walk": 8,
+      "attack": 4,
+      "damage": 1
     }
   },
   {
@@ -42,9 +42,9 @@
     },
     "updateDurations": {
       "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
+      "walk": 4,
+      "attack": 3,
+      "damage": 1
     }
   },
   {
@@ -57,10 +57,10 @@
       "damage": 1
     },
     "updateDurations": {
-      "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
+      "wait": 5,
+      "walk": 10,
+      "attack": 6,
+      "damage": 1
     }
   },
   {
@@ -74,9 +74,9 @@
     },
     "updateDurations": {
       "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
+      "walk": 8,
+      "attack": 4,
+      "damage": 1
     }
   }
 ]
