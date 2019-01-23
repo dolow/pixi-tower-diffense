@@ -24,39 +24,14 @@ export default class AttackableEntity {
    */
   public distance: number = 0;
   /**
-   * ロック中のユニット
+   * 接敵中のエンティティ
    */
-  public lockedEntity: AttackableEntity | null = null;
+  public engagedEntity: AttackableEntity | null = null;
 
   /**
    * コンストラクタ
    */
   constructor(isPlayer: boolean) {
     this.isPlayer = isPlayer;
-  }
-
-  /**
-   * 引数のエンティティが仲間かどうかを返す
-   */
-  public isAlly(target: AttackableEntity): boolean {
-    return (
-      (this.isPlayer  && target.isPlayer) ||
-      (!this.isPlayer && !target.isPlayer)
-    );
-  }
-
-  /**
-   * 引数のエンティティが敵対しているかどうかを返す
-   */
-  public isFoe(target: AttackableEntity): boolean {
-    return !this.isAlly(target);
-  }
-
-  /**
-   * health 値を引数で増減させる
-   */
-  public damage(value: number): number {
-    this.currentHealth -= value;
-    return this.currentHealth;
   }
 }

@@ -14,7 +14,7 @@ export default class DefaultDelegator implements BattleLogicDelegate {
     onAttackableEntityHealthUpdated(_attacker: AttackableEntity, _target: AttackableEntity, _fromHealth: number, _toHealth: number, _maxHealth: number): void;
     onAvailableCostUpdated(_cost: number): void;
     onGameOver(_isPlayerWon: boolean): void;
-    shouldLockAttackableEntity(_attacker: AttackableEntity, _target: AttackableEntity): boolean;
+    shouldEngageAttackableEntity(_attacker: AttackableEntity, _target: AttackableEntity): boolean;
     shouldDamage(_attacker: AttackableEntity, _target: AttackableEntity): boolean;
     shouldUnitWalk(_unit: UnitEntity): boolean;
 }

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 
 import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
@@ -41,16 +41,6 @@ import CollapseExplodeEffect from 'display/battle/single_shot/CollapseExplodeEff
  * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
-
-  /**
-   * マスターデータを保存する PIXI.loaders.resource のキー
-   */
-  private static readonly MasterResourceKey = {
-    STAGE: 'battle_scene_stage_master',
-    UNIT: 'battle_scene_unit_master',
-    UNIT_ANIMATION: 'battle_scene_unit_animation_master',
-    BASE: 'battle_scene_base_master'
-  };
 
   /**
    * このシーンのステート
@@ -149,6 +139,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   public beginTransitionIn(onTransitionFinished: (scene: Scene) => void): void {
     super.beginTransitionIn(() => {
+      // リソースもロードされていれば READY ステートに変更する
       if (this.state === BattleSceneState.RESOURCE_LOADED) {
         this.state = BattleSceneState.READY;
         onTransitionFinished(this);
@@ -188,143 +179,114 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
   /**
    * リソースリストの作成
-   * ユーザが選択したユニットとフィールドのリソース情報も加える
    */
-  protected createResourceList(): LoaderAddParam[] {
-    const assets = super.createResourceList();
-
-    for (let i = 0; i < this.unitIds.length; i++) {
-      const unitId = this.unitIds[i];
-
-      // 無効なユニット ID を渡した場合に空のユニットボタン扱いになる
-      const unitPanelUrl = ResourceMaster.Dynamic.UnitPanel(unitId);
-      assets.push({ name: unitPanelUrl, url: unitPanelUrl });
-
-      // 無効なユニット ID ではリソースは取得できない
-      if (unitId > 0) {
-        const unitUrl = ResourceMaster.Dynamic.Unit(unitId);
-        assets.push({ name: unitUrl, url: unitUrl });
-      }
-    }
-
-    const masterKeys = BattleScene.MasterResourceKey;
-
-    const stageMasterUrl = ResourceMaster.Api.Stage(this.stageId);
-    const unitMasterUrl = ResourceMaster.Api.Unit(this.unitIds);
-    const unitAnimationMasterUrl = ResourceMaster.Api.UnitAnimation(this.unitIds);
-
-    assets.push({ name: masterKeys.STAGE, url: stageMasterUrl });
-    assets.push({ name: masterKeys.UNIT, url: unitMasterUrl });
-    assets.push({ name: masterKeys.UNIT_ANIMATION, url: unitAnimationMasterUrl });
-
-    const playerBaseTextureUrl = ResourceMaster.Dynamic.Base(this.playerBase.baseId);
-    assets.push({ name: playerBaseTextureUrl, url: playerBaseTextureUrl });
-
-    const fieldResources = Field.resourceList;
-    for (let i = 0; i < fieldResources.length; i++) {
-      const bgResourceUrl = fieldResources[i];
-      assets.push({ name: bgResourceUrl, url: bgResourceUrl });
-    }
-
-    const baseResources = Base.resourceList;
-    for (let i = 0; i < baseResources.length; i++) {
-      const baseResourceUrl = baseResources[i];
-      assets.push({ name: baseResourceUrl, url: baseResourceUrl });
-    }
-
-    const attackSmokeResources = AttackSmoke.resourceList;
-    for (let i = 0; i < attackSmokeResources.length; i++) {
-      const attackSmokeResourcesUrl = attackSmokeResources[i];
-      assets.push({ name: attackSmokeResourcesUrl, url: attackSmokeResourcesUrl });
-    }
-
-    const deadResources = Dead.resourceList;
-    for (let i = 0; i < deadResources.length; i++) {
-      const deadResourceUrl = deadResources[i];
-      assets.push({ name: deadResourceUrl, url: deadResourceUrl });
-    }
-
-    const collapseExplodeResources = CollapseExplodeEffect.resourceList;
-    for (let i = 0; i < collapseExplodeResources.length; i++) {
-      const collapseExplodeResourceUrl = collapseExplodeResources[i];
-      assets.push({ name: collapseExplodeResourceUrl, url: collapseExplodeResourceUrl });
-    }
-
-    const battleResultResources = BattleResult.resourceList;
-    for (let i = 0; i < battleResultResources.length; i++) {
-      const battleResultResourceUrl = battleResultResources[i];
-      assets.push({ name: battleResultResourceUrl, url: battleResultResourceUrl });
-    }
-
-    const audioMaster = ResourceMaster.Audio;
-    assets.push({ name: audioMaster.Bgm.Battle, url: audioMaster.Bgm.Battle });
-    assets.push({ name: audioMaster.Se.Attack1, url: audioMaster.Se.Attack1 });
-    assets.push({ name: audioMaster.Se.Attack2, url: audioMaster.Se.Attack2 });
-    assets.push({ name: audioMaster.Se.Bomb, url: audioMaster.Se.Bomb });
-    assets.push({ name: audioMaster.Se.UnitSpawn, url: audioMaster.Se.UnitSpawn });
-    assets.push({ name: audioMaster.Se.Win, url: audioMaster.Se.Win });
-    assets.push({ name: audioMaster.Se.Lose, url: audioMaster.Se.Lose });
+  protected createInitialResourceList(): Array<LoaderAddParam | string> {
+    let assets = super.createInitialResourceList();
+    assets = assets.concat(
+      Field.resourceList,
+      Base.resourceList,
+      AttackSmoke.resourceList,
+      Dead.resourceList,
+      CollapseExplodeEffect.resourceList,
+      BattleResult.resourceList,
+      [
+        Resource.Api.Stage(this.stageId),
+        Resource.Dynamic.Base(this.playerBase.baseId),
+        Resource.Audio.Bgm.Battle,
+        Resource.Audio.Se.Attack1,
+        Resource.Audio.Se.Attack2,
+        Resource.Audio.Se.Bomb,
+        Resource.Audio.Se.UnitSpawn,
+        Resource.Audio.Se.Win,
+        Resource.Audio.Se.Lose
+      ]
+    );
 
     return assets;
   }
 
   /**
    * リソースロード完了コールバック
-   * BattleLogic にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
+   * BattleLogic にユニットマスタ情報を渡し、フィールドやユニットボタンの初期化を行う
    */
-  protected onResourceLoaded(): void {
+  protected onInitialResourceLoaded(): Array<LoaderAddParam | string> {
+    const additionalAssets = super.onInitialResourceLoaded();
+
     const resources = PIXI.loader.resources as any;
 
-    const sceneUiGraphName = ResourceMaster.Api.SceneUiGraph(this);
-    this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
+    const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
+    // ステージ情報を取得するまでは AI 拠点テクスチャは分からないのでここでロードする
+    additionalAssets.push(Resource.Dynamic.Base(stageMaster.aiBase.baseId));
 
-    const stageMaster = resources[BattleScene.MasterResourceKey.STAGE].data;
-    this.field.init({ fieldLength: stageMaster.length, zLines: stageMaster.zLines });
+    // ユーザの編成で指定されたユニット ID 配列に敵のユニット ID を追加する
+    const keys = Object.keys(stageMaster.waves);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const wave = stageMaster.waves[key];
+      for (let j = 0; j < wave.length; j++) {
+        const unitId = wave[j].unitId;
+        if (this.unitIds.indexOf(unitId) === -1) {
+          this.unitIds.push(unitId)
+        }
+      }
+    }
 
-    const unitAnimationMasters = resources[BattleScene.MasterResourceKey.UNIT_ANIMATION].data;
+    // ステージ情報を取得するまでは AI ユニット情報が分からないのでここでロードする
+    additionalAssets.push(Resource.Api.Unit(this.unitIds));
+    additionalAssets.push(Resource.Api.UnitAnimation(this.unitIds));
+
+    for (let i = 0; i < this.unitIds.length; i++) {
+      const unitId = this.unitIds[i];
+      // 無効なユニット ID を渡した場合に空のユニットボタン扱いになる
+      additionalAssets.push(Resource.Dynamic.UnitPanel(unitId));
+
+      // 無効なユニット ID ではリソースは取得できない
+      if (unitId > 0) {
+        additionalAssets.push(Resource.Dynamic.Unit(unitId));
+      }
+    }
+
+    return additionalAssets;
+  }
+
+  /**
+   * リソースロード完了時のコールバック
+   */
+  protected onResourceLoaded(): void {
+    super.onResourceLoaded();
+
+    const resources = PIXI.loader.resources;
+
+    const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
+    const unitMasters = resources[Resource.Api.Unit(this.unitIds)].data;
+
+    const unitAnimationMasters = resources[Resource.Api.UnitAnimation(this.unitIds)].data;
     for (let i = 0; i < unitAnimationMasters.length; i++) {
       const master = unitAnimationMasters[i];
       this.unitAnimationMasterCache.set(master.unitId, master);
     }
 
-    this.initUnitButtons();
+    this.field.init({ fieldLength: stageMaster.length, zLines: stageMaster.zLines });
 
+    this.initSound();
+    this.initUnitButtons();
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
-    this.initSound();
-
-    /**
-     * 追加リソースダウンロード後の処理
-     * 追加リソースがなければそのまま実行する
-     */
-    const onDependencyResourceLoaded = () => {
-      const unitMasters = resources[BattleScene.MasterResourceKey.UNIT].data;
-
-      this.manager.init({
-        stageMaster,
-        unitMasters,
-        delegator: this,
-        playerBase: {
-          baseId: this.playerBase.baseId,
-          health: this.playerBase.maxHealth
-        }
-      });
-
-      if (this.transitionIn.isFinished()) {
-        this.state = BattleSceneState.READY;
-      } else {
-        this.state = BattleSceneState.RESOURCE_LOADED;
+    this.manager.init({
+      stageMaster,
+      unitMasters,
+      delegator: this,
+      playerBase: {
+        baseId: this.playerBase.baseId,
+        health: this.playerBase.maxHealth
       }
-    };
+    });
 
-    const aiBaseTextureUrl = ResourceMaster.Dynamic.Base(stageMaster.aiBase.baseId);
-    if (!resources[aiBaseTextureUrl]) {
-      PIXI.loader.add({ name: aiBaseTextureUrl, url: aiBaseTextureUrl }).load(() => {
-        onDependencyResourceLoaded();
-      });
+    if (this.transitionIn.isFinished()) {
+      this.state = BattleSceneState.READY;
     } else {
-      onDependencyResourceLoaded();
+      this.state = BattleSceneState.RESOURCE_LOADED;
     }
   }
 
@@ -345,9 +307,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
   /**
    * BaseEntity が生成されたときのコールバック
-   * 表示物を生成する
    */
   public onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void {
+    // 拠点の描画物を生成する
     const base = new Base(entity.baseId);
     base.sprite.position.x = basePosition;
     if (!entity.isPlayer) {
@@ -385,18 +347,21 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const unit = new Unit(entity.unitId, {
       hitFrame: master.hitFrame,
+      spawnPosition: { x: basePosition, y: 0 },
       animationMaxFrameIndexes: master.maxFrameIndexes,
       animationUpdateDurations: master.updateDurations
     });
+
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
-    unit.sprite.position.x = basePosition;
-    unit.requestAnimation(ResourceMaster.AnimationTypes.Unit.WALK);
+    unit.requestAnimation(Resource.AnimationTypes.Unit.WALK);
 
     this.attackables.set(entity.id, unit);
 
+    // Field に追加する重なり順を決定する
     const zLineCount = this.field.zLineCount;
     let index = Math.floor(Math.random() * this.field.zLineCount);
 
+    // 最後に追加された Zline と同じ場合は表示が重なって見えてしまうので避ける
     let lastAddedZline;
     if (entity.isPlayer) {
       lastAddedZline = this.fieldLastAddedZline.player;
@@ -420,8 +385,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       this.fieldLastAddedZline.ai = index;
     }
 
-    unit.saveSpawnedPosition();
-
     this.registerUpdatingObject(unit as UpdateObject);
   }
 
@@ -436,17 +399,18 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     if ((entity as UnitEntity).unitId) {
       const unit = attackable as Unit;
-      const animationTypes = ResourceMaster.AnimationTypes.Unit;
+      const animationTypes = Resource.AnimationTypes.Unit;
       switch (entity.state) {
         case AttackableState.IDLE: {
           unit.requestAnimation(animationTypes.WALK);
           break;
         }
-        case AttackableState.LOCKED: {
+        case AttackableState.ENGAGED: {
           unit.requestAnimation(animationTypes.ATTACK);
           break;
         }
         case AttackableState.DEAD: {
+          // 死亡時は死亡エフェクトを表示してもともとのユニット描画物は破棄する
           const effect = new Dead(!entity.isPlayer);
           const sprite = attackable.sprite;
           const yAdjust = sprite.height * (1.0 - sprite.anchor.y) - effect.height;
@@ -461,6 +425,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
     } else {
       if (entity.state === AttackableState.DEAD) {
+        // 拠点が破壊されたときは破壊エフェクトを開始させる
         const base = attackable as Base;
         base.collapse();
         this.field.addChildAsForeForegroundEffect(base.explodeContainer);
@@ -482,37 +447,32 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   public onGameOver(isPlayerWon: boolean): void {
     this.state = BattleSceneState.FINISHED;
 
-    const result = new BattleResult(isPlayerWon);
-    result.onAnimationEnded = this.enableBackToOrderScene.bind(this);
-    this.uiGraphContainer.addChild(result);
-
-    const bgm = SoundManager.getSound(ResourceMaster.Audio.Bgm.Battle);
-    if (bgm) {
-      bgm.stop();
-    }
-
-    const soundName = isPlayerWon ? ResourceMaster.Audio.Se.Win : ResourceMaster.Audio.Se.Lose;
-    const sound = SoundManager.getSound(soundName);
-    if (sound) {
-      sound.play();
-    }
-
     // 攻撃をやめる
     this.attackables.forEach((attackable) => {
       const unit = attackable as Unit;
       if (!unit.requestAnimation) {
         return;
       }
-      unit.requestAnimation(ResourceMaster.AnimationTypes.Unit.WAIT);
+      unit.requestAnimation(Resource.AnimationTypes.Unit.WAIT);
     });
 
+    // ゲームオーバー表示をする
+    const result = new BattleResult(isPlayerWon);
+    result.onAnimationEnded = this.enableBackToOrderScene.bind(this);
+    this.uiGraphContainer.addChild(result);
+
     this.registerUpdatingObject(result);
+
+    // BGM を止める
+    this.stopBgm(Resource.Audio.Bgm.Battle);
+    // ゲームオーバーサウンドを再生
+    this.playSe(isPlayerWon ? Resource.Audio.Se.Win : Resource.Audio.Se.Lose);
   }
 
   /**
    * 渡されたエンティティ同士が接敵可能か返す
    */
-  public shouldLockAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean {
+  public shouldEngageAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean {
     const attackerAttackable = this.attackables.get(attacker.id);
     if (!attackerAttackable) {
       return false;
@@ -574,14 +534,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     toHealth: number,
     maxHealth: number
   ): void {
-    const sound = SoundManager.getSound((Math.random() >= 0.5)
-      ? ResourceMaster.Audio.Se.Attack1
-      : ResourceMaster.Audio.Se.Attack2
-    );
-    if (sound) {
-      sound.play();
-    }
-
     const targetAttackable = this.attackables.get(target.id);
     if (!targetAttackable) {
       return;
@@ -589,7 +541,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const targetSprite = targetAttackable.sprite;
 
-    // smoke effect
+    // 攻撃時砂煙演出の表示
     const smoke = new AttackSmoke();
     const xRand = Math.random() * targetSprite.width;
     const yRand = Math.random() * targetSprite.height;
@@ -603,8 +555,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     smoke.scale.set(scale, scale);
 
     targetSprite.parent.addChild(smoke);
+    this.registerUpdatingObject(smoke);
 
-    // HealthGauge を表示させる
+    // 体力ゲージの表示
     if ((target as UnitEntity).unitId) {
       const attackable = this.attackables.get(target.id);
       if (!attackable) {
@@ -617,7 +570,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       this.registerUpdatingObject(gauge);
     }
 
-    this.registerUpdatingObject(smoke);
+    // ランダムに攻撃効果音を再生する
+    this.playSe((Math.random() >= 0.5)
+      ? Resource.Audio.Se.Attack1
+      : Resource.Audio.Se.Attack2
+    );
   }
   /**
   * 渡されたユニットが移動すべきかどうかを返す
@@ -631,7 +588,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       return false;
     }
 
-    if (attackable.getAnimationType() === ResourceMaster.AnimationTypes.Unit.WALK) {
+    if (attackable.getAnimationType() === Resource.AnimationTypes.Unit.WALK) {
       return true;
     }
     return (attackable as Unit).isAnimationLastFrameTime();
@@ -662,7 +619,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   private initSound(): void {
     const resources = PIXI.loader.resources as any;
 
-    const audioMaster = ResourceMaster.Audio;
+    const audioMaster = Resource.Audio;
     SoundManager.createSound(audioMaster.Bgm.Battle, resources[audioMaster.Bgm.Battle].buffer);
     SoundManager.createSound(audioMaster.Se.Attack1, resources[audioMaster.Se.Attack1].buffer);
     SoundManager.createSound(audioMaster.Se.Attack2, resources[audioMaster.Se.Attack2].buffer);
@@ -671,19 +628,14 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     SoundManager.createSound(audioMaster.Se.Win, resources[audioMaster.Se.Win].buffer);
     SoundManager.createSound(audioMaster.Se.Lose, resources[audioMaster.Se.Lose].buffer);
 
-    // BGM を鳴らす
-    const item = resources[audioMaster.Bgm.Battle];
-    if (item.buffer) {
-      const audio = SoundManager.createSound(audioMaster.Bgm.Battle, item.buffer);
-      audio.play(true);
-    }
+    this.playBgm(Resource.Audio.Bgm.Battle);
   }
 
   /**
    * ユニットボタンの初期化
    */
   private initUnitButtons(): void {
-    const unitMasters = PIXI.loader.resources[BattleScene.MasterResourceKey.UNIT].data;
+    const unitMasters = PIXI.loader.resources[Resource.Api.Unit(this.unitIds)].data;
     for (let index = 0; index < this.unitSlotCount; index++) {
       const unitButton = this.getUiGraphUnitButton(index);
       if (!unitButton) {
@@ -715,11 +667,17 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     return this.uiGraph[uiGraphUnitButtonName] as UnitButton;
   }
 
+  /**
+   * 編成画面へ戻る操作を有効にする
+   */
   private enableBackToOrderScene(): void {
     this.interactive = true;
     this.on('pointerdown', (_e: PIXI.interaction.InteractionEvent) => this.backToOrderScene());
   }
 
+  /**
+   * 編成画面へ戻る
+   */
   private backToOrderScene(): void {
     const resources = PIXI.loader.resources as any;
 

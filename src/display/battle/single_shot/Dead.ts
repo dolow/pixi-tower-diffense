@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import UpdateObject from 'interfaces/UpdateObject';
 
 const TO_RAD = Math.PI / 180.0;
@@ -21,8 +21,8 @@ export default class Dead extends PIXI.Container implements UpdateObject {
    */
   public static get resourceList(): string[] {
     return [
-      ResourceMaster.Static.DeadBucket,
-      ResourceMaster.Static.DeadSpirit
+      Resource.Static.DeadBucket,
+      Resource.Static.DeadSpirit
     ];
   }
 
@@ -33,8 +33,8 @@ export default class Dead extends PIXI.Container implements UpdateObject {
     super();
 
     const textureCache = PIXI.utils.TextureCache;
-    const bucketTexture = textureCache[ResourceMaster.Static.DeadBucket];
-    const spiritTexture = textureCache[ResourceMaster.Static.DeadSpirit];
+    const bucketTexture = textureCache[Resource.Static.DeadBucket];
+    const spiritTexture = textureCache[Resource.Static.DeadSpirit];
 
     this.bucket = new PIXI.Sprite(bucketTexture);
     this.spirit = new PIXI.Sprite(spiritTexture);
@@ -69,9 +69,13 @@ export default class Dead extends PIXI.Container implements UpdateObject {
    * requestAnimationFrame 毎のアップデート処理
    */
   public update(_delta: number): void {
+    if (this.isDestroyed()) {
+      return;
+    }
+
     this.elapsedFrameCount++;
 
-    // TODO: move to sub system
+    // 本来はアニメーションを扱うミドルウェアで行う部分
     switch (this.elapsedFrameCount) {
       case 4:  this.bucket.rotation = 25.0 * TO_RAD;  break;
       case 8:  this.bucket.rotation = -25.0 * TO_RAD; break;
@@ -85,6 +89,7 @@ export default class Dead extends PIXI.Container implements UpdateObject {
         break;
       }
       case 80: {
+        // 規定フレーム数再生したら自然消滅させる
         this.bucket.destroy();
         this.spirit.destroy();
         this.destroy();

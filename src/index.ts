@@ -1,4 +1,5 @@
 import * as WebFont from 'webfontloader';
+import Resource from 'Resource';
 import TitleScene from 'scenes/TitleScene';
 import GameManager from 'managers/GameManager';
 
@@ -34,7 +35,7 @@ let windowLoaded = false;
  */
 WebFont.load({
   custom: {
-    families: ['MisakiGothic'],
+    families: [Resource.FontFamily.Default],
     urls: ['base.css']
   },
   active: () => {

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import GameManager from 'managers/GameManager';
 
 /**
@@ -42,10 +42,11 @@ export default class Field extends PIXI.Container {
    * このクラスで利用するリソースリスト
    */
   public static get resourceList(): string[] {
-    let list: string[] = [];
-    list = list.concat(ResourceMaster.Static.BattleBgFores);
-    list = list.concat(ResourceMaster.Static.BattleBgMiddles);
-    list = list.concat(ResourceMaster.Static.BattleBgBacks);
+    let list: string[] = ([] as string[]).concat(
+      Resource.Static.BattleBgFores,
+      Resource.Static.BattleBgMiddles,
+      Resource.Static.BattleBgBacks
+    );
 
     return list;
   }
@@ -77,11 +78,12 @@ export default class Field extends PIXI.Container {
    */
   public init(options: any = { fieldLength: 3000, zLines: 8 }): void {
     const tiles: { [key: string]: string[] } = {
-      fore:   ResourceMaster.Static.BattleBgFores,
-      middle: ResourceMaster.Static.BattleBgMiddles,
-      back:   ResourceMaster.Static.BattleBgBacks
+      fore:   Resource.Static.BattleBgFores,
+      middle: Resource.Static.BattleBgMiddles,
+      back:   Resource.Static.BattleBgBacks
     };
 
+    // 前景、中景、後景の Sprite を作成する
     const layers = Object.keys(tiles);
     for (let i = 0; i < layers.length; i++) {
       const layer = layers[i];

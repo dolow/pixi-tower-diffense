@@ -34,6 +34,7 @@ export default class Sound {
 
     const playedTime = audioContext.currentTime - this.playedAt;
 
+    // ループ再生の場合は合計の再生時間から割り出す
     if (this.source.loop) {
       const playLength = this.source.loopEnd - this.source.loopStart;
       if (playedTime > playLength) {
@@ -103,6 +104,7 @@ export default class Sound {
 
     this.loop = loop;
 
+    // AudioSourceNode の初期化
     this.source = audioContext.createBufferSource();
     this.source.loop      = this.loop;
     this.source.loopStart = 0;
@@ -132,7 +134,8 @@ export default class Sound {
     try {
       (this.source as any).buffer  = null;
     } catch (_e) {
-      // Pass through, Chrome <= 59 does not accept null
+      // Chrome 59 以下は null 代入できない
+      // 後続の処理に問題はないので正常系処理に戻す
     }
 
     this.source.onended = null;

@@ -25,6 +25,7 @@ export default class IndexedDBManager {
     private static db;
     /**
      * マネージャを初期化する
+     * DB 接続を開き保持しておく
      */
     static init(onError: (e: Event) => void): void;
     /**

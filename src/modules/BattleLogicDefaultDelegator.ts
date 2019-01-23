@@ -34,7 +34,7 @@ export default class DefaultDelegator implements BattleLogicDelegate {
   }
   public onAvailableCostUpdated(_cost: number): void {}
   public onGameOver(_isPlayerWon: boolean): void {}
-  public shouldLockAttackableEntity(
+  public shouldEngageAttackableEntity(
     _attacker: AttackableEntity,
     _target: AttackableEntity
   ): boolean {

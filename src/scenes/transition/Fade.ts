@@ -51,7 +51,7 @@ export default class Fade implements Transition {
     const width = GameManager.instance.game.view.width;
     const height = GameManager.instance.game.view.height;
 
-    this.container.addChild(this.overlay);
+    // フェード用の黒い画面
     this.overlay.beginFill(0x000000);
     this.overlay.moveTo(0, 0);
     this.overlay.lineTo(width, 0);

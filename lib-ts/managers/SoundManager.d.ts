@@ -27,9 +27,9 @@ export default class SoundManager {
      */
     private paused;
     /**
-     * フェー風土処理後に削除する Sound インスタンスのリスト
+     * フェード処理後に削除する Sound インスタンスのリスト
      */
-    private soundsKillingAfterFade;
+    private killingSounds;
     /**
      * SoundManager で監理している Sound インスタンスの Map
      */
@@ -43,6 +43,10 @@ export default class SoundManager {
      * ユーザで生成した AudioContext を渡すこともできる
      */
     static init(ctx?: AudioContext): void;
+    /**
+     * 毎フレームの更新処理
+     */
+    static update(_delta: number): void;
     /**
      * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
      */

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import UpdateObject from 'interfaces/UpdateObject';
 
 /**
@@ -24,7 +24,7 @@ export default class AttackSmokeEffect extends PIXI.Container implements UpdateO
    * このエフェクトで使用するリソースリスト
    */
   public static get resourceList(): string[] {
-    return [ResourceMaster.Static.AttackSmoke];
+    return [Resource.Static.AttackSmoke];
   }
 
   /**
@@ -33,7 +33,7 @@ export default class AttackSmokeEffect extends PIXI.Container implements UpdateO
   constructor() {
     super();
 
-    this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.AttackSmoke(1));
+    this.sprite = new PIXI.Sprite(Resource.TextureFrame.AttackSmoke(1));
     this.addChild(this.sprite);
   }
 
@@ -50,20 +50,25 @@ export default class AttackSmokeEffect extends PIXI.Container implements UpdateO
    * requestAnimationFrame 毎のアップデート処理
    */
   public update(_delta: number): void {
+    if (this.isDestroyed()) {
+      return;
+    }
+
     this.elapsedFrameCount++;
-
+    // 半透明を表現
     this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
-
+    // テクスチャ更新周期になったら次のテクスチャに切り替える
     if (this.elapsedFrameCount % AttackSmokeEffect.TextureFrameUpdateFrequency === 0) {
       const count = this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency;
       const index = Math.floor(count) + 1;
-      if (index > ResourceMaster.MaxFrameIndex(ResourceMaster.Static.AttackSmoke)) {
+      // すべてのテクスチャが再生されたら自然消滅させる
+      if (index > Resource.MaxFrameIndex(Resource.Static.AttackSmoke)) {
         this.sprite.destroy();
         this.destroy();
         return;
       }
 
-      this.sprite.texture = ResourceMaster.TextureFrame.AttackSmoke(index);
+      this.sprite.texture = Resource.TextureFrame.AttackSmoke(index);
     }
   }
 }

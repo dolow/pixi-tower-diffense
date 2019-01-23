@@ -1,5 +1,5 @@
 import Config from  'Config';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import GameManager from 'managers/GameManager';
 import IndexedDBManager from 'managers/IndexedDBManager';
 import SoundManager from 'managers/SoundManager';
@@ -57,133 +57,89 @@ export default class OrderScene extends Scene  {
   }
 
   /**
-   * リソースをロードする
-   * 基本実装をオーバーライドし、 indexed db のレコードを取得する
-   */
-  public loadResource(onResourceLoaded: () => void): void {
-    new Promise((resolve) => {
-      IndexedDBManager.get('lastStageId', (value) => {
-        if (value) {
-          this.currentStageId = value;
-        }
-        resolve();
-      });
-    }).then(() => {
-      return new Promise((resolve) => {
-        IndexedDBManager.get('lastUnitOrder', (value) => {
-          if (value) {
-            this.lastUnitIds = value;
-          }
-          resolve();
-        });
-      });
-    }).then(() => {
-      return new Promise((resolve) => {
-        this.loadUiGraph(() => resolve());
-      });
-    }).then(() => {
-      return new Promise((resolve) => {
-        this.onUiGraphLoaded(() => resolve());
-      });
-    }).then(() => {
-      onResourceLoaded();
-    }).then(() => {
-      this.onResourceLoaded();
-    });
-  }
-
-  /**
-   * 独自 UiGraph 要素のファクトリを返す
-   * OrderScene は BattleScene と UnitButton を共用している
-   */
-  protected getCustomUiGraphFactory(type: string): UiNodeFactory | null {
-    if (type === 'unit_button') {
-      return new UnitButtonFactory();
-    }
-    return null;
-  }
-
-  /**
    * リソースリストを作成し返却する
    */
-  protected createResourceList(): LoaderAddParam[] {
-    const assets = super.createResourceList();
-
-    const userBattleUrl = ResourceMaster.Api.UserBattle(DUMMY_USER_ID);
-    assets.push({ name: userBattleUrl, url: userBattleUrl });
-
-    const allUnitMasterUrl = ResourceMaster.Api.AllUnit();
-    assets.push({ name: allUnitMasterUrl, url: allUnitMasterUrl });
-
-    const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
-    if (!SoundManager.hasSound(bgmTitleName)) {
-      assets.push({ name: bgmTitleName, url: bgmTitleName });
-    }
-
-    const seUnitSpawn = ResourceMaster.Audio.Se.UnitSpawn;
-    if (!SoundManager.hasSound(seUnitSpawn)) {
-      assets.push({ name: seUnitSpawn, url: seUnitSpawn });
-    }
+  protected createInitialResourceList(): Array<LoaderAddParam | string> {
+    let assets = super.createInitialResourceList();
+    assets.push(Resource.Api.UserBattle(DUMMY_USER_ID));
+    assets.push(Resource.Api.AllUnit());
+    assets.push(Resource.Audio.Bgm.Title);
+    assets.push(Resource.Audio.Se.UnitSpawn);
 
     return assets;
   }
 
   /**
+   * リソースをロードする
+   * 基本実装をオーバーライドし、 indexed db のレコードを取得する
+   */
+  public beginLoadResource(onLoaded: () => void): Promise<void> {
+    // Indexed DB にレコードが存在すれば最後の編成情報を復元する
+    return Promise.all([
+      new Promise((resolve) => {
+        this.loadStageIdFromDB((stageId) => {
+          this.currentStageId = stageId || 1;
+          resolve()
+        });
+      }),
+      new Promise((resolve) => {
+        this.loadUnitIdsFromDB((unitIds) => {
+          this.lastUnitIds = unitIds || [];
+          resolve()
+        });
+      })
+    ]).then(() => {
+      return super.beginLoadResource(onLoaded);
+    });
+  }
+
+  /**
    * リソースがロードされた時のコールバック
    */
-  protected onResourceLoaded(): void {
-    super.onResourceLoaded();
+  protected onInitialResourceLoaded(): Array<LoaderAddParam | string> {
+    let additionalAssets = super.onInitialResourceLoaded();
 
     const resources = PIXI.loader.resources;
 
     this.unitButtonTexturesCache.clear();
     this.unitMasterCache.clear();
 
-    const userBattleUrl = ResourceMaster.Api.UserBattle(DUMMY_USER_ID);
+    const userBattleUrl = Resource.Api.UserBattle(DUMMY_USER_ID);
     this.userBattle = resources[userBattleUrl].data;
 
     if (!this.userBattle) {
       throw new Error('user_battle record could not be retrieved');
     }
 
-    const allUnitMaster = resources[ResourceMaster.Api.AllUnit()].data;
+    const allUnitMaster = resources[Resource.Api.AllUnit()].data;
     for (let i = 0; i < allUnitMaster.length; i++) {
       const unitMaster = allUnitMaster[i];
       this.unitMasterCache.set(unitMaster.unitId, unitMaster);
     }
 
-    const seKey = ResourceMaster.Audio.Se.UnitSpawn;
+    const seKey = Resource.Audio.Se.UnitSpawn;
     SoundManager.createSound(seKey, (resources[seKey] as any).buffer);
-
-    const dependencyAssets = [];
 
     for (let i = 0; i < this.userBattle.unlockedUnitIds.length; i++) {
       const unitId = this.userBattle.unlockedUnitIds[i];
-      const url = ResourceMaster.Dynamic.UnitPanel(unitId);
-      if (!resources[url]) {
-        dependencyAssets.push({ url, name: url });
-      }
+      additionalAssets.push(Resource.Dynamic.UnitPanel(unitId));
     }
 
-    if (dependencyAssets.length > 0) {
-      PIXI.loader.add(dependencyAssets).load(() => {
-        this.onDependencyResourceLoaded();
-      });
-    } else {
-      this.onDependencyResourceLoaded();
-    }
+    return additionalAssets;
   }
 
   /**
    * 追加リソースダウンロード完了時コールバック
    */
-  private onDependencyResourceLoaded(): void {
+  protected onResourceLoaded(): void {
+    super.onResourceLoaded();
+
     if (!this.userBattle) {
       throw new Error('user_battle record missing');
     }
     for (let i = 0; i < this.userBattle.unlockedUnitIds.length; i++) {
       const unitId = this.userBattle.unlockedUnitIds[i];
-      const url = ResourceMaster.Dynamic.UnitPanel(unitId);
+      const url = Resource.Dynamic.UnitPanel(unitId);
       this.unitButtonTexturesCache.set(unitId, PIXI.loader.resources[url].texture);
     }
 
@@ -207,8 +163,6 @@ export default class OrderScene extends Scene  {
       return;
     }
 
-    this.playTapSe();
-
     const availableUnitIds = this.userBattle.unlockedUnitIds;
 
     let nextIndex = availableUnitIds.indexOf(unitButton.unitId) + addValue;
@@ -228,6 +182,8 @@ export default class OrderScene extends Scene  {
     }
 
     unitButton.changeUnit(newUnitId, cost);
+
+    this.playSe(Resource.Audio.Se.UnitSpawn);
   }
 
   /**
@@ -237,8 +193,6 @@ export default class OrderScene extends Scene  {
     if (!this.userBattle) {
       return;
     }
-
-    this.playTapSe();
 
     let newStageId;
 
@@ -256,6 +210,8 @@ export default class OrderScene extends Scene  {
     }
 
     this.updateCurrentStageId(newStageId);
+
+    this.playSe(Resource.Audio.Se.UnitSpawn);
   }
 
   /**
@@ -263,7 +219,7 @@ export default class OrderScene extends Scene  {
    */
   public onOkButtonDown(): void {
     this.uiGraph.ok_button_off.visible = false;
-    this.playTapSe();
+    this.playSe(Resource.Audio.Se.UnitSpawn);
   }
 
   /**
@@ -272,6 +228,17 @@ export default class OrderScene extends Scene  {
   public onOkButtonUp(): void {
     this.uiGraph.ok_button_off.visible = true;
     this.startBattleIfPossible();
+  }
+
+  /**
+   * 独自 UiGraph 要素のファクトリを返す
+   * OrderScene は BattleScene と UnitButton を共用している
+   */
+  protected getCustomUiGraphFactory(type: string): UiNodeFactory | null {
+    if (type === 'unit_button') {
+      return new UnitButtonFactory();
+    }
+    return null;
   }
 
   /**
@@ -287,12 +254,11 @@ export default class OrderScene extends Scene  {
       return false;
     }
 
-    const bgm = SoundManager.getSound(ResourceMaster.Audio.Bgm.Title);
-    if (bgm) {
-      SoundManager.fade(bgm, 0.01, 0.5, true);
-    }
+    this.fadeOutBgm();
+    SoundManager.unregisterSound(Resource.Audio.Bgm.Title);
 
-    SoundManager.unregisterSound(ResourceMaster.Audio.Bgm.Title);
+    this.saveStageIdToDB(params.stageId);
+    this.saveUnitIdsToDB(params.unitIds);
 
     GameManager.loadScene(new BattleScene(params));
 
@@ -327,18 +293,6 @@ export default class OrderScene extends Scene  {
   }
 
   /**
-   * 必要であれば BGM を再生する
-   */
-  private playBgmIfNeeded(): void {
-    const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
-    if (!SoundManager.hasSound(bgmTitleName)) {
-      const resource = PIXI.loader.resources[bgmTitleName] as any;
-      const bgm = SoundManager.createSound(bgmTitleName, resource.buffer);
-      bgm.play(true);
-    }
-  }
-
-  /**
    * 選択されているステージ ID を更新する
    */
   private updateCurrentStageId(stageId: number): void {
@@ -359,9 +313,6 @@ export default class OrderScene extends Scene  {
       unitIds.push(unitButton.unitId);
     });
 
-    IndexedDBManager.put('lastStageId', this.currentStageId);
-    IndexedDBManager.put('lastUnitOrder', unitIds);
-
     return {
       unitIds,
       unitSlotCount: Config.MaxUnitSlotCount,
@@ -372,12 +323,49 @@ export default class OrderScene extends Scene  {
   }
 
   /**
-   * タップ時のサウンドを再生する
+   * 必要であれば BGM を再生する
    */
-  private playTapSe(): void {
-    const se = SoundManager.getSound(ResourceMaster.Audio.Se.UnitSpawn);
-    if (se) {
-      se.play();
+  private playBgmIfNeeded(): void {
+    const bgmTitleName = Resource.Audio.Bgm.Title;
+    if (!SoundManager.hasSound(bgmTitleName)) {
+      const resource = PIXI.loader.resources[bgmTitleName] as any;
+      const bgm = SoundManager.createSound(bgmTitleName, resource.buffer);
+      bgm.play(true);
+    }
+  }
+
+  /**
+   * DB へユニットID配列を保存する
+   */
+  private saveUnitIdsToDB(unitIds: number[]): void {
+    IndexedDBManager.put('lastUnitOrder', unitIds);
+  }
+  /**
+   * DB からユニットID配列を取得する
+   */
+  private loadUnitIdsFromDB(callback: (unitIds: number[]) => void): void {
+    IndexedDBManager.get('lastUnitOrder', (unitIds) => callback(unitIds));
+  }
+  /**
+   * DB へステージIDを保存する
+   */
+  private saveStageIdToDB(stageId: number): void {
+    IndexedDBManager.put('lastStageId', stageId);
+  }
+  /**
+   * DB からステージIDを取得する
+   */
+  private loadStageIdFromDB(callback: (stageId: number) => void): void {
+    IndexedDBManager.get('lastStageId', (stageId) => callback(stageId));
+  }
+
+  /**
+   * BGM をフェードアウトする
+   */
+  private fadeOutBgm(): void {
+    const bgm = SoundManager.getSound(Resource.Audio.Bgm.Title);
+    if (bgm) {
+      SoundManager.fade(bgm, 0.01, 0.5, true);
     }
   }
 }

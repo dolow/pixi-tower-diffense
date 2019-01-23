@@ -3,7 +3,7 @@ import Scene from 'scenes/Scene';
 /**
  * リソースの URL や命名規則のマスタ
  */
-declare const ResourceMaster: Readonly<{
+declare const Resource: Readonly<{
     /**
      * マスターデータ API 情報を有するオブジェクト
      */
@@ -79,9 +79,12 @@ declare const ResourceMaster: Readonly<{
             COLLAPSE: string;
         }>;
     };
+    FontFamily: {
+        Default: string;
+    };
     /**
      * スプライトシートの最大フレーム数を返す関数
      */
     MaxFrameIndex: (resourceKey: string) => number;
 }>;
-export default ResourceMaster;
+export default Resource;

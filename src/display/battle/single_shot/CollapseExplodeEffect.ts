@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import SoundManager from 'managers/SoundManager';
 import UpdateObject from 'interfaces/UpdateObject';
 
@@ -26,8 +26,8 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
    */
   public static get resourceList(): string[] {
     return [
-      ResourceMaster.Static.CollapseExplode,
-      ResourceMaster.Audio.Se.Bomb
+      Resource.Static.CollapseExplode,
+      Resource.Audio.Se.Bomb
     ];
   }
 
@@ -36,7 +36,8 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
    */
   constructor() {
     super();
-    this.sprite = new PIXI.Sprite(ResourceMaster.TextureFrame.CollapseExplode(1));
+
+    this.sprite = new PIXI.Sprite(Resource.TextureFrame.CollapseExplode(1));
     this.sprite.anchor.set(0.5, 0.5);
     this.addChild(this.sprite);
   }
@@ -54,27 +55,42 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
    * requestAnimationFrame 毎のアップデート処理
    */
   public update(_delta: number): void {
-    this.elapsedFrameCount++;
-
-    this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
-
-    if (this.elapsedFrameCount === 1) {
-      const sound = SoundManager.getSound(ResourceMaster.Audio.Se.Bomb);
-      if (sound) {
-        sound.play();
-      }
+    if (this.isDestroyed()) {
+      return;
     }
 
+    this.elapsedFrameCount++;
+
+    // 半透明を表現
+    this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
+
+    // 最初のフレームで効果音を再生する
+    if (this.elapsedFrameCount === 1) {
+      this.playSe();
+    }
+
+    // テクスチャ更新周期になったら次のテクスチャに切り替える
     if (this.elapsedFrameCount % CollapseExplodeEffect.TextureFrameUpdateFrequency === 0) {
       const count = this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency;
       const index = Math.floor(count) + 1;
-      if (index > ResourceMaster.MaxFrameIndex(ResourceMaster.Static.CollapseExplode)) {
+      // すべてのテクスチャが再生されたら自然消滅させる
+      if (index > Resource.MaxFrameIndex(Resource.Static.CollapseExplode)) {
         this.sprite.destroy();
         this.destroy();
         return;
       }
 
-      this.sprite.texture = ResourceMaster.TextureFrame.CollapseExplode(index);
+      this.sprite.texture = Resource.TextureFrame.CollapseExplode(index);
+    }
+  }
+
+  /**
+   * 効果音を再生する
+   */
+  private playSe(): void {
+    const sound = SoundManager.getSound(Resource.Audio.Se.Bomb);
+    if (sound) {
+      sound.play();
     }
   }
 }

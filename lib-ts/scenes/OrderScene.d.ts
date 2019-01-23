@@ -34,27 +34,22 @@ export default class OrderScene extends Scene {
      */
     constructor();
     /**
+     * リソースリストを作成し返却する
+     */
+    protected createInitialResourceList(): Array<LoaderAddParam | string>;
+    /**
      * リソースをロードする
      * 基本実装をオーバーライドし、 indexed db のレコードを取得する
      */
-    loadResource(onResourceLoaded: () => void): void;
-    /**
-     * 独自 UiGraph 要素のファクトリを返す
-     * OrderScene は BattleScene と UnitButton を共用している
-     */
-    protected getCustomUiGraphFactory(type: string): UiNodeFactory | null;
-    /**
-     * リソースリストを作成し返却する
-     */
-    protected createResourceList(): LoaderAddParam[];
+    beginLoadResource(onLoaded: () => void): Promise<void>;
     /**
      * リソースがロードされた時のコールバック
      */
-    protected onResourceLoaded(): void;
+    protected onInitialResourceLoaded(): Array<LoaderAddParam | string>;
     /**
      * 追加リソースダウンロード完了時コールバック
      */
-    private onDependencyResourceLoaded;
+    protected onResourceLoaded(): void;
     /**
      * ユニットの切り替えボタンが押下された時のコールバック
      */
@@ -72,6 +67,11 @@ export default class OrderScene extends Scene {
      */
     onOkButtonUp(): void;
     /**
+     * 独自 UiGraph 要素のファクトリを返す
+     * OrderScene は BattleScene と UnitButton を共用している
+     */
+    protected getCustomUiGraphFactory(type: string): UiNodeFactory | null;
+    /**
      * 可能であればバトル画面に遷移する
      */
     private startBattleIfPossible;
@@ -79,10 +79,6 @@ export default class OrderScene extends Scene {
      * UnitButton を初期化する
      */
     private initUnitButtons;
-    /**
-     * 必要であれば BGM を再生する
-     */
-    private playBgmIfNeeded;
     /**
      * 選択されているステージ ID を更新する
      */
@@ -92,7 +88,27 @@ export default class OrderScene extends Scene {
      */
     private createBattleParameter;
     /**
-     * タップ時のサウンドを再生する
+     * 必要であれば BGM を再生する
      */
-    private playTapSe;
+    private playBgmIfNeeded;
+    /**
+     * DB へユニットID配列を保存する
+     */
+    private saveUnitIdsToDB;
+    /**
+     * DB からユニットID配列を取得する
+     */
+    private loadUnitIdsFromDB;
+    /**
+     * DB へステージIDを保存する
+     */
+    private saveStageIdToDB;
+    /**
+     * DB からステージIDを取得する
+     */
+    private loadStageIdFromDB;
+    /**
+     * BGM をフェードアウトする
+     */
+    private fadeOutBgm;
 }

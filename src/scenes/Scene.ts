@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import * as UI from 'interfaces/UiGraph/index';
 import Transition from 'interfaces/Transition';
+import SoundManager from 'managers/SoundManager';
 import UiGraph from 'modules/UiGraph';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UpdateObject from 'interfaces/UpdateObject';
@@ -121,7 +122,7 @@ export default abstract class Scene extends PIXI.Container {
    * loadResource に用いるリソースリストを作成するメソッド
    * デフォルトでは UiGraph のリソースリストを作成する
    */
-  protected createResourceList(): LoaderAddParam[] {
+  protected createInitialResourceList(): Array<LoaderAddParam | string> {
     return [];
   }
 
@@ -129,15 +130,16 @@ export default abstract class Scene extends PIXI.Container {
    * リソースをロードする
    * デフォルトでは UiGraph 用の情報が取得される
    */
-  public loadResource(onResourceLoaded: () => void): void {
-    new Promise((resolve) => {
-      this.loadUiGraph(() => resolve());
+  public beginLoadResource(onLoaded: () => void): Promise<void> {
+    return new Promise((resolve) => {
+      this.loadInitialResource(() => resolve());
     }).then(() => {
       return new Promise((resolve) => {
-        this.onUiGraphLoaded(() => resolve());
+        const additionalAssets = this.onInitialResourceLoaded();
+        this.loadAdditionalResource(additionalAssets, () => resolve());
       });
     }).then(() => {
-      onResourceLoaded();
+      onLoaded();
     }).then(() => {
       this.onResourceLoaded();
     });
@@ -146,48 +148,67 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * UiGraph 情報のロードを行う
    */
-  protected loadUiGraph(onLoaded: () => void): void {
-    const name = ResourceMaster.Api.SceneUiGraph(this);
+  protected loadInitialResource(onLoaded: () => void): void {
+    const assets = this.createInitialResourceList();
+    const name = Resource.Api.SceneUiGraph(this);
     if (this.hasSceneUiGraph && !PIXI.loader.resources[name]) {
-      PIXI.loader.add([{ name, url: name }]).load(() => onLoaded());
+      assets.push({ name, url: name });
+    }
+
+    const filteredAssets = this.filterLoadedAssets(assets);
+
+    if (filteredAssets.length > 0) {
+      PIXI.loader.add(filteredAssets).load(() => onLoaded());
     } else {
       onLoaded();
     }
   }
 
   /**
-   * loadUiGraph 完了時のコールバックメソッド
+   * loadInitialResource 完了時のコールバックメソッド
    */
-  protected onUiGraphLoaded(onLoaded: () => void): void {
-    const assets = this.createResourceList();
+  protected onInitialResourceLoaded(): Array<LoaderAddParam | string> {
+    const additionalAssets = [];
 
-    const name = ResourceMaster.Api.SceneUiGraph(this);
+    const name = Resource.Api.SceneUiGraph(this);
     const uiGraph = PIXI.loader.resources[name];
     if (uiGraph) {
       for (let i = 0; i < uiGraph.data.nodes.length; i++) {
         const node = uiGraph.data.nodes[i];
         if (node.type === 'sprite') {
-          assets.push({ name: node.params.textureName, url: node.params.url });
+          additionalAssets.push({ name: node.params.textureName, url: node.params.url });
         }
       }
     }
 
+    return additionalAssets;
+  }
+
+  /**
+   * 初回リソースロードで発生した追加のリソースをロードする
+   */
+  protected loadAdditionalResource(assets: Array<LoaderAddParam | string>, onLoaded: () => void) {
     if (assets.length <= 0) {
-      onLoaded();
-    } else {
-      const newAssets = new Map<string, LoaderAddParam>();
-      for (let i = 0; i < assets.length; i++) {
-        const asset = assets[i];
-        if (!PIXI.loader.resources[asset.name] && !newAssets.has(asset.name)) {
-          newAssets.set(asset.name, asset);
-        }
-      }
-      if (newAssets.size > 0) {
-        PIXI.loader.add(Array.from(newAssets.values())).load(() => onLoaded());
-      } else {
-        onLoaded();
-      }
+      this.onAdditionalResourceLoaded(onLoaded);
+      return;
     }
+
+    const filteredAssets = this.filterLoadedAssets(assets);
+
+    if (filteredAssets.length > 0) {
+      PIXI.loader.add(filteredAssets).load(() => {
+        this.onAdditionalResourceLoaded(onLoaded);
+      });
+    } else {
+      this.onAdditionalResourceLoaded(onLoaded)
+    }
+  }
+
+  /**
+   * 追加のリソースロード完了時のコールバック
+   */
+  protected onAdditionalResourceLoaded(onLoaded: () => void): void {
+    onLoaded();
   }
 
   /**
@@ -195,7 +216,7 @@ export default abstract class Scene extends PIXI.Container {
    */
   protected onResourceLoaded(): void {
     if (this.hasSceneUiGraph) {
-      const sceneUiGraphName = ResourceMaster.Api.SceneUiGraph(this);
+      const sceneUiGraphName = Resource.Api.SceneUiGraph(this);
       this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
       this.addChild(this.uiGraphContainer);
     }
@@ -235,5 +256,57 @@ export default abstract class Scene extends PIXI.Container {
    */
   protected getCustomUiGraphFactory(_type: string): UiNodeFactory | null {
     return null;
+  }
+
+  /**
+   * 渡されたアセットのリストからロード済みのものをフィルタリングする
+   */
+  private filterLoadedAssets(assets: Array<LoaderAddParam | string>): LoaderAddParam[] {
+    const assetMap = new Map<string, LoaderAddParam>();
+
+    for (let i = 0; i < assets.length; i++) {
+      const asset = assets[i];
+      if (typeof asset === 'string') {
+        if (!PIXI.loader.resources[asset] && !assetMap.has(asset)) {
+          assetMap.set(asset, { name: asset, url: asset });
+        }
+      } else {
+        if (!PIXI.loader.resources[asset.name] && !assetMap.has(asset.name)) {
+          assetMap.set(asset.name, asset);
+        }
+      }
+    }
+
+    return Array.from(assetMap.values());
+  }
+
+  /**
+   * BGM をループ再生する
+   */
+  protected playBgm(soundName: string): void {
+    const bgm = SoundManager.getSound(soundName);
+    if (bgm) {
+      bgm.play(true);
+    }
+  }
+
+  /**
+   * BGM 再生を止める
+   */
+  protected stopBgm(soundName: string): void {
+    const bgm = SoundManager.getSound(soundName);
+    if (bgm) {
+      bgm.stop();
+    }
+  }
+
+  /**
+   * 効果音を再生する
+   */
+  protected playSe(soundName: string): void {
+    const se = SoundManager.getSound(soundName);
+    if (se) {
+      se.play();
+    }
   }
 }

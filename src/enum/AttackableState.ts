@@ -3,7 +3,7 @@
  */
 const AttackableState = Object.freeze({
   IDLE: 1,
-  LOCKED: 2,
+  ENGAGED: 2,
   DEAD: 3,
   WAIT: 4
 });

@@ -24,23 +24,11 @@ export default class AttackableEntity {
      */
     distance: number;
     /**
-     * ロック中のユニット
+     * 接敵中のエンティティ
      */
-    lockedEntity: AttackableEntity | null;
+    engagedEntity: AttackableEntity | null;
     /**
      * コンストラクタ
      */
     constructor(isPlayer: boolean);
-    /**
-     * 引数のエンティティが仲間かどうかを返す
-     */
-    isAlly(target: AttackableEntity): boolean;
-    /**
-     * 引数のエンティティが敵対しているかどうかを返す
-     */
-    isFoe(target: AttackableEntity): boolean;
-    /**
-     * health 値を引数で増減させる
-     */
-    damage(value: number): number;
 }

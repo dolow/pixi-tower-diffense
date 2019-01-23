@@ -23,11 +23,20 @@ export default class UnitButton extends PIXI.Container {
      * コストテキスト
      */
     private text;
+    /**
+     * コンストラクタ
+     */
     constructor(texture?: PIXI.Texture);
     /**
      * ボタン枠インデックスとユニット ID で初期化する
      */
     init(slotIndex: number, unitId?: number, cost?: number): void;
+    /**
+     * ユニットを変更する
+     */
     changeUnit(unitId?: number, cost?: number): void;
+    /**
+     * 指定したユニット ID のテクスチャを変更する
+     */
     private getTexture;
 }

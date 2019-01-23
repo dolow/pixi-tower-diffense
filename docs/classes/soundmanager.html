@@ -93,9 +93,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="soundmanager.html#killingsounds" class="tsd-kind-icon">killing<wbr>Sounds</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="soundmanager.html#managedsounds" class="tsd-kind-icon">managed<wbr>Sounds</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="soundmanager.html#paused" class="tsd-kind-icon">paused</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="soundmanager.html#soundskillingafterfade" class="tsd-kind-icon">sounds<wbr>Killing<wbr>After<wbr>Fade</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="soundmanager.html#context" class="tsd-kind-icon">context</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#instance" class="tsd-kind-icon">instance</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="soundmanager.html#loadermiddlewareadded" class="tsd-kind-icon">loader<wbr>Middleware<wbr>Added</a></li>
@@ -125,6 +125,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#setsoundinitializeevent" class="tsd-kind-icon">set<wbr>Sound<wbr>Initialize<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#setwindowlifecycleevent" class="tsd-kind-icon">set<wbr>Window<wbr>Life<wbr>Cycle<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#unregistersound" class="tsd-kind-icon">unregister<wbr>Sound</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#update" class="tsd-kind-icon">update</a></li>
 							</ul>
 						</section>
 					</div>
@@ -158,6 +159,21 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="killingsounds" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> killing<wbr>Sounds</h3>
+					<div class="tsd-signature tsd-kind-icon">killing<wbr>Sounds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L42">managers/SoundManager.ts:42</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>フェード処理後に削除する Sound インスタンスのリスト</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="managedsounds" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> managed<wbr>Sounds</h3>
 					<div class="tsd-signature tsd-kind-icon">managed<wbr>Sounds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="sound.html" class="tsd-signature-type">Sound</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map()</span></div>
@@ -184,21 +200,6 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>一時停止中かどうかのフラグ</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="soundskillingafterfade" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> sounds<wbr>Killing<wbr>After<wbr>Fade</h3>
-					<div class="tsd-signature tsd-kind-icon">sounds<wbr>Killing<wbr>After<wbr>Fade<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L42">managers/SoundManager.ts:42</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>フェー風土処理後に削除する Sound インスタンスのリスト</p>
 						</div>
 					</div>
 				</section>
@@ -289,7 +290,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L89">managers/SoundManager.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L115">managers/SoundManager.ts:115</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,7 +318,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L209">managers/SoundManager.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L235">managers/SoundManager.ts:235</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -348,7 +349,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L126">managers/SoundManager.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L152">managers/SoundManager.ts:152</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -397,7 +398,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L135">managers/SoundManager.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L161">managers/SoundManager.ts:161</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -447,7 +448,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L229">managers/SoundManager.ts:229</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L255">managers/SoundManager.ts:255</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -475,7 +476,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L263">managers/SoundManager.ts:263</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L289">managers/SoundManager.ts:289</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -512,7 +513,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L217">managers/SoundManager.ts:217</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L243">managers/SoundManager.ts:243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -543,7 +544,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L223">managers/SoundManager.ts:223</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L249">managers/SoundManager.ts:249</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -600,7 +601,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L240">managers/SoundManager.ts:240</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L266">managers/SoundManager.ts:266</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -622,7 +623,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L197">managers/SoundManager.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L223">managers/SoundManager.ts:223</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -653,7 +654,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L251">managers/SoundManager.ts:251</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L277">managers/SoundManager.ts:277</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -675,7 +676,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L146">managers/SoundManager.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L172">managers/SoundManager.ts:172</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -705,7 +706,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L182">managers/SoundManager.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L208">managers/SoundManager.ts:208</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -734,7 +735,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L203">managers/SoundManager.ts:203</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L229">managers/SoundManager.ts:229</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -746,6 +747,34 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="update" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>_delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L89">managers/SoundManager.ts:89</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>毎フレームの更新処理</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>_delta: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -773,13 +802,13 @@
 								<a href="soundmanager.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="soundmanager.html#killingsounds" class="tsd-kind-icon">killing<wbr>Sounds</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="soundmanager.html#managedsounds" class="tsd-kind-icon">managed<wbr>Sounds</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="soundmanager.html#paused" class="tsd-kind-icon">paused</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="soundmanager.html#soundskillingafterfade" class="tsd-kind-icon">sounds<wbr>Killing<wbr>After<wbr>Fade</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
 								<a href="soundmanager.html#context" class="tsd-kind-icon">context</a>
@@ -837,6 +866,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="soundmanager.html#unregistersound" class="tsd-kind-icon">unregister<wbr>Sound</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="soundmanager.html#update" class="tsd-kind-icon">update</a>
 							</li>
 						</ul>
 					</li>

@@ -37,9 +37,9 @@ export default class SoundManager {
   private paused: boolean = false;
 
   /**
-   * フェー風土処理後に削除する Sound インスタンスのリスト
+   * フェード処理後に削除する Sound インスタンスのリスト
    */
-  private soundsKillingAfterFade: { sound: Sound, targetVolume: number }[] = [];
+  private killingSounds: { sound: Sound, endAt: number }[] = [];
 
   /**
    * SoundManager で監理している Sound インスタンスの Map
@@ -51,7 +51,7 @@ export default class SoundManager {
    */
   constructor() {
     if (SoundManager.instance) {
-      throw new Error('soSoundManager can not be initialized twice');
+      throw new Error('SoundManager can not be initialized twice');
     }
   }
 
@@ -81,6 +81,32 @@ export default class SoundManager {
     SoundManager.addLoaderMiddleware(browser);
     SoundManager.setSoundInitializeEvent(browser);
     SoundManager.setWindowLifeCycleEvent(browser);
+  }
+
+  /**
+   * 毎フレームの更新処理
+   */
+  public static update(_delta: number): void {
+    if (!SoundManager.sharedContext) {
+      return;
+    }
+
+    // 削除予定のサウンドがあれば削除する
+    const killingSounds = SoundManager.instance.killingSounds;
+    if (killingSounds.length > 0) {
+      const remainedSounds = []
+
+      for (let i = 0; i < killingSounds.length; i++) {
+        const item = killingSounds[i];
+        if (SoundManager.sharedContext.currentTime >= item.endAt) {
+          item.sound.stop();
+        } else {
+          remainedSounds.push(item);
+        }
+      }
+
+      SoundManager.instance.killingSounds = remainedSounds;
+    }
   }
 
   /**
@@ -270,12 +296,11 @@ export default class SoundManager {
       return;
     }
 
-    sound.gainNode.gain.exponentialRampToValueAtTime(
-      targetVolume,
-      SoundManager.sharedContext.currentTime + seconds
-    );
+    const endAt = SoundManager.sharedContext.currentTime + seconds;
+
+    sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, endAt);
     if (stopOnEnd) {
-      SoundManager.instance.soundsKillingAfterFade.push({ sound, targetVolume });
+      SoundManager.instance.killingSounds.push({ sound, endAt });
     }
   }
 }

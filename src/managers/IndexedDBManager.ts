@@ -40,6 +40,7 @@ export default class IndexedDBManager {
 
   /**
    * マネージャを初期化する
+   * DB 接続を開き保持しておく
    */
   public static init(onError: (e: Event) => void): void {
     if (!indexedDb) {

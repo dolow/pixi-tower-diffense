@@ -51,6 +51,10 @@ export default class Unit extends Attackable {
      */
     constructor(unitId: number, animationParam: {
         hitFrame: number;
+        spawnPosition: {
+            x: number;
+            y: number;
+        };
         animationMaxFrameIndexes: {
             [key: string]: number;
         };
@@ -58,6 +62,9 @@ export default class Unit extends Attackable {
             [key: string]: number;
         };
     });
+    /**
+     * アニメーション再生をリセットする
+     */
     resetAnimation(): void;
     /**
      * UpdateObject インターフェース実装
@@ -69,10 +76,6 @@ export default class Unit extends Attackable {
      * リクエストされたアニメーションは再生可能になり次第再生される
      */
     requestAnimation(type: string): void;
-    /**
-     * 現在の position を生成位置として保持する
-     */
-    saveSpawnedPosition(): PIXI.Point;
     /**
      * spawnedPosition を返す
      */
@@ -93,4 +96,8 @@ export default class Unit extends Attackable {
      * アニメーションを更新する
      */
     updateAnimation(): void;
+    /**
+     * アニメーション遷移が可能であれば遷移する
+     */
+    private transformAnimationIfPossible;
 }

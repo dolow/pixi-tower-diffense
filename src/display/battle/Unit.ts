@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import Attackable from 'display/battle/Attackable';
 import HealthGauge from 'display/battle/single_shot/HealthGauge';
 
@@ -55,13 +55,14 @@ export default class Unit extends Attackable {
     unitId: number,
     animationParam: {
       hitFrame: number,
+      spawnPosition: { x: number, y: number },
       animationMaxFrameIndexes: { [key: string]: number },
       animationUpdateDurations: { [key: string]: number }
     }
   ) {
     super();
 
-    this.animationType = ResourceMaster.AnimationTypes.Unit.WAIT;
+    this.animationType = Resource.AnimationTypes.Unit.WAIT;
 
     this.unitId = unitId;
 
@@ -71,8 +72,20 @@ export default class Unit extends Attackable {
 
     this.sprite = new PIXI.Sprite();
     this.sprite.anchor.x = 0.5;
+    this.sprite.anchor.y = 1.0;
+
+    this.sprite.position.set(
+      animationParam.spawnPosition.x,
+      animationParam.spawnPosition.y
+    );
+
+    this.spawnedPosition.x = this.sprite.position.x;
+    this.spawnedPosition.y = this.sprite.position.y;
   }
 
+  /**
+   * アニメーション再生をリセットする
+   */
   public resetAnimation(): void {
     this.requestedAnimation = null;
     this.elapsedFrameCount   = 0;
@@ -84,26 +97,9 @@ export default class Unit extends Attackable {
    * requestAnimationFrame 毎のアップデート処理
    */
   public update(_dt: number): void {
-    const animationTypes = ResourceMaster.AnimationTypes.Unit;
-
     if (this.requestedAnimation) {
-      switch (this.requestedAnimation) {
-        case animationTypes.WAIT:
-        case animationTypes.WALK: {
-          if (this.animationType !== animationTypes.WALK) {
-            if (this.isAnimationLastFrameTime()) {
-              this.animationType = this.requestedAnimation;
-              this.resetAnimation();
-            }
-          }
-          break;
-        }
-        case animationTypes.ATTACK: {
-          this.animationType = animationTypes.ATTACK;
-          this.resetAnimation();
-          break;
-        }
-        default: break;
+      if (this.transformAnimationIfPossible()) {
+        this.requestedAnimation = null;
       }
     }
 
@@ -119,14 +115,6 @@ export default class Unit extends Attackable {
   }
 
   /**
-   * 現在の position を生成位置として保持する
-   */
-  public saveSpawnedPosition(): PIXI.Point {
-    this.spawnedPosition.x = this.sprite.position.x;
-    this.spawnedPosition.y = this.sprite.position.y;
-    return this.spawnedPosition;
-  }
-  /**
    * spawnedPosition を返す
    */
   public getSpawnedPosition(): PIXI.Point {
@@ -140,7 +128,7 @@ export default class Unit extends Attackable {
     if (this.animationFrameIndex !== this.hitFrame) {
       return false;
     }
-    const updateDuration = this.animationUpdateDurations[ResourceMaster.AnimationTypes.Unit.ATTACK];
+    const updateDuration = this.animationUpdateDurations[Resource.AnimationTypes.Unit.ATTACK];
     return (this.elapsedFrameCount % updateDuration) === 0;
   }
   /**
@@ -178,7 +166,7 @@ export default class Unit extends Attackable {
         this.resetAnimation();
       }
 
-      this.sprite.texture = ResourceMaster.TextureFrame.Unit(
+      this.sprite.texture = Resource.TextureFrame.Unit(
         this.animationType,
         this.unitId,
         this.animationFrameIndex
@@ -188,5 +176,34 @@ export default class Unit extends Attackable {
     }
 
     this.elapsedFrameCount++;
+  }
+
+  /**
+   * アニメーション遷移が可能であれば遷移する
+   */
+  private transformAnimationIfPossible(): boolean {
+    const animationTypes = Resource.AnimationTypes.Unit;
+
+    switch (this.requestedAnimation) {
+      case animationTypes.WAIT:
+      case animationTypes.WALK: {
+        if (this.animationType !== animationTypes.WALK) {
+          if (this.isAnimationLastFrameTime()) {
+            this.animationType = this.requestedAnimation;
+            this.resetAnimation();
+            return true;
+          }
+        }
+        break;
+      }
+      case animationTypes.ATTACK: {
+        this.animationType = animationTypes.ATTACK;
+        this.resetAnimation();
+        return true;
+      }
+      default: break;
+    }
+
+    return false;
   }
 }

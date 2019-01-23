@@ -34,4 +34,8 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
      * requestAnimationFrame 毎のアップデート処理
      */
     update(_delta: number): void;
+    /**
+     * 効果音を再生する
+     */
+    private playSe;
 }

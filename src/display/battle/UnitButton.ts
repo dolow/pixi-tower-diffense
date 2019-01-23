@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 
 /**
  * ユニット生成をリクエストするための UI 用のボタン
@@ -27,12 +27,15 @@ export default class UnitButton extends PIXI.Container {
    */
   private text!: PIXI.Text;
 
+  /**
+   * コンストラクタ
+   */
   constructor(texture?: PIXI.Texture) {
     super();
 
     this.button = new PIXI.Sprite();
     this.text = new PIXI.Text('', {
-      fontFamily: 'MisakiGothic',
+      fontFamily: Resource.FontFamily.Default,
       fontSize: 24,
       fill: 0xffffff,
       padding: 4
@@ -63,6 +66,9 @@ export default class UnitButton extends PIXI.Container {
     this.text.text = (cost >= 0) ? `${cost}` : '';
   }
 
+  /**
+   * ユニットを変更する
+   */
   public changeUnit(unitId: number = -1, cost: number = -1): void {
     const texture = this.getTexture(unitId);
     if (!texture) {
@@ -74,8 +80,11 @@ export default class UnitButton extends PIXI.Container {
     this.text.text = (cost >= 0) ? `${cost}` : '';
   }
 
+  /**
+   * 指定したユニット ID のテクスチャを変更する
+   */
   private getTexture(unitId: number = -1): PIXI.Texture | null {
-    const resourceId = ResourceMaster.Dynamic.UnitPanel(unitId);
+    const resourceId = Resource.Dynamic.UnitPanel(unitId);
     const resource = PIXI.loader.resources[resourceId];
     if (!resource || !resource.texture) {
       return null;

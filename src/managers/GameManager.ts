@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { detect } from 'detect-browser';
 import IndexedDBManager from 'managers/IndexedDBManager';
 import SoundManager from 'managers/SoundManager';
 import Scene from 'scenes/Scene';
@@ -14,21 +15,21 @@ export default class GameManager {
   public static instance: GameManager;
 
   /**
-   * シーンのリソースロード完了フラグ
-   * シーントランジションを制御するためのフラグ
-   */
-  public static sceneResourceLoaded: boolean = true;
-  /**
-   * シーンのトランジション完了フラグ
-   * シーントランジションを制御するためのフラグ
-   */
-  public static sceneTransitionOutFinished: boolean = true;
-
-  /**
    * PIXI.Application インスタンス
    * 初期化時に生成される
    */
   public game!: PIXI.Application;
+
+  /**
+   * シーンのリソースロード完了フラグ
+   * シーントランジションを制御するためのフラグ
+   */
+  private sceneResourceLoaded: boolean = true;
+  /**
+   * シーンのトランジション完了フラグ
+   * シーントランジションを制御するためのフラグ
+   */
+  private sceneTransitionOutFinished: boolean = true;
   /**
    * 現在のシーンインスタンス
    */
@@ -60,46 +61,51 @@ export default class GameManager {
     glHeight: number,
     option?: PIXI.ApplicationOptions
   }): void {
+    // PIXI Application 生成
     const game = new PIXI.Application(params.glWidth, params.glHeight, params.option);
+    // GameManager インスタンス生成
     const instance = new GameManager(game);
     GameManager.instance = instance;
-    document.body.appendChild(GameManager.instance.game.view);
 
+    // canvas を DOM に追加
+    document.body.appendChild(game.view);
+
+    // リサイズイベントの登録
     window.addEventListener('resize', GameManager.resizeCanvas);
+    // サイズ初期化
     GameManager.resizeCanvas();
 
-    const eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
-    document.body.addEventListener(eventName, GameManager.requestFullScreen);
+    // 必要であればフルスクリーンの有効化
+    GameManager.enableFullScreenIfNeeded();
 
-    instance.game.ticker.add((delta: number) => {
+    // メインループ
+    game.ticker.add((delta: number) => {
       if (instance.currentScene) {
         instance.currentScene.update(delta);
       }
+
+      SoundManager.update(delta);
     });
   }
 
-  private static requestFullScreen(): void {
+  /**
+   * フルスクリーンに切り替える
+   */
+  public static requestFullScreen(): void {
     const body = window.document.body as any;
     const requestFullScreen = body.requestFullScreen || body.webkitRequestFullScreen;
     requestFullScreen.call(body);
   }
 
   /**
-   * シーンがロード中、あるいはトランジション中であるかを返す
-   */
-  public static get isSceneLoading(): boolean {
-    return (!GameManager.sceneResourceLoaded || !GameManager.sceneTransitionOutFinished);
-  }
-
-  /**
    * 可能であれば新しいシーンへのトランジションを開始する
    */
   public static transitionInIfPossible(newScene: Scene): boolean {
-    if (GameManager.isSceneLoading) {
+    const instance = GameManager.instance;
+
+    if (!instance.sceneResourceLoaded || !instance.sceneTransitionOutFinished) {
       return false;
     }
-
-    const instance = GameManager.instance;
 
     if (instance.currentScene) {
       instance.currentScene.destroy();
@@ -124,20 +130,20 @@ export default class GameManager {
     const instance = GameManager.instance;
 
     if (instance.currentScene) {
-      GameManager.sceneResourceLoaded = false;
-      GameManager.sceneTransitionOutFinished = false;
-      newScene.loadResource(() => {
-        GameManager.sceneResourceLoaded = true;
+      instance.sceneResourceLoaded = false;
+      instance.sceneTransitionOutFinished = false;
+      newScene.beginLoadResource(() => {
+        instance.sceneResourceLoaded = true;
         GameManager.transitionInIfPossible(newScene);
       });
       instance.currentScene.beginTransitionOut((_: Scene) => {
-        GameManager.sceneTransitionOutFinished = true;
+        instance.sceneTransitionOutFinished = true;
         GameManager.transitionInIfPossible(newScene);
       });
     } else {
-      GameManager.sceneTransitionOutFinished = true;
-      newScene.loadResource(() => {
-        GameManager.sceneResourceLoaded = true;
+      instance.sceneTransitionOutFinished = true;
+      newScene.beginLoadResource(() => {
+        instance.sceneResourceLoaded = true;
         GameManager.transitionInIfPossible(newScene);
       });
     }
@@ -156,6 +162,7 @@ export default class GameManager {
     const rendererHeightRatio = renderer.height / renderer.width;
     const windowHeightRatio = window.innerHeight / window.innerWidth;
 
+    // 画面比率に合わせて縦に合わせるか横に合わせるか決める
     if (windowHeightRatio > rendererHeightRatio) {
       canvasWidth = window.innerWidth;
       canvasHeight = window.innerWidth * (renderer.height / renderer.width);
@@ -166,5 +173,17 @@ export default class GameManager {
 
     game.view.style.width  = `${canvasWidth}px`;
     game.view.style.height = `${canvasHeight}px`;
+  }
+
+  /**
+   * 動作環境に応じて適切ならフルスクリーン設定をする
+   */
+  private static enableFullScreenIfNeeded(): void {
+    const browser = detect();
+    // iOS は対応していないが一応記述しておく
+    if (browser && (browser.os === 'iOS' || browser.os === 'Android OS')) {
+      const eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+      document.body.addEventListener(eventName, GameManager.requestFullScreen);
+    }
   }
 }

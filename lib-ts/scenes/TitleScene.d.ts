@@ -15,7 +15,7 @@ export default class TitleScene extends Scene {
     /**
      * リソースリストを作成し返却する
      */
-    protected createResourceList(): LoaderAddParam[];
+    protected createInitialResourceList(): Array<LoaderAddParam | string>;
     /**
      * リソースがロードされた時のコールバック
      */

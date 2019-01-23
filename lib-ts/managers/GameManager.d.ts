@@ -10,20 +10,20 @@ export default class GameManager {
      */
     static instance: GameManager;
     /**
-     * シーンのリソースロード完了フラグ
-     * シーントランジションを制御するためのフラグ
-     */
-    static sceneResourceLoaded: boolean;
-    /**
-     * シーンのトランジション完了フラグ
-     * シーントランジションを制御するためのフラグ
-     */
-    static sceneTransitionOutFinished: boolean;
-    /**
      * PIXI.Application インスタンス
      * 初期化時に生成される
      */
     game: PIXI.Application;
+    /**
+     * シーンのリソースロード完了フラグ
+     * シーントランジションを制御するためのフラグ
+     */
+    private sceneResourceLoaded;
+    /**
+     * シーンのトランジション完了フラグ
+     * シーントランジションを制御するためのフラグ
+     */
+    private sceneTransitionOutFinished;
     /**
      * 現在のシーンインスタンス
      */
@@ -42,11 +42,10 @@ export default class GameManager {
         glHeight: number;
         option?: PIXI.ApplicationOptions;
     }): void;
-    private static requestFullScreen;
     /**
-     * シーンがロード中、あるいはトランジション中であるかを返す
+     * フルスクリーンに切り替える
      */
-    static readonly isSceneLoading: boolean;
+    static requestFullScreen(): void;
     /**
      * 可能であれば新しいシーンへのトランジションを開始する
      */
@@ -61,4 +60,8 @@ export default class GameManager {
      * HTML canvas のりサイズ処理を行う
      */
     static resizeCanvas(): void;
+    /**
+     * 動作環境に応じて適切ならフルスクリーン設定をする
+     */
+    private static enableFullScreenIfNeeded;
 }

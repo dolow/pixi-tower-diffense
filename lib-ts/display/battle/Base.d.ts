@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import Attackable from 'display/battle/Attackable';
 /**
  * 拠点の振舞い、及び見た目に関する処理を行う
- * UnitEntity を継承する
+ * Attackable を継承する
  */
 export default class Base extends Attackable {
     /**
@@ -50,4 +50,8 @@ export default class Base extends Attackable {
      * 破壊時の爆発を生成する
      */
     private spawnCollapseExplode;
+    /**
+     * ユニット生成時の効果音を再生する
+     */
+    private playSpawnSe;
 }

@@ -12,10 +12,6 @@ import UnitEntity from 'entity/UnitEntity';
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
-     * マスターデータを保存する PIXI.loaders.resource のキー
-     */
-    private static readonly MasterResourceKey;
-    /**
      * このシーンのステート
      */
     private state;
@@ -79,12 +75,15 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     update(delta: number): void;
     /**
      * リソースリストの作成
-     * ユーザが選択したユニットとフィールドのリソース情報も加える
      */
-    protected createResourceList(): LoaderAddParam[];
+    protected createInitialResourceList(): Array<LoaderAddParam | string>;
     /**
      * リソースロード完了コールバック
-     * BattleLogic にユニットマスタ情報を私、フィールドやユニットボタンの初期化を行う
+     * BattleLogic にユニットマスタ情報を渡し、フィールドやユニットボタンの初期化を行う
+     */
+    protected onInitialResourceLoaded(): Array<LoaderAddParam | string>;
+    /**
+     * リソースロード完了時のコールバック
      */
     protected onResourceLoaded(): void;
     /**
@@ -97,7 +96,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      */
     /**
      * BaseEntity が生成されたときのコールバック
-     * 表示物を生成する
      */
     onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void;
     /**
@@ -120,7 +118,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
      * 渡されたエンティティ同士が接敵可能か返す
      */
-    shouldLockAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean;
+    shouldEngageAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean;
     /**
      * 渡されたエンティティ同士が攻撃可能か返す
      */
@@ -157,6 +155,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      * ボタンインデックスから UnitButton インスタンスを返す
      */
     private getUiGraphUnitButton;
+    /**
+     * 編成画面へ戻る操作を有効にする
+     */
     private enableBackToOrderScene;
+    /**
+     * 編成画面へ戻る
+     */
     private backToOrderScene;
 }

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import UpdateObject from 'interfaces/UpdateObject';
 import GameManager from 'managers/GameManager';
 
@@ -27,8 +27,8 @@ export default class BattleResult extends PIXI.Container implements UpdateObject
    */
   public static get resourceList(): string[] {
     return [
-      ResourceMaster.Static.BattleResultWin,
-      ResourceMaster.Static.BattleResultLose
+      Resource.Static.BattleResultWin,
+      Resource.Static.BattleResultLose
     ];
   }
 
@@ -39,8 +39,8 @@ export default class BattleResult extends PIXI.Container implements UpdateObject
     super();
 
     const textureCacheName = (win)
-      ? ResourceMaster.Static.BattleResultWin
-      : ResourceMaster.Static.BattleResultLose;
+      ? Resource.Static.BattleResultWin
+      : Resource.Static.BattleResultLose;
     const texture = PIXI.utils.TextureCache[textureCacheName];
 
     this.sprite = new PIXI.Sprite(texture);

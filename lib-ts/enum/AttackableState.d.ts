@@ -3,7 +3,7 @@
  */
 declare const AttackableState: Readonly<{
     IDLE: number;
-    LOCKED: number;
+    ENGAGED: number;
     DEAD: number;
     WAIT: number;
 }>;

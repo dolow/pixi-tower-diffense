@@ -1,4 +1,4 @@
-import ResourceMaster from 'ResourceMaster';
+import Resource from 'Resource';
 import GameManager from 'managers/GameManager';
 import SoundManager from 'managers/SoundManager';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
@@ -31,10 +31,9 @@ export default class TitleScene extends Scene  {
   /**
    * リソースリストを作成し返却する
    */
-  protected createResourceList(): LoaderAddParam[] {
-    const assets = super.createResourceList();
-    const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
-    assets.push({ name: bgmTitleName, url: bgmTitleName });
+  protected createInitialResourceList(): Array<LoaderAddParam | string> {
+    const assets = super.createInitialResourceList();
+    assets.push(Resource.Audio.Bgm.Title);
     return assets;
   }
 
@@ -44,10 +43,11 @@ export default class TitleScene extends Scene  {
   protected onResourceLoaded(): void {
     super.onResourceLoaded();
 
-    const bgmTitleName = ResourceMaster.Audio.Bgm.Title;
+    const bgmTitleName = Resource.Audio.Bgm.Title;
     const resource = PIXI.loader.resources[bgmTitleName] as any;
-    const bgm = SoundManager.createSound(bgmTitleName, resource.buffer);
-    bgm.play(true);
+    SoundManager.createSound(bgmTitleName, resource.buffer);
+
+    this.playBgm(Resource.Audio.Bgm.Title);
   }
 
   /**

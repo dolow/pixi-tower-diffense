@@ -4,6 +4,7 @@
 const Config = Object.freeze({
   // リソースのエントリーポイント
   ResourceBaseUrl: 'assets/',
+  // ユニット枠最大数
   MaxUnitSlotCount: 5
 });
 

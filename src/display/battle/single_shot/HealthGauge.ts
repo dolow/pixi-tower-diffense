@@ -100,9 +100,14 @@ export default class HealthGaugeEffect extends PIXI.Container implements UpdateO
    * requestAnimationFrame 毎のアップデート処理
    */
   public update(_delta: number): void {
+    if (this.isDestroyed()) {
+      return;
+    }
+
     this.elapsedFrameCount++;
 
     if (this.elapsedFrameCount <= this.reducingFrameCount) {
+      // ゲージ増減アニメーション
       const reduceDistance = this.fromPercent - this.toPercent;
       const reduceProgress = this.elapsedFrameCount / this.reducingFrameCount;
       const currentPercent = this.fromPercent - reduceDistance * reduceProgress;
@@ -111,6 +116,7 @@ export default class HealthGaugeEffect extends PIXI.Container implements UpdateO
       this.currentGraphic.beginFill(this.currentColor, 1);
       this.currentGraphic.drawRect(0, 0, this.gaugeWidth * currentPercent, this.gaugeHeight);
     } else if (this.elapsedFrameCount > this.activeFrameCount) {
+      // 規定フレーム数再生したら自然消滅させる
       this.maxGraphic.destroy();
       this.currentGraphic.destroy();
       this.destroy();

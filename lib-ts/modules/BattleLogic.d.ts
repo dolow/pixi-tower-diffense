@@ -101,7 +101,7 @@ export default class BattleLogic {
     private updateEntityParameter;
     /**
      * エンティティのステートを更新する
-     * ステート優先順位は右記の通り DEAD > LOCKED > IDLE
+     * ステート優先順位は右記の通り DEAD > ENGAGED > IDLE
      * ユニット毎に処理を行うとステートを条件にした処理結果が
      * タイミングによって異なってしまうのでステート毎に処理を行う
      */
@@ -121,23 +121,30 @@ export default class BattleLogic {
     /**
      * 接敵時のステート更新処理
      */
-    private updateUnitLockedState;
+    private updateUnitEngagedState;
     /**
      * 何もしていない状態でのステート更新処理
      */
     private updateUnitIdleState;
     /**
-     * バトル状況かたゲーム終了かどうかを判断する
+     * バトル状況からゲーム終了かどうかを判断する
      */
     private updateGameOver;
     /**
-     * 必要であれば AI ユニットを生成させる
+     * プレイヤーが勝利しているかどうかを返す
      */
-    private requestAISpawn;
+    private isPlayerWon;
+    /**
+     * AI が勝利しているかどうかを返す
+     */
+    private isAiWon;
+    /**
+     * 現在のフレームに応じて AI ユニットを生成させる
+     */
+    private updateAISpawn;
     /**
      * 受け付けた Unit 生成リクエストを処理する
      * プレイヤーユニットの場合はコストを消費し、Unit 生成を試みる
-     * コストが足りなければ何もしない
      */
     private updateSpawnRequest;
     /**

@@ -43,7 +43,7 @@ export default interface BattleLogicDelegate {
   /**
    * 渡されたエンティティが接敵可能か返す
    */
-  shouldLockAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean;
+  shouldEngageAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean;
   /**
    * 渡されたエンティティが攻撃可能か返す
    */

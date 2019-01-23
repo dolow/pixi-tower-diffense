@@ -68,20 +68,28 @@ export default abstract class Scene extends PIXI.Container {
      * loadResource に用いるリソースリストを作成するメソッド
      * デフォルトでは UiGraph のリソースリストを作成する
      */
-    protected createResourceList(): LoaderAddParam[];
+    protected createInitialResourceList(): Array<LoaderAddParam | string>;
     /**
      * リソースをロードする
      * デフォルトでは UiGraph 用の情報が取得される
      */
-    loadResource(onResourceLoaded: () => void): void;
+    beginLoadResource(onLoaded: () => void): Promise<void>;
     /**
      * UiGraph 情報のロードを行う
      */
-    protected loadUiGraph(onLoaded: () => void): void;
+    protected loadInitialResource(onLoaded: () => void): void;
     /**
-     * loadUiGraph 完了時のコールバックメソッド
+     * loadInitialResource 完了時のコールバックメソッド
      */
-    protected onUiGraphLoaded(onLoaded: () => void): void;
+    protected onInitialResourceLoaded(): Array<LoaderAddParam | string>;
+    /**
+     * 初回リソースロードで発生した追加のリソースをロードする
+     */
+    protected loadAdditionalResource(assets: Array<LoaderAddParam | string>, onLoaded: () => void): void;
+    /**
+     * 追加のリソースロード完了時のコールバック
+     */
+    protected onAdditionalResourceLoaded(onLoaded: () => void): void;
     /**
      * loadResource 完了時のコールバックメソッド
      */
@@ -94,4 +102,20 @@ export default abstract class Scene extends PIXI.Container {
      * UiGraph にシーン独自の要素を追加する場合にこのメソッドを利用する
      */
     protected getCustomUiGraphFactory(_type: string): UiNodeFactory | null;
+    /**
+     * 渡されたアセットのリストからロード済みのものをフィルタリングする
+     */
+    private filterLoadedAssets;
+    /**
+     * BGM をループ再生する
+     */
+    protected playBgm(soundName: string): void;
+    /**
+     * BGM 再生を止める
+     */
+    protected stopBgm(soundName: string): void;
+    /**
+     * 効果音を再生する
+     */
+    protected playSe(soundName: string): void;
 }

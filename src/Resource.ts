@@ -4,7 +4,7 @@ import Scene from  'scenes/Scene';
 /**
  * リソースの URL や命名規則のマスタ
  */
-const ResourceMaster = Object.freeze({
+const Resource = Object.freeze({
   /**
    * マスターデータ API 情報を有するオブジェクト
    */
@@ -148,6 +148,10 @@ const ResourceMaster = Object.freeze({
     })
   },
 
+  FontFamily: {
+    Default: 'MisakiGothic'
+  },
+
   /**
    * スプライトシートの最大フレーム数を返す関数
    */
@@ -160,4 +164,4 @@ const ResourceMaster = Object.freeze({
   }
 });
 
-export default ResourceMaster;
+export default Resource;
