@@ -117,23 +117,26 @@ export default class SoundManager {
       return;
     }
 
+    // xhr でバイナリ取得する拡張子を登録
     for (let i = 0; i < SUPPORTED_EXTENSIONS.length; i++) {
       const extension = SUPPORTED_EXTENSIONS[i];
-      const Resource = PIXI.loaders.Loader.Resource;
-      Resource.setExtensionXhrType(extension, Resource.XHR_RESPONSE_TYPE.BUFFER);
-      Resource.setExtensionLoadType(extension, Resource.LOAD_TYPE.XHR);
+      const PixiResource = PIXI.loaders.Loader.Resource;
+      PixiResource.setExtensionXhrType(extension, PixiResource.XHR_RESPONSE_TYPE.BUFFER);
+      PixiResource.setExtensionLoadType(extension, PixiResource.LOAD_TYPE.XHR);
     }
 
+    // Chrome の一部バージョンでサウンドのデコード方法が異なるためメソッドを変える
     const majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
-
     let methodName = 'decodeAudio';
     if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
       methodName = 'decodeAudioWithPromise';
     }
 
+    // resource-loader ミドルウェアの登録
     PIXI.loader.use((resource: any, next: Function) =>  {
       const extension = resource.url.split('?')[0].split('.')[1];
       if (extension && SUPPORTED_EXTENSIONS.indexOf(extension) !== -1) {
+        // リソースオブジェクトに buffer という名前でプロパティを生やす
         (SoundManager as any)[methodName](resource.data, (buf: AudioBuffer) => {
           resource.buffer = buf;
           next();
