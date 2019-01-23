@@ -44309,6 +44309,7 @@ var Config = Object.freeze({
     // ユニット枠最大数
     MaxUnitSlotCount: 5
 });
+PIXI.loader.baseUrl = Config.ResourceBaseUrl;
 /* harmony default export */ __webpack_exports__["default"] = (Config);
 
 
@@ -44323,8 +44324,6 @@ var Config = Object.freeze({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! Config */ "./src/Config.ts");
-
 /**
  * リソースの URL や命名規則のマスタ
  */
@@ -44335,25 +44334,25 @@ var Resource = Object.freeze({
     Api: {
         UserBattle: function (userId) {
             var query = "?userId=" + userId;
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/api_mock/user_battle.json" + query;
+            return "api_mock/user_battle.json" + query;
         },
         SceneUiGraph: function (scene) {
             var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui_graph/" + snake_case + ".json";
+            return "ui_graph/" + snake_case + ".json";
         },
         Stage: function (stageId) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/stage_master_" + stageId + ".json";
+            return "master/stage_master_" + stageId + ".json";
         },
         Unit: function (unitIds) {
             var query = unitIds.join('&unitId[]=');
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json?unitId[]=" + query;
+            return "master/unit_master.json?unitId[]=" + query;
         },
         AllUnit: function () {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_master.json";
+            return 'master/unit_master.json';
         },
         UnitAnimation: function (unitIds) {
             var query = unitIds.join('&unitId[]=');
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/master/unit_animation_master.json?unitId[]=" + query;
+            return "master/unit_animation_master.json?unitId[]=" + query;
         }
     },
     /**
@@ -44361,14 +44360,14 @@ var Resource = Object.freeze({
      */
     Dynamic: {
         Unit: function (unitId) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/units/" + unitId + ".json";
+            return "units/" + unitId + ".json";
         },
         UnitPanel: function (unitId) {
             var id = (unitId > 0) ? unitId : 'empty';
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/units_panel/button/unit_" + id + ".png";
+            return "ui/units_panel/button/unit_" + id + ".png";
         },
         Base: function (baseId) {
-            return Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/base/" + baseId + ".json";
+            return "battle/base/" + baseId + ".json";
         }
     },
     /**
@@ -44376,52 +44375,52 @@ var Resource = Object.freeze({
      */
     Static: {
         BattleBgFores: [
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_1.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_2.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_3.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_4.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_5.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_6.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_7.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_8.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_9.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_1_10.png"
+            'battle/bg_1_1.png',
+            'battle/bg_1_2.png',
+            'battle/bg_1_3.png',
+            'battle/bg_1_4.png',
+            'battle/bg_1_5.png',
+            'battle/bg_1_6.png',
+            'battle/bg_1_7.png',
+            'battle/bg_1_8.png',
+            'battle/bg_1_9.png',
+            'battle/bg_1_10.png'
         ],
         BattleBgMiddles: [
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_1.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_2.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_3.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_4.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_5.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_2_6.png"
+            'battle/bg_2_1.png',
+            'battle/bg_2_2.png',
+            'battle/bg_2_3.png',
+            'battle/bg_2_4.png',
+            'battle/bg_2_5.png',
+            'battle/bg_2_6.png'
         ],
         BattleBgBacks: [
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_1.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_2.png",
-            Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/bg_3_3.png"
+            'battle/bg_3_1.png',
+            'battle/bg_3_2.png',
+            'battle/bg_3_3.png'
         ],
-        AttackSmoke: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/attack_smoke/attack_smoke.json",
-        DeadBucket: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_bucket.png",
-        DeadSpirit: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/dead/dead_spirit.png",
-        CollapseExplode: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/battle/effects/collapse_explode/collapse_explode.json",
-        BattleResultWin: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_win.png",
-        BattleResultLose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/ui/battle_lose.png"
+        AttackSmoke: 'battle/effects/attack_smoke/attack_smoke.json',
+        DeadBucket: 'battle/effects/dead/dead_bucket.png',
+        DeadSpirit: 'battle/effects/dead/dead_spirit.png',
+        CollapseExplode: 'battle/effects/collapse_explode/collapse_explode.json',
+        BattleResultWin: 'ui/battle_win.png',
+        BattleResultLose: 'ui/battle_lose.png'
     },
     /**
      * サウンドリソースの静的な url を有するオブジェクト
      */
     Audio: {
         Bgm: {
-            Title: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_title.mp3",
-            Battle: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/bgm_battle.mp3"
+            Title: 'audio/bgm_title.mp3',
+            Battle: 'audio/bgm_battle.mp3'
         },
         Se: {
-            Attack1: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_attack_1.mp3",
-            Attack2: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_attack_2.mp3",
-            Bomb: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_bomb.mp3",
-            UnitSpawn: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_unit_spawn.mp3",
-            Win: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_win.mp3",
-            Lose: Config__WEBPACK_IMPORTED_MODULE_0__["default"].ResourceBaseUrl + "/audio/se_lose.mp3"
+            Attack1: 'audio/se_attack_1.mp3',
+            Attack2: 'audio/se_attack_2.mp3',
+            Bomb: 'audio/se_bomb.mp3',
+            UnitSpawn: 'audio/se_unit_spawn.mp3',
+            Win: 'audio/se_win.mp3',
+            Lose: 'audio/se_lose.mp3'
         }
     },
     /**

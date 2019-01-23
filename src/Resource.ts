@@ -1,4 +1,3 @@
-import Config from  'Config';
 import Scene from  'scenes/Scene';
 
 /**
@@ -11,7 +10,7 @@ const Resource = Object.freeze({
   Api: {
     UserBattle: (userId: number): string => {
       const query = `?userId=${userId}`;
-      return `${Config.ResourceBaseUrl}/api_mock/user_battle.json${query}`;
+      return `api_mock/user_battle.json${query}`;
     },
     SceneUiGraph: (scene: Scene): string => {
       const snake_case = scene.constructor.name.replace(
@@ -19,21 +18,21 @@ const Resource = Object.freeze({
         (s) => { return `_${s.charAt(0).toLowerCase()}`; }
       ).replace(/^_/, '');
 
-      return `${Config.ResourceBaseUrl}/ui_graph/${snake_case}.json`;
+      return `ui_graph/${snake_case}.json`;
     },
     Stage: (stageId: number): string => {
-      return `${Config.ResourceBaseUrl}/master/stage_master_${stageId}.json`;
+      return `master/stage_master_${stageId}.json`;
     },
     Unit: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');
-      return `${Config.ResourceBaseUrl}/master/unit_master.json?unitId[]=${query}`;
+      return `master/unit_master.json?unitId[]=${query}`;
     },
     AllUnit: (): string => {
-      return `${Config.ResourceBaseUrl}/master/unit_master.json`;
+      return 'master/unit_master.json';
     },
     UnitAnimation: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');
-      return `${Config.ResourceBaseUrl}/master/unit_animation_master.json?unitId[]=${query}`;
+      return `master/unit_animation_master.json?unitId[]=${query}`;
     }
   },
 
@@ -42,14 +41,14 @@ const Resource = Object.freeze({
    */
   Dynamic: {
     Unit: (unitId: number): string => {
-      return `${Config.ResourceBaseUrl}/units/${unitId}.json`;
+      return `units/${unitId}.json`;
     },
     UnitPanel: (unitId: number): string => {
       const id = (unitId > 0) ? unitId : 'empty';
-      return `${Config.ResourceBaseUrl}/ui/units_panel/button/unit_${id}.png`;
+      return `ui/units_panel/button/unit_${id}.png`;
     },
     Base: (baseId: number): string => {
-      return `${Config.ResourceBaseUrl}/battle/base/${baseId}.json`;
+      return `battle/base/${baseId}.json`;
     }
   },
   /**
@@ -57,58 +56,58 @@ const Resource = Object.freeze({
    */
   Static: {
     BattleBgFores: [
-      `${Config.ResourceBaseUrl}/battle/bg_1_1.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_2.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_3.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_4.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_5.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_6.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_7.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_8.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_9.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_1_10.png`
+      'battle/bg_1_1.png',
+      'battle/bg_1_2.png',
+      'battle/bg_1_3.png',
+      'battle/bg_1_4.png',
+      'battle/bg_1_5.png',
+      'battle/bg_1_6.png',
+      'battle/bg_1_7.png',
+      'battle/bg_1_8.png',
+      'battle/bg_1_9.png',
+      'battle/bg_1_10.png'
     ],
     BattleBgMiddles: [
-      `${Config.ResourceBaseUrl}/battle/bg_2_1.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_2_2.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_2_3.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_2_4.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_2_5.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_2_6.png`
+      'battle/bg_2_1.png',
+      'battle/bg_2_2.png',
+      'battle/bg_2_3.png',
+      'battle/bg_2_4.png',
+      'battle/bg_2_5.png',
+      'battle/bg_2_6.png'
     ],
     BattleBgBacks: [
-      `${Config.ResourceBaseUrl}/battle/bg_3_1.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_3_2.png`,
-      `${Config.ResourceBaseUrl}/battle/bg_3_3.png`
+      'battle/bg_3_1.png',
+      'battle/bg_3_2.png',
+      'battle/bg_3_3.png'
     ],
     AttackSmoke:
-      `${Config.ResourceBaseUrl}/battle/effects/attack_smoke/attack_smoke.json`,
+      'battle/effects/attack_smoke/attack_smoke.json',
     DeadBucket:
-      `${Config.ResourceBaseUrl}/battle/effects/dead/dead_bucket.png`,
+      'battle/effects/dead/dead_bucket.png',
     DeadSpirit:
-      `${Config.ResourceBaseUrl}/battle/effects/dead/dead_spirit.png`,
+      'battle/effects/dead/dead_spirit.png',
     CollapseExplode:
-      `${Config.ResourceBaseUrl}/battle/effects/collapse_explode/collapse_explode.json`,
+      'battle/effects/collapse_explode/collapse_explode.json',
     BattleResultWin:
-      `${Config.ResourceBaseUrl}/ui/battle_win.png`,
+      'ui/battle_win.png',
     BattleResultLose:
-      `${Config.ResourceBaseUrl}/ui/battle_lose.png`
+      'ui/battle_lose.png'
   },
   /**
    * サウンドリソースの静的な url を有するオブジェクト
    */
   Audio: {
     Bgm: {
-      Title: `${Config.ResourceBaseUrl}/audio/bgm_title.mp3`,
-      Battle: `${Config.ResourceBaseUrl}/audio/bgm_battle.mp3`
+      Title: 'audio/bgm_title.mp3',
+      Battle: 'audio/bgm_battle.mp3'
     },
     Se: {
-      Attack1: `${Config.ResourceBaseUrl}/audio/se_attack_1.mp3`,
-      Attack2: `${Config.ResourceBaseUrl}/audio/se_attack_2.mp3`,
-      Bomb: `${Config.ResourceBaseUrl}/audio/se_bomb.mp3`,
-      UnitSpawn: `${Config.ResourceBaseUrl}/audio/se_unit_spawn.mp3`,
-      Win: `${Config.ResourceBaseUrl}/audio/se_win.mp3`,
-      Lose: `${Config.ResourceBaseUrl}/audio/se_lose.mp3`
+      Attack1: 'audio/se_attack_1.mp3',
+      Attack2: 'audio/se_attack_2.mp3',
+      Bomb: 'audio/se_bomb.mp3',
+      UnitSpawn: 'audio/se_unit_spawn.mp3',
+      Win: 'audio/se_win.mp3',
+      Lose: 'audio/se_lose.mp3'
     }
   },
 

@@ -5,8 +5,8 @@
       "type": "sprite",
       "position": [0, 0],
       "params": {
-        "textureName": "/assets/battle/bg_3_1.png",
-        "url": "/assets/battle/bg_3_1.png"
+        "textureName": "battle/bg_3_1.png",
+        "url": "battle/bg_3_1.png"
       }
     },
     {
@@ -14,8 +14,8 @@
       "type": "sprite",
       "position": [600, 0],
       "params": {
-        "textureName": "/assets/battle/bg_3_2.png",
-        "url": "/assets/battle/bg_3_2.png"
+        "textureName": "battle/bg_3_2.png",
+        "url": "battle/bg_3_2.png"
       }
     },
     {
@@ -23,8 +23,8 @@
       "type": "sprite",
       "position": [1200, 0],
       "params": {
-        "textureName": "/assets/battle/bg_3_3.png",
-        "url": "/assets/battle/bg_3_3.png"
+        "textureName": "battle/bg_3_3.png",
+        "url": "battle/bg_3_3.png"
       }
     },
     {
@@ -32,8 +32,8 @@
       "type": "sprite",
       "position": [0, 0],
       "params": {
-        "textureName": "/assets/battle/bg_2_1.png",
-        "url": "/assets/battle/bg_2_1.png"
+        "textureName": "battle/bg_2_1.png",
+        "url": "battle/bg_2_1.png"
       }
     },
     {
@@ -41,8 +41,8 @@
       "type": "sprite",
       "position": [600, 0],
       "params": {
-        "textureName": "/assets/battle/bg_2_2.png",
-        "url": "/assets/battle/bg_2_2.png"
+        "textureName": "battle/bg_2_2.png",
+        "url": "battle/bg_2_2.png"
       }
     },
     {
@@ -50,8 +50,8 @@
       "type": "sprite",
       "position": [1200, 0],
       "params": {
-        "textureName": "/assets/battle/bg_2_3.png",
-        "url": "/assets/battle/bg_2_3.png"
+        "textureName": "battle/bg_2_3.png",
+        "url": "battle/bg_2_3.png"
       }
     },
     {
@@ -59,8 +59,8 @@
       "type": "sprite",
       "position": [0, 0],
       "params": {
-        "textureName": "/assets/battle/bg_1_5.png",
-        "url": "/assets/battle/bg_1_5.png"
+        "textureName": "battle/bg_1_5.png",
+        "url": "battle/bg_1_5.png"
       }
     },
     {
@@ -68,8 +68,8 @@
       "type": "sprite",
       "position": [600, 0],
       "params": {
-        "textureName": "/assets/battle/bg_1_6.png",
-        "url": "/assets/battle/bg_1_6.png"
+        "textureName": "battle/bg_1_6.png",
+        "url": "battle/bg_1_6.png"
       }
     },
     {
@@ -77,8 +77,8 @@
       "type": "sprite",
       "position": [1200, 0],
       "params": {
-        "textureName": "/assets/battle/bg_1_7.png",
-        "url": "/assets/battle/bg_1_7.png"
+        "textureName": "battle/bg_1_7.png",
+        "url": "battle/bg_1_7.png"
       }
     },
     {

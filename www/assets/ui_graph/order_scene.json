@@ -5,8 +5,8 @@
       "type": "sprite",
       "position": [0, 0],
       "params": {
-        "textureName": "/assets/battle/bg_3_1.png",
-        "url": "/assets/battle/bg_3_1.png"
+        "textureName": "battle/bg_3_1.png",
+        "url": "battle/bg_3_1.png"
       }
     },
     {
@@ -14,8 +14,8 @@
       "type": "sprite",
       "position": [600, 0],
       "params": {
-        "textureName": "/assets/battle/bg_3_2.png",
-        "url": "/assets/battle/bg_3_2.png"
+        "textureName": "battle/bg_3_2.png",
+        "url": "battle/bg_3_2.png"
       }
     },
     {
@@ -23,8 +23,8 @@
       "type": "sprite",
       "position": [1200, 0],
       "params": {
-        "textureName": "/assets/battle/bg_3_3.png",
-        "url": "/assets/battle/bg_3_3.png"
+        "textureName": "battle/bg_3_3.png",
+        "url": "battle/bg_3_3.png"
       }
     },
     {
@@ -32,8 +32,8 @@
       "type": "sprite",
       "position": [0, 0],
       "params": {
-        "textureName": "/assets/battle/bg_2_4.png",
-        "url": "/assets/battle/bg_2_1.png"
+        "textureName": "battle/bg_2_4.png",
+        "url": "battle/bg_2_1.png"
       }
     },
     {
@@ -41,8 +41,8 @@
       "type": "sprite",
       "position": [600, 0],
       "params": {
-        "textureName": "/assets/battle/bg_2_5.png",
-        "url": "/assets/battle/bg_2_2.png"
+        "textureName": "battle/bg_2_5.png",
+        "url": "battle/bg_2_2.png"
       }
     },
     {
@@ -50,8 +50,8 @@
       "type": "sprite",
       "position": [1200, 0],
       "params": {
-        "textureName": "/assets/battle/bg_2_6.png",
-        "url": "/assets/battle/bg_2_3.png"
+        "textureName": "battle/bg_2_6.png",
+        "url": "battle/bg_2_3.png"
       }
     },
     {
@@ -59,8 +59,8 @@
       "type": "sprite",
       "position": [0, 0],
       "params": {
-        "textureName": "/assets/battle/bg_1_8.png",
-        "url": "/assets/battle/bg_1_5.png"
+        "textureName": "battle/bg_1_8.png",
+        "url": "battle/bg_1_5.png"
       }
     },
     {
@@ -68,8 +68,8 @@
       "type": "sprite",
       "position": [600, 0],
       "params": {
-        "textureName": "/assets/battle/bg_1_9.png",
-        "url": "/assets/battle/bg_1_6.png"
+        "textureName": "battle/bg_1_9.png",
+        "url": "battle/bg_1_6.png"
       }
     },
     {
@@ -77,8 +77,8 @@
       "type": "sprite",
       "position": [1200, 0],
       "params": {
-        "textureName": "/assets/battle/bg_1_10.png",
-        "url": "/assets/battle/bg_1_7.png"
+        "textureName": "battle/bg_1_10.png",
+        "url": "battle/bg_1_7.png"
       }
     },
     {
@@ -110,8 +110,8 @@
       "type": "sprite",
       "position": [570, 404],
       "params": {
-        "textureName": "/assets/ui/arrow_left.png",
-        "url": "/assets/ui/arrow_left.png"
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
       },
       "events": [
         {
@@ -126,8 +126,8 @@
       "type": "sprite",
       "position": [690, 404],
       "params": {
-        "textureName": "/assets/ui/arrow_right.png",
-        "url": "/assets/ui/arrow_right.png"
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
       },
       "events": [
         {
@@ -167,8 +167,8 @@
       "type": "sprite",
       "position": [80, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_left.png",
-        "url": "/assets/ui/arrow_left.png"
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
       },
       "events": [
         {
@@ -183,8 +183,8 @@
       "type": "sprite",
       "position": [280, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_left.png",
-        "url": "/assets/ui/arrow_left.png"
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
       },
       "events": [
         {
@@ -199,8 +199,8 @@
       "type": "sprite",
       "position": [480, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_left.png",
-        "url": "/assets/ui/arrow_left.png"
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
       },
       "events": [
         {
@@ -215,8 +215,8 @@
       "type": "sprite",
       "position": [680, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_left.png",
-        "url": "/assets/ui/arrow_left.png"
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
       },
       "events": [
         {
@@ -231,8 +231,8 @@
       "type": "sprite",
       "position": [880, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_left.png",
-        "url": "/assets/ui/arrow_left.png"
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
       },
       "events": [
         {
@@ -247,8 +247,8 @@
       "type": "sprite",
       "position": [236, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_right.png",
-        "url": "/assets/ui/arrow_right.png"
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
       },
       "events": [
         {
@@ -263,8 +263,8 @@
       "type": "sprite",
       "position": [436, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_right.png",
-        "url": "/assets/ui/arrow_right.png"
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
       },
       "events": [
         {
@@ -279,8 +279,8 @@
       "type": "sprite",
       "position": [636, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_right.png",
-        "url": "/assets/ui/arrow_right.png"
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
       },
       "events": [
         {
@@ -295,8 +295,8 @@
       "type": "sprite",
       "position": [836, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_right.png",
-        "url": "/assets/ui/arrow_right.png"
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
       },
       "events": [
         {
@@ -311,8 +311,8 @@
       "type": "sprite",
       "position": [1036, 234],
       "params": {
-        "textureName": "/assets/ui/arrow_right.png",
-        "url": "/assets/ui/arrow_right.png"
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
       },
       "events": [
         {
@@ -327,8 +327,8 @@
       "type": "sprite",
       "position": [900, 480],
       "params": {
-        "textureName": "/assets/ui/order_start_on.png",
-        "url": "/assets/ui/order_start_on.png"
+        "textureName": "ui/order_start_on.png",
+        "url": "ui/order_start_on.png"
       },
       "events": [
         {
@@ -342,8 +342,8 @@
       "type": "sprite",
       "position": [900, 480],
       "params": {
-        "textureName": "/assets/ui/order_start_off.png",
-        "url": "/assets/ui/order_start_off.png"
+        "textureName": "ui/order_start_off.png",
+        "url": "ui/order_start_off.png"
       },
       "events": [
         {

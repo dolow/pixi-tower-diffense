@@ -8,4 +8,6 @@ const Config = Object.freeze({
   MaxUnitSlotCount: 5
 });
 
+PIXI.loader.baseUrl = Config.ResourceBaseUrl;
+
 export default Config;
