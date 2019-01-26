@@ -1,4 +1,4 @@
-import UiGraphExampleResourceMaster from 'example/UiGraphExampleResourceMaster';
+import Resource from 'example/Resource';
 import * as UI from 'example/interfaces/UiGraph/index';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import UiGraph from 'example/UiGraph';
@@ -49,7 +49,7 @@ export default abstract class AbstractUiGraphScene extends Scene {
    */
   protected loadInitialResource(onLoaded: () => void): void {
     const assets = this.createInitialResourceList();
-    const name = UiGraphExampleResourceMaster.SceneUiGraph(this);
+    const name = Resource.SceneUiGraph(this);
     assets.push(name);
     PIXI.loader.add(this.filterAssets(assets)).load(() => onLoaded());
   }
@@ -58,10 +58,10 @@ export default abstract class AbstractUiGraphScene extends Scene {
    * loadInitialResource 完了時のコールバックメソッド
    * 追加でロードしなければならないテクスチャなどの情報を返す
    */
-  protected onInitialResourceLoaded(): string[] | LoaderAddParam[] {
+  protected onInitialResourceLoaded(): (string | LoaderAddParam)[] {
     const additionalAssets = [];
 
-    const name = UiGraphExampleResourceMaster.SceneUiGraph(this);
+    const name = Resource.SceneUiGraph(this);
     const uiGraph = PIXI.loader.resources[name];
     for (let i = 0; i < uiGraph.data.nodes.length; i++) {
       const node = uiGraph.data.nodes[i];
@@ -76,7 +76,7 @@ export default abstract class AbstractUiGraphScene extends Scene {
   /**
    * onInitialResourceLoaded で発生した追加のリソースをロードする
    */
-  protected loadAdditionalResource(assets: string[] | LoaderAddParam[], onLoaded: () => void) {
+  protected loadAdditionalResource(assets: (string | LoaderAddParam)[], onLoaded: () => void) {
     PIXI.loader.add(this.filterAssets(assets)).load(() => onLoaded());
   }
 
@@ -91,7 +91,7 @@ export default abstract class AbstractUiGraphScene extends Scene {
    * 全てのリソースロード処理完了時のコールバック
    */
   protected onResourceLoaded(): void {
-    const sceneUiGraphName = UiGraphExampleResourceMaster.SceneUiGraph(this);
+    const sceneUiGraphName = Resource.SceneUiGraph(this);
     this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
     this.addChild(this.uiGraphContainer);
 

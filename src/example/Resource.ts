@@ -3,7 +3,7 @@ import Scene from 'scenes/Scene';
 /**
  * リソースの URL や命名規則のマスタサンプル
  */
-const UiGraphExampleResourceMaster = Object.freeze({
+const Resource = Object.freeze({
   /**
    * シーン名から UI Graph 用のファイル名を生成
    */
@@ -17,4 +17,4 @@ const UiGraphExampleResourceMaster = Object.freeze({
   }
 });
 
-export default UiGraphExampleResourceMaster;
+export default Resource;
