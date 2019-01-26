@@ -1,4 +1,5 @@
 import * as WebFont from 'webfontloader';
+import 'Config';
 import Resource from 'Resource';
 import TitleScene from 'scenes/TitleScene';
 import GameManager from 'managers/GameManager';
