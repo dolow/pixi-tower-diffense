@@ -48547,7 +48547,14 @@ var OrderScene = /** @class */ (function (_super) {
             if (entity.constructor.name === 'UnitButton') {
                 var unitButton = entity;
                 if (this.lastUnitIds.length >= slotIndex + 1) {
-                    unitButton.init(slotIndex, this.lastUnitIds[slotIndex]);
+                    var unitId = this.lastUnitIds[slotIndex];
+                    var unitMaster = this.unitMasterCache.get(unitId);
+                    if (unitMaster) {
+                        unitButton.init(slotIndex, unitId, unitMaster.cost);
+                    }
+                    else {
+                        unitButton.init(slotIndex, unitId);
+                    }
                 }
                 else {
                     unitButton.init(slotIndex);
