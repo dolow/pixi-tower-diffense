@@ -1,0 +1,382 @@
+{
+  "nodes": [
+    {
+      "id": "bg_3_1",
+      "type": "sprite",
+      "position": [0, 0],
+      "params": {
+        "textureName": "battle/bg_3_1.png",
+        "url": "battle/bg_3_1.png"
+      }
+    },
+    {
+      "id": "bg_3_2",
+      "type": "sprite",
+      "position": [600, 0],
+      "params": {
+        "textureName": "battle/bg_3_2.png",
+        "url": "battle/bg_3_2.png"
+      }
+    },
+    {
+      "id": "bg_3_3",
+      "type": "sprite",
+      "position": [1200, 0],
+      "params": {
+        "textureName": "battle/bg_3_3.png",
+        "url": "battle/bg_3_3.png"
+      }
+    },
+    {
+      "id": "bg_2_1",
+      "type": "sprite",
+      "position": [0, 0],
+      "params": {
+        "textureName": "battle/bg_2_4.png",
+        "url": "battle/bg_2_1.png"
+      }
+    },
+    {
+      "id": "bg_2_2",
+      "type": "sprite",
+      "position": [600, 0],
+      "params": {
+        "textureName": "battle/bg_2_5.png",
+        "url": "battle/bg_2_2.png"
+      }
+    },
+    {
+      "id": "bg_2_3",
+      "type": "sprite",
+      "position": [1200, 0],
+      "params": {
+        "textureName": "battle/bg_2_6.png",
+        "url": "battle/bg_2_3.png"
+      }
+    },
+    {
+      "id": "bg_1_5",
+      "type": "sprite",
+      "position": [0, 0],
+      "params": {
+        "textureName": "battle/bg_1_8.png",
+        "url": "battle/bg_1_8.png"
+      }
+    },
+    {
+      "id": "bg_1_6",
+      "type": "sprite",
+      "position": [600, 0],
+      "params": {
+        "textureName": "battle/bg_1_9.png",
+        "url": "battle/bg_1_9.png"
+      }
+    },
+    {
+      "id": "bg_1_7",
+      "type": "sprite",
+      "position": [1200, 0],
+      "params": {
+        "textureName": "battle/bg_1_10.png",
+        "url": "battle/bg_1_10.png"
+      }
+    },
+    {
+      "id": "stage_select_label",
+      "type": "text",
+      "position": [430, 420],
+      "params": {
+        "family": "MisakiGothic",
+        "text": "STAGE",
+        "size": 48,
+        "color": "0xffffff",
+        "padding": 14
+      }
+    },
+    {
+      "id": "stage_number",
+      "type": "text",
+      "position": [618, 414],
+      "params": {
+        "family": "MisakiGothic",
+        "text": "1",
+        "size": 58,
+        "color": "0xffffff",
+        "padding": 14
+      }
+    },
+    {
+      "id": "stage_left",
+      "type": "sprite",
+      "position": [570, 404],
+      "params": {
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onStageArrowTapped",
+          "arguments": [-1]
+        }
+      ]
+    },
+    {
+      "id": "stage_right",
+      "type": "sprite",
+      "position": [690, 404],
+      "params": {
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onStageArrowTapped",
+          "arguments": [1]
+        }
+      ]
+    },
+    {
+      "id": "unit_1",
+      "type": "sprite",
+      "position": [120, 200],
+      "params": {
+        "textureName": "ui/units_panel/button/unit_1.png",
+        "url": "ui/units_panel/button/unit_1.png"
+      }
+    },
+    {
+      "id": "unit_2",
+      "type": "sprite",
+      "position": [320, 200],
+      "params": {
+        "textureName": "ui/units_panel/button/unit_2.png",
+        "url": "ui/units_panel/button/unit_2.png"
+      }
+    },
+    {
+      "id": "unit_3",
+      "type": "sprite",
+      "position": [520, 200],
+      "params": {
+        "textureName": "ui/units_panel/button/unit_3.png",
+        "url": "ui/units_panel/button/unit_3.png"
+      }
+    },
+    {
+      "id": "unit_4",
+      "type": "sprite",
+      "position": [720, 200],
+      "params": {
+        "textureName": "ui/units_panel/button/unit_4.png",
+        "url": "ui/units_panel/button/unit_4.png"
+      }
+    },
+    {
+      "id": "unit_5",
+      "type": "sprite",
+      "position": [920, 200],
+      "params": {
+        "textureName": "ui/units_panel/button/unit_empty.png",
+        "url": "ui/units_panel/button/unit_empty.png"
+      }
+    },
+    {
+      "id": "unit_1_left",
+      "type": "sprite",
+      "position": [80, 234],
+      "params": {
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [0, -1]
+        }
+      ]
+    },
+    {
+      "id": "unit_2_left",
+      "type": "sprite",
+      "position": [280, 234],
+      "params": {
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [1, -1]
+        }
+      ]
+    },
+    {
+      "id": "unit_3_left",
+      "type": "sprite",
+      "position": [480, 234],
+      "params": {
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [2, -1]
+        }
+      ]
+    },
+    {
+      "id": "unit_4_left",
+      "type": "sprite",
+      "position": [680, 234],
+      "params": {
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [3, -1]
+        }
+      ]
+    },
+    {
+      "id": "unit_5_left",
+      "type": "sprite",
+      "position": [880, 234],
+      "params": {
+        "textureName": "ui/arrow_left.png",
+        "url": "ui/arrow_left.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [4, -1]
+        }
+      ]
+    },
+    {
+      "id": "unit_1_right",
+      "type": "sprite",
+      "position": [236, 234],
+      "params": {
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [0, 1]
+        }
+      ]
+    },
+    {
+      "id": "unit_2_right",
+      "type": "sprite",
+      "position": [436, 234],
+      "params": {
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [1, 1]
+        }
+      ]
+    },
+    {
+      "id": "unit_3_right",
+      "type": "sprite",
+      "position": [636, 234],
+      "params": {
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [2, 1]
+        }
+      ]
+    },
+    {
+      "id": "unit_4_right",
+      "type": "sprite",
+      "position": [836, 234],
+      "params": {
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [3, 1]
+        }
+      ]
+    },
+    {
+      "id": "unit_5_right",
+      "type": "sprite",
+      "position": [1036, 234],
+      "params": {
+        "textureName": "ui/arrow_right.png",
+        "url": "ui/arrow_right.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onUnitArrowTapped",
+          "arguments": [4, 1]
+        }
+      ]
+    },
+    {
+      "id": "ok_button_on",
+      "type": "sprite",
+      "position": [900, 480],
+      "params": {
+        "textureName": "ui/order_start_on.png",
+        "url": "ui/order_start_on.png"
+      },
+      "events": [
+        {
+          "type": "pointerup",
+          "callback": "onOkButtonUp"
+        }
+      ]
+    },
+    {
+      "id": "ok_button_off",
+      "type": "sprite",
+      "position": [900, 480],
+      "params": {
+        "textureName": "ui/order_start_off.png",
+        "url": "ui/order_start_off.png"
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "callback": "onOkButtonDown"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "screen": {
+      "width": 640,
+      "height": 1136
+    }
+  }
+}

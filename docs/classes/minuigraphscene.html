@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Scene | tower-diffence</title>
+	<title>MinUiGraphScene | tower-diffence</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="scene.html">Scene</a>
+					<a href="minuigraphscene.html">MinUiGraphScene</a>
 				</li>
 			</ul>
-			<h1>Class Scene</h1>
+			<h1>Class MinUiGraphScene</h1>
 		</div>
 	</div>
 </header>
@@ -67,10 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>ゲームシーンの抽象クラス
-							UiGraph を利用して UI 情報を透過的に読み込み初期化する
-							また、シーン間のトランジションイベントを提供する
-						いずれのイベントも実装クラスにて独自処理の実装を行うことができる</p>
+						<p>データで表現された UI を読み込んで表示するサンプル</p>
 					</div>
 				</div>
 			</section>
@@ -78,24 +75,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-type">Container</span>
+						<a href="scene.html" class="tsd-signature-type">Scene</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">Scene</span>
-								<ul class="tsd-hierarchy">
-									<li>
-										<a href="minuigraphscene.html" class="tsd-signature-type">MinUiGraphScene</a>
-									</li>
-									<li>
-										<a href="orderscene.html" class="tsd-signature-type">OrderScene</a>
-									</li>
-									<li>
-										<a href="battlescene.html" class="tsd-signature-type">BattleScene</a>
-									</li>
-									<li>
-										<a href="titlescene.html" class="tsd-signature-type">TitleScene</a>
-									</li>
-								</ul>
+								<span class="target">MinUiGraphScene</span>
 							</li>
 						</ul>
 					</li>
@@ -115,138 +98,150 @@
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_bounds" class="tsd-kind-icon">_bounds</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_boundsid" class="tsd-kind-icon">_boundsID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_destroyed" class="tsd-kind-icon">_destroyed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_filters" class="tsd-kind-icon">_filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_mask" class="tsd-kind-icon">_mask</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#accessible" class="tsd-kind-icon">accessible</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#alpha" class="tsd-kind-icon">alpha</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#children" class="tsd-kind-icon">children</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#cursor" class="tsd-kind-icon">cursor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#filters" class="tsd-kind-icon">filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#hassceneuigraph" class="tsd-kind-icon">has<wbr>Scene<wbr>UiGraph</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#interactive" class="tsd-kind-icon">interactive</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#mask" class="tsd-kind-icon">mask</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#parent" class="tsd-kind-icon">parent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#pivot" class="tsd-kind-icon">pivot</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#position" class="tsd-kind-icon">position</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#renderable" class="tsd-kind-icon">renderable</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#rotation" class="tsd-kind-icon">rotation</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#scale" class="tsd-kind-icon">scale</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#skew" class="tsd-kind-icon">skew</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#transform" class="tsd-kind-icon">transform</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#uigraph" class="tsd-kind-icon">ui<wbr>Graph</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="scene.html#uigraphcontainer" class="tsd-kind-icon">ui<wbr>Graph<wbr>Container</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#visible" class="tsd-kind-icon">visible</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#width" class="tsd-kind-icon">width</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#x" class="tsd-kind-icon">x</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#y" class="tsd-kind-icon">y</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="scene.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="scene.html#prefixed-1" class="tsd-kind-icon">prefixed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_bounds" class="tsd-kind-icon">_bounds</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_boundsid" class="tsd-kind-icon">_boundsID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_destroyed" class="tsd-kind-icon">_destroyed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_filters" class="tsd-kind-icon">_filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_mask" class="tsd-kind-icon">_mask</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#accessible" class="tsd-kind-icon">accessible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#alpha" class="tsd-kind-icon">alpha</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#children" class="tsd-kind-icon">children</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#cursor" class="tsd-kind-icon">cursor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#filters" class="tsd-kind-icon">filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#hassceneuigraph" class="tsd-kind-icon">has<wbr>Scene<wbr>UiGraph</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#interactive" class="tsd-kind-icon">interactive</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#json" class="tsd-kind-icon">json</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#jsonurl" class="tsd-kind-icon">json<wbr>Url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#mask" class="tsd-kind-icon">mask</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#pivot" class="tsd-kind-icon">pivot</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#renderable" class="tsd-kind-icon">renderable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#rotation" class="tsd-kind-icon">rotation</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#scale" class="tsd-kind-icon">scale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#skew" class="tsd-kind-icon">skew</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#transform" class="tsd-kind-icon">transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#ui" class="tsd-kind-icon">ui</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#uigraph" class="tsd-kind-icon">ui<wbr>Graph</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#uigraphcontainer" class="tsd-kind-icon">ui<wbr>Graph<wbr>Container</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#visible" class="tsd-kind-icon">visible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#x" class="tsd-kind-icon">x</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#y" class="tsd-kind-icon">y</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="minuigraphscene.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="minuigraphscene.html#prefixed-1" class="tsd-kind-icon">prefixed</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#addchild" class="tsd-kind-icon">add<wbr>Child</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scene.html#beginloadresource" class="tsd-kind-icon">begin<wbr>Load<wbr>Resource</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#createinitialresourcelist" class="tsd-kind-icon">create<wbr>Initial<wbr>Resource<wbr>List</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#destroy" class="tsd-kind-icon">destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="scene.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#emit" class="tsd-kind-icon">emit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="scene.html#filterloadedassets" class="tsd-kind-icon">filter<wbr>Loaded<wbr>Assets</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#getcustomuigraphfactory" class="tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#listeners" class="tsd-kind-icon">listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#loadadditionalresource" class="tsd-kind-icon">load<wbr>Additional<wbr>Resource</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#loadinitialresource" class="tsd-kind-icon">load<wbr>Initial<wbr>Resource</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#off" class="tsd-kind-icon">off</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#on" class="tsd-kind-icon">on</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#onadditionalresourceloaded" class="tsd-kind-icon">on<wbr>Additional<wbr>Resource<wbr>Loaded</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#oninitialresourceloaded" class="tsd-kind-icon">on<wbr>Initial<wbr>Resource<wbr>Loaded</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#once" class="tsd-kind-icon">once</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#playbgm" class="tsd-kind-icon">play<wbr>Bgm</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#playse" class="tsd-kind-icon">play<wbr>Se</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#stopbgm" class="tsd-kind-icon">stop<wbr>Bgm</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="scene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scene.html#update" class="tsd-kind-icon">update</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="scene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="scene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="minuigraphscene.html#addchild" class="tsd-kind-icon">add<wbr>Child</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="minuigraphscene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#adduicontainers" class="tsd-kind-icon">add<wbr>UiContainers</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="minuigraphscene.html#beginloadresource" class="tsd-kind-icon">begin<wbr>Load<wbr>Resource</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#collectspriteurls" class="tsd-kind-icon">collect<wbr>Sprite<wbr>Urls</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#createinitialresourcelist" class="tsd-kind-icon">create<wbr>Initial<wbr>Resource<wbr>List</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#createsprite" class="tsd-kind-icon">create<wbr>Sprite</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#createtext" class="tsd-kind-icon">create<wbr>Text</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#emit" class="tsd-kind-icon">emit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#getcustomuigraphfactory" class="tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#listeners" class="tsd-kind-icon">listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#loadadditionalresource" class="tsd-kind-icon">load<wbr>Additional<wbr>Resource</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#loadinitialresource" class="tsd-kind-icon">load<wbr>Initial<wbr>Resource</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#off" class="tsd-kind-icon">off</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#onadditionalresourceloaded" class="tsd-kind-icon">on<wbr>Additional<wbr>Resource<wbr>Loaded</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#oninitialresourceloaded" class="tsd-kind-icon">on<wbr>Initial<wbr>Resource<wbr>Loaded</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#onjsonloaded" class="tsd-kind-icon">on<wbr>Json<wbr>Loaded</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="minuigraphscene.html#onokbuttondown" class="tsd-kind-icon">on<wbr>OkButton<wbr>Down</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="minuigraphscene.html#onokbuttonup" class="tsd-kind-icon">on<wbr>OkButton<wbr>Up</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="minuigraphscene.html#onstagearrowtapped" class="tsd-kind-icon">on<wbr>Stage<wbr>Arrow<wbr>Tapped</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#ontexturesloaded" class="tsd-kind-icon">on<wbr>Textures<wbr>Loaded</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="minuigraphscene.html#onunitarrowtapped" class="tsd-kind-icon">on<wbr>Unit<wbr>Arrow<wbr>Tapped</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#playbgm" class="tsd-kind-icon">play<wbr>Bgm</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#playse" class="tsd-kind-icon">play<wbr>Se</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#stopbgm" class="tsd-kind-icon">stop<wbr>Bgm</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="minuigraphscene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="minuigraphscene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
 							</ul>
 						</section>
 					</div>
@@ -258,7 +253,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Scene<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scene.html" class="tsd-signature-type">Scene</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Min<wbr>UiGraph<wbr>Scene<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="minuigraphscene.html" class="tsd-signature-type">MinUiGraphScene</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -281,7 +276,7 @@
 									</dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="scene.html" class="tsd-signature-type">Scene</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="minuigraphscene.html" class="tsd-signature-type">MinUiGraphScene</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -508,11 +503,12 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="elapsedframecount" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> elapsed<wbr>Frame<wbr>Count</h3>
 					<div class="tsd-signature tsd-kind-icon">elapsed<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#elapsedframecount">elapsedFrameCount</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L22">scenes/Scene.ts:22</a></li>
 						</ul>
@@ -545,11 +541,12 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="hassceneuigraph" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> has<wbr>Scene<wbr>UiGraph</h3>
 					<div class="tsd-signature tsd-kind-icon">has<wbr>Scene<wbr>UiGraph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#hassceneuigraph">hasSceneUiGraph</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L26">scenes/Scene.ts:26</a></li>
 						</ul>
@@ -604,6 +601,36 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="json" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> json</h3>
+					<div class="tsd-signature tsd-kind-icon">json<span class="tsd-signature-symbol">:</span> <a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in example/MinUiGraph.ts:17</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>json ファイルをパースしたオブジェクト</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="jsonurl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> json<wbr>Url</h3>
+					<div class="tsd-signature tsd-kind-icon">json<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;ui_graph/min_ui_graph_scene.json&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in example/MinUiGraph.ts:13</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>UI 情報が定義された json ファイル URL</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="localtransform" class="tsd-anchor"></a>
 					<h3>local<wbr>Transform</h3>
@@ -637,11 +664,12 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="objectstoupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> objects<wbr>ToUpdate</h3>
 					<div class="tsd-signature tsd-kind-icon">objects<wbr>ToUpdate<span class="tsd-signature-symbol">:</span> <a href="../interfaces/updateobject.html" class="tsd-signature-type">UpdateObject</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#objectstoupdate">objectsToUpdate</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L39">scenes/Scene.ts:39</a></li>
 						</ul>
@@ -802,11 +830,12 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="transitionin" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> transition<wbr>In</h3>
 					<div class="tsd-signature tsd-kind-icon">transition<wbr>In<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol"> =&nbsp;new Immediate()</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#transitionin">transitionIn</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L44">scenes/Scene.ts:44</a></li>
 						</ul>
@@ -817,11 +846,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="transitionout" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> transition<wbr>Out</h3>
 					<div class="tsd-signature tsd-kind-icon">transition<wbr>Out<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol"> =&nbsp;new Immediate()</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#transitionout">transitionOut</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L48">scenes/Scene.ts:48</a></li>
 						</ul>
@@ -832,11 +862,35 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="ui" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> ui</h3>
+					<div class="tsd-signature tsd-kind-icon">ui<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in example/MinUiGraph.ts:21</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>json ファイルを元に作られた UI系インスタンスのオブジェクト</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Container</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="uigraph" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> ui<wbr>Graph</h3>
 					<div class="tsd-signature tsd-kind-icon">ui<wbr>Graph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#uigraph">uiGraph</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L30">scenes/Scene.ts:30</a></li>
 						</ul>
@@ -855,11 +909,12 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="uigraphcontainer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> ui<wbr>Graph<wbr>Container</h3>
 					<div class="tsd-signature tsd-kind-icon">ui<wbr>Graph<wbr>Container<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol"> =&nbsp;new PIXI.Container()</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#uigraphcontainer">uiGraphContainer</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L35">scenes/Scene.ts:35</a></li>
 						</ul>
@@ -1366,23 +1421,54 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="beginloadresource" class="tsd-anchor"></a>
-					<h3>begin<wbr>Load<wbr>Resource</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">begin<wbr>Load<wbr>Resource<span class="tsd-signature-symbol">(</span>onLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="adduicontainers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> add<wbr>UiContainers</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>UiContainers<span class="tsd-signature-symbol">(</span>nodes<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L133">scenes/Scene.ts:133</a></li>
+									<li>Defined in example/MinUiGraph.ts:108</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>リソースをロードする
-									デフォルトでは UiGraph 用の情報が取得される</p>
+									<p>要素の種類ごとに初期化メソッドを実行する
+									本実装ではここの処理はカプセル化しており、ここではサンプルとして明示的に処理している</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>nodes: <a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="beginloadresource" class="tsd-anchor"></a>
+					<h3>begin<wbr>Load<wbr>Resource</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">begin<wbr>Load<wbr>Resource<span class="tsd-signature-symbol">(</span>onLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#beginloadresource">beginLoadResource</a></p>
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:30</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UI 情報が定義された json をダウンロードする
+										GameManager によって初期化時にコールされる
+									本来は Scene で透過的に UI 情報を取得するが、サンプルとして明示的に処理する</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1407,15 +1493,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="begintransitionin" class="tsd-anchor"></a>
 					<h3>begin<wbr>Transition<wbr>In</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">begin<wbr>Transition<wbr>In<span class="tsd-signature-symbol">(</span>onTransitionFinished<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#begintransitionin">beginTransitionIn</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L95">scenes/Scene.ts:95</a></li>
 								</ul>
@@ -1454,15 +1541,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="begintransitionout" class="tsd-anchor"></a>
 					<h3>begin<wbr>Transition<wbr>Out</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">begin<wbr>Transition<wbr>Out<span class="tsd-signature-symbol">(</span>onTransitionFinished<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#begintransitionout">beginTransitionOut</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L110">scenes/Scene.ts:110</a></li>
 								</ul>
@@ -1519,6 +1607,34 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="collectspriteurls" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> collect<wbr>Sprite<wbr>Urls</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">collect<wbr>Sprite<wbr>Urls<span class="tsd-signature-symbol">(</span>nodes<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:56</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sprite に必要なテクスチャの URL を集める</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>nodes: <a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="containerupdatetransform" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> container<wbr>Update<wbr>Transform</h3>
@@ -1537,15 +1653,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="createinitialresourcelist" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Initial<wbr>Resource<wbr>List</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">create<wbr>Initial<wbr>Resource<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#createinitialresourcelist">createInitialResourceList</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L125">scenes/Scene.ts:125</a></li>
 								</ul>
@@ -1557,6 +1674,62 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="createsprite" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Sprite</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Sprite<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:141</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>PIXI.Sprite インスタンスを作成して addChild する</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>node: <a href="../interfaces/node.html" class="tsd-signature-type">Node</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Container</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="createtext" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Text</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Text<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:154</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>PIXI.Text インスタンスを作成して addChild する</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>node: <a href="../interfaces/node.html" class="tsd-signature-type">Node</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Container</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1665,34 +1838,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="filterloadedassets" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> filter<wbr>Loaded<wbr>Assets</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">filter<wbr>Loaded<wbr>Assets<span class="tsd-signature-symbol">(</span>assets<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L264">scenes/Scene.ts:264</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>渡されたアセットのリストからロード済みのものをフィルタリングする</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>assets: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="getbounds" class="tsd-anchor"></a>
 					<h3>get<wbr>Bounds</h3>
@@ -1792,15 +1937,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="getcustomuigraphfactory" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> get<wbr>Custom<wbr>UiGraph<wbr>Factory</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory<span class="tsd-signature-symbol">(</span>_type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="uinodefactory.html" class="tsd-signature-type">UiNodeFactory</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#getcustomuigraphfactory">getCustomUiGraphFactory</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L257">scenes/Scene.ts:257</a></li>
 								</ul>
@@ -1937,15 +2083,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="loadadditionalresource" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> load<wbr>Additional<wbr>Resource</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">load<wbr>Additional<wbr>Resource<span class="tsd-signature-symbol">(</span>assets<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span>, onLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#loadadditionalresource">loadAdditionalResource</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L190">scenes/Scene.ts:190</a></li>
 								</ul>
@@ -1980,15 +2127,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="loadinitialresource" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> load<wbr>Initial<wbr>Resource</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">load<wbr>Initial<wbr>Resource<span class="tsd-signature-symbol">(</span>onLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#loadinitialresource">loadInitialResource</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L151">scenes/Scene.ts:151</a></li>
 								</ul>
@@ -2123,15 +2271,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="onadditionalresourceloaded" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Additional<wbr>Resource<wbr>Loaded</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>Additional<wbr>Resource<wbr>Loaded<span class="tsd-signature-symbol">(</span>onLoaded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#onadditionalresourceloaded">onAdditionalResourceLoaded</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L210">scenes/Scene.ts:210</a></li>
 								</ul>
@@ -2163,15 +2312,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="oninitialresourceloaded" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Initial<wbr>Resource<wbr>Loaded</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>Initial<wbr>Resource<wbr>Loaded<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/loaderaddparam.html" class="tsd-signature-type">LoaderAddParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#oninitialresourceloaded">onInitialResourceLoaded</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L170">scenes/Scene.ts:170</a></li>
 								</ul>
@@ -2185,15 +2335,85 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="onjsonloaded" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Json<wbr>Loaded</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Json<wbr>Loaded<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:44</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>json がダウンロードされたら PIXI.Container 派生インスタンスを画面に追加する
+									また、スプライトに必要なテクスチャをダウンロードする</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="onokbuttondown" class="tsd-anchor"></a>
+					<h3>on<wbr>OkButton<wbr>Down</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>OkButton<wbr>Down<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:186</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="onokbuttonup" class="tsd-anchor"></a>
+					<h3>on<wbr>OkButton<wbr>Up</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>OkButton<wbr>Up<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:190</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="onresourceloaded" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Resource<wbr>Loaded</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>Resource<wbr>Loaded<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#onresourceloaded">onResourceLoaded</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L217">scenes/Scene.ts:217</a></li>
 								</ul>
@@ -2203,6 +2423,79 @@
 									<p>loadResource 完了時のコールバックメソッド</p>
 								</div>
 							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="onstagearrowtapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Stage<wbr>Arrow<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Stage<wbr>Arrow<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:180</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UI 情報として定義されたイベントコールバックメソッド</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="ontexturesloaded" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Textures<wbr>Loaded</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Textures<wbr>Loaded<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:79</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>テクスチャがダウンロードされたら割り当てる</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="onunitarrowtapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Unit<wbr>Arrow<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Arrow<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in example/MinUiGraph.ts:183</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -2279,15 +2572,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="playbgm" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> play<wbr>Bgm</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">play<wbr>Bgm<span class="tsd-signature-symbol">(</span>soundName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#playbgm">playBgm</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L286">scenes/Scene.ts:286</a></li>
 								</ul>
@@ -2307,15 +2601,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="playse" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> play<wbr>Se</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">play<wbr>Se<span class="tsd-signature-symbol">(</span>soundName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#playse">playSe</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L306">scenes/Scene.ts:306</a></li>
 								</ul>
@@ -2335,15 +2630,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="prepareuigraphcontainer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> prepare<wbr>UiGraph<wbr>Container</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container<span class="tsd-signature-symbol">(</span>uiData<span class="tsd-signature-symbol">: </span><a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#prepareuigraphcontainer">prepareUiGraphContainer</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L228">scenes/Scene.ts:228</a></li>
 								</ul>
@@ -2363,15 +2659,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="registerupdatingobject" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> register<wbr>Updating<wbr>Object</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">register<wbr>Updating<wbr>Object<span class="tsd-signature-symbol">(</span>object<span class="tsd-signature-symbol">: </span><a href="../interfaces/updateobject.html" class="tsd-signature-type">UpdateObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#registerupdatingobject">registerUpdatingObject</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L68">scenes/Scene.ts:68</a></li>
 								</ul>
@@ -2722,15 +3019,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="stopbgm" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> stop<wbr>Bgm</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">stop<wbr>Bgm<span class="tsd-signature-symbol">(</span>soundName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#stopbgm">stopBgm</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L296">scenes/Scene.ts:296</a></li>
 								</ul>
@@ -2887,15 +3185,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#update">update</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L53">scenes/Scene.ts:53</a></li>
 								</ul>
@@ -2915,15 +3214,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="updateregisteredobjects" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> update<wbr>Registered<wbr>Objects</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">update<wbr>Registered<wbr>Objects<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="scene.html">Scene</a>.<a href="scene.html#updateregisteredobjects">updateRegisteredObjects</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/scenes/Scene.ts#L75">scenes/Scene.ts:75</a></li>
 								</ul>
@@ -2977,373 +3277,409 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="scene.html" class="tsd-kind-icon">Scene</a>
+						<a href="minuigraphscene.html" class="tsd-kind-icon">Min<wbr>UiGraph<wbr>Scene</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="minuigraphscene.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_bounds" class="tsd-kind-icon">_bounds</a>
+								<a href="minuigraphscene.html#_bounds" class="tsd-kind-icon">_bounds</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_boundsid" class="tsd-kind-icon">_boundsID</a>
+								<a href="minuigraphscene.html#_boundsid" class="tsd-kind-icon">_boundsID</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a>
+								<a href="minuigraphscene.html#_boundsrect" class="tsd-kind-icon">_bounds<wbr>Rect</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a>
+								<a href="minuigraphscene.html#_cacheasbitmap" class="tsd-kind-icon">_cache<wbr>AsBitmap</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a>
+								<a href="minuigraphscene.html#_cachedata" class="tsd-kind-icon">_cache<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_destroyed" class="tsd-kind-icon">_destroyed</a>
+								<a href="minuigraphscene.html#_destroyed" class="tsd-kind-icon">_destroyed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a>
+								<a href="minuigraphscene.html#_enabledfilters" class="tsd-kind-icon">_enabled<wbr>Filters</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_filters" class="tsd-kind-icon">_filters</a>
+								<a href="minuigraphscene.html#_filters" class="tsd-kind-icon">_filters</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a>
+								<a href="minuigraphscene.html#_lastboundsid" class="tsd-kind-icon">_last<wbr>BoundsID</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a>
+								<a href="minuigraphscene.html#_localboundsrect" class="tsd-kind-icon">_local<wbr>Bounds<wbr>Rect</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_mask" class="tsd-kind-icon">_mask</a>
+								<a href="minuigraphscene.html#_mask" class="tsd-kind-icon">_mask</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#accessible" class="tsd-kind-icon">accessible</a>
+								<a href="minuigraphscene.html#accessible" class="tsd-kind-icon">accessible</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a>
+								<a href="minuigraphscene.html#accessiblehint" class="tsd-kind-icon">accessible<wbr>Hint</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a>
+								<a href="minuigraphscene.html#accessibletitle" class="tsd-kind-icon">accessible<wbr>Title</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#alpha" class="tsd-kind-icon">alpha</a>
+								<a href="minuigraphscene.html#alpha" class="tsd-kind-icon">alpha</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a>
+								<a href="minuigraphscene.html#buttonmode" class="tsd-kind-icon">button<wbr>Mode</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a>
+								<a href="minuigraphscene.html#cacheasbitmap" class="tsd-kind-icon">cache<wbr>AsBitmap</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#children" class="tsd-kind-icon">children</a>
+								<a href="minuigraphscene.html#children" class="tsd-kind-icon">children</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#cursor" class="tsd-kind-icon">cursor</a>
+								<a href="minuigraphscene.html#cursor" class="tsd-kind-icon">cursor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#filters" class="tsd-kind-icon">filters</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#hassceneuigraph" class="tsd-kind-icon">has<wbr>Scene<wbr>UiGraph</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#height" class="tsd-kind-icon">height</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#interactive" class="tsd-kind-icon">interactive</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#mask" class="tsd-kind-icon">mask</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a>
+								<a href="minuigraphscene.html#defaultcursor" class="tsd-kind-icon">default<wbr>Cursor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a>
+								<a href="minuigraphscene.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#parent" class="tsd-kind-icon">parent</a>
+								<a href="minuigraphscene.html#filterarea" class="tsd-kind-icon">filter<wbr>Area</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#pivot" class="tsd-kind-icon">pivot</a>
+								<a href="minuigraphscene.html#filters" class="tsd-kind-icon">filters</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#hassceneuigraph" class="tsd-kind-icon">has<wbr>Scene<wbr>UiGraph</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#position" class="tsd-kind-icon">position</a>
+								<a href="minuigraphscene.html#height" class="tsd-kind-icon">height</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#renderable" class="tsd-kind-icon">renderable</a>
+								<a href="minuigraphscene.html#hitarea" class="tsd-kind-icon">hit<wbr>Area</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#rotation" class="tsd-kind-icon">rotation</a>
+								<a href="minuigraphscene.html#interactive" class="tsd-kind-icon">interactive</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#scale" class="tsd-kind-icon">scale</a>
+								<a href="minuigraphscene.html#interactivechildren" class="tsd-kind-icon">interactive<wbr>Children</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#json" class="tsd-kind-icon">json</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#jsonurl" class="tsd-kind-icon">json<wbr>Url</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#skew" class="tsd-kind-icon">skew</a>
+								<a href="minuigraphscene.html#localtransform" class="tsd-kind-icon">local<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a>
+								<a href="minuigraphscene.html#mask" class="tsd-kind-icon">mask</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a>
+								<a href="minuigraphscene.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#objectstoupdate" class="tsd-kind-icon">objects<wbr>ToUpdate</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#onchildrenchange" class="tsd-kind-icon">on<wbr>Children<wbr>Change</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#transform" class="tsd-kind-icon">transform</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#uigraph" class="tsd-kind-icon">ui<wbr>Graph</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#uigraphcontainer" class="tsd-kind-icon">ui<wbr>Graph<wbr>Container</a>
+								<a href="minuigraphscene.html#parent" class="tsd-kind-icon">parent</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#visible" class="tsd-kind-icon">visible</a>
+								<a href="minuigraphscene.html#pivot" class="tsd-kind-icon">pivot</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#width" class="tsd-kind-icon">width</a>
+								<a href="minuigraphscene.html#position" class="tsd-kind-icon">position</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a>
+								<a href="minuigraphscene.html#renderable" class="tsd-kind-icon">renderable</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a>
+								<a href="minuigraphscene.html#rotation" class="tsd-kind-icon">rotation</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a>
+								<a href="minuigraphscene.html#scale" class="tsd-kind-icon">scale</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#x" class="tsd-kind-icon">x</a>
+								<a href="minuigraphscene.html#skew" class="tsd-kind-icon">skew</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#y" class="tsd-kind-icon">y</a>
+								<a href="minuigraphscene.html#tabindex" class="tsd-kind-icon">tab<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#transform" class="tsd-kind-icon">transform</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#ui" class="tsd-kind-icon">ui</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#uigraph" class="tsd-kind-icon">ui<wbr>Graph</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#uigraphcontainer" class="tsd-kind-icon">ui<wbr>Graph<wbr>Container</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#visible" class="tsd-kind-icon">visible</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#width" class="tsd-kind-icon">width</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#worldtransform" class="tsd-kind-icon">world<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#worldvisible" class="tsd-kind-icon">world<wbr>Visible</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#x" class="tsd-kind-icon">x</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#y" class="tsd-kind-icon">y</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="scene.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a>
+								<a href="minuigraphscene.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="scene.html#prefixed-1" class="tsd-kind-icon">prefixed</a>
+								<a href="minuigraphscene.html#prefixed-1" class="tsd-kind-icon">prefixed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a>
+								<a href="minuigraphscene.html#_cacheasbitmapdestroy" class="tsd-kind-icon">_cache<wbr>AsBitmap<wbr>Destroy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a>
+								<a href="minuigraphscene.html#_calculatebounds" class="tsd-kind-icon">_calculate<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a>
+								<a href="minuigraphscene.html#_calculatecachedbounds" class="tsd-kind-icon">_calculate<wbr>Cached<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a>
+								<a href="minuigraphscene.html#_destroycacheddisplayobject" class="tsd-kind-icon">_destroy<wbr>Cached<wbr>Display<wbr>Object</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a>
+								<a href="minuigraphscene.html#_getcachedlocalbounds" class="tsd-kind-icon">_get<wbr>Cached<wbr>Local<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a>
+								<a href="minuigraphscene.html#_initcacheddisplayobject" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a>
+								<a href="minuigraphscene.html#_initcacheddisplayobjectcanvas" class="tsd-kind-icon">_init<wbr>Cached<wbr>Display<wbr>Object<wbr>Canvas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a>
+								<a href="minuigraphscene.html#_recursivepostupdatetransform" class="tsd-kind-icon">_recursive<wbr>Post<wbr>Update<wbr>Transform</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a>
+								<a href="minuigraphscene.html#_rendercachedcanvas" class="tsd-kind-icon">_render<wbr>Cached<wbr>Canvas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a>
+								<a href="minuigraphscene.html#_rendercachedwebgl" class="tsd-kind-icon">_render<wbr>Cached<wbr>WebGL</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a>
+								<a href="minuigraphscene.html#_rendercanvas" class="tsd-kind-icon">_render<wbr>Canvas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a>
+								<a href="minuigraphscene.html#_renderwebgl" class="tsd-kind-icon">_render<wbr>WebGL</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="scene.html#addchild" class="tsd-kind-icon">add<wbr>Child</a>
+								<a href="minuigraphscene.html#addchild" class="tsd-kind-icon">add<wbr>Child</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="scene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a>
+								<a href="minuigraphscene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="scene.html#beginloadresource" class="tsd-kind-icon">begin<wbr>Load<wbr>Resource</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="scene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="scene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#createinitialresourcelist" class="tsd-kind-icon">create<wbr>Initial<wbr>Resource<wbr>List</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#destroy" class="tsd-kind-icon">destroy</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="scene.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#emit" class="tsd-kind-icon">emit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
+								<a href="minuigraphscene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="scene.html#filterloadedassets" class="tsd-kind-icon">filter<wbr>Loaded<wbr>Assets</a>
+								<a href="minuigraphscene.html#adduicontainers" class="tsd-kind-icon">add<wbr>UiContainers</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="minuigraphscene.html#beginloadresource" class="tsd-kind-icon">begin<wbr>Load<wbr>Resource</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a>
+								<a href="minuigraphscene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a>
+								<a href="minuigraphscene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a>
+								<a href="minuigraphscene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#collectspriteurls" class="tsd-kind-icon">collect<wbr>Sprite<wbr>Urls</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#getcustomuigraphfactory" class="tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#createinitialresourcelist" class="tsd-kind-icon">create<wbr>Initial<wbr>Resource<wbr>List</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#createsprite" class="tsd-kind-icon">create<wbr>Sprite</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#listeners" class="tsd-kind-icon">listeners</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#loadadditionalresource" class="tsd-kind-icon">load<wbr>Additional<wbr>Resource</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#loadinitialresource" class="tsd-kind-icon">load<wbr>Initial<wbr>Resource</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#createtext" class="tsd-kind-icon">create<wbr>Text</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#off" class="tsd-kind-icon">off</a>
+								<a href="minuigraphscene.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#displayobjectupdatetransform" class="tsd-kind-icon">display<wbr>Object<wbr>Update<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#emit" class="tsd-kind-icon">emit</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#getbounds" class="tsd-kind-icon">get<wbr>Bounds</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#getchildat" class="tsd-kind-icon">get<wbr>Child<wbr>At</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#getchildbyname" class="tsd-kind-icon">get<wbr>Child<wbr>ByName</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#getchildindex" class="tsd-kind-icon">get<wbr>Child<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#getcustomuigraphfactory" class="tsd-kind-icon">get<wbr>Custom<wbr>UiGraph<wbr>Factory</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#getglobalposition" class="tsd-kind-icon">get<wbr>Global<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#getlocalbounds" class="tsd-kind-icon">get<wbr>Local<wbr>Bounds</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#listeners" class="tsd-kind-icon">listeners</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#loadadditionalresource" class="tsd-kind-icon">load<wbr>Additional<wbr>Resource</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#loadinitialresource" class="tsd-kind-icon">load<wbr>Initial<wbr>Resource</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#on" class="tsd-kind-icon">on</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#onadditionalresourceloaded" class="tsd-kind-icon">on<wbr>Additional<wbr>Resource<wbr>Loaded</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#oninitialresourceloaded" class="tsd-kind-icon">on<wbr>Initial<wbr>Resource<wbr>Loaded</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a>
+								<a href="minuigraphscene.html#off" class="tsd-kind-icon">off</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#once" class="tsd-kind-icon">once</a>
+								<a href="minuigraphscene.html#on" class="tsd-kind-icon">on</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#playbgm" class="tsd-kind-icon">play<wbr>Bgm</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#onadditionalresourceloaded" class="tsd-kind-icon">on<wbr>Additional<wbr>Resource<wbr>Loaded</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#playse" class="tsd-kind-icon">play<wbr>Se</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#oninitialresourceloaded" class="tsd-kind-icon">on<wbr>Initial<wbr>Resource<wbr>Loaded</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#stopbgm" class="tsd-kind-icon">stop<wbr>Bgm</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="scene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="scene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#onjsonloaded" class="tsd-kind-icon">on<wbr>Json<wbr>Loaded</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="scene.html#update" class="tsd-kind-icon">update</a>
+								<a href="minuigraphscene.html#onokbuttondown" class="tsd-kind-icon">on<wbr>OkButton<wbr>Down</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="scene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="minuigraphscene.html#onokbuttonup" class="tsd-kind-icon">on<wbr>OkButton<wbr>Up</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#onresourceloaded" class="tsd-kind-icon">on<wbr>Resource<wbr>Loaded</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="minuigraphscene.html#onstagearrowtapped" class="tsd-kind-icon">on<wbr>Stage<wbr>Arrow<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#ontexturesloaded" class="tsd-kind-icon">on<wbr>Textures<wbr>Loaded</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="minuigraphscene.html#onunitarrowtapped" class="tsd-kind-icon">on<wbr>Unit<wbr>Arrow<wbr>Tapped</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="scene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a>
+								<a href="minuigraphscene.html#once" class="tsd-kind-icon">once</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#playbgm" class="tsd-kind-icon">play<wbr>Bgm</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#playse" class="tsd-kind-icon">play<wbr>Se</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#prepareuigraphcontainer" class="tsd-kind-icon">prepare<wbr>UiGraph<wbr>Container</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#registerupdatingobject" class="tsd-kind-icon">register<wbr>Updating<wbr>Object</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="minuigraphscene.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#removechild" class="tsd-kind-icon">remove<wbr>Child</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#removechildat" class="tsd-kind-icon">remove<wbr>Child<wbr>At</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#removechildren" class="tsd-kind-icon">remove<wbr>Children</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="minuigraphscene.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#renderadvancedwebgl" class="tsd-kind-icon">render<wbr>Advanced<wbr>WebGL</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="minuigraphscene.html#rendercanvas" class="tsd-kind-icon">render<wbr>Canvas</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="minuigraphscene.html#renderwebgl" class="tsd-kind-icon">render<wbr>WebGL</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#setchildindex" class="tsd-kind-icon">set<wbr>Child<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#setparent" class="tsd-kind-icon">set<wbr>Parent</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#settransform" class="tsd-kind-icon">set<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#stopbgm" class="tsd-kind-icon">stop<wbr>Bgm</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#swapchildren" class="tsd-kind-icon">swap<wbr>Children</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+								<a href="minuigraphscene.html#toglobal" class="tsd-kind-icon">to<wbr>Global</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+								<a href="minuigraphscene.html#tolocal" class="tsd-kind-icon">to<wbr>Local</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="minuigraphscene.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="minuigraphscene.html#updateregisteredobjects" class="tsd-kind-icon">update<wbr>Registered<wbr>Objects</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="minuigraphscene.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a>
 							</li>
 						</ul>
 					</li>
