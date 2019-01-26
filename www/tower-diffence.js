@@ -44300,6 +44300,9 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+
 /**
  * 設定オブジェクト
  */
@@ -44309,7 +44312,7 @@ var Config = Object.freeze({
     // ユニット枠最大数
     MaxUnitSlotCount: 5
 });
-PIXI.loader.baseUrl = Config.ResourceBaseUrl;
+pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].baseUrl = Config.ResourceBaseUrl;
 /* harmony default export */ __webpack_exports__["default"] = (Config);
 
 
@@ -44714,9 +44717,11 @@ var MinUiGraphScene = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var webfontloader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webfontloader */ "./node_modules/webfontloader/webfontloader.js");
 /* harmony import */ var webfontloader__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webfontloader__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
-/* harmony import */ var example_MinUiGraph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! example/MinUiGraph */ "./src/example/MinUiGraph.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Config */ "./src/Config.ts");
+/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
+/* harmony import */ var example_MinUiGraph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! example/MinUiGraph */ "./src/example/MinUiGraph.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+
 
 
 
@@ -44727,7 +44732,7 @@ __webpack_require__.r(__webpack_exports__);
 function initGame() {
     var width = 1136;
     var height = 640;
-    managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"].start({
+    managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].start({
         glWidth: width,
         glHeight: height,
         option: {
@@ -44735,10 +44740,10 @@ function initGame() {
         }
     });
     // 最初のシーンの読み込み
-    managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"].loadScene(new example_MinUiGraph__WEBPACK_IMPORTED_MODULE_2__["default"]());
+    managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new example_MinUiGraph__WEBPACK_IMPORTED_MODULE_3__["default"]());
     // コンソールからオブジェクトを調査できるように window に生やす
     Debug: {
-        window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"];
+        window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"];
     }
 }
 var fontLoaded = false;
@@ -44749,7 +44754,7 @@ var windowLoaded = false;
  */
 webfontloader__WEBPACK_IMPORTED_MODULE_0__["load"]({
     custom: {
-        families: [Resource__WEBPACK_IMPORTED_MODULE_1__["default"].FontFamily.Default],
+        families: [Resource__WEBPACK_IMPORTED_MODULE_2__["default"].FontFamily.Default],
         urls: ['base.css']
     },
     active: function () {

@@ -1,4 +1,5 @@
 import * as WebFont from 'webfontloader';
+import 'Config';
 import Resource from 'Resource';
 import MinUiGraphScene from 'example/MinUiGraph';
 import GameManager from 'managers/GameManager';

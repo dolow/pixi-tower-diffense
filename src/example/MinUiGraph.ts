@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import 'Config';
 import { Graph, Node, Event } from 'interfaces/UiGraph';
 import Scene from 'scenes/Scene';
 
