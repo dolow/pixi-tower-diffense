@@ -184,11 +184,12 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="minuigraphscene.html#addchildat" class="tsd-kind-icon">add<wbr>Child<wbr>At</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="minuigraphscene.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#adduicontainers" class="tsd-kind-icon">add<wbr>UiContainers</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#attachevents" class="tsd-kind-icon">attach<wbr>Events</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="minuigraphscene.html#beginloadresource" class="tsd-kind-icon">begin<wbr>Load<wbr>Resource</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#begintransitionin" class="tsd-kind-icon">begin<wbr>Transition<wbr>In</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#begintransitionout" class="tsd-kind-icon">begin<wbr>Transition<wbr>Out</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="minuigraphscene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#collectspriteurls" class="tsd-kind-icon">collect<wbr>Sprite<wbr>Urls</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#collecttextureurls" class="tsd-kind-icon">collect<wbr>Texture<wbr>Urls</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="minuigraphscene.html#createinitialresourcelist" class="tsd-kind-icon">create<wbr>Initial<wbr>Resource<wbr>List</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="minuigraphscene.html#createsprite" class="tsd-kind-icon">create<wbr>Sprite</a></li>
@@ -607,7 +608,7 @@
 					<div class="tsd-signature tsd-kind-icon">json<span class="tsd-signature-symbol">:</span> <a href="../interfaces/graph.html" class="tsd-signature-type">Graph</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in example/MinUiGraph.ts:17</li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L17">example/MinUiGraph.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -622,7 +623,7 @@
 					<div class="tsd-signature tsd-kind-icon">json<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;ui_graph/min_ui_graph_scene.json&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in example/MinUiGraph.ts:13</li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L13">example/MinUiGraph.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -868,7 +869,7 @@
 					<div class="tsd-signature tsd-kind-icon">ui<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in example/MinUiGraph.ts:21</li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L21">example/MinUiGraph.ts:21</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1431,7 +1432,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:108</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L92">example/MinUiGraph.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1450,6 +1451,37 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="attachevents" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> attach<wbr>Events</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">attach<wbr>Events<span class="tsd-signature-symbol">(</span>container<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span>, events<span class="tsd-signature-symbol">: </span><a href="../interfaces/event.html" class="tsd-signature-type">Event</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L147">example/MinUiGraph.ts:147</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>イベント処理を設定する</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>container: <span class="tsd-signature-type">Container</span></h5>
+								</li>
+								<li>
+									<h5>events: <a href="../interfaces/event.html" class="tsd-signature-type">Event</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="beginloadresource" class="tsd-anchor"></a>
 					<h3>begin<wbr>Load<wbr>Resource</h3>
@@ -1461,7 +1493,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scene.html">Scene</a>.<a href="scene.html#beginloadresource">beginLoadResource</a></p>
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:30</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L28">example/MinUiGraph.ts:28</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1608,16 +1640,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="collectspriteurls" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> collect<wbr>Sprite<wbr>Urls</h3>
+					<a name="collecttextureurls" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> collect<wbr>Texture<wbr>Urls</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">collect<wbr>Sprite<wbr>Urls<span class="tsd-signature-symbol">(</span>nodes<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">collect<wbr>Texture<wbr>Urls<span class="tsd-signature-symbol">(</span>nodes<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:56</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L54">example/MinUiGraph.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1681,13 +1713,13 @@
 					<a name="createsprite" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Sprite</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Sprite<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Sprite<span class="tsd-signature-symbol">(</span>_<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:141</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L120">example/MinUiGraph.ts:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1698,7 +1730,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>node: <a href="../interfaces/node.html" class="tsd-signature-type">Node</a></h5>
+									<h5>_: <a href="../interfaces/node.html" class="tsd-signature-type">Node</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Container</span></h4>
@@ -1715,7 +1747,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:154</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L126">example/MinUiGraph.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2345,7 +2377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:44</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L42">example/MinUiGraph.ts:42</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2368,7 +2400,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:186</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L165">example/MinUiGraph.ts:165</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2391,7 +2423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:190</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L169">example/MinUiGraph.ts:169</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2437,7 +2469,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:180</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L159">example/MinUiGraph.ts:159</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2465,7 +2497,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:79</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L71">example/MinUiGraph.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2487,7 +2519,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in example/MinUiGraph.ts:183</li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraph.ts#L162">example/MinUiGraph.ts:162</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3507,6 +3539,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="minuigraphscene.html#adduicontainers" class="tsd-kind-icon">add<wbr>UiContainers</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="minuigraphscene.html#attachevents" class="tsd-kind-icon">attach<wbr>Events</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="minuigraphscene.html#beginloadresource" class="tsd-kind-icon">begin<wbr>Load<wbr>Resource</a>
 							</li>
@@ -3520,7 +3555,7 @@
 								<a href="minuigraphscene.html#calculatebounds" class="tsd-kind-icon">calculate<wbr>Bounds</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="minuigraphscene.html#collectspriteurls" class="tsd-kind-icon">collect<wbr>Sprite<wbr>Urls</a>
+								<a href="minuigraphscene.html#collecttextureurls" class="tsd-kind-icon">collect<wbr>Texture<wbr>Urls</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="minuigraphscene.html#containerupdatetransform" class="tsd-kind-icon">container<wbr>Update<wbr>Transform</a>

@@ -30,7 +30,7 @@ export default class MinUiGraphScene extends Scene {
     /**
      * Sprite に必要なテクスチャの URL を集める
      */
-    private collectSpriteUrls;
+    private collectTextureUrls;
     /**
      * テクスチャがダウンロードされたら割り当てる
      */
@@ -48,6 +48,10 @@ export default class MinUiGraphScene extends Scene {
      * PIXI.Text インスタンスを作成して addChild する
      */
     private createText;
+    /**
+     * イベント処理を設定する
+     */
+    private attachEvents;
     /**
      * UI 情報として定義されたイベントコールバックメソッド
      */

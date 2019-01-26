@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import 'Config';
-import { Graph, Node } from 'interfaces/UiGraph';
+import { Graph, Node, Event } from 'interfaces/UiGraph';
 import Scene from 'scenes/Scene';
 
 /**
@@ -18,9 +18,7 @@ export default class MinUiGraphScene extends Scene  {
   /**
    * json ファイルを元に作られた UI系インスタンスのオブジェクト
    */
-  private ui: {
-    [id: string]: PIXI.Container
-  } = {};
+  private ui: { [id: string]: PIXI.Container } = {};
 
   /**
    * UI 情報が定義された json をダウンロードする
@@ -46,26 +44,20 @@ export default class MinUiGraphScene extends Scene  {
 
     this.addUiContainers(this.json.nodes);
 
-    const textures = this.collectSpriteUrls(this.json.nodes);
+    const textures = this.collectTextureUrls(this.json.nodes);
     PIXI.loader.add(textures).load(() => this.onTexturesLoaded());
   }
 
   /**
    * Sprite に必要なテクスチャの URL を集める
    */
-  private collectSpriteUrls(nodes: Node[]): string[] {
+  private collectTextureUrls(nodes: Node[]): string[] {
     const urls = [];
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
-      if (node.type !== 'sprite') {
-        continue;
-      }
-      if (!node.params || !node.params.url) {
-        continue;
-      }
-      if (urls.indexOf(node.params.url) >= 0) {
-        continue;
-      }
+      if (node.type !== 'sprite')             continue;
+      if (!node.params || !node.params.url)   continue;
+      if (urls.indexOf(node.params.url) >= 0) continue;
 
       urls.push(node.params.url);
     }
@@ -77,21 +69,13 @@ export default class MinUiGraphScene extends Scene  {
    * テクスチャがダウンロードされたら割り当てる
    */
   private onTexturesLoaded(): void {
-    if (!this.json) {
-      return;
-    }
+    if (!this.json) return;
 
     for (let i = 0; i < this.json.nodes.length; i++) {
       const node = this.json.nodes[i];
-      if (node.type !== 'sprite') {
-        continue;
-      }
-      if (!node.params || !node.params.textureName) {
-        continue;
-      }
-      if (!this.ui[node.id]) {
-        continue;
-      }
+      if (node.type !== 'sprite')                   continue;
+      if (!node.params || !node.params.textureName) continue;
+      if (!this.ui[node.id])                        continue;
 
       const texture = PIXI.utils.TextureCache[node.params.textureName];
 
@@ -111,25 +95,20 @@ export default class MinUiGraphScene extends Scene  {
       // インスタンスを生成する
       let container;
       switch (node.type) {
-        case 'sprite': {
-          container = this.createSprite(node);
-          break;
-        }
-        case 'text': container = this.createText(node); break;
+        case 'sprite': container = this.createSprite(node); break;
+        case 'text':   container = this.createText(node);   break;
         default: break;
       }
 
-      if (!container) {
-        continue;
-      }
+      if (!container) continue;
 
-      // イベントを設定する
+      container.position.x = node.position[0];
+      container.position.y = node.position[1];
+      this.ui[node.id] = container;
+      this.addChild(container);
+
       if (node.events) {
-        container.interactive = true;
-        for (let j = 0; j < node.events.length; j++) {
-          const event = node.events[j];
-          container.on(event.type, () => (this as any)[event.callback](...event.arguments));
-        }
+        this.attachEvents(container, node.events);
       }
     }
   }
@@ -138,23 +117,14 @@ export default class MinUiGraphScene extends Scene  {
   /**
    * PIXI.Sprite インスタンスを作成して addChild する
    */
-  private createSprite(node: Node): PIXI.Container {
-    const sprite = new PIXI.Sprite();
-    sprite.position.x = node.position[0];
-    sprite.position.y = node.position[1];
-
-    this.ui[node.id] = sprite;
-    this.addChild(sprite);
-
-    return sprite;
+  private createSprite(_: Node): PIXI.Container {
+    return new PIXI.Sprite();
   }
   /**
    * PIXI.Text インスタンスを作成して addChild する
    */
   private createText(node: Node): PIXI.Container {
     const text = new PIXI.Text();
-    text.position.x = node.position[0];
-    text.position.y = node.position[1];
 
     if (node.params) {
       text.text = node.params.text;
@@ -168,10 +138,19 @@ export default class MinUiGraphScene extends Scene  {
       text.style = new PIXI.TextStyle(style);
     }
 
-    this.ui[node.id] = text;
-    this.addChild(text);
-
     return text;
+  }
+
+  /**
+   * イベント処理を設定する
+   */
+  private attachEvents(container: PIXI.Container, events: Event[]): void {
+    container.interactive = true;
+
+    for (let j = 0; j < events.length; j++) {
+      const event = events[j];
+      container.on(event.type, () => (this as any)[event.callback](...event.arguments));
+    }
   }
 
   /**

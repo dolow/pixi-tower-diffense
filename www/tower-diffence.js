@@ -44551,25 +44551,22 @@ var MinUiGraphScene = /** @class */ (function (_super) {
         var _this = this;
         this.json = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[this.jsonUrl].data;
         this.addUiContainers(this.json.nodes);
-        var textures = this.collectSpriteUrls(this.json.nodes);
+        var textures = this.collectTextureUrls(this.json.nodes);
         pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(textures).load(function () { return _this.onTexturesLoaded(); });
     };
     /**
      * Sprite に必要なテクスチャの URL を集める
      */
-    MinUiGraphScene.prototype.collectSpriteUrls = function (nodes) {
+    MinUiGraphScene.prototype.collectTextureUrls = function (nodes) {
         var urls = [];
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
-            if (node.type !== 'sprite') {
+            if (node.type !== 'sprite')
                 continue;
-            }
-            if (!node.params || !node.params.url) {
+            if (!node.params || !node.params.url)
                 continue;
-            }
-            if (urls.indexOf(node.params.url) >= 0) {
+            if (urls.indexOf(node.params.url) >= 0)
                 continue;
-            }
             urls.push(node.params.url);
         }
         return urls;
@@ -44578,20 +44575,16 @@ var MinUiGraphScene = /** @class */ (function (_super) {
      * テクスチャがダウンロードされたら割り当てる
      */
     MinUiGraphScene.prototype.onTexturesLoaded = function () {
-        if (!this.json) {
+        if (!this.json)
             return;
-        }
         for (var i = 0; i < this.json.nodes.length; i++) {
             var node = this.json.nodes[i];
-            if (node.type !== 'sprite') {
+            if (node.type !== 'sprite')
                 continue;
-            }
-            if (!node.params || !node.params.textureName) {
+            if (!node.params || !node.params.textureName)
                 continue;
-            }
-            if (!this.ui[node.id]) {
+            if (!this.ui[node.id])
                 continue;
-            }
             var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[node.params.textureName];
             if (texture) {
                 this.ui[node.id].texture = texture;
@@ -44603,58 +44596,41 @@ var MinUiGraphScene = /** @class */ (function (_super) {
      * 本実装ではここの処理はカプセル化しており、ここではサンプルとして明示的に処理している
      */
     MinUiGraphScene.prototype.addUiContainers = function (nodes) {
-        var _this = this;
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
             // インスタンスを生成する
             var container = void 0;
             switch (node.type) {
-                case 'sprite': {
+                case 'sprite':
                     container = this.createSprite(node);
                     break;
-                }
                 case 'text':
                     container = this.createText(node);
                     break;
                 default: break;
             }
-            if (!container) {
+            if (!container)
                 continue;
-            }
-            // イベントを設定する
+            container.position.x = node.position[0];
+            container.position.y = node.position[1];
+            this.ui[node.id] = container;
+            this.addChild(container);
             if (node.events) {
-                container.interactive = true;
-                var _loop_1 = function (j) {
-                    var event_1 = node.events[j];
-                    container.on(event_1.type, function () {
-                        var _a;
-                        return (_a = _this)[event_1.callback].apply(_a, event_1.arguments);
-                    });
-                };
-                for (var j = 0; j < node.events.length; j++) {
-                    _loop_1(j);
-                }
+                this.attachEvents(container, node.events);
             }
         }
     };
     /**
      * PIXI.Sprite インスタンスを作成して addChild する
      */
-    MinUiGraphScene.prototype.createSprite = function (node) {
-        var sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
-        sprite.position.x = node.position[0];
-        sprite.position.y = node.position[1];
-        this.ui[node.id] = sprite;
-        this.addChild(sprite);
-        return sprite;
+    MinUiGraphScene.prototype.createSprite = function (_) {
+        return new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
     };
     /**
      * PIXI.Text インスタンスを作成して addChild する
      */
     MinUiGraphScene.prototype.createText = function (node) {
         var text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Text"]();
-        text.position.x = node.position[0];
-        text.position.y = node.position[1];
         if (node.params) {
             text.text = node.params.text;
             var style = {};
@@ -44668,9 +44644,24 @@ var MinUiGraphScene = /** @class */ (function (_super) {
                 style.padding = node.params.padding;
             text.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["TextStyle"](style);
         }
-        this.ui[node.id] = text;
-        this.addChild(text);
         return text;
+    };
+    /**
+     * イベント処理を設定する
+     */
+    MinUiGraphScene.prototype.attachEvents = function (container, events) {
+        var _this = this;
+        container.interactive = true;
+        var _loop_1 = function (j) {
+            var event_1 = events[j];
+            container.on(event_1.type, function () {
+                var _a;
+                return (_a = _this)[event_1.callback].apply(_a, event_1.arguments);
+            });
+        };
+        for (var j = 0; j < events.length; j++) {
+            _loop_1(j);
+        }
     };
     /**
      * UI 情報として定義されたイベントコールバックメソッド
