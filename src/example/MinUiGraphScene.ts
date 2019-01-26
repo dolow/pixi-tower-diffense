@@ -112,7 +112,6 @@ export default class MinUiGraphScene extends Scene  {
     }
   }
 
-
   /**
    * PIXI.Sprite インスタンスを作成して addChild する
    */
@@ -156,17 +155,17 @@ export default class MinUiGraphScene extends Scene  {
    * UI 情報として定義されたイベントコールバックメソッド
    */
   public onStageArrowTapped(...args: any[]): void {
-    console.log("onStageArrowTapped invoked!!", args);
+    console.log('onStageArrowTapped invoked!!', args);
   }
   public onUnitArrowTapped(...args: any[]): void {
-    console.log("onUnitArrowTapped invoked!!", args);
+    console.log('onUnitArrowTapped invoked!!', args);
   }
   public onOkButtonDown(...args: any[]): void {
-    console.log("onOkButtonDown invoked!!", args);
+    console.log('onOkButtonDown invoked!!', args);
     this.ui.ok_button_off.visible = false;
   }
   public onOkButtonUp(...args: any[]): void {
-    console.log("onOkButtonUp invoked!!", args);
+    console.log('onOkButtonUp invoked!!', args);
     this.ui.ok_button_off.visible = true;
   }
 }

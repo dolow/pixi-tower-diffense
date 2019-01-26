@@ -44481,10 +44481,10 @@ var Resource = Object.freeze({
 
 /***/ }),
 
-/***/ "./src/example/MinUiGraph.ts":
-/*!***********************************!*\
-  !*** ./src/example/MinUiGraph.ts ***!
-  \***********************************/
+/***/ "./src/example/MinUiGraphScene.ts":
+/*!****************************************!*\
+  !*** ./src/example/MinUiGraphScene.ts ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44492,8 +44492,7 @@ var Resource = Object.freeze({
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Config */ "./src/Config.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44507,7 +44506,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-
 
 
 /**
@@ -44674,21 +44672,21 @@ var MinUiGraphScene = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        console.log("onStageArrowTapped invoked!!", args);
+        console.log('onStageArrowTapped invoked!!', args);
     };
     MinUiGraphScene.prototype.onUnitArrowTapped = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        console.log("onUnitArrowTapped invoked!!", args);
+        console.log('onUnitArrowTapped invoked!!', args);
     };
     MinUiGraphScene.prototype.onOkButtonDown = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        console.log("onOkButtonDown invoked!!", args);
+        console.log('onOkButtonDown invoked!!', args);
         this.ui.ok_button_off.visible = false;
     };
     MinUiGraphScene.prototype.onOkButtonUp = function () {
@@ -44696,11 +44694,11 @@ var MinUiGraphScene = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        console.log("onOkButtonUp invoked!!", args);
+        console.log('onOkButtonUp invoked!!', args);
         this.ui.ok_button_off.visible = true;
     };
     return MinUiGraphScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_2__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (MinUiGraphScene);
 
 
@@ -44719,7 +44717,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var webfontloader__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webfontloader__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Config */ "./src/Config.ts");
 /* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
-/* harmony import */ var example_MinUiGraph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! example/MinUiGraph */ "./src/example/MinUiGraph.ts");
+/* harmony import */ var example_MinUiGraphScene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! example/MinUiGraphScene */ "./src/example/MinUiGraphScene.ts");
 /* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
 
 
@@ -44740,7 +44738,7 @@ function initGame() {
         }
     });
     // 最初のシーンの読み込み
-    managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new example_MinUiGraph__WEBPACK_IMPORTED_MODULE_3__["default"]());
+    managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new example_MinUiGraphScene__WEBPACK_IMPORTED_MODULE_3__["default"]());
     // コンソールからオブジェクトを調査できるように window に生やす
     Debug: {
         window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"];
