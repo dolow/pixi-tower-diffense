@@ -44481,18 +44481,18 @@ var Resource = Object.freeze({
 
 /***/ }),
 
-/***/ "./src/example/MinUiGraphScene.ts":
-/*!****************************************!*\
-  !*** ./src/example/MinUiGraphScene.ts ***!
-  \****************************************/
+/***/ "./src/example/AbstractUiGraphScene.ts":
+/*!*********************************************!*\
+  !*** ./src/example/AbstractUiGraphScene.ts ***!
+  \*********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var example_Resource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! example/Resource */ "./src/example/Resource.ts");
+/* harmony import */ var example_UiGraph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/UiGraph */ "./src/example/UiGraph.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44508,160 +44508,232 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
+
+/**
+ * UI Graph を用いる抽象クラスのサンプル
+ * UiGraph を利用して UI 情報を透過的に読み込み初期化する
+ */
+var AbstractUiGraphScene = /** @class */ (function (_super) {
+    __extends(AbstractUiGraphScene, _super);
+    function AbstractUiGraphScene() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * UiGraph でインスタンス化された PIXI.Container を含むオブジェクト
+         */
+        _this.uiGraph = {};
+        /**
+         * UiGraph でロードされた UI データを配置するための PIXI.Container
+         */
+        _this.uiGraphContainer = new PIXI.Container();
+        return _this;
+    }
+    /**
+     * UI Graph 以外に利用するリソースがある場合に返す
+     */
+    AbstractUiGraphScene.prototype.createInitialResourceList = function () {
+        return [];
+    };
+    /**
+     * リソースロードを開始する
+     */
+    AbstractUiGraphScene.prototype.beginLoadResource = function (onLoaded) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.loadInitialResource(function () { return resolve(); });
+        }).then(function () {
+            return new Promise(function (resolve) {
+                var additionalAssets = _this.onInitialResourceLoaded();
+                _this.loadAdditionalResource(additionalAssets, function () { return resolve(); });
+            });
+        }).then(function () {
+            _this.onAdditionalResourceLoaded();
+            onLoaded();
+            _this.onResourceLoaded();
+        });
+    };
+    /**
+     * UiGraph 情報と createInitialResourceList で指定されたリソースのロードを行う
+     */
+    AbstractUiGraphScene.prototype.loadInitialResource = function (onLoaded) {
+        var assets = this.createInitialResourceList();
+        var name = example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].SceneUiGraph(this);
+        assets.push(name);
+        PIXI.loader.add(this.filterAssets(assets)).load(function () { return onLoaded(); });
+    };
+    /**
+     * loadInitialResource 完了時のコールバックメソッド
+     * 追加でロードしなければならないテクスチャなどの情報を返す
+     */
+    AbstractUiGraphScene.prototype.onInitialResourceLoaded = function () {
+        var additionalAssets = [];
+        var name = example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].SceneUiGraph(this);
+        var uiGraph = PIXI.loader.resources[name];
+        for (var i = 0; i < uiGraph.data.nodes.length; i++) {
+            var node = uiGraph.data.nodes[i];
+            if (node.type === 'sprite') {
+                additionalAssets.push({ name: node.params.textureName, url: node.params.url });
+            }
+        }
+        return additionalAssets;
+    };
+    /**
+     * onInitialResourceLoaded で発生した追加のリソースをロードする
+     */
+    AbstractUiGraphScene.prototype.loadAdditionalResource = function (assets, onLoaded) {
+        PIXI.loader.add(this.filterAssets(assets)).load(function () { return onLoaded(); });
+    };
+    /**
+     * 追加のリソースロード完了時のコールバック
+     */
+    AbstractUiGraphScene.prototype.onAdditionalResourceLoaded = function () {
+        // 抽象クラスでは何もしない
+    };
+    /**
+     * 全てのリソースロード処理完了時のコールバック
+     */
+    AbstractUiGraphScene.prototype.onResourceLoaded = function () {
+        var sceneUiGraphName = example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].SceneUiGraph(this);
+        this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
+        this.addChild(this.uiGraphContainer);
+    };
+    /**
+     * UiGraph 要素を作成する
+     */
+    AbstractUiGraphScene.prototype.prepareUiGraphContainer = function (uiData) {
+        for (var i = 0; i < uiData.nodes.length; i++) {
+            var nodeData = uiData.nodes[i];
+            var factory = example_UiGraph__WEBPACK_IMPORTED_MODULE_1__["default"].getFactory(nodeData.type);
+            if (!factory) {
+                factory = this.getCustomUiGraphFactory(nodeData.type);
+                if (!factory) {
+                    continue;
+                }
+            }
+            var node = factory.createUiNodeByGraphElement(nodeData);
+            if (!node) {
+                continue;
+            }
+            if (nodeData.events) {
+                factory.attachUiEventByGraphElement(nodeData.events, node, this);
+            }
+            this.uiGraph[nodeData.id] = node;
+            this.uiGraphContainer.addChild(node);
+        }
+    };
+    /**
+     * UiGraph にシーン独自の要素を指定する場合にこのメソッドを利用する
+     */
+    AbstractUiGraphScene.prototype.getCustomUiGraphFactory = function (_type) {
+        // 抽象クラスでは何も持たない
+        return null;
+    };
+    /**
+     * 渡されたアセットのリストからロード済みのものをフィルタリングする
+     */
+    AbstractUiGraphScene.prototype.filterAssets = function (assets) {
+        var assetMap = new Map();
+        for (var i = 0; i < assets.length; i++) {
+            var asset = assets[i];
+            if (typeof asset === 'string') {
+                if (!PIXI.loader.resources[asset] && !assetMap.has(asset)) {
+                    assetMap.set(asset, { name: asset, url: asset });
+                }
+            }
+            else {
+                if (!PIXI.loader.resources[asset.name] && !assetMap.has(asset.name)) {
+                    assetMap.set(asset.name, asset);
+                }
+            }
+        }
+        return Array.from(assetMap.values());
+    };
+    return AbstractUiGraphScene;
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_2__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (AbstractUiGraphScene);
+
+
+/***/ }),
+
+/***/ "./src/example/MinUiGraphScene.ts":
+/*!****************************************!*\
+  !*** ./src/example/MinUiGraphScene.ts ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var example_Resource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! example/Resource */ "./src/example/Resource.ts");
+/* harmony import */ var example_AbstractUiGraphScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/AbstractUiGraphScene */ "./src/example/AbstractUiGraphScene.ts");
+/* harmony import */ var example_factory_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! example/factory/UnitButtonFactory */ "./src/example/factory/UnitButtonFactory.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+var dummyUnitIds = [1, 2, 3, 4, -1];
+var dummyCosts = [10, 20, 30, 40, -1];
 /**
  * データで表現された UI を読み込んで表示するサンプル
  */
 var MinUiGraphScene = /** @class */ (function (_super) {
     __extends(MinUiGraphScene, _super);
     function MinUiGraphScene() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        /**
-         * UI 情報が定義された json ファイル URL
-         */
-        _this.jsonUrl = 'ui_graph/min_ui_graph_scene.json';
-        /**
-         * json ファイルをパースしたオブジェクト
-         */
-        _this.json = null;
-        /**
-         * json ファイルを元に作られた UI系インスタンスのオブジェクト
-         */
-        _this.ui = {};
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
-     * UI 情報が定義された json をダウンロードする
-     * GameManager によって初期化時にコールされる
-     * 本来は Scene で透過的に UI 情報を取得するが、サンプルとして明示的に処理する
+     * 独自 UiGraph 要素のファクトリを返す
+     * このシーンでは UnitButton をカスタム UI 要素として持っている
      */
-    MinUiGraphScene.prototype.beginLoadResource = function (onLoaded) {
-        var _this = this;
-        return new Promise(function (resolve) {
-            pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(_this.jsonUrl).load(function () {
-                _this.onJsonLoaded();
-                onLoaded();
-            });
-            resolve();
-        });
-    };
-    /**
-     * json がダウンロードされたら PIXI.Container 派生インスタンスを画面に追加する
-     * また、スプライトに必要なテクスチャをダウンロードする
-     */
-    MinUiGraphScene.prototype.onJsonLoaded = function () {
-        var _this = this;
-        this.json = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[this.jsonUrl].data;
-        this.addUiContainers(this.json.nodes);
-        var textures = this.collectTextureUrls(this.json.nodes);
-        pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(textures).load(function () { return _this.onTexturesLoaded(); });
-    };
-    /**
-     * Sprite に必要なテクスチャの URL を集める
-     */
-    MinUiGraphScene.prototype.collectTextureUrls = function (nodes) {
-        var urls = [];
-        for (var i = 0; i < nodes.length; i++) {
-            var node = nodes[i];
-            if (node.type !== 'sprite')
-                continue;
-            if (!node.params || !node.params.url)
-                continue;
-            if (urls.indexOf(node.params.url) >= 0)
-                continue;
-            urls.push(node.params.url);
+    MinUiGraphScene.prototype.getCustomUiGraphFactory = function (type) {
+        if (type === 'unit_button') {
+            return new example_factory_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_2__["default"]();
         }
-        return urls;
+        return null;
     };
     /**
-     * テクスチャがダウンロードされたら割り当てる
+     * リソースがロードされた時のコールバック
      */
-    MinUiGraphScene.prototype.onTexturesLoaded = function () {
-        if (!this.json)
-            return;
-        for (var i = 0; i < this.json.nodes.length; i++) {
-            var node = this.json.nodes[i];
-            if (node.type !== 'sprite')
+    MinUiGraphScene.prototype.onInitialResourceLoaded = function () {
+        var additionalAssets = _super.prototype.onInitialResourceLoaded.call(this);
+        for (var i = 0; i < dummyUnitIds.length; i++) {
+            additionalAssets.push(example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].Dynamic.UnitPanel(dummyUnitIds[i]));
+        }
+        return additionalAssets;
+    };
+    /**
+     * リソースロード完了後に実行されるコールバック
+     * UnitButton の初期化を行う
+     */
+    MinUiGraphScene.prototype.onResourceLoaded = function () {
+        _super.prototype.onResourceLoaded.call(this);
+        var slotIndex = 0;
+        var keys = Object.keys(this.uiGraph);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var entity = this.uiGraph[key];
+            if (entity.constructor.name !== 'UnitButton') {
                 continue;
-            if (!node.params || !node.params.textureName)
-                continue;
-            if (!this.ui[node.id])
-                continue;
-            var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[node.params.textureName];
-            if (texture) {
-                this.ui[node.id].texture = texture;
             }
-        }
-    };
-    /**
-     * 要素の種類ごとに初期化メソッドを実行する
-     * 本実装ではここの処理はカプセル化しており、ここではサンプルとして明示的に処理している
-     */
-    MinUiGraphScene.prototype.addUiContainers = function (nodes) {
-        for (var i = 0; i < nodes.length; i++) {
-            var node = nodes[i];
-            // インスタンスを生成する
-            var container = void 0;
-            switch (node.type) {
-                case 'sprite':
-                    container = this.createSprite(node);
-                    break;
-                case 'text':
-                    container = this.createText(node);
-                    break;
-                default: break;
+            var unitButton = entity;
+            if (dummyCosts[slotIndex] === -1) {
+                unitButton.init(slotIndex, dummyUnitIds[slotIndex]);
             }
-            if (!container)
-                continue;
-            container.position.x = node.position[0];
-            container.position.y = node.position[1];
-            this.ui[node.id] = container;
-            this.addChild(container);
-            if (node.events) {
-                this.attachEvents(container, node.events);
+            else {
+                unitButton.init(slotIndex, dummyUnitIds[slotIndex], dummyCosts[slotIndex]);
             }
-        }
-    };
-    /**
-     * PIXI.Sprite インスタンスを作成して addChild する
-     */
-    MinUiGraphScene.prototype.createSprite = function (_) {
-        return new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
-    };
-    /**
-     * PIXI.Text インスタンスを作成して addChild する
-     */
-    MinUiGraphScene.prototype.createText = function (node) {
-        var text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Text"]();
-        if (node.params) {
-            text.text = node.params.text;
-            var style = {};
-            if (node.params.family)
-                style.fontFamily = node.params.family;
-            if (node.params.size)
-                style.fontSize = node.params.size;
-            if (node.params.color)
-                style.fill = node.params.color;
-            if (node.params.padding)
-                style.padding = node.params.padding;
-            text.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["TextStyle"](style);
-        }
-        return text;
-    };
-    /**
-     * イベント処理を設定する
-     */
-    MinUiGraphScene.prototype.attachEvents = function (container, events) {
-        var _this = this;
-        container.interactive = true;
-        var _loop_1 = function (j) {
-            var event_1 = events[j];
-            container.on(event_1.type, function () {
-                var _a;
-                return (_a = _this)[event_1.callback].apply(_a, event_1.arguments);
-            });
-        };
-        for (var j = 0; j < events.length; j++) {
-            _loop_1(j);
+            slotIndex++;
         }
     };
     /**
@@ -44687,7 +44759,7 @@ var MinUiGraphScene = /** @class */ (function (_super) {
             args[_i] = arguments[_i];
         }
         console.log('onOkButtonDown invoked!!', args);
-        this.ui.ok_button_off.visible = false;
+        this.uiGraph.ok_button_off.visible = false;
     };
     MinUiGraphScene.prototype.onOkButtonUp = function () {
         var args = [];
@@ -44695,11 +44767,445 @@ var MinUiGraphScene = /** @class */ (function (_super) {
             args[_i] = arguments[_i];
         }
         console.log('onOkButtonUp invoked!!', args);
-        this.ui.ok_button_off.visible = true;
+        this.uiGraph.ok_button_off.visible = true;
     };
     return MinUiGraphScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_1__["default"]));
+}(example_AbstractUiGraphScene__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (MinUiGraphScene);
+
+
+/***/ }),
+
+/***/ "./src/example/Resource.ts":
+/*!*********************************!*\
+  !*** ./src/example/Resource.ts ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * リソースの URL や命名規則のマスタサンプル
+ */
+var Resource = Object.freeze({
+    /**
+     * シーン名から UI Graph 用のファイル名を生成
+     */
+    SceneUiGraph: function (scene) {
+        var snake_case = scene.constructor.name.replace(/([A-Z])/g, function (s) { return "_" + s.charAt(0).toLowerCase(); }).replace(/^_/, '');
+        return "ui_graph/" + snake_case + ".json";
+    },
+    /**
+     * 渡されたパラメータによって動的に変わる url を有するオブジェクト
+     */
+    Dynamic: {
+        UnitPanel: function (unitId) {
+            var id = (unitId > 0) ? unitId : 'empty';
+            return "ui/units_panel/button/unit_" + id + ".png";
+        }
+    }
+});
+/* harmony default export */ __webpack_exports__["default"] = (Resource);
+
+
+/***/ }),
+
+/***/ "./src/example/UiGraph.ts":
+/*!********************************!*\
+  !*** ./src/example/UiGraph.ts ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var example_factory_TextFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! example/factory/TextFactory */ "./src/example/factory/TextFactory.ts");
+/* harmony import */ var example_factory_SpriteFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/factory/SpriteFactory */ "./src/example/factory/SpriteFactory.ts");
+
+
+/**
+ * UI を静的に定義しランタイムでロードするためのモジュール
+ * 指定されたノードのファクトリを生成して保持する
+ */
+var UiGraph = /** @class */ (function () {
+    function UiGraph() {
+    }
+    /**
+     * ファクトリを取得
+     * なければキャッシュを作る
+     */
+    UiGraph.getFactory = function (type) {
+        if (!UiGraph.cachedFactory[type]) {
+            var Factory = void 0;
+            switch (type) {
+                case 'text':
+                    Factory = example_factory_TextFactory__WEBPACK_IMPORTED_MODULE_0__["default"];
+                    break;
+                case 'sprite':
+                    Factory = example_factory_SpriteFactory__WEBPACK_IMPORTED_MODULE_1__["default"];
+                    break;
+            }
+            if (!Factory) {
+                return null;
+            }
+            UiGraph.cachedFactory[type] = new Factory();
+        }
+        return UiGraph.cachedFactory[type];
+    };
+    /**
+     * ファクトリのキャッシュ
+     */
+    UiGraph.cachedFactory = {};
+    return UiGraph;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (UiGraph);
+
+
+/***/ }),
+
+/***/ "./src/example/UnitButton.ts":
+/*!***********************************!*\
+  !*** ./src/example/UnitButton.ts ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+/**
+ * ユニット生成をリクエストするための UI 用のボタン
+ */
+var UnitButton = /** @class */ (function (_super) {
+    __extends(UnitButton, _super);
+    /**
+     * コンストラクタ
+     */
+    function UnitButton(texture) {
+        var _this = _super.call(this) || this;
+        /**
+         * ボタン枠のインデックス
+         */
+        _this.slotIndex = -1;
+        /**
+         * ボタンに割り当てられたユニットの ID
+         */
+        _this.unitId = -1;
+        /**
+         * 表示するユニットコスト
+         */
+        _this.cost = -1;
+        _this.button = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
+        _this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Text"]('', {
+            fontFamily: Resource__WEBPACK_IMPORTED_MODULE_1__["default"].FontFamily.Default,
+            fontSize: 24,
+            fill: 0xffffff,
+            padding: 4
+        });
+        _this.text.position.set(46, 88);
+        if (texture) {
+            _this.button.texture = texture;
+        }
+        _this.addChild(_this.button);
+        _this.addChild(_this.text);
+        return _this;
+    }
+    /**
+     * ボタン枠インデックスとユニット ID で初期化する
+     */
+    UnitButton.prototype.init = function (slotIndex, unitId, cost) {
+        if (unitId === void 0) { unitId = -1; }
+        if (cost === void 0) { cost = -1; }
+        var texture = this.getTexture(unitId);
+        if (!texture) {
+            return;
+        }
+        this.slotIndex = slotIndex;
+        this.unitId = unitId;
+        this.button.texture = texture;
+        this.text.text = (cost >= 0) ? "" + cost : '';
+    };
+    /**
+     * ユニットを変更する
+     */
+    UnitButton.prototype.changeUnit = function (unitId, cost) {
+        if (unitId === void 0) { unitId = -1; }
+        if (cost === void 0) { cost = -1; }
+        var texture = this.getTexture(unitId);
+        if (!texture) {
+            return;
+        }
+        this.unitId = unitId;
+        this.button.texture = texture;
+        this.text.text = (cost >= 0) ? "" + cost : '';
+    };
+    /**
+     * 指定したユニット ID のテクスチャを変更する
+     */
+    UnitButton.prototype.getTexture = function (unitId) {
+        if (unitId === void 0) { unitId = -1; }
+        var resourceId = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel(unitId);
+        console.log(resourceId);
+        var resource = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceId];
+        if (!resource || !resource.texture) {
+            return null;
+        }
+        return resource.texture;
+    };
+    return UnitButton;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+/* harmony default export */ __webpack_exports__["default"] = (UnitButton);
+
+
+/***/ }),
+
+/***/ "./src/example/factory/SpriteFactory.ts":
+/*!**********************************************!*\
+  !*** ./src/example/factory/SpriteFactory.ts ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var example_factory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! example/factory/UiNodeFactory */ "./src/example/factory/UiNodeFactory.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+/**
+ * PIXI.Sprite のファクトリ
+ * テクスチャに、定義されているテクスチャ名で PIXI.utils.TextureCache から引いたデータを用いる
+ */
+var SpriteFactory = /** @class */ (function (_super) {
+    __extends(SpriteFactory, _super);
+    function SpriteFactory() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SpriteFactory.prototype.createUiNode = function (nodeParams) {
+        var sprite = new PIXI.Sprite();
+        if (nodeParams) {
+            if (nodeParams.textureName && PIXI.utils.TextureCache[nodeParams.textureName]) {
+                sprite.texture = PIXI.utils.TextureCache[nodeParams.textureName];
+            }
+            if (nodeParams.anchor) {
+                sprite.anchor.x = nodeParams.anchor[0];
+                sprite.anchor.y = nodeParams.anchor[1];
+            }
+        }
+        return sprite;
+    };
+    return SpriteFactory;
+}(example_factory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (SpriteFactory);
+
+
+/***/ }),
+
+/***/ "./src/example/factory/TextFactory.ts":
+/*!********************************************!*\
+  !*** ./src/example/factory/TextFactory.ts ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var example_factory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! example/factory/UiNodeFactory */ "./src/example/factory/UiNodeFactory.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+/**
+ * PIXI.Text のファクトリ
+ */
+var TextFactory = /** @class */ (function (_super) {
+    __extends(TextFactory, _super);
+    function TextFactory() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TextFactory.prototype.createUiNode = function (nodeParams) {
+        var _a;
+        var textStyleParams = {};
+        var container = new PIXI.Text();
+        if (nodeParams) {
+            if (nodeParams.family !== undefined) {
+                textStyleParams.fontFamily = nodeParams.family;
+            }
+            if (nodeParams.size !== undefined) {
+                textStyleParams.fontSize = nodeParams.size;
+            }
+            if (nodeParams.color !== undefined) {
+                textStyleParams.fill = nodeParams.color;
+            }
+            if (nodeParams.padding !== undefined) {
+                textStyleParams.padding = nodeParams.padding;
+            }
+            if (nodeParams.anchor !== undefined) {
+                (_a = container.anchor).set.apply(_a, nodeParams.anchor);
+            }
+            if (nodeParams.text !== undefined) {
+                container.text = nodeParams.text;
+            }
+        }
+        container.style = new PIXI.TextStyle(textStyleParams);
+        return container;
+    };
+    return TextFactory;
+}(example_factory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (TextFactory);
+
+
+/***/ }),
+
+/***/ "./src/example/factory/UiNodeFactory.ts":
+/*!**********************************************!*\
+  !*** ./src/example/factory/UiNodeFactory.ts ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+
+/**
+ * UiGraph 要素のファクトリの基本クラス
+ */
+var UiNodeFactory = /** @class */ (function () {
+    function UiNodeFactory() {
+    }
+    /**
+     * 派生クラスで実装し、適切な UiGraph ノードを生成する
+     * デフォルトでは PIXI.Container インスタンスを返す
+     */
+    UiNodeFactory.prototype.createUiNode = function (_) {
+        return new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+    };
+    /**
+     * 静的なノードデータから PIXI.Container 派生オブジェクトを生成する
+     */
+    UiNodeFactory.prototype.createUiNodeByGraphElement = function (nodeData) {
+        var node = this.createUiNode(nodeData.params);
+        if (node) {
+            node.name = nodeData.id;
+            node.position.set(nodeData.position[0], nodeData.position[1]);
+        }
+        return node;
+    };
+    /**
+     * 定義されたイベントを実装する
+     */
+    UiNodeFactory.prototype.attachUiEventByGraphElement = function (events, node, target) {
+        node.interactive = true;
+        var _loop_1 = function (i) {
+            var event_1 = events[i];
+            var fx = target[event_1.callback];
+            if (!fx) {
+                return "continue";
+            }
+            node.on(event_1.type, function () { return fx.call.apply(fx, [target].concat(event_1.arguments)); });
+        };
+        for (var i = 0; i < events.length; i++) {
+            _loop_1(i);
+        }
+    };
+    return UiNodeFactory;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (UiNodeFactory);
+
+
+/***/ }),
+
+/***/ "./src/example/factory/UnitButtonFactory.ts":
+/*!**************************************************!*\
+  !*** ./src/example/factory/UnitButtonFactory.ts ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var example_factory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/factory/UiNodeFactory */ "./src/example/factory/UiNodeFactory.ts");
+/* harmony import */ var example_UnitButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! example/UnitButton */ "./src/example/UnitButton.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+/**
+ * バトルで用いる UnitButton のファクトリ
+ * UnitButton インスタンスを返す
+ */
+var UnitButtonFactory = /** @class */ (function (_super) {
+    __extends(UnitButtonFactory, _super);
+    function UnitButtonFactory() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UnitButtonFactory.prototype.createUiNode = function (nodeParams) {
+        var texture = undefined;
+        if (nodeParams) {
+            if (nodeParams.textureName && pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[nodeParams.textureName]) {
+                texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[nodeParams.textureName];
+            }
+        }
+        return new example_UnitButton__WEBPACK_IMPORTED_MODULE_2__["default"](texture);
+    };
+    return UnitButtonFactory;
+}(example_factory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (UnitButtonFactory);
 
 
 /***/ }),

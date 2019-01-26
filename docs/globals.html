@@ -68,6 +68,7 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-class"><a href="classes/abstractuigraphscene.html" class="tsd-kind-icon">Abstract<wbr>UiGraph<wbr>Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/attacksmokeeffect.html" class="tsd-kind-icon">Attack<wbr>Smoke<wbr>Effect</a></li>
 								<li class="tsd-kind-class"><a href="classes/attackable.html" class="tsd-kind-icon">Attackable</a></li>
 								<li class="tsd-kind-class"><a href="classes/attackableentity.html" class="tsd-kind-icon">Attackable<wbr>Entity</a></li>
@@ -144,6 +145,8 @@
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#supported_extensions" class="tsd-kind-icon">SUPPORTED_<wbr>EXTENSIONS</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#to_rad" class="tsd-kind-icon">TO_<wbr>RAD</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#baseid1spawnframecount" class="tsd-kind-icon">base<wbr>Id1<wbr>Spawn<wbr>Frame<wbr>Count</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#dummycosts" class="tsd-kind-icon">dummy<wbr>Costs</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#dummyunitids" class="tsd-kind-icon">dummy<wbr>Unit<wbr>Ids</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#fontloaded" class="tsd-kind-icon">font<wbr>Loaded</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#indexeddb" class="tsd-kind-icon">indexed<wbr>Db</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#windowloaded" class="tsd-kind-icon">window<wbr>Loaded</a></li>
@@ -292,15 +295,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="resource" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Resource</h3>
-					<div class="tsd-signature tsd-kind-icon">Resource<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({/*** マスターデータ API 情報を有するオブジェクト*/Api: {UserBattle: (userId: number): string &#x3D;&gt; {const query &#x3D; &#x60;?userId&#x3D;${userId}&#x60;;return &#x60;api_mock/user_battle.json${query}&#x60;;},SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;ui_graph/${snake_case}.json&#x60;;},Stage: (stageId: number): string &#x3D;&gt; {return &#x60;master/stage_master_${stageId}.json&#x60;;},Unit: (unitIds: number[]): string &#x3D;&gt; {const query &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;master/unit_master.json?unitId[]&#x3D;${query}&#x60;;},AllUnit: (): string &#x3D;&gt; {return &#x27;master/unit_master.json&#x27;;},UnitAnimation: (unitIds: number[]): string &#x3D;&gt; {const query &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;master/unit_animation_master.json?unitId[]&#x3D;${query}&#x60;;}},/*** 渡されたパラメータによって動的に変わる url を有するオブジェクト*/Dynamic: {Unit: (unitId: number): string &#x3D;&gt; {return &#x60;units/${unitId}.json&#x60;;},UnitPanel: (unitId: number): string &#x3D;&gt; {const id &#x3D; (unitId &gt; 0) ? unitId : &#x27;empty&#x27;;return &#x60;ui/units_panel/button/unit_${id}.png&#x60;;},Base: (baseId: number): string &#x3D;&gt; {return &#x60;battle/base/${baseId}.json&#x60;;}},/*** 静的なリソースを有するオブジェクト*/Static: {BattleBgFores: [&#x27;battle/bg_1_1.png&#x27;,&#x27;battle/bg_1_2.png&#x27;,&#x27;battle/bg_1_3.png&#x27;,&#x27;battle/bg_1_4.png&#x27;,&#x27;battle/bg_1_5.png&#x27;,&#x27;battle/bg_1_6.png&#x27;,&#x27;battle/bg_1_7.png&#x27;,&#x27;battle/bg_1_8.png&#x27;,&#x27;battle/bg_1_9.png&#x27;,&#x27;battle/bg_1_10.png&#x27;],BattleBgMiddles: [&#x27;battle/bg_2_1.png&#x27;,&#x27;battle/bg_2_2.png&#x27;,&#x27;battle/bg_2_3.png&#x27;,&#x27;battle/bg_2_4.png&#x27;,&#x27;battle/bg_2_5.png&#x27;,&#x27;battle/bg_2_6.png&#x27;],BattleBgBacks: [&#x27;battle/bg_3_1.png&#x27;,&#x27;battle/bg_3_2.png&#x27;,&#x27;battle/bg_3_3.png&#x27;],AttackSmoke:&#x27;battle/effects/attack_smoke/attack_smoke.json&#x27;,DeadBucket:&#x27;battle/effects/dead/dead_bucket.png&#x27;,DeadSpirit:&#x27;battle/effects/dead/dead_spirit.png&#x27;,CollapseExplode:&#x27;battle/effects/collapse_explode/collapse_explode.json&#x27;,BattleResultWin:&#x27;ui/battle_win.png&#x27;,BattleResultLose:&#x27;ui/battle_lose.png&#x27;},/*** サウンドリソースの静的な url を有するオブジェクト*/Audio: {Bgm: {Title: &#x27;audio/bgm_title.mp3&#x27;,Battle: &#x27;audio/bgm_battle.mp3&#x27;},Se: {Attack1: &#x27;audio/se_attack_1.mp3&#x27;,Attack2: &#x27;audio/se_attack_2.mp3&#x27;,Bomb: &#x27;audio/se_bomb.mp3&#x27;,UnitSpawn: &#x27;audio/se_unit_spawn.mp3&#x27;,Win: &#x27;audio/se_win.mp3&#x27;,Lose: &#x27;audio/se_lose.mp3&#x27;}},/*** テクスチャのフレーム名を返す関数を有するオブジェクト*/TextureFrame: {Unit: (unitActionType: string, unitId: number, index: number): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;unit_${unitId}_${unitActionType}_${index}.png&#x60;];},Base: (baseId: number, index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;base_${baseId}_${index}.png&#x60;];},CollapseExplode: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_1_${index}.png&#x60;];},AttackSmoke: (index: number &#x3D; 1): PIXI.Texture &#x3D;&gt; {return PIXI.utils.TextureCache[&#x60;effect_2_${index}.png&#x60;];}},/*** アニメーション種別の識別子を有するオブジェクト*/AnimationTypes: {Unit: Object.freeze({WAIT: &#x27;wait&#x27;,WALK: &#x27;walk&#x27;,ATTACK: &#x27;attack&#x27;,DAMAGE: &#x27;damage&#x27;}),Base: Object.freeze({IDLE: &#x27;idle&#x27;,SPAWN: &#x27;spawn&#x27;,COLLAPSE: &#x27;collapse&#x27;})},FontFamily: {Default: &#x27;MisakiGothic&#x27;},/*** スプライトシートの最大フレーム数を返す関数*/MaxFrameIndex: (resourceKey: string): number &#x3D;&gt; {const json &#x3D; PIXI.loader.resources[resourceKey];if (!json || !json.data || !json.data.frames) {return -1;}return Object.keys(json.data.frames).length;}})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Resource<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({/*** シーン名から UI Graph 用のファイル名を生成*/SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;ui_graph/${snake_case}.json&#x60;;},/*** 渡されたパラメータによって動的に変わる url を有するオブジェクト*/Dynamic: {UnitPanel: (unitId: number): string &#x3D;&gt; {const id &#x3D; (unitId &gt; 0) ? unitId : &#x27;empty&#x27;;return &#x60;ui/units_panel/button/unit_${id}.png&#x60;;}}})</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/Resource.ts#L6">Resource.ts:6</a></li>
+							<li>Defined in example/Resource.ts:6</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>リソースの URL や命名規則のマスタ</p>
+							<p>リソースの URL や命名規則のマスタ
+							リソースの URL や命名規則のマスタサンプル</p>
 						</div>
 					</div>
 					<div class="tsd-type-declaration">
@@ -336,6 +341,26 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Base.ts#L7">display/battle/Base.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="dummycosts" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dummy<wbr>Costs</h3>
+					<div class="tsd-signature tsd-kind-icon">dummy<wbr>Costs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[10, 20, 30, 40, -1]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraphScene.ts#L9">example/MinUiGraphScene.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="dummyunitids" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> dummy<wbr>Unit<wbr>Ids</h3>
+					<div class="tsd-signature tsd-kind-icon">dummy<wbr>Unit<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[1, 2, 3, 4, -1]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/MinUiGraphScene.ts#L8">example/MinUiGraphScene.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -411,6 +436,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/abstractuigraphscene.html" class="tsd-kind-icon">Abstract<wbr>UiGraph<wbr>Scene</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/attacksmokeeffect.html" class="tsd-kind-icon">Attack<wbr>Smoke<wbr>Effect</a>
 					</li>
@@ -593,6 +621,12 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#baseid1spawnframecount" class="tsd-kind-icon">base<wbr>Id1<wbr>Spawn<wbr>Frame<wbr>Count</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#dummycosts" class="tsd-kind-icon">dummy<wbr>Costs</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#dummyunitids" class="tsd-kind-icon">dummy<wbr>Unit<wbr>Ids</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#fontloaded" class="tsd-kind-icon">font<wbr>Loaded</a>

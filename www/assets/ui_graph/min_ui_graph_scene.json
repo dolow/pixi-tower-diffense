@@ -139,7 +139,7 @@
     },
     {
       "id": "unit_1",
-      "type": "sprite",
+      "type": "unit_button",
       "position": [120, 200],
       "params": {
         "textureName": "ui/units_panel/button/unit_1.png",
@@ -148,7 +148,7 @@
     },
     {
       "id": "unit_2",
-      "type": "sprite",
+      "type": "unit_button",
       "position": [320, 200],
       "params": {
         "textureName": "ui/units_panel/button/unit_2.png",
@@ -157,7 +157,7 @@
     },
     {
       "id": "unit_3",
-      "type": "sprite",
+      "type": "unit_button",
       "position": [520, 200],
       "params": {
         "textureName": "ui/units_panel/button/unit_3.png",
@@ -166,7 +166,7 @@
     },
     {
       "id": "unit_4",
-      "type": "sprite",
+      "type": "unit_button",
       "position": [720, 200],
       "params": {
         "textureName": "ui/units_panel/button/unit_4.png",
@@ -175,7 +175,7 @@
     },
     {
       "id": "unit_5",
-      "type": "sprite",
+      "type": "unit_button",
       "position": [920, 200],
       "params": {
         "textureName": "ui/units_panel/button/unit_empty.png",

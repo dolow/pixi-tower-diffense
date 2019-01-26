@@ -68,6 +68,8 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>PIXI.Sprite のファクトリ
+							テクスチャに、定義されているテクスチャ名で PIXI.utils.TextureCache から引いたデータを用いる
+							PIXI.Sprite のファクトリ
 						テクスチャに、定義されているテクスチャ名で PIXI.utils.TextureCache から引いたデータを用いる</p>
 					</div>
 				</div>
@@ -77,6 +79,9 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<a href="uinodefactory.html" class="tsd-signature-type">UiNodeFactory</a>
+					</li>
+					<li>
+						<span class="tsd-signature-type">UiNodeFactory</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">SpriteFactory</span>
@@ -92,9 +97,9 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="spritefactory.html#attachuieventbygraphelement" class="tsd-kind-icon">attach<wbr>UiEvent<wbr>ByGraph<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="spritefactory.html#attachuieventbygraphelement" class="tsd-kind-icon">attach<wbr>UiEvent<wbr>ByGraph<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="spritefactory.html#createuinode" class="tsd-kind-icon">create<wbr>UiNode</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="spritefactory.html#createuinodebygraphelement" class="tsd-kind-icon">create<wbr>UiNode<wbr>ByGraph<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="spritefactory.html#createuinodebygraphelement" class="tsd-kind-icon">create<wbr>UiNode<wbr>ByGraph<wbr>Element</a></li>
 							</ul>
 						</section>
 					</div>
@@ -102,16 +107,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="attachuieventbygraphelement" class="tsd-anchor"></a>
 					<h3>attach<wbr>UiEvent<wbr>ByGraph<wbr>Element</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">attach<wbr>UiEvent<wbr>ByGraph<wbr>Element<span class="tsd-signature-symbol">(</span>events<span class="tsd-signature-symbol">: </span><a href="../interfaces/event.html" class="tsd-signature-type">Event</a><span class="tsd-signature-symbol">[]</span>, node<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span>, target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="uinodefactory.html">UiNodeFactory</a>.<a href="uinodefactory.html#attachuieventbygraphelement">attachUiEventByGraphElement</a></p>
+								<p>Overrides UiNodeFactory.attachUiEventByGraphElement</p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/UiNodeFactory/UiNodeFactory.ts#L33">modules/UiNodeFactory/UiNodeFactory.ts:33</a></li>
 								</ul>
@@ -164,16 +170,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="createuinodebygraphelement" class="tsd-anchor"></a>
 					<h3>create<wbr>UiNode<wbr>ByGraph<wbr>Element</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">create<wbr>UiNode<wbr>ByGraph<wbr>Element<span class="tsd-signature-symbol">(</span>nodeData<span class="tsd-signature-symbol">: </span><a href="../interfaces/node.html" class="tsd-signature-type">Node</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Container</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="uinodefactory.html">UiNodeFactory</a>.<a href="uinodefactory.html#createuinodebygraphelement">createUiNodeByGraphElement</a></p>
+								<p>Overrides UiNodeFactory.createUiNodeByGraphElement</p>
 								<ul>
 									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/modules/UiNodeFactory/UiNodeFactory.ts#L19">modules/UiNodeFactory/UiNodeFactory.ts:19</a></li>
 								</ul>
@@ -213,13 +220,13 @@
 					<li class="current tsd-kind-class">
 						<a href="spritefactory.html" class="tsd-kind-icon">Sprite<wbr>Factory</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="spritefactory.html#attachuieventbygraphelement" class="tsd-kind-icon">attach<wbr>UiEvent<wbr>ByGraph<wbr>Element</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="spritefactory.html#createuinode" class="tsd-kind-icon">create<wbr>UiNode</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="spritefactory.html#createuinodebygraphelement" class="tsd-kind-icon">create<wbr>UiNode<wbr>ByGraph<wbr>Element</a>
 							</li>
 						</ul>
