@@ -281,7 +281,13 @@ export default class OrderScene extends Scene  {
       if (entity.constructor.name === 'UnitButton') {
         const unitButton = (entity as UnitButton);
         if (this.lastUnitIds.length >= slotIndex + 1) {
-          unitButton.init(slotIndex, this.lastUnitIds[slotIndex]);
+          const unitId = this.lastUnitIds[slotIndex];
+          const unitMaster = this.unitMasterCache.get(unitId);
+          if (unitMaster) {
+            unitButton.init(slotIndex, unitId, unitMaster.cost);
+          } else {
+            unitButton.init(slotIndex, unitId);
+          }
         } else {
           unitButton.init(slotIndex);
         }
