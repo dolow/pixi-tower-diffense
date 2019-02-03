@@ -6,7 +6,9 @@ import GameManager from 'managers/GameManager';
 /**
  * ゲーム結果を表現する
  */
-export default class BattleResult extends PIXI.Container implements UpdateObject {
+export default class BattleResult
+    extends PIXI.Container
+    implements UpdateObject {
   /**
    * アニメーション終了フラグ
    */

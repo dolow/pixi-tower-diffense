@@ -34,7 +34,8 @@ import Field from 'display/battle/Field';
 import BattleResult from 'display/battle/BattleResult';
 import AttackSmoke from 'display/battle/single_shot/AttackSmoke';
 import Dead from 'display/battle/single_shot/Dead';
-import CollapseExplodeEffect from 'display/battle/single_shot/CollapseExplodeEffect';
+import CollapseExplodeEffect
+    from 'display/battle/single_shot/CollapseExplodeEffect';
 
 /**
  * メインのゲーム部分のシーン
@@ -91,7 +92,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * ユニットアニメーションマスターのキャッシュ
    */
-  private unitAnimationMasterCache: Map<number, UnitAnimationMaster> = new Map();
+  private unitAnimationMasterCache: Map<number, UnitAnimationMaster>
+    = new Map();
   /**
    * Field に最後にユニットを追加した Zline のインデックス
    * ユニットが重なって表示されるのを防ぐ
@@ -260,13 +262,17 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
     const unitMasters = resources[Resource.Api.Unit(this.unitIds)].data;
 
-    const unitAnimationMasters = resources[Resource.Api.UnitAnimation(this.unitIds)].data;
+    const animationKey = Resource.Api.UnitAnimation(this.unitIds);
+    const unitAnimationMasters = resources[animationKey].data;
     for (let i = 0; i < unitAnimationMasters.length; i++) {
       const master = unitAnimationMasters[i];
       this.unitAnimationMasterCache.set(master.unitId, master);
     }
 
-    this.field.init({ fieldLength: stageMaster.length, zLines: stageMaster.zLines });
+    this.field.init({
+      fieldLength: stageMaster.length,
+      zLines: stageMaster.zLines
+    });
 
     this.initSound();
     this.initUnitButtons();
@@ -391,7 +397,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * エンティティのステートが変更された際のコールバック
    */
-  public onAttackableEntityStateChanged(entity: AttackableEntity, _oldState: number): void {
+  public onAttackableEntityStateChanged(
+    entity: AttackableEntity,
+    _oldState: number
+  ): void {
     const attackable = this.attackables.get(entity.id);
     if (!attackable) {
       return;
@@ -413,8 +422,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
           // 死亡時は死亡エフェクトを表示してもともとのユニット描画物は破棄する
           const effect = new Dead(!entity.isPlayer);
           const sprite = attackable.sprite;
-          const yAdjust = sprite.height * (1.0 - sprite.anchor.y) - effect.height;
-          effect.position.set(sprite.position.x, sprite.position.y + yAdjust);
+          const position = sprite.position;
+          const yBase = sprite.height * (1.0 - sprite.anchor.y);
+          const yAdjust = yBase - effect.height;
+          effect.position.set(position.x, position.y + yAdjust);
           sprite.parent.addChild(effect);
           this.registerUpdatingObject(effect);
 
@@ -491,7 +502,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 渡されたエンティティ同士が攻撃可能か返す
    */
-  public shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean {
+  public shouldDamage(
+    attackerEntity: AttackableEntity,
+    targetEntity: AttackableEntity
+  ): boolean {
     const attackerAttackable = this.attackables.get(attackerEntity.id);
     if (!attackerAttackable) {
       return false;
@@ -524,7 +538,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const unit = attackable as Unit;
     const direction = entity.isPlayer ? 1 : -1;
 
-    unit.sprite.position.x = unit.getSpawnedPosition().x + entity.distance * direction;
+    const physicalDistance = entity.distance * direction;
+    unit.sprite.position.x = unit.getSpawnedPosition().x + physicalDistance;
   }
 
   /**
@@ -562,13 +577,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     // 体力ゲージの表示
     if ((target as UnitEntity).unitId) {
-      const attackable = this.attackables.get(target.id);
+      const attackable = this.attackables.get(target.id) as Unit;
       if (!attackable) {
         return;
       }
       const fromPercent = fromHealth / maxHealth;
       const toPercent = toHealth / maxHealth;
-      const gauge = (attackable as Unit).spawnHealthGauge(fromPercent, toPercent);
+      const gauge = attackable.spawnHealthGauge(fromPercent, toPercent);
       targetSprite.parent.addChild(gauge);
       this.registerUpdatingObject(gauge);
     }
@@ -621,24 +636,31 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private initSound(): void {
     const resources = PIXI.loader.resources as any;
-
     const audioMaster = Resource.Audio;
-    SoundManager.createSound(audioMaster.Bgm.Battle, resources[audioMaster.Bgm.Battle].buffer);
-    SoundManager.createSound(audioMaster.Se.Attack1, resources[audioMaster.Se.Attack1].buffer);
-    SoundManager.createSound(audioMaster.Se.Attack2, resources[audioMaster.Se.Attack2].buffer);
-    SoundManager.createSound(audioMaster.Se.Bomb, resources[audioMaster.Se.Bomb].buffer);
-    SoundManager.createSound(audioMaster.Se.UnitSpawn, resources[audioMaster.Se.UnitSpawn].buffer);
-    SoundManager.createSound(audioMaster.Se.Win, resources[audioMaster.Se.Win].buffer);
-    SoundManager.createSound(audioMaster.Se.Lose, resources[audioMaster.Se.Lose].buffer);
+    const soundList = [
+      audioMaster.Bgm.Battle,
+      audioMaster.Se.Attack1,
+      audioMaster.Se.Attack2,
+      audioMaster.Se.Bomb,
+      audioMaster.Se.UnitSpawn,
+      audioMaster.Se.Win,
+      audioMaster.Se.Lose
+    ];
 
-    this.playBgm(Resource.Audio.Bgm.Battle);
+    for (let i = 0; i < soundList.length; i++) {
+      const name = soundList[i];
+      SoundManager.createSound(name, resources[name].buffer);
+    }
+
+    this.playBgm(audioMaster.Bgm.Battle);
   }
 
   /**
    * ユニットボタンの初期化
    */
   private initUnitButtons(): void {
-    const unitMasters = PIXI.loader.resources[Resource.Api.Unit(this.unitIds)].data;
+    const key = Resource.Api.Unit(this.unitIds);
+    const unitMasters = PIXI.loader.resources[key].data;
     for (let index = 0; index < this.unitSlotCount; index++) {
       const unitButton = this.getUiGraphUnitButton(index);
       if (!unitButton) {
@@ -675,7 +697,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private enableBackToOrderScene(): void {
     this.interactive = true;
-    this.on('pointerdown', (_e: PIXI.interaction.InteractionEvent) => this.backToOrderScene());
+    this.on(
+      'pointerdown',
+      (_e: PIXI.interaction.InteractionEvent) => this.backToOrderScene()
+    );
   }
 
   /**

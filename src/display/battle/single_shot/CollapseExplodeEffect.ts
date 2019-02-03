@@ -6,7 +6,9 @@ import UpdateObject from 'interfaces/UpdateObject';
 /**
  * 破壊時の爆発を表現するエフェクト
  */
-export default class CollapseExplodeEffect extends PIXI.Container implements UpdateObject {
+export default class CollapseExplodeEffect
+    extends PIXI.Container
+    implements UpdateObject {
   /**
    * スプライトアニメーションを更新する頻度
    */
@@ -69,9 +71,11 @@ export default class CollapseExplodeEffect extends PIXI.Container implements Upd
       this.playSe();
     }
 
+    const frequency = CollapseExplodeEffect.TextureFrameUpdateFrequency;
+
     // テクスチャ更新周期になったら次のテクスチャに切り替える
-    if (this.elapsedFrameCount % CollapseExplodeEffect.TextureFrameUpdateFrequency === 0) {
-      const count = this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency;
+    if (this.elapsedFrameCount % frequency === 0) {
+      const count = this.elapsedFrameCount / frequency;
       const index = Math.floor(count) + 1;
       // すべてのテクスチャが再生されたら自然消滅させる
       if (index > Resource.MaxFrameIndex(Resource.Static.CollapseExplode)) {

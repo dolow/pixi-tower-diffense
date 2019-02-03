@@ -115,8 +115,13 @@ const Resource = Object.freeze({
    * テクスチャのフレーム名を返す関数を有するオブジェクト
    */
   TextureFrame: {
-    Unit: (unitActionType: string, unitId: number, index: number): PIXI.Texture => {
-      return PIXI.utils.TextureCache[`unit_${unitId}_${unitActionType}_${index}.png`];
+    Unit: (
+      unitActionType: string,
+      unitId: number,
+      index: number
+    ): PIXI.Texture => {
+      const key = `unit_${unitId}_${unitActionType}_${index}.png`;
+      return PIXI.utils.TextureCache[key];
     },
     Base: (baseId: number, index: number = 1): PIXI.Texture => {
       return PIXI.utils.TextureCache[`base_${baseId}_${index}.png`];

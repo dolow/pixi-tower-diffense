@@ -107,7 +107,9 @@ export default abstract class Scene extends PIXI.Container {
    * シーン削除トランジション開始
    * 引数でトランジション終了時のコールバックを指定できる
    */
-  public beginTransitionOut(onTransitionFinished: (scene: Scene) => void): void {
+  public beginTransitionOut(
+    onTransitionFinished: (scene: Scene) => void
+  ): void {
     this.transitionOut.setCallback(() => onTransitionFinished(this));
 
     const container = this.transitionOut.getContainer();
@@ -176,7 +178,10 @@ export default abstract class Scene extends PIXI.Container {
       for (let i = 0; i < uiGraph.data.nodes.length; i++) {
         const node = uiGraph.data.nodes[i];
         if (node.type === 'sprite') {
-          additionalAssets.push({ name: node.params.textureName, url: node.params.url });
+          additionalAssets.push({
+            name: node.params.textureName,
+            url: node.params.url
+          });
         }
       }
     }
@@ -187,7 +192,9 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * 初回リソースロードで発生した追加のリソースをロードする
    */
-  protected loadAdditionalResource(assets: (LoaderAddParam | string)[], onLoaded: () => void) {
+  protected loadAdditionalResource(
+    assets: (LoaderAddParam | string)[], onLoaded: () => void
+  ) {
     if (assets.length <= 0) {
       this.onAdditionalResourceLoaded(onLoaded);
       return;
@@ -217,7 +224,8 @@ export default abstract class Scene extends PIXI.Container {
   protected onResourceLoaded(): void {
     if (this.hasSceneUiGraph) {
       const sceneUiGraphName = Resource.Api.SceneUiGraph(this);
-      this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
+      const resources = PIXI.loader.resources;
+      this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
       this.addChild(this.uiGraphContainer);
     }
   }
@@ -261,7 +269,9 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * 渡されたアセットのリストからロード済みのものをフィルタリングする
    */
-  private filterLoadedAssets(assets: (LoaderAddParam | string)[]): LoaderAddParam[] {
+  private filterLoadedAssets(
+    assets: (LoaderAddParam | string)[]
+  ): LoaderAddParam[] {
     const assetMap = new Map<string, LoaderAddParam>();
 
     for (let i = 0; i < assets.length; i++) {

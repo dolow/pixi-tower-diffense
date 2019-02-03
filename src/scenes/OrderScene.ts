@@ -140,7 +140,8 @@ export default class OrderScene extends Scene  {
     for (let i = 0; i < this.userBattle.unlockedUnitIds.length; i++) {
       const unitId = this.userBattle.unlockedUnitIds[i];
       const url = Resource.Dynamic.UnitPanel(unitId);
-      this.unitButtonTexturesCache.set(unitId, PIXI.loader.resources[url].texture);
+      const resources = PIXI.loader.resources;
+      this.unitButtonTexturesCache.set(unitId, resources[url].texture);
     }
 
     this.initUnitButtons();
@@ -166,12 +167,13 @@ export default class OrderScene extends Scene  {
     }
 
     const availableUnitIds = this.userBattle.unlockedUnitIds;
+    const availableUnitCount = availableUnitIds.length;
 
     let nextIndex = availableUnitIds.indexOf(unitButton.unitId) + addValue;
-    if (nextIndex >= availableUnitIds.length) {
-      nextIndex = nextIndex % availableUnitIds.length;
+    if (nextIndex >= availableUnitCount) {
+      nextIndex = nextIndex % availableUnitCount;
     } else if (nextIndex < 0) {
-      nextIndex = availableUnitIds.length + (nextIndex % availableUnitIds.length);
+      nextIndex = availableUnitCount + (nextIndex % availableUnitCount);
     }
 
     let cost = -1;

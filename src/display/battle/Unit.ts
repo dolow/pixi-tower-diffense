@@ -128,14 +128,17 @@ export default class Unit extends Attackable {
     if (this.animationFrameIndex !== this.hitFrame) {
       return false;
     }
-    const updateDuration = this.animationUpdateDurations[Resource.AnimationTypes.Unit.ATTACK];
+    const key = Resource.AnimationTypes.Unit.ATTACK;
+    const updateDuration = this.animationUpdateDurations[key];
     return (this.elapsedFrameCount % updateDuration) === 0;
   }
   /**
    * 現在のアニメーションが終了するフレーム時間かどうかを返す
    */
   public isAnimationLastFrameTime(type: string = this.animationType): boolean {
-    const maxFrameTime = this.animationUpdateDurations[type] * this.animationMaxFrameIndexes[type];
+    const duration = this.animationUpdateDurations[type];
+    const index = this.animationMaxFrameIndexes[type];
+    const maxFrameTime = duration * index;
     return this.elapsedFrameCount === maxFrameTime;
   }
 
@@ -147,10 +150,11 @@ export default class Unit extends Attackable {
       this.healthGauge.destroy();
     }
 
+    const anchor = this.sprite.anchor;
     this.healthGauge = new HealthGauge(fromPercent, toPercent);
     this.healthGauge.position.set(
-      this.sprite.position.x - (this.healthGauge.gaugeWidth * this.sprite.anchor.x),
-      this.sprite.position.y - (this.healthGauge.gaugeHeight * this.sprite.anchor.y)
+      this.sprite.position.x - (this.healthGauge.gaugeWidth * anchor.x),
+      this.sprite.position.y - (this.healthGauge.gaugeHeight * anchor.y)
     );
 
     return this.healthGauge;
@@ -160,7 +164,8 @@ export default class Unit extends Attackable {
    * アニメーションを更新する
    */
   public updateAnimation(): void {
-    const animationUpdateDuration = this.animationUpdateDurations[this.animationType];
+    const type = this.animationType;
+    const animationUpdateDuration = this.animationUpdateDurations[type];
     if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
       if (this.isAnimationLastFrameTime()) {
         this.resetAnimation();

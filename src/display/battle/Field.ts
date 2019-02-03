@@ -64,13 +64,15 @@ export default class Field extends PIXI.Container {
   constructor() {
     super();
 
+    type InteractionEvent = PIXI.interaction.InteractionEvent;
+
     // ユーザ操作で画面をスクロールできるようにする
     this.interactive = true;
-    this.on('pointerdown',   (e: PIXI.interaction.InteractionEvent) => this.onPointerDown(e));
-    this.on('pointermove',   (e: PIXI.interaction.InteractionEvent) => this.onPointerMove(e));
-    this.on('pointercancel', (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
-    this.on('pointerup',     (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
-    this.on('pointerout',    (e: PIXI.interaction.InteractionEvent) => this.onPointerUp(e));
+    this.on('pointerdown',   (e: InteractionEvent) => this.onPointerDown(e));
+    this.on('pointermove',   (e: InteractionEvent) => this.onPointerMove(e));
+    this.on('pointercancel', (e: InteractionEvent) => this.onPointerUp(e));
+    this.on('pointerup',     (e: InteractionEvent) => this.onPointerUp(e));
+    this.on('pointerout',    (e: InteractionEvent) => this.onPointerUp(e));
   }
 
   /**

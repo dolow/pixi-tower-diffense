@@ -17,7 +17,10 @@ export default interface BattleLogicDelegate {
   /**
    * エンティティのステートが変更した際のコールバック
    */
-  onAttackableEntityStateChanged(entity: AttackableEntity, oldState: number): void;
+  onAttackableEntityStateChanged(
+    entity: AttackableEntity,
+    oldState: number
+  ): void;
   /**
    * UnitEntity が生成された時のコールバック
    */
@@ -43,7 +46,10 @@ export default interface BattleLogicDelegate {
   /**
    * 渡されたエンティティが接敵可能か返す
    */
-  shouldEngageAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean;
+  shouldEngageAttackableEntity(
+    attacker: AttackableEntity,
+    target: AttackableEntity
+  ): boolean;
   /**
    * 渡されたエンティティが攻撃可能か返す
    */

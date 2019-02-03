@@ -2,7 +2,8 @@ import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
 import SoundManager from 'managers/SoundManager';
 import Attackable from 'display/battle/Attackable';
-import CollapseExplodeEffect from 'display/battle/single_shot/CollapseExplodeEffect';
+import CollapseExplodeEffect
+    from 'display/battle/single_shot/CollapseExplodeEffect';
 
 const baseId1SpawnFrameCount = 16;
 

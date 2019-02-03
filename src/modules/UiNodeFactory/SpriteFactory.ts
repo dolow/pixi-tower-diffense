@@ -10,8 +10,9 @@ export default class SpriteFactory extends UiNodeFactory {
     const sprite = new PIXI.Sprite();
 
     if (nodeParams) {
-      if (nodeParams.textureName && PIXI.utils.TextureCache[nodeParams.textureName]) {
-        sprite.texture = PIXI.utils.TextureCache[nodeParams.textureName];
+      const textureName = nodeParams.textureName;
+      if (textureName && PIXI.utils.TextureCache[textureName]) {
+        sprite.texture = PIXI.utils.TextureCache[textureName];
       }
       if (nodeParams.anchor) {
         sprite.anchor.x = nodeParams.anchor[0];

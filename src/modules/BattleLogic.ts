@@ -64,7 +64,10 @@ export default class BattleLogic {
   /**
    * 外部から生成をリクエストされたユニット情報を保持する配列
    */
-  private spawnRequestedUnitUnitIds: { unitId: number, isPlayer: boolean }[] = [];
+  private spawnRequestedUnitUnitIds: {
+    unitId: number,
+    isPlayer: boolean
+  }[] = [];
   /**
    * 経過フレーム数
    */
@@ -111,17 +114,19 @@ export default class BattleLogic {
       this.unitMasterCache.set(unit.unitId, unit);
     }
 
+    const aiBase = this.stageMasterCache.aiBase;
+
     const playerBaseEntity = new BaseEntity(params.playerBase.baseId, true);
-    const aiBaseEntity = new BaseEntity(this.stageMasterCache.aiBase.baseId, false);
+    const aiBaseEntity = new BaseEntity(aiBase.baseId, false);
 
     // 拠点エンティティの ID 割当て
     playerBaseEntity.id = this.nextEntityId++;
     aiBaseEntity.id = this.nextEntityId++;
     // 拠点エンティティの health 設定
     playerBaseEntity.maxHealth = params.playerBase.health;
-    aiBaseEntity.maxHealth = this.stageMasterCache.aiBase.health;
+    aiBaseEntity.maxHealth = aiBase.health;
     playerBaseEntity.currentHealth = params.playerBase.health;
-    aiBaseEntity.currentHealth = this.stageMasterCache.aiBase.health;
+    aiBaseEntity.currentHealth = aiBase.health;
 
     // 拠点エンティティの保持
     this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBaseEntity;
@@ -285,7 +290,8 @@ export default class BattleLogic {
 
     // ダメージを与えられるかどうかの判断をデリゲータに委譲する
     if (this.delegator.shouldDamage(unit, unit.engagedEntity)) {
-      unit.engagedEntity.currentHealth = unit.engagedEntity.currentHealth - master.power;
+      const newHealth = unit.engagedEntity.currentHealth - master.power;
+      unit.engagedEntity.currentHealth = newHealth;
       // ダメージを与えた後の処理をデリゲータに委譲する
       this.delegator.onAttackableEntityHealthUpdated(
         unit,
@@ -336,7 +342,7 @@ export default class BattleLogic {
     // 自身の DEAD 判定
     if (unit.currentHealth <= 0) {
       unit.engagedEntity = null;
-      unit.state        = AttackableState.DEAD;
+      unit.state = AttackableState.DEAD;
     }
   }
   /**
@@ -347,11 +353,17 @@ export default class BattleLogic {
     for (let i = 0; i < this.unitEntities.length; i++) {
       const target = this.unitEntities[i];
       // 味方同士でなければスキップ
-      if ((unit.isPlayer  && target.isPlayer) || (!unit.isPlayer && !target.isPlayer)) {
+      if (
+        (unit.isPlayer  && target.isPlayer) ||
+        (!unit.isPlayer && !target.isPlayer)
+      ) {
         continue;
       }
       // ターゲットが接敵可能なステートでなければスキップ
-      if (target.state !== AttackableState.IDLE && target.state !== AttackableState.ENGAGED) {
+      if (
+        target.state !== AttackableState.IDLE &&
+        target.state !== AttackableState.ENGAGED
+      ) {
         continue;
       }
 
