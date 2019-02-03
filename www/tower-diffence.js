@@ -44280,6 +44280,7 @@ var GameManager = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var example_transition_Immediate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/transition/Immediate */ "./src/example/transition/Immediate.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -44294,6 +44295,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+
 /**
  * ゲームシーンの抽象クラス
  * UiGraph を利用して UI 情報を透過的に読み込み初期化する
@@ -44303,12 +44305,27 @@ var __extends = (undefined && undefined.__extends) || (function () {
 var Scene = /** @class */ (function (_super) {
     __extends(Scene, _super);
     function Scene() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * シーン開始用のトランジションオブジェクト
+         */
+        _this.transitionIn = new example_transition_Immediate__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        /**
+         * シーン終了用のトランジションオブジェクト
+         */
+        _this.transitionOut = new example_transition_Immediate__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        return _this;
     }
     /**
      * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
      */
-    Scene.prototype.update = function (_delta) {
+    Scene.prototype.update = function (delta) {
+        if (this.transitionIn.isActive()) {
+            this.transitionIn.update(delta);
+        }
+        else if (this.transitionOut.isActive()) {
+            this.transitionOut.update(delta);
+        }
     };
     /**
      * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
@@ -44325,14 +44342,26 @@ var Scene = /** @class */ (function (_super) {
      * 引数でトランジション終了時のコールバックを指定できる
      */
     Scene.prototype.beginTransitionIn = function (onTransitionFinished) {
-        onTransitionFinished(this);
+        var _this = this;
+        this.transitionIn.setCallback(function () { return onTransitionFinished(_this); });
+        var container = this.transitionIn.getContainer();
+        if (container) {
+            this.addChild(container);
+        }
+        this.transitionIn.begin();
     };
     /**
      * シーン削除トランジション開始
      * 引数でトランジション終了時のコールバックを指定できる
      */
     Scene.prototype.beginTransitionOut = function (onTransitionFinished) {
-        onTransitionFinished(this);
+        var _this = this;
+        this.transitionOut.setCallback(function () { return onTransitionFinished(_this); });
+        var container = this.transitionOut.getContainer();
+        if (container) {
+            this.addChild(container);
+        }
+        this.transitionOut.begin();
     };
     return Scene;
 }(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
@@ -44412,6 +44441,77 @@ var SecondScene = /** @class */ (function (_super) {
     return SecondScene;
 }(example_Scene__WEBPACK_IMPORTED_MODULE_2__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (SecondScene);
+
+
+/***/ }),
+
+/***/ "./src/example/transition/Immediate.ts":
+/*!*********************************************!*\
+  !*** ./src/example/transition/Immediate.ts ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * 即座にシーン遷移させるトランジション
+ */
+var Immediate = /** @class */ (function () {
+    function Immediate() {
+        this.onTransitionFinished = function () { };
+        this.finished = false;
+    }
+    /**
+     * トランジション描画物を含む PIXI.Container インスタンスを返す
+     */
+    Immediate.prototype.getContainer = function () {
+        return null;
+    };
+    /**
+     * トランジション開始処理
+     * このトランジションは即時終了させる
+     */
+    Immediate.prototype.begin = function () {
+        this.finished = true;
+        this.onTransitionFinished();
+    };
+    /**
+     * トランジションが開始しているかどうかを返す
+     * このトランジションは即時終了するため true になることなはない
+     */
+    Immediate.prototype.isBegan = function () {
+        return false;
+    };
+    /**
+     * トランジションが終了しているかどうかを返す
+     */
+    Immediate.prototype.isFinished = function () {
+        return this.finished;
+    };
+    /**
+     * トランジションが実行中かどうかを返す
+     * このトランジションは即時終了するため true になることなはない
+     */
+    Immediate.prototype.isActive = function () {
+        return false;
+    };
+    /**
+     * トランジションを更新する
+     * このトランジションは即時終了するため何も行わない
+     */
+    Immediate.prototype.update = function (_dt) {
+        return;
+    };
+    /**
+     * トランジション終了時のコールバックを登録する
+     */
+    Immediate.prototype.setCallback = function (callback) {
+        this.onTransitionFinished = callback;
+    };
+    return Immediate;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (Immediate);
 
 
 /***/ }),

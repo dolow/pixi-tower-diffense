@@ -1,23 +1,55 @@
 import * as PIXI from 'pixi.js';
 import Transition from 'interfaces/Transition';
 /**
- * 即座にシーン遷移させるトランジション
+ * トランジションのフェード表現
  */
-export default class Immediate implements Transition {
+export default class Fade implements Transition {
+    /**
+     * フェード開始時の黒画面アルファ
+     */
+    private alphaFrom;
+    /**
+     * フェード終了時の黒画面アルファ
+     */
+    private alphaTo;
+    /**
+     * 1フレーム毎の黒画面アルファ加算値
+     */
+    private alphaProgress;
+    /**
+     * 黒画面のコンテナ
+     */
+    private container;
+    /**
+     * 黒画面の描画
+     */
+    private overlay;
+    /**
+     * トランジション開始フラグ
+     */
+    private transitionBegan;
+    /**
+     * トランジション終了フラグ
+     */
+    private transitionFinished;
+    /**
+     * トランジション終了時コールバック
+     */
     private onTransitionFinished;
-    private finished;
+    /**
+     * コンストラクタ
+     */
+    constructor(alphaFrom: number, alphaTo: number, alphaProgress: number);
     /**
      * トランジション描画物を含む PIXI.Container インスタンスを返す
      */
     getContainer(): PIXI.Container | null;
     /**
      * トランジション開始処理
-     * このトランジションは即時終了させる
      */
     begin(): void;
     /**
      * トランジションが開始しているかどうかを返す
-     * このトランジションは即時終了するため true になることなはない
      */
     isBegan(): boolean;
     /**
@@ -26,12 +58,10 @@ export default class Immediate implements Transition {
     isFinished(): boolean;
     /**
      * トランジションが実行中かどうかを返す
-     * このトランジションは即時終了するため true になることなはない
      */
     isActive(): boolean;
     /**
      * トランジションを更新する
-     * このトランジションは即時終了するため何も行わない
      */
     update(_dt: number): void;
     /**

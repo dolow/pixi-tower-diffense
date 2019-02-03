@@ -146,6 +146,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="firstscene.html#text" class="tsd-kind-icon">text</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="firstscene.html#trackedpointers" class="tsd-kind-icon">tracked<wbr>Pointers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="firstscene.html#transform" class="tsd-kind-icon">transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="firstscene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="firstscene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="firstscene.html#visible" class="tsd-kind-icon">visible</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="firstscene.html#width" class="tsd-kind-icon">width</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="firstscene.html#worldalpha" class="tsd-kind-icon">world<wbr>Alpha</a></li>
@@ -735,6 +737,38 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="transitionin" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> transition<wbr>In</h3>
+					<div class="tsd-signature tsd-kind-icon">transition<wbr>In<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol"> =&nbsp;new Immediate()</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Scene.transitionIn</p>
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L16">example/Scene.ts:16</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>シーン開始用のトランジションオブジェクト</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="transitionout" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> transition<wbr>Out</h3>
+					<div class="tsd-signature tsd-kind-icon">transition<wbr>Out<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol"> =&nbsp;new Immediate()</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Scene.transitionOut</p>
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L20">example/Scene.ts:20</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>シーン終了用のトランジションオブジェクト</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="visible" class="tsd-anchor"></a>
 					<h3>visible</h3>
@@ -1241,7 +1275,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Scene.beginTransitionIn</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L33">example/Scene.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L49">example/Scene.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1289,7 +1323,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Scene.beginTransitionOut</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L41">example/Scene.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L64">example/Scene.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1888,7 +1922,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Scene.registerUpdatingObject</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L20">example/Scene.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L36">example/Scene.ts:36</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2414,7 +2448,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Scene.updateRegisteredObjects</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L26">example/Scene.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Scene.ts#L42">example/Scene.ts:42</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2596,6 +2630,12 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="firstscene.html#transform" class="tsd-kind-icon">transform</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="firstscene.html#transitionin" class="tsd-kind-icon">transition<wbr>In</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="firstscene.html#transitionout" class="tsd-kind-icon">transition<wbr>Out</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="firstscene.html#visible" class="tsd-kind-icon">visible</a>

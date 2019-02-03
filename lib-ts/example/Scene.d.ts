@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import Transition from 'interfaces/Transition';
 import UpdateObject from 'interfaces/UpdateObject';
 /**
  * ゲームシーンの抽象クラス
@@ -8,9 +9,17 @@ import UpdateObject from 'interfaces/UpdateObject';
  */
 export default abstract class Scene extends PIXI.Container {
     /**
+     * シーン開始用のトランジションオブジェクト
+     */
+    protected transitionIn: Transition;
+    /**
+     * シーン終了用のトランジションオブジェクト
+     */
+    protected transitionOut: Transition;
+    /**
      * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
      */
-    update(_delta: number): void;
+    update(delta: number): void;
     /**
      * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
      */
