@@ -6,6 +6,7 @@ import Transition from 'interfaces/Transition';
  */
 export default class Immediate implements Transition {
   private onTransitionFinished: () => void = () => {};
+  private finished: boolean = false;
 
   /**
    * トランジション描画物を含む PIXI.Container インスタンスを返す
@@ -19,6 +20,7 @@ export default class Immediate implements Transition {
    * このトランジションは即時終了させる
    */
   public begin(): void {
+    this.finished = true;
     this.onTransitionFinished();
   }
   /**
@@ -30,10 +32,9 @@ export default class Immediate implements Transition {
   }
   /**
    * トランジションが終了しているかどうかを返す
-   * このトランジションは即時終了するため false になることなはない
    */
   public isFinished(): boolean {
-    return true;
+    return this.finished;
   }
   /**
    * トランジションが実行中かどうかを返す
