@@ -39,6 +39,11 @@ const Resource = Object.freeze({
     },
     Se: {
     }
+  },
+
+  FontFamily: {
+    Css: 'base.css',
+    Default: 'MisakiGothic'
   }
 });
 

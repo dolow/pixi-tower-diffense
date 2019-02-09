@@ -64,8 +64,10 @@ export default class TitleScene extends Scene  {
     }
 
     this.text = new PIXI.Text('TOUCH TO START', new PIXI.TextStyle({
+      fontFamily: 'MisakiGothic',
       fontSize: 64,
-      fill: 0xffffff
+      fill: 0xffffff,
+      padding: 14
     }));
     this.text.anchor.set(0.5, 0.5);
     this.text.position.set(renderer.width * 0.5, renderer.height * 0.5);
