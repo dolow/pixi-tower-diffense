@@ -11,6 +11,7 @@ import Sound from 'example/Sound';
  */
 export default class TitleScene extends Scene  {
   private text!: PIXI.Text;
+  private sound: Sound | null = null;
 
   /**
    * コンストラクタ
@@ -70,7 +71,9 @@ export default class TitleScene extends Scene  {
     this.text.position.set(renderer.width * 0.5, renderer.height * 0.5);
     this.addChild(this.text);
 
-    new Sound((resources[Resource.Audio.Bgm.Title] as any).buffer).play();
+    this.sound = new Sound((resources[Resource.Audio.Bgm.Title] as any).buffer);
+    this.sound.volume = 0.25;
+    this.sound.play();
   }
 
   /**
@@ -78,5 +81,10 @@ export default class TitleScene extends Scene  {
    */
   public showOrderScene(): void {
     console.log("should go to order scene");
+    if (this.sound) {
+      (this.sound.isPaused())
+        ? this.sound.resume()
+        : this.sound.pause();
+    }
   }
 }
