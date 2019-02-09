@@ -1,4 +1,5 @@
-import FirstScene from 'example/FirstScene';
+import 'example/Config';
+import TitleScene from 'example/TitleScene';
 import GameManager from 'example/GameManager';
 
 /**
@@ -13,7 +14,7 @@ window.onload = () => {
     }
   });
   // 最初のシーンの読み込み
-  GameManager.loadScene(new FirstScene());
+  GameManager.loadScene(new TitleScene());
 
   // コンソールからオブジェクトを調査できるように window に生やす
   Debug: {

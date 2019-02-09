@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import SoundManager from 'example/SoundManager';
 import Scene from 'example/Scene';
 
 /**
@@ -22,6 +23,8 @@ export default class GameManager {
    * シーントランジションを制御するためのフラグ
    */
   private sceneTransitionOutFinished: boolean = true;
+  private sceneResourceLoaded: boolean = true;
+
   /**
    * 現在のシーンインスタンス
    */
@@ -54,6 +57,8 @@ export default class GameManager {
     const instance = new GameManager(game);
     GameManager.instance = instance;
 
+    SoundManager.init();
+
     // canvas を DOM に追加
     document.body.appendChild(game.view);
 
@@ -70,7 +75,7 @@ export default class GameManager {
   public static transitionInIfPossible(newScene: Scene): boolean {
     const instance = GameManager.instance;
 
-    if (!instance.sceneTransitionOutFinished) {
+    if (!instance.sceneResourceLoaded || !instance.sceneTransitionOutFinished) {
       return false;
     }
 
@@ -97,14 +102,22 @@ export default class GameManager {
     const instance = GameManager.instance;
 
     if (instance.currentScene) {
+      instance.sceneResourceLoaded = false;
       instance.sceneTransitionOutFinished = false;
+      newScene.beginLoadResource(() => {
+        instance.sceneResourceLoaded = true;
+        GameManager.transitionInIfPossible(newScene);
+      });
       instance.currentScene.beginTransitionOut((_: Scene) => {
         instance.sceneTransitionOutFinished = true;
         GameManager.transitionInIfPossible(newScene);
       });
     } else {
-      instance.sceneTransitionOutFinished = true;
-      GameManager.transitionInIfPossible(newScene);
+        instance.sceneTransitionOutFinished = true;
+        newScene.beginLoadResource(() => {
+          instance.sceneResourceLoaded = true;
+          GameManager.transitionInIfPossible(newScene);
+        });
     }
   }
 }

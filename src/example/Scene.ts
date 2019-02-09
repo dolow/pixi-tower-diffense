@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import Transition from 'interfaces/Transition';
 import Immediate from 'example/transition/Immediate';
 import UpdateObject from 'interfaces/UpdateObject';
+import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 
 /**
  * ゲームシーンの抽象クラス
@@ -18,6 +19,46 @@ export default abstract class Scene extends PIXI.Container {
    * シーン終了用のトランジションオブジェクト
    */
   protected transitionOut: Transition = new Immediate();
+
+  /**
+   * loadInitialResource に用いるリソースリストを作成するメソッド
+   */
+  protected createInitialResourceList(): (LoaderAddParam | string)[] {
+    return [];
+  }
+
+  /**
+   * リソースダウンロードのフローを実行する
+   */
+  public beginLoadResource(onLoaded: () => void): Promise<void> {
+    return new Promise((resolve) => {
+      this.loadInitialResource(() => resolve());
+    }).then(() => {
+      onLoaded();
+    }).then(() => {
+      this.onResourceLoaded();
+    });
+  }
+
+  /**
+   * 初回リソースのロードを行う
+   */
+  protected loadInitialResource(onLoaded: () => void): void {
+    const assets = this.createInitialResourceList();
+    const filteredAssets = this.filterLoadedAssets(assets);
+
+    if (filteredAssets.length > 0) {
+      PIXI.loader.add(filteredAssets).load(() => onLoaded());
+    } else {
+      onLoaded();
+    }
+  }
+
+  /**
+   * beginLoadResource 完了時のコールバックメソッド
+   */
+  protected onResourceLoaded(): void {
+  }
 
   /**
    * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
@@ -70,5 +111,27 @@ export default abstract class Scene extends PIXI.Container {
     }
 
     this.transitionOut.begin();
+  }
+
+  /**
+   * 渡されたアセットのリストからロード済みのものをフィルタリングする
+   */
+  private filterLoadedAssets(assets: (LoaderAddParam | string)[]): LoaderAddParam[] {
+    const assetMap = new Map<string, LoaderAddParam>();
+
+    for (let i = 0; i < assets.length; i++) {
+      const asset = assets[i];
+      if (typeof asset === 'string') {
+        if (!PIXI.loader.resources[asset] && !assetMap.has(asset)) {
+          assetMap.set(asset, { name: asset, url: asset });
+        }
+      } else {
+        if (!PIXI.loader.resources[asset.name] && !assetMap.has(asset.name)) {
+          assetMap.set(asset.name, asset);
+        }
+      }
+    }
+
+    return Array.from(assetMap.values());
   }
 }
