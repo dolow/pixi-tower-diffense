@@ -154,7 +154,6 @@ export default class Sound {
    * 一時停止
    */
   public pause(): void {
-    console.log('pause', this.paused, this.played);
     if (this.paused || !this.played) {
       return;
     }
@@ -167,7 +166,6 @@ export default class Sound {
    * 再開
    */
   public resume(): void {
-    console.log('resume', this.paused, this.played);
     if (!this.paused || !this.played) {
       return;
     }
