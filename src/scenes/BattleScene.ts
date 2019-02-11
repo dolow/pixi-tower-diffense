@@ -450,6 +450,18 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   public onAvailableCostUpdated(cost: number): void {
     const text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
     (this.uiGraph.cost_text as PIXI.Text).text = text;
+
+    // コストに応じてUnitButton のフィルタを切り替える
+    for (let index = 0; index < this.unitSlotCount; index++) {
+      const unitButton = this.getUiGraphUnitButton(index);
+      if (!unitButton) {
+        continue;
+      }
+
+      if (unitButton.cost >= 0) {
+        unitButton.toggleFilter(cost < unitButton.cost);
+      }
+    }
   }
 
   /**
@@ -681,6 +693,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
 
       unitButton.init(index, unitId, cost);
+      unitButton.toggleFilter(true);
     }
   }
 
