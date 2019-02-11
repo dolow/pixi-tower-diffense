@@ -3,15 +3,20 @@ import GameManager from 'example/GameManager';
 import Resource from 'example/Resource';
 import Scene from 'example/Scene';
 import Fade from 'example/transition/Fade';
-
 import Sound from 'example/Sound';
 
 /**
  * タイトルシーン
  */
 export default class TitleScene extends Scene  {
+  /**
+   * テキストを明滅させる間隔
+   */
+  private readonly textAppealDuration: number = 20;
+  /**
+   * TOUCH TI START のテキスト
+   */
   private text!: PIXI.Text;
-  private sound: Sound | null = null;
 
   /**
    * コンストラクタ
@@ -73,9 +78,17 @@ export default class TitleScene extends Scene  {
     this.text.position.set(renderer.width * 0.5, renderer.height * 0.5);
     this.addChild(this.text);
 
-    this.sound = new Sound((resources[Resource.Audio.Bgm.Title] as any).buffer);
-    this.sound.volume = 0.25;
-    this.sound.play();
+    const sound = new Sound((resources[Resource.Audio.Bgm.Title] as any).buffer);
+    sound.play();
+  }
+
+  public update(dt: number): void {
+    super.update(dt);
+
+    if (this.elapsedFrameCount % this.textAppealDuration === 0) {
+      const visible = this.text.visible;
+      this.text.visible = !visible;
+    }
   }
 
   /**
@@ -83,10 +96,5 @@ export default class TitleScene extends Scene  {
    */
   public showOrderScene(): void {
     console.log("should go to order scene");
-    if (this.sound) {
-      (this.sound.isPaused())
-        ? this.sound.resume()
-        : this.sound.pause();
-    }
   }
 }

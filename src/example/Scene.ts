@@ -12,6 +12,10 @@ import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
  */
 export default abstract class Scene extends PIXI.Container {
   /**
+   * 経過フレーム数
+   */
+  protected elapsedFrameCount: number = 0;
+  /**
    * シーン開始用のトランジションオブジェクト
    */
   protected transitionIn:  Transition = new Immediate();
@@ -64,6 +68,10 @@ export default abstract class Scene extends PIXI.Container {
    * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
    */
   public update(delta: number): void {
+    this.elapsedFrameCount++;
+
+    this.updateRegisteredObjects(delta);
+
     if (this.transitionIn.isActive()) {
       this.transitionIn.update(delta);
     } else if (this.transitionOut.isActive()) {
