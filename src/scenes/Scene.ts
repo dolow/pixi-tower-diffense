@@ -121,7 +121,7 @@ export default abstract class Scene extends PIXI.Container {
   }
 
   /**
-   * loadResource に用いるリソースリストを作成するメソッド
+   * loadInitialResource に用いるリソースリストを作成するメソッド
    * デフォルトでは UiGraph のリソースリストを作成する
    */
   protected createInitialResourceList(): (LoaderAddParam | string)[] {
@@ -129,7 +129,7 @@ export default abstract class Scene extends PIXI.Container {
   }
 
   /**
-   * リソースをロードする
+   * リソースダウンロードのフローを実行する
    * デフォルトでは UiGraph 用の情報が取得される
    */
   public beginLoadResource(onLoaded: () => void): Promise<void> {
@@ -148,7 +148,8 @@ export default abstract class Scene extends PIXI.Container {
   }
 
   /**
-   * UiGraph 情報のロードを行う
+   * リソースダウンロードのフローを実行する
+   * UiGraph 情報も含まれる
    */
   protected loadInitialResource(onLoaded: () => void): void {
     const assets = this.createInitialResourceList();
@@ -219,7 +220,7 @@ export default abstract class Scene extends PIXI.Container {
   }
 
   /**
-   * loadResource 完了時のコールバックメソッド
+   * beginLoadResource 完了時のコールバックメソッド
    */
   protected onResourceLoaded(): void {
     if (this.hasSceneUiGraph) {

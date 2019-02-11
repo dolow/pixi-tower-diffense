@@ -1,8 +1,6 @@
 import { detect, BrowserInfo, BotInfo, NodeInfo } from 'detect-browser';
 import Sound from 'modules/Sound';
 
-const SUPPORTED_EXTENSIONS = ['mp3'];
-
 /**
  * サウンドを扱う
  * Sound の高級機能
@@ -27,9 +25,14 @@ export default class SoundManager {
   private static context: AudioContext | null = null;
 
   /**
-   * PIXI.Loader ミドルウェアが登録済みかどうかのフラグ
+   * WebAudio 利用の初期化済みフラグ
    */
-  private static loaderMiddlewareAdded: boolean = false;
+  private static webAudioInitialized: boolean = false;
+
+  /**
+   * SoundManager がサポートするサウンドファイル拡張子
+   */
+  private static readonly supportedExtensions = ['mp3'];
 
   /**
    * 一時停止中かどうかのフラグ
@@ -79,7 +82,7 @@ export default class SoundManager {
       return;
     }
 
-    SoundManager.addLoaderMiddleware(browser);
+    SoundManager.useWebAudio(browser);
     SoundManager.setSoundInitializeEvent(browser);
     SoundManager.setWindowLifeCycleEvent(browser);
   }
@@ -113,16 +116,16 @@ export default class SoundManager {
   /**
    * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
    */
-  public static addLoaderMiddleware(
-    browser: BrowserInfo | BotInfo | NodeInfo
-  ): void {
-    if (SoundManager.loaderMiddlewareAdded) {
+  public static useWebAudio(browser: BrowserInfo | BotInfo | NodeInfo): void {
+    if (SoundManager.webAudioInitialized) {
       return;
     }
 
+    const supportedExtensions = SoundManager.supportedExtensions;
+
     // xhr でバイナリ取得する拡張子を登録
-    for (let i = 0; i < SUPPORTED_EXTENSIONS.length; i++) {
-      const extension = SUPPORTED_EXTENSIONS[i];
+    for (let i = 0; i < supportedExtensions.length; i++) {
+      const extension = supportedExtensions[i];
       const PixiResource = PIXI.loaders.Loader.Resource;
       PixiResource.setExtensionXhrType(
         extension,
@@ -146,7 +149,7 @@ export default class SoundManager {
     // resource-loader ミドルウェアの登録
     PIXI.loader.use((resource: any, next: Function) =>  {
       const extension = resource.url.split('?')[0].split('.')[1];
-      if (extension && SUPPORTED_EXTENSIONS.indexOf(extension) !== -1) {
+      if (extension && supportedExtensions.indexOf(extension) !== -1) {
         // リソースオブジェクトに buffer という名前でプロパティを生やす
         (SoundManager as any)[methodName](resource.data, (buf: AudioBuffer) => {
           resource.buffer = buf;
@@ -157,7 +160,7 @@ export default class SoundManager {
       }
     });
 
-    SoundManager.loaderMiddlewareAdded = true;
+    SoundManager.webAudioInitialized = true;
   }
 
   /**

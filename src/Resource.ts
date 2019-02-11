@@ -152,6 +152,7 @@ const Resource = Object.freeze({
   },
 
   FontFamily: {
+    Css: 'base.css',
     Default: 'MisakiGothic'
   },
 

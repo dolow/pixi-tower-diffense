@@ -45,11 +45,6 @@ export default class GameManager {
     }
 
     this.game = app;
-
-    IndexedDBManager.init((_e) => {
-      console.debug('indexed db could not be initialized');
-    });
-    SoundManager.init();
   }
 
   /**
@@ -70,6 +65,11 @@ export default class GameManager {
     // GameManager インスタンス生成
     const instance = new GameManager(game);
     GameManager.instance = instance;
+
+    IndexedDBManager.init((_e) => {
+      console.debug('indexed db could not be initialized');
+    });
+    SoundManager.init();
 
     // canvas を DOM に追加
     document.body.appendChild(game.view);
