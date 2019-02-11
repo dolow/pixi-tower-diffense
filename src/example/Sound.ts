@@ -154,7 +154,7 @@ export default class Sound {
    * 一時停止
    */
   public pause(): void {
-    if (this.paused || !this.played) {
+    if (this.paused || !this.played || !this.source) {
       return;
     }
     this.offset = this.elapsedTime;
