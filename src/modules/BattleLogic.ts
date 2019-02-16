@@ -1,8 +1,10 @@
 import StageMaster from 'interfaces/master/StageMaster';
 import UnitMaster from 'interfaces/master/UnitMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
+import BattleLogicConfig from 'modules/BattleLogicConfig';
 import AttackableState from 'enum/AttackableState';
 import BattleLogicDefaultDelegator from 'modules/BattleLogicDefaultDelegator';
+import AttackableEntity from 'entity/AttackableEntity';
 import UnitEntity from 'entity/UnitEntity';
 import BaseEntity from 'entity/BaseEntity';
 
@@ -19,13 +21,9 @@ const BASE_ENTITIES_AI_INDEX = 1;
  */
 export default class BattleLogic {
   /**
-   * フレームごとのコスト回復量
+   * バトル設定
    */
-  public costRecoveryPerFrame: number = 0;
-  /**
-   * 利用可能コストの上限値
-   */
-  public maxAvailableCost: number = 100;
+  private config: BattleLogicConfig = new BattleLogicConfig();
 
   /**
    * BattleLogicDelegate 実装オブジェクト
@@ -64,7 +62,10 @@ export default class BattleLogic {
   /**
    * 外部から生成をリクエストされたユニット情報を保持する配列
    */
-  private spawnRequestedUnitUnitIds: { unitId: number, isPlayer: boolean }[] = [];
+  private spawnRequestedUnitUnitIds: {
+    unitId: number,
+    isPlayer: boolean
+  }[] = [];
   /**
    * 経過フレーム数
    */
@@ -85,8 +86,12 @@ export default class BattleLogic {
     playerBase: {
       baseId: number,
       health: number
-    }
+    },
+    config?: BattleLogicConfig
   }): void {
+    if (params.config) {
+      this.config = params.config;
+    }
     // デリゲータのセット
     this.delegator = params.delegator;
 
@@ -111,17 +116,19 @@ export default class BattleLogic {
       this.unitMasterCache.set(unit.unitId, unit);
     }
 
+    const aiBase = this.stageMasterCache.aiBase;
+
     const playerBaseEntity = new BaseEntity(params.playerBase.baseId, true);
-    const aiBaseEntity = new BaseEntity(this.stageMasterCache.aiBase.baseId, false);
+    const aiBaseEntity = new BaseEntity(aiBase.baseId, false);
 
     // 拠点エンティティの ID 割当て
     playerBaseEntity.id = this.nextEntityId++;
     aiBaseEntity.id = this.nextEntityId++;
     // 拠点エンティティの health 設定
     playerBaseEntity.maxHealth = params.playerBase.health;
-    aiBaseEntity.maxHealth = this.stageMasterCache.aiBase.health;
+    aiBaseEntity.maxHealth = aiBase.health;
     playerBaseEntity.currentHealth = params.playerBase.health;
-    aiBaseEntity.currentHealth = this.stageMasterCache.aiBase.health;
+    aiBaseEntity.currentHealth = aiBase.health;
 
     // 拠点エンティティの保持
     this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBaseEntity;
@@ -175,7 +182,7 @@ export default class BattleLogic {
       // ゲーム終了判定
       this.updateGameOver();
       // コスト回復
-      this.updateAvailableCost(this.availableCost + this.costRecoveryPerFrame);
+      this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
       // AI ユニットの生成リクエスト発行
       this.updateAISpawn();
       // リクエストされているユニット生成実行
@@ -186,6 +193,15 @@ export default class BattleLogic {
       this.updateEntityState();
     }
 
+    this.updatePostProcess();
+
+    this.passedFrameCount++;
+  }
+
+  /**
+   * メインループ後処理
+   */
+  private updatePostProcess(): void {
     // unitEntities 配列の圧縮
     const activeUnitEntities: UnitEntity[] = [];
     for (let i = 0; i < this.unitEntities.length; i++) {
@@ -197,7 +213,10 @@ export default class BattleLogic {
 
     this.unitEntities = activeUnitEntities;
 
-    this.passedFrameCount++;
+    // 現在フレームで受けたダメージをリセット
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      this.unitEntities[i].currentFrameDamage = 0;
+    }
   }
 
   /**
@@ -206,14 +225,20 @@ export default class BattleLogic {
    */
   private updateEntityParameter(): void {
     for (let i = 0; i < this.unitEntities.length; i++) {
-      this.updateDamage(this.unitEntities[i]);
-      this.updateDistance(this.unitEntities[i]);
+      const unit = this.unitEntities[i];
+      const master = this.unitMasterCache.get(unit.unitId);
+      if (!master) {
+        continue;
+      }
+
+      this.updateDamage(unit, master);
+      this.updateDistance(unit, master);
     }
   }
 
   /**
    * エンティティのステートを更新する
-   * ステート優先順位は右記の通り DEAD > ENGAGED > IDLE
+   * ステート優先順位は右記の通り DEAD > KNOCK_BACK > ENGAGED > IDLE
    * ユニット毎に処理を行うとステートを条件にした処理結果が
    * タイミングによって異なってしまうのでステート毎に処理を行う
    */
@@ -228,6 +253,13 @@ export default class BattleLogic {
       const entity = this.unitEntities[i];
       if (entity.state === AttackableState.DEAD) {
         this.updateUnitDeadState(entity);
+      }
+    }
+
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      const entity = this.unitEntities[i];
+      if (entity.state === AttackableState.KNOCK_BACK) {
+        this.updateUnitKnockBackState(entity);
       }
     }
 
@@ -273,19 +305,16 @@ export default class BattleLogic {
   /**
    * ダメージ判定を行い、必要なら health を上限させる
    */
-  private updateDamage(unit: UnitEntity): void {
+  private updateDamage(unit: UnitEntity, master: UnitMaster): void {
     if (!unit.engagedEntity) {
-      return;
-    }
-
-    const master = this.unitMasterCache.get(unit.unitId);
-    if (!master) {
       return;
     }
 
     // ダメージを与えられるかどうかの判断をデリゲータに委譲する
     if (this.delegator.shouldDamage(unit, unit.engagedEntity)) {
-      unit.engagedEntity.currentHealth = unit.engagedEntity.currentHealth - master.power;
+      const newHealth = unit.engagedEntity.currentHealth - master.power;
+      unit.engagedEntity.currentFrameDamage += master.power;
+      unit.engagedEntity.currentHealth = newHealth;
       // ダメージを与えた後の処理をデリゲータに委譲する
       this.delegator.onAttackableEntityHealthUpdated(
         unit,
@@ -299,21 +328,23 @@ export default class BattleLogic {
   /**
    * 移動可能か判定し、可能なら移動させる
    */
-  private updateDistance(unit: UnitEntity): void {
-    if (unit.state !== AttackableState.IDLE) {
-      return;
-    }
+  private updateDistance(unit: UnitEntity, master: UnitMaster): void {
+    if (unit.state === AttackableState.IDLE) {
+      unit.currentKnockBackFrameCount = 0;
 
-    const master = this.unitMasterCache.get(unit.unitId);
-    if (!master) {
-      return;
-    }
-
-    // 移動可能かどうかの判断をデリゲータに委譲する
-    if (this.delegator.shouldUnitWalk(unit)) {
-      unit.distance += master.speed;
-      // 移動した後の処理をデリゲータに委譲する
-      this.delegator.onUnitEntityWalked(unit);
+      // 移動可能かどうかの判断をデリゲータに委譲する
+      if (this.delegator.shouldUnitWalk(unit)) {
+        unit.distance += master.speed;
+        // 移動した後の処理をデリゲータに委譲する
+        this.delegator.onUnitEntityWalked(unit);
+      }
+    } else if (unit.state === AttackableState.KNOCK_BACK) {
+      unit.distance -= master.knockBackSpeed;
+      unit.currentKnockBackFrameCount++;
+      const rate = unit.currentKnockBackFrameCount / master.knockBackFrames;
+      this.delegator.onUnitEntityKnockingBack(unit, rate);
+    } else {
+      unit.currentKnockBackFrameCount = 0;
     }
   }
 
@@ -324,19 +355,62 @@ export default class BattleLogic {
     unit.id = INVALID_UNIT_ID;
   }
   /**
+   * ノックバック時のステート更新処理
+   */
+  private updateUnitKnockBackState(unit: UnitEntity): void {
+    unit.engagedEntity = null;
+
+    if (unit.currentHealth <= 0) {
+      unit.engagedEntity = null;
+      unit.state = AttackableState.DEAD;
+    } else {
+      // TODO: should not read master
+      const master = this.unitMasterCache.get(unit.unitId);
+      if (!master) {
+        return;
+      }
+      if (unit.currentKnockBackFrameCount >= master.knockBackFrames) {
+        unit.state = AttackableState.IDLE;
+      }
+    }
+  }
+  /**
    * 接敵時のステート更新処理
    */
   private updateUnitEngagedState(unit: UnitEntity): void {
-    // ロック解除判定
-    if (unit.engagedEntity && unit.engagedEntity.currentHealth <= 0) {
-      unit.engagedEntity = null;
-      unit.state        = AttackableState.IDLE;
-    }
-
-    // 自身の DEAD 判定
+    // DEAD 判定
     if (unit.currentHealth <= 0) {
       unit.engagedEntity = null;
-      unit.state        = AttackableState.DEAD;
+      unit.state = AttackableState.DEAD;
+      return;
+    }
+
+    // IDLE 判定
+    if (unit.engagedEntity) {
+      const target = unit.engagedEntity;
+
+      const targetIsDead = target.currentHealth <= 0;
+      const targetIsKnockingBack = target.state === AttackableState.KNOCK_BACK;
+
+      if (targetIsDead || targetIsKnockingBack || !this.isChivalrousEngage(unit, unit.engagedEntity)) {
+        unit.engagedEntity = null;
+        unit.state = AttackableState.IDLE;
+      }
+    }
+
+    // KNOCK_BACK 判定
+    const oldHealth = unit.currentHealth + unit.currentFrameDamage;
+    for (let i = 0; i < this.config.knockBackHealthThreasholds.length; i++) {
+      const rate = this.config.knockBackHealthThreasholds[i];
+      const threashold = unit.maxHealth * rate;
+      if (unit.currentHealth >= threashold) {
+        continue;
+      }
+      if (oldHealth >= threashold) {
+        unit.engagedEntity = null;
+        unit.state = AttackableState.KNOCK_BACK;
+        break;
+      }
     }
   }
   /**
@@ -347,18 +421,26 @@ export default class BattleLogic {
     for (let i = 0; i < this.unitEntities.length; i++) {
       const target = this.unitEntities[i];
       // 味方同士でなければスキップ
-      if ((unit.isPlayer  && target.isPlayer) || (!unit.isPlayer && !target.isPlayer)) {
+      if (
+        (unit.isPlayer  && target.isPlayer) ||
+        (!unit.isPlayer && !target.isPlayer)
+      ) {
         continue;
       }
       // ターゲットが接敵可能なステートでなければスキップ
-      if (target.state !== AttackableState.IDLE && target.state !== AttackableState.ENGAGED) {
+      if (
+        target.state !== AttackableState.IDLE &&
+        target.state !== AttackableState.ENGAGED
+      ) {
         continue;
       }
 
       // デリゲータに接敵可能かどうかの判断を委譲する
       if (this.delegator.shouldEngageAttackableEntity(unit, target)) {
-        unit.engagedEntity = target;
-        unit.state = AttackableState.ENGAGED;
+        if (this.isChivalrousEngage(unit, target)) {
+          unit.engagedEntity = target;
+          unit.state = AttackableState.ENGAGED;
+        }
         // 必要であれば接敵後の処理をデリゲータに委譲する
         break;
       }
@@ -490,13 +572,34 @@ export default class BattleLogic {
    */
   private updateAvailableCost(newCost: number): number {
     let cost = newCost;
-    if (cost > this.maxAvailableCost) {
-      cost = this.maxAvailableCost;
+    if (cost > this.config.maxAvailableCost) {
+      cost = this.config.maxAvailableCost;
     }
     this.availableCost = cost;
     // コスト更新後処理をデリゲータに移譲する
-    this.delegator.onAvailableCostUpdated(this.availableCost);
+    this.delegator.onAvailableCostUpdated(this.availableCost, this.config.maxAvailableCost);
 
     return this.availableCost;
+  }
+
+  /**
+   * 1 対 1 での接敵かどうかを返す
+   * 拠点に対しての接敵は true とする
+   */
+  private isChivalrousEngage(unit: UnitEntity, target: AttackableEntity): boolean {
+    if (!this.config.chivalrousEngage) {
+      return true;
+    }
+
+    if (!target.engagedEntity) {
+      return true;
+    }
+    if (target.engagedEntity.id === unit.id) {
+      return true;
+    }
+    if ((target.engagedEntity as BaseEntity).baseId !== undefined) {
+      return true;
+    }
+    return false;
   }
 }

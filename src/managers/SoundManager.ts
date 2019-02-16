@@ -1,8 +1,6 @@
 import { detect, BrowserInfo, BotInfo, NodeInfo } from 'detect-browser';
 import Sound from 'modules/Sound';
 
-const SUPPORTED_EXTENSIONS = ['mp3'];
-
 /**
  * サウンドを扱う
  * Sound の高級機能
@@ -27,9 +25,14 @@ export default class SoundManager {
   private static context: AudioContext | null = null;
 
   /**
-   * PIXI.Loader ミドルウェアが登録済みかどうかのフラグ
+   * WebAudio 利用の初期化済みフラグ
    */
-  private static loaderMiddlewareAdded: boolean = false;
+  private static webAudioInitialized: boolean = false;
+
+  /**
+   * SoundManager がサポートするサウンドファイル拡張子
+   */
+  private static readonly supportedExtensions = ['mp3'];
 
   /**
    * 一時停止中かどうかのフラグ
@@ -69,7 +72,8 @@ export default class SoundManager {
     if (ctx) {
       SoundManager.context = ctx;
     } else {
-      const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
+      const AudioContextClass =
+        (window as any).AudioContext || (window as any).webkitAudioContext;
       SoundManager.context = new AudioContextClass();
     }
 
@@ -78,7 +82,7 @@ export default class SoundManager {
       return;
     }
 
-    SoundManager.addLoaderMiddleware(browser);
+    SoundManager.useWebAudio(browser);
     SoundManager.setSoundInitializeEvent(browser);
     SoundManager.setWindowLifeCycleEvent(browser);
   }
@@ -112,21 +116,31 @@ export default class SoundManager {
   /**
    * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
    */
-  public static addLoaderMiddleware(browser: BrowserInfo | BotInfo | NodeInfo): void {
-    if (SoundManager.loaderMiddlewareAdded) {
+  public static useWebAudio(browser: BrowserInfo | BotInfo | NodeInfo): void {
+    if (SoundManager.webAudioInitialized) {
       return;
     }
 
+    const supportedExtensions = SoundManager.supportedExtensions;
+
     // xhr でバイナリ取得する拡張子を登録
-    for (let i = 0; i < SUPPORTED_EXTENSIONS.length; i++) {
-      const extension = SUPPORTED_EXTENSIONS[i];
+    for (let i = 0; i < supportedExtensions.length; i++) {
+      const extension = supportedExtensions[i];
       const PixiResource = PIXI.loaders.Loader.Resource;
-      PixiResource.setExtensionXhrType(extension, PixiResource.XHR_RESPONSE_TYPE.BUFFER);
-      PixiResource.setExtensionLoadType(extension, PixiResource.LOAD_TYPE.XHR);
+      PixiResource.setExtensionXhrType(
+        extension,
+        PixiResource.XHR_RESPONSE_TYPE.BUFFER
+      );
+      PixiResource.setExtensionLoadType(
+        extension,
+        PixiResource.LOAD_TYPE.XHR
+      );
     }
 
     // Chrome の一部バージョンでサウンドのデコード方法が異なるためメソッドを変える
-    const majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+    const majorVersion = (browser.version)
+      ? browser.version.split('.')[0]
+      : '0';
     let methodName = 'decodeAudio';
     if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
       methodName = 'decodeAudioWithPromise';
@@ -135,7 +149,7 @@ export default class SoundManager {
     // resource-loader ミドルウェアの登録
     PIXI.loader.use((resource: any, next: Function) =>  {
       const extension = resource.url.split('?')[0].split('.')[1];
-      if (extension && SUPPORTED_EXTENSIONS.indexOf(extension) !== -1) {
+      if (extension && supportedExtensions.indexOf(extension) !== -1) {
         // リソースオブジェクトに buffer という名前でプロパティを生やす
         (SoundManager as any)[methodName](resource.data, (buf: AudioBuffer) => {
           resource.buffer = buf;
@@ -146,13 +160,16 @@ export default class SoundManager {
       }
     });
 
-    SoundManager.loaderMiddlewareAdded = true;
+    SoundManager.webAudioInitialized = true;
   }
 
   /**
    * オーディオデータのデコード処理
    */
-  public static decodeAudio(binary: any, callback: (buf: AudioBuffer) => void): void {
+  public static decodeAudio(
+    binary: any,
+    callback: (buf: AudioBuffer) => void
+  ): void {
     if (SoundManager.sharedContext) {
       SoundManager.sharedContext.decodeAudioData(binary, callback);
     }
@@ -161,7 +178,10 @@ export default class SoundManager {
    * オーディオデータのデコード処理
    * ブラウザ種別やバージョンによっては I/F が異なるため、こちらを使う必要がある
    */
-  public static decodeAudioWithPromise(binary: any, callback: (buf: AudioBuffer) => void): void {
+  public static decodeAudioWithPromise(
+    binary: any,
+    callback: (buf: AudioBuffer) => void
+  ): void {
     if (SoundManager.sharedContext) {
       SoundManager.sharedContext.decodeAudioData(binary).then(callback);
     }
@@ -172,11 +192,16 @@ export default class SoundManager {
    * 多くのブラウザではタップ等のユーザ操作を行わないとサウンドを再生できない
    * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
    */
-  public static setSoundInitializeEvent(browser: BrowserInfo | BotInfo | NodeInfo): void {
-    const eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+  public static setSoundInitializeEvent(
+    browser: BrowserInfo | BotInfo | NodeInfo
+  ): void {
+    const type = typeof document.ontouchend;
+    const eventName = (type === 'undefined') ? 'mousedown' : 'touchend';
     let soundInitializer: () => void;
 
-    const majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+    const majorVersion = (browser.version)
+      ? browser.version.split('.')[0]
+      : '0';
 
     if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) >= 66) {
       soundInitializer = () => {
@@ -187,10 +212,11 @@ export default class SoundManager {
       };
     } else if (browser.name === 'safari') {
       soundInitializer = () => {
-        if (SoundManager.sharedContext) {
-          const silentSource = SoundManager.sharedContext.createBufferSource();
-          silentSource.buffer = SoundManager.sharedContext.createBuffer(1, 1, 44100);
-          silentSource.connect(SoundManager.sharedContext.destination);
+        const context = SoundManager.sharedContext;
+        if (context) {
+          const silentSource = context.createBufferSource();
+          silentSource.buffer = context.createBuffer(1, 1, 44100);
+          silentSource.connect(context.destination);
           silentSource.start(0);
           silentSource.disconnect();
         }
@@ -208,10 +234,14 @@ export default class SoundManager {
    * HTML window のライフサイクルイベントを登録する
    * ブラウザのタブ切り替えや非アクティヴ時に音声が鳴ってしまわないようにする
    */
-  public static setWindowLifeCycleEvent(browser: BrowserInfo | BotInfo | NodeInfo): void {
+  public static setWindowLifeCycleEvent(
+    browser: BrowserInfo | BotInfo | NodeInfo
+  ): void {
     if (browser.name === 'safari') {
       document.addEventListener('webkitvisibilitychange', () => {
-        (document as any).webkitHidden ? SoundManager.pause() : SoundManager.resume();
+        (document as any).webkitHidden
+          ? SoundManager.pause()
+          : SoundManager.resume();
       });
     } else {
       document.addEventListener('visibilitychange', () => {

@@ -20,6 +20,7 @@ import Fade from 'scenes/transition/Fade';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
 import BattleLogic from 'modules/BattleLogic';
+import BattleLogicConfig from 'modules/BattleLogicConfig';
 
 import AttackableEntity from 'entity/AttackableEntity';
 import BaseEntity from 'entity/BaseEntity';
@@ -34,13 +35,16 @@ import Field from 'display/battle/Field';
 import BattleResult from 'display/battle/BattleResult';
 import AttackSmoke from 'display/battle/single_shot/AttackSmoke';
 import Dead from 'display/battle/single_shot/Dead';
-import CollapseExplodeEffect from 'display/battle/single_shot/CollapseExplodeEffect';
+import CollapseExplodeEffect
+    from 'display/battle/single_shot/CollapseExplodeEffect';
 
 /**
  * メインのゲーム部分のシーン
  * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
+
+  private static readonly unitLeapHeight: number = 30;
 
   /**
    * このシーンのステート
@@ -68,7 +72,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * ゲームロジックを処理する BattleLogic のインスタンス
    */
-  private manager!: BattleLogic;
+  private battleLogic!: BattleLogic;
+  /**
+   * BattleLogic 用の設定
+   */
+  private battleLogicConfig!: BattleLogicConfig;
   /**
    * 背景の PIXI.Container
    */
@@ -91,18 +99,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * ユニットアニメーションマスターのキャッシュ
    */
-  private unitAnimationMasterCache: Map<number, UnitAnimationMaster> = new Map();
-  /**
-   * Field に最後にユニットを追加した Zline のインデックス
-   * ユニットが重なって表示されるのを防ぐ
-   */
-  private fieldLastAddedZline: {
-    player: number;
-    ai: number;
-  } = {
-    player: -1,
-    ai: -1
-  };
+  private unitAnimationMasterCache: Map<number, UnitAnimationMaster>
+    = new Map();
 
   /**
    * コンストラクタ
@@ -116,7 +114,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     // デフォルトのシーンステート
     this.state = BattleSceneState.LOADING_RESOURCES;
     // BattleLogic インスタンスの作成
-    this.manager = new BattleLogic();
+    this.battleLogic = new BattleLogic();
     // Background インスタンスの作成
     this.field = new Field();
 
@@ -125,8 +123,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     this.stageId   = params.stageId;
     this.unitIds   = params.unitIds;
     this.playerBase = params.playerBase;
-    this.manager.costRecoveryPerFrame = params.cost.recoveryPerFrame;
-    this.manager.maxAvailableCost     = params.cost.max;
+
+    this.battleLogicConfig = new BattleLogicConfig({
+      costRecoveryPerFrame: params.cost.recoveryPerFrame,
+      maxAvailableCost: params.cost.max
+    });
   }
 
   /**
@@ -159,11 +160,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         break;
       }
       case BattleSceneState.INGAME: {
-        this.manager.update(delta);
+        this.battleLogic.update(delta);
         break;
       }
       case BattleSceneState.FINISHED: {
-        this.manager.update(delta);
+        this.battleLogic.update(delta);
         break;
       }
     }
@@ -260,27 +261,32 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
     const unitMasters = resources[Resource.Api.Unit(this.unitIds)].data;
 
-    const unitAnimationMasters = resources[Resource.Api.UnitAnimation(this.unitIds)].data;
+    const animationKey = Resource.Api.UnitAnimation(this.unitIds);
+    const unitAnimationMasters = resources[animationKey].data;
     for (let i = 0; i < unitAnimationMasters.length; i++) {
       const master = unitAnimationMasters[i];
       this.unitAnimationMasterCache.set(master.unitId, master);
     }
 
-    this.field.init({ fieldLength: stageMaster.length, zLines: stageMaster.zLines });
+    this.field.init({
+      fieldLength: stageMaster.length,
+      zLines: stageMaster.zLines
+    });
 
     this.initSound();
     this.initUnitButtons();
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
-    this.manager.init({
+    this.battleLogic.init({
       stageMaster,
       unitMasters,
       delegator: this,
       playerBase: {
         baseId: this.playerBase.baseId,
         health: this.playerBase.maxHealth
-      }
+      },
+      config: this.battleLogicConfig
     });
 
     if (this.transitionIn.isFinished()) {
@@ -345,11 +351,15 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     base.spawn(entity.isPlayer);
 
+    const zLineIndex = this.field.getDifferentZlineIndex();
+
     const unit = new Unit(entity.unitId, {
       hitFrame: master.hitFrame,
-      spawnPosition: { x: basePosition, y: 0 },
-      animationMaxFrameIndexes: master.maxFrameIndexes,
-      animationUpdateDurations: master.updateDurations
+      spawnPosition: {
+        x: basePosition,
+        y: this.field.getZlineBaseY(zLineIndex)
+      },
+      animation: master.types
     });
 
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
@@ -357,33 +367,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     this.attackables.set(entity.id, unit);
 
-    // Field に追加する重なり順を決定する
-    const zLineCount = this.field.zLineCount;
-    let index = Math.floor(Math.random() * this.field.zLineCount);
-
-    // 最後に追加された Zline と同じ場合は表示が重なって見えてしまうので避ける
-    let lastAddedZline;
-    if (entity.isPlayer) {
-      lastAddedZline = this.fieldLastAddedZline.player;
-    } else {
-      lastAddedZline = this.fieldLastAddedZline.ai;
-    }
-
-    if (index === lastAddedZline) {
-      index++;
-      if (index > (zLineCount - 1)) {
-        index = 0;
-      }
-    }
-
-    this.field.addChildToZLine(unit.sprite, index);
-
-    // 重なって表示されないようにする
-    if (entity.isPlayer) {
-      this.fieldLastAddedZline.player = index;
-    } else {
-      this.fieldLastAddedZline.ai = index;
-    }
+    this.field.addChildToZLine(unit.sprite, zLineIndex);
 
     this.registerUpdatingObject(unit as UpdateObject);
   }
@@ -391,7 +375,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * エンティティのステートが変更された際のコールバック
    */
-  public onAttackableEntityStateChanged(entity: AttackableEntity, _oldState: number): void {
+  public onAttackableEntityStateChanged(
+    entity: AttackableEntity,
+    _oldState: number
+  ): void {
     const attackable = this.attackables.get(entity.id);
     if (!attackable) {
       return;
@@ -409,12 +396,18 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
           unit.requestAnimation(animationTypes.ATTACK);
           break;
         }
+        case AttackableState.KNOCK_BACK: {
+          unit.requestAnimation(animationTypes.DAMAGE);
+          break;
+        }
         case AttackableState.DEAD: {
           // 死亡時は死亡エフェクトを表示してもともとのユニット描画物は破棄する
           const effect = new Dead(!entity.isPlayer);
           const sprite = attackable.sprite;
-          const yAdjust = sprite.height * (1.0 - sprite.anchor.y) - effect.height;
-          effect.position.set(sprite.position.x, sprite.position.y + yAdjust);
+          const position = sprite.position;
+          const yBase = sprite.height * (1.0 - sprite.anchor.y);
+          const yAdjust = yBase - effect.height;
+          effect.position.set(position.x, position.y + yAdjust);
           sprite.parent.addChild(effect);
           this.registerUpdatingObject(effect);
 
@@ -436,9 +429,21 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 利用可能なコストの値が変動したときのコールバック
    */
-  public onAvailableCostUpdated(cost: number): void {
-    const text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
+  public onAvailableCostUpdated(cost: number, maxCost: number): void {
+    const text = `${Math.floor(cost)}/${maxCost}`;
     (this.uiGraph.cost_text as PIXI.Text).text = text;
+
+    // コストに応じてUnitButton のフィルタを切り替える
+    for (let index = 0; index < this.unitSlotCount; index++) {
+      const unitButton = this.getUiGraphUnitButton(index);
+      if (!unitButton) {
+        continue;
+      }
+
+      if (unitButton.cost >= 0) {
+        unitButton.toggleFilter(cost < unitButton.cost);
+      }
+    }
   }
 
   /**
@@ -491,7 +496,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 渡されたエンティティ同士が攻撃可能か返す
    */
-  public shouldDamage(attackerEntity: AttackableEntity, targetEntity: AttackableEntity): boolean {
+  public shouldDamage(
+    attackerEntity: AttackableEntity,
+    targetEntity: AttackableEntity
+  ): boolean {
     const attackerAttackable = this.attackables.get(attackerEntity.id);
     if (!attackerAttackable) {
       return false;
@@ -524,7 +532,32 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const unit = attackable as Unit;
     const direction = entity.isPlayer ? 1 : -1;
 
-    unit.sprite.position.x = unit.getSpawnedPosition().x + entity.distance * direction;
+    const physicalDistance = entity.distance * direction;
+    unit.sprite.position.x = unit.getSpawnedPosition().x + physicalDistance;
+  }
+
+  /**
+   * 渡された UnitEntity がノックバック中に呼ばれる
+   */
+  public onUnitEntityKnockingBack(
+    entity: UnitEntity,
+    knockBackRate: number
+  ): void {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return;
+    }
+    const unit = attackable as Unit;
+    const direction = entity.isPlayer ? 1 : -1;
+
+    const physicalDistance = entity.distance * direction;
+    const spawnedPosition = unit.getSpawnedPosition();
+
+    const leap = (knockBackRate >= 1) ? 0 : -Math.sin(knockBackRate * Math.PI);
+
+    unit.sprite.position.x = spawnedPosition.x + physicalDistance;
+    unit.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
+
   }
 
   /**
@@ -562,13 +595,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     // 体力ゲージの表示
     if ((target as UnitEntity).unitId) {
-      const attackable = this.attackables.get(target.id);
+      const attackable = this.attackables.get(target.id) as Unit;
       if (!attackable) {
         return;
       }
       const fromPercent = fromHealth / maxHealth;
       const toPercent = toHealth / maxHealth;
-      const gauge = (attackable as Unit).spawnHealthGauge(fromPercent, toPercent);
+      const gauge = attackable.spawnHealthGauge(fromPercent, toPercent);
       targetSprite.parent.addChild(gauge);
       this.registerUpdatingObject(gauge);
     }
@@ -612,7 +645,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const unitButton = this.getUiGraphUnitButton(buttonIndex);
     if (unitButton) {
-      this.manager.requestSpawnPlayer(unitButton.unitId);
+      this.battleLogic.requestSpawnPlayer(unitButton.unitId);
     }
   }
 
@@ -621,24 +654,31 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private initSound(): void {
     const resources = PIXI.loader.resources as any;
-
     const audioMaster = Resource.Audio;
-    SoundManager.createSound(audioMaster.Bgm.Battle, resources[audioMaster.Bgm.Battle].buffer);
-    SoundManager.createSound(audioMaster.Se.Attack1, resources[audioMaster.Se.Attack1].buffer);
-    SoundManager.createSound(audioMaster.Se.Attack2, resources[audioMaster.Se.Attack2].buffer);
-    SoundManager.createSound(audioMaster.Se.Bomb, resources[audioMaster.Se.Bomb].buffer);
-    SoundManager.createSound(audioMaster.Se.UnitSpawn, resources[audioMaster.Se.UnitSpawn].buffer);
-    SoundManager.createSound(audioMaster.Se.Win, resources[audioMaster.Se.Win].buffer);
-    SoundManager.createSound(audioMaster.Se.Lose, resources[audioMaster.Se.Lose].buffer);
+    const soundList = [
+      audioMaster.Bgm.Battle,
+      audioMaster.Se.Attack1,
+      audioMaster.Se.Attack2,
+      audioMaster.Se.Bomb,
+      audioMaster.Se.UnitSpawn,
+      audioMaster.Se.Win,
+      audioMaster.Se.Lose
+    ];
 
-    this.playBgm(Resource.Audio.Bgm.Battle);
+    for (let i = 0; i < soundList.length; i++) {
+      const name = soundList[i];
+      SoundManager.createSound(name, resources[name].buffer);
+    }
+
+    this.playBgm(audioMaster.Bgm.Battle);
   }
 
   /**
    * ユニットボタンの初期化
    */
   private initUnitButtons(): void {
-    const unitMasters = PIXI.loader.resources[Resource.Api.Unit(this.unitIds)].data;
+    const key = Resource.Api.Unit(this.unitIds);
+    const unitMasters = PIXI.loader.resources[key].data;
     for (let index = 0; index < this.unitSlotCount; index++) {
       const unitButton = this.getUiGraphUnitButton(index);
       if (!unitButton) {
@@ -659,6 +699,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
 
       unitButton.init(index, unitId, cost);
+      unitButton.toggleFilter(true);
     }
   }
 
@@ -675,7 +716,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private enableBackToOrderScene(): void {
     this.interactive = true;
-    this.on('pointerdown', (_e: PIXI.interaction.InteractionEvent) => this.backToOrderScene());
+    this.on(
+      'pointerdown',
+      (_e: PIXI.interaction.InteractionEvent) => this.backToOrderScene()
+    );
   }
 
   /**

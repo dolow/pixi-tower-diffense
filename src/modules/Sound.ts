@@ -35,13 +35,20 @@ export default class Sound {
     const playedTime = audioContext.currentTime - this.playedAt;
 
     // ループ再生の場合は合計の再生時間から割り出す
-    if (this.source.loop) {
+    if (this.loop) {
       const playLength = this.source.loopEnd - this.source.loopStart;
       if (playedTime > playLength) {
         return this.source.loopStart + (playedTime % playLength);
       }
     }
     return playedTime;
+  }
+
+  /**
+   * paused の public ゲッタ
+   */
+  public isPaused(): boolean {
+    return this.paused;
   }
 
   /**
@@ -147,7 +154,7 @@ export default class Sound {
    * 一時停止
    */
   public pause(): void {
-    if (this.paused || !this.played) {
+    if (this.paused || !this.played || !this.source) {
       return;
     }
     this.offset = this.elapsedTime;

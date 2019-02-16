@@ -17,11 +17,18 @@ export default interface BattleLogicDelegate {
   /**
    * エンティティのステートが変更した際のコールバック
    */
-  onAttackableEntityStateChanged(entity: AttackableEntity, oldState: number): void;
+  onAttackableEntityStateChanged(
+    entity: AttackableEntity,
+    oldState: number
+  ): void;
   /**
-   * UnitEntity が生成された時のコールバック
+   * UnitEntity が歩いた時のコールバック
    */
   onUnitEntityWalked(entity: UnitEntity): void;
+  /**
+   * UnitEntity がノックバックした時のコールバック
+   */
+  onUnitEntityKnockingBack(_entity: UnitEntity, _knockBackRate: number): void;
   /**
    * エンティティの health が変動した際のコールバック
    */
@@ -35,7 +42,7 @@ export default interface BattleLogicDelegate {
   /**
    * 利用可能コストが変動した際のコールバック
    */
-  onAvailableCostUpdated(cost: number): void;
+  onAvailableCostUpdated(cost: number, maxCost: number): void;
   /**
    * ゲームが終了した際のコールバック
    */
@@ -43,7 +50,10 @@ export default interface BattleLogicDelegate {
   /**
    * 渡されたエンティティが接敵可能か返す
    */
-  shouldEngageAttackableEntity(attacker: AttackableEntity, target: AttackableEntity): boolean;
+  shouldEngageAttackableEntity(
+    attacker: AttackableEntity,
+    target: AttackableEntity
+  ): boolean;
   /**
    * 渡されたエンティティが攻撃可能か返す
    */

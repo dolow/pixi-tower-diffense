@@ -21,11 +21,20 @@ export default class UnitButton extends PIXI.Container {
   /**
    * ボタン画像
    */
-  private button!: PIXI.Sprite;
+  private button: PIXI.Sprite = new PIXI.Sprite();
   /**
    * コストテキスト
    */
-  private text!: PIXI.Text;
+  private text: PIXI.Text = new PIXI.Text('', {
+    fontFamily: Resource.FontFamily.Default,
+    fontSize: 24,
+    fill: 0xffffff,
+    padding: 4
+  });
+  /**
+   * フィルター
+   */
+  private filter: PIXI.filters.ColorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
 
   /**
    * コンストラクタ
@@ -33,15 +42,10 @@ export default class UnitButton extends PIXI.Container {
   constructor(texture?: PIXI.Texture) {
     super();
 
-    this.button = new PIXI.Sprite();
-    this.text = new PIXI.Text('', {
-      fontFamily: Resource.FontFamily.Default,
-      fontSize: 24,
-      fill: 0xffffff,
-      padding: 4
-    });
-
     this.text.position.set(46, 88);
+    this.filter.desaturate();
+    this.filter.enabled = false;
+    this.button.filters = [this.filter];
 
     if (texture) {
       this.button.texture = texture;
@@ -55,15 +59,15 @@ export default class UnitButton extends PIXI.Container {
    * ボタン枠インデックスとユニット ID で初期化する
    */
   public init(slotIndex: number, unitId: number = -1, cost: number = -1): void {
-    const texture = this.getTexture(unitId);
-    if (!texture) {
-      return;
-    }
-
     this.slotIndex = slotIndex;
-    this.unitId = unitId;
-    this.button.texture = texture;
-    this.text.text = (cost >= 0) ? `${cost}` : '';
+    this.changeUnit(unitId, cost);
+  }
+
+  /**
+   * ColorMatrixFilter の有効/無効を切り替える
+   */
+  public toggleFilter(enabled: boolean): void {
+    this.filter.enabled = enabled;
   }
 
   /**
@@ -77,7 +81,8 @@ export default class UnitButton extends PIXI.Container {
 
     this.unitId  = unitId;
     this.button.texture = texture;
-    this.text.text = (cost >= 0) ? `${cost}` : '';
+    this.cost = cost;
+    this.text.text = (this.cost >= 0) ? `${this.cost}` : '';
   }
 
   /**

@@ -12,8 +12,9 @@ export default class UnitButtonFactory extends UiNodeFactory {
     let texture = undefined;
 
     if (nodeParams) {
-      if (nodeParams.textureName && PIXI.utils.TextureCache[nodeParams.textureName]) {
-        texture = PIXI.utils.TextureCache[nodeParams.textureName];
+      const textureName = nodeParams.textureName;
+      if (textureName && PIXI.utils.TextureCache[textureName]) {
+        texture = PIXI.utils.TextureCache[textureName];
       }
     }
 

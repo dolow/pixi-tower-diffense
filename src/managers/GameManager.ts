@@ -45,11 +45,6 @@ export default class GameManager {
     }
 
     this.game = app;
-
-    IndexedDBManager.init((_e) => {
-      console.debug('indexed db could not be initialized');
-    });
-    SoundManager.init();
   }
 
   /**
@@ -62,10 +57,19 @@ export default class GameManager {
     option?: PIXI.ApplicationOptions
   }): void {
     // PIXI Application 生成
-    const game = new PIXI.Application(params.glWidth, params.glHeight, params.option);
+    const game = new PIXI.Application(
+      params.glWidth,
+      params.glHeight,
+      params.option
+    );
     // GameManager インスタンス生成
     const instance = new GameManager(game);
     GameManager.instance = instance;
+
+    IndexedDBManager.init((_e) => {
+      console.debug('indexed db could not be initialized');
+    });
+    SoundManager.init();
 
     // canvas を DOM に追加
     document.body.appendChild(game.view);
@@ -93,7 +97,8 @@ export default class GameManager {
    */
   public static requestFullScreen(): void {
     const body = window.document.body as any;
-    const requestFullScreen = body.requestFullScreen || body.webkitRequestFullScreen;
+    const requestFullScreen =
+      body.requestFullScreen || body.webkitRequestFullScreen;
     requestFullScreen.call(body);
   }
 
@@ -182,7 +187,8 @@ export default class GameManager {
     const browser = detect();
     // iOS は対応していないが一応記述しておく
     if (browser && (browser.os === 'iOS' || browser.os === 'Android OS')) {
-      const eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+      const type = typeof document.ontouchend;
+      const eventName = (type === 'undefined') ? 'mousedown' : 'touchend';
       document.body.addEventListener(eventName, GameManager.requestFullScreen);
     }
   }

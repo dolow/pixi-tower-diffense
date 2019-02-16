@@ -145,7 +145,10 @@ export default class IndexedDBManager {
   /**
    * すべてのレコードを削除する
    */
-  public static clear(onSuccess?: (e: Event) => void, onError?: (e?: Event) => void): void {
+  public static clear(
+    onSuccess?: (e: Event) => void,
+    onError?: (e?: Event) => void
+  ): void {
     const store = IndexedDBManager.getStoreObject();
     if (!store) {
       if (onError) {
@@ -170,7 +173,8 @@ export default class IndexedDBManager {
     const db = (e.target as IDBRequest).result;
 
     const index = IndexedDBManager.storeIndex;
-    const store = db.createObjectStore(IndexedDBManager.storeName, { keyPath: index });
+    const storeName = IndexedDBManager.storeName;
+    const store = db.createObjectStore(storeName, { keyPath: index });
     store.createIndex(index, index, { unique: true });
   }
 
@@ -189,7 +193,10 @@ export default class IndexedDBManager {
   /**
    * Key/Value をこのマネージャが扱うオブジェクトに変換する
    */
-  private static createRecordObject(key: string, value: any): IndexedDBManagerRecord {
+  private static createRecordObject(
+    key: string,
+    value: any
+  ): IndexedDBManagerRecord {
     return { key, value };
   }
 }

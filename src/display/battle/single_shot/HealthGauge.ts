@@ -4,7 +4,9 @@ import UpdateObject from 'interfaces/UpdateObject';
 /**
  * health 増減を表現するエフェクト
  */
-export default class HealthGaugeEffect extends PIXI.Container implements UpdateObject {
+export default class HealthGaugeEffect
+    extends PIXI.Container
+    implements UpdateObject {
   /**
    * ゲージの幅
    */
@@ -112,9 +114,11 @@ export default class HealthGaugeEffect extends PIXI.Container implements UpdateO
       const reduceProgress = this.elapsedFrameCount / this.reducingFrameCount;
       const currentPercent = this.fromPercent - reduceDistance * reduceProgress;
 
+      const width = this.gaugeWidth * currentPercent;
+
       this.currentGraphic.clear();
       this.currentGraphic.beginFill(this.currentColor, 1);
-      this.currentGraphic.drawRect(0, 0, this.gaugeWidth * currentPercent, this.gaugeHeight);
+      this.currentGraphic.drawRect(0, 0, width, this.gaugeHeight);
     } else if (this.elapsedFrameCount > this.activeFrameCount) {
       // 規定フレーム数再生したら自然消滅させる
       this.maxGraphic.destroy();

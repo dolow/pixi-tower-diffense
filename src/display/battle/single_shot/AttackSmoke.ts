@@ -5,7 +5,9 @@ import UpdateObject from 'interfaces/UpdateObject';
 /**
  * 攻撃時のもくもくエフェクト
  */
-export default class AttackSmokeEffect extends PIXI.Container implements UpdateObject {
+export default class AttackSmokeEffect
+    extends PIXI.Container
+    implements UpdateObject {
   /**
    * スプライトアニメーションを更新する頻度
    */
@@ -57,9 +59,11 @@ export default class AttackSmokeEffect extends PIXI.Container implements UpdateO
     this.elapsedFrameCount++;
     // 半透明を表現
     this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
+
+    const frequency = AttackSmokeEffect.TextureFrameUpdateFrequency;
     // テクスチャ更新周期になったら次のテクスチャに切り替える
-    if (this.elapsedFrameCount % AttackSmokeEffect.TextureFrameUpdateFrequency === 0) {
-      const count = this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency;
+    if (this.elapsedFrameCount % frequency === 0) {
+      const count = this.elapsedFrameCount / frequency;
       const index = Math.floor(count) + 1;
       // すべてのテクスチャが再生されたら自然消滅させる
       if (index > Resource.MaxFrameIndex(Resource.Static.AttackSmoke)) {

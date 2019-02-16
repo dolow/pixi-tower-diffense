@@ -4,8 +4,9 @@
 const AttackableState = Object.freeze({
   IDLE: 1,
   ENGAGED: 2,
-  DEAD: 3,
-  WAIT: 4
+  KNOCK_BACK: 3,
+  DEAD: 4,
+  WAIT: 5
 });
 
 export default AttackableState;
