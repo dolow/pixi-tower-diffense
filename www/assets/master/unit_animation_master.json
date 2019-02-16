@@ -1,82 +1,112 @@
 [
   {
-    "unitId":      1,
-    "hitFrame":    4,
-    "maxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 8,
-      "damage": 1
-    },
-    "updateDurations": {
-      "wait": 12,
-      "walk": 8,
-      "attack": 4,
-      "damage": 4
+    "unitId": 1,
+    "hitFrame": 4,
+    "types": {
+      "wait": {
+        "maxFrameIndex": 2,
+        "updateDuration": 12
+      },
+      "walk": {
+        "maxFrameIndex": 6,
+        "updateDuration": 8
+      },
+      "attack": {
+        "maxFrameIndex": 8,
+        "updateDuration": 4
+      },
+      "damage": {
+        "maxFrameIndex": 1,
+        "updateDuration": 4
+      }
     }
   },
   {
-    "unitId":      2,
-    "hitFrame":    2,
-    "maxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 6,
-      "damage": 1
-    },
-    "updateDurations": {
-      "wait": 12,
-      "walk": 8,
-      "attack": 4,
-      "damage": 1
+    "unitId": 2,
+    "hitFrame": 2,
+    "types": {
+      "wait": {
+        "maxFrameIndex": 2,
+        "updateDuration": 12
+      },
+      "walk": {
+        "maxFrameIndex": 6,
+        "updateDuration": 8
+      },
+      "attack": {
+        "maxFrameIndex": 6,
+        "updateDuration": 4
+      },
+      "damage": {
+        "maxFrameIndex": 1,
+        "updateDuration": 1
+      }
     }
   },
   {
-    "unitId":      3,
-    "hitFrame":    3,
-    "maxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 7,
-      "damage": 1
-    },
-    "updateDurations": {
-      "wait": 4,
-      "walk": 4,
-      "attack": 3,
-      "damage": 1
+    "unitId": 3,
+    "hitFrame": 3,
+    "types": {
+      "wait": {
+        "maxFrameIndex": 2,
+        "updateDuration": 4
+      },
+      "walk": {
+        "maxFrameIndex": 6,
+        "updateDuration": 4
+      },
+      "attack": {
+        "maxFrameIndex": 7,
+        "updateDuration": 3
+      },
+      "damage": {
+        "maxFrameIndex": 1,
+        "updateDuration": 1
+      }
     }
   },
   {
-    "unitId":      4,
-    "hitFrame":    4,
-    "maxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 11,
-      "damage": 1
-    },
-    "updateDurations": {
-      "wait": 5,
-      "walk": 10,
-      "attack": 6,
-      "damage": 1
+    "unitId": 4,
+    "hitFrame": 4,
+    "types": {
+      "wait": {
+        "maxFrameIndex": 2,
+        "updateDuration": 5
+      },
+      "walk": {
+        "maxFrameIndex": 6,
+        "updateDuration": 10
+      },
+      "attack": {
+        "maxFrameIndex": 11,
+        "updateDuration": 6
+      },
+      "damage": {
+        "maxFrameIndex": 1,
+        "updateDuration": 1
+      }
     }
   },
   {
-    "unitId":      5,
-    "hitFrame":    5,
-    "maxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 9,
-      "damage": 1
-    },
-    "updateDurations": {
-      "wait": 4,
-      "walk": 8,
-      "attack": 4,
-      "damage": 1
+    "unitId": 5,
+    "hitFrame": 5,
+    "types": {
+      "wait": {
+        "maxFrameIndex": 2,
+        "updateDuration": 4
+      },
+      "walk": {
+        "maxFrameIndex": 6,
+        "updateDuration": 8
+      },
+      "attack": {
+        "maxFrameIndex": 9,
+        "updateDuration": 4
+      },
+      "damage": {
+        "maxFrameIndex": 1,
+        "updateDuration": 1
+      }
     }
   }
 ]

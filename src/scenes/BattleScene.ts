@@ -359,8 +359,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         x: basePosition,
         y: this.field.getZlineBaseY(zLineIndex)
       },
-      animationMaxFrameIndexes: master.maxFrameIndexes,
-      animationUpdateDurations: master.updateDurations
+      animation: master.types
     });
 
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;

@@ -32,15 +32,14 @@ export default class Unit extends Attackable {
    */
   protected hitFrame: number = 0;
   /**
-   * 最大のフレームインデックス
-   * マスターデータの値
+   * アニメーション情報
    */
-  protected animationMaxFrameIndexes: { [key: string]: number } = {};
-  /**
-   * フレーム更新に必要なrequestAnimationFrame数
-   * マスターデータの値
-   */
-  protected animationUpdateDurations: { [key: string]: number } = {};
+  protected animation: {
+    [key: string]: {
+      maxFrameIndex: number;
+      updateDuration: number;
+    }
+  } = {};
 
   /**
    * HealthGauge インスタンス
@@ -56,8 +55,12 @@ export default class Unit extends Attackable {
     animationParam: {
       hitFrame: number,
       spawnPosition: { x: number, y: number },
-      animationMaxFrameIndexes: { [key: string]: number },
-      animationUpdateDurations: { [key: string]: number }
+      animation: {
+        [key: string]: {
+          maxFrameIndex: number;
+          updateDuration: number;
+        }
+      }
     }
   ) {
     super();
@@ -66,9 +69,8 @@ export default class Unit extends Attackable {
 
     this.unitId = unitId;
 
-    this.hitFrame = animationParam.hitFrame;
-    this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
-    this.animationUpdateDurations = animationParam.animationUpdateDurations;
+    this.hitFrame  = animationParam.hitFrame;
+    this.animation = animationParam.animation;
 
     this.sprite = new PIXI.Sprite();
     this.sprite.anchor.x = 0.5;
@@ -128,16 +130,22 @@ export default class Unit extends Attackable {
     if (this.animationFrameIndex !== this.hitFrame) {
       return false;
     }
-    const key = Resource.AnimationTypes.Unit.ATTACK;
-    const updateDuration = this.animationUpdateDurations[key];
-    return (this.elapsedFrameCount % updateDuration) === 0;
+    const animation = this.animation[Resource.AnimationTypes.Unit.ATTACK];
+    if (!animation) {
+      return false;
+    }
+    return (this.elapsedFrameCount % animation.updateDuration) === 0;
   }
   /**
    * 現在のアニメーションが終了するフレーム時間かどうかを返す
    */
   public isAnimationLastFrameTime(type: string = this.animationType): boolean {
-    const duration = this.animationUpdateDurations[type];
-    const index = this.animationMaxFrameIndexes[type];
+    const animation = this.animation[type];
+    if (!animation) {
+      return false;
+    }
+    const duration = animation.updateDuration;
+    const index = animation.maxFrameIndex;
     const maxFrameTime = duration * index;
     return this.elapsedFrameCount === maxFrameTime;
   }
@@ -164,8 +172,11 @@ export default class Unit extends Attackable {
    * アニメーションを更新する
    */
   public updateAnimation(): void {
-    const type = this.animationType;
-    const animationUpdateDuration = this.animationUpdateDurations[type];
+    const animation = this.animation[this.animationType];
+    if (!animation) {
+      return;
+    }
+    const animationUpdateDuration = animation.updateDuration;
     if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
       if (this.isAnimationLastFrameTime()) {
         this.resetAnimation();
