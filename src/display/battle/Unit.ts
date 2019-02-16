@@ -201,8 +201,9 @@ export default class Unit extends Attackable {
         }
         break;
       }
+      case animationTypes.DAMAGE:
       case animationTypes.ATTACK: {
-        this.animationType = animationTypes.ATTACK;
+        this.animationType = this.requestedAnimation;
         this.resetAnimation();
         return true;
       }

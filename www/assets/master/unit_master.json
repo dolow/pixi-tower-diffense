@@ -7,18 +7,8 @@
     "speed":       2,
     "wieldFrames": 10,
     "hitFrame":    4,
-    "animationMaxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 8,
-      "damage": 1
-    },
-    "animationUpdateDurations": {
-      "wait": 12,
-      "walk": 8,
-      "attack": 4,
-      "damage": 4
-    }
+    "knockBackFrames": 30,
+    "knockBackSpeed": 4
   },
   {
     "unitId":      2,
@@ -28,18 +18,8 @@
     "speed":       1,
     "wieldFrames": 10,
     "hitFrame":    2,
-    "animationMaxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 6,
-      "damage": 1
-    },
-    "animationUpdateDurations": {
-      "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
-    }
+    "knockBackFrames": 30,
+    "knockBackSpeed": 4
   },
   {
     "unitId":      3,
@@ -49,18 +29,8 @@
     "speed":       3,
     "wieldFrames": 10,
     "hitFrame":    3,
-    "animationMaxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 7,
-      "damage": 1
-    },
-    "animationUpdateDurations": {
-      "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
-    }
+    "knockBackFrames": 30,
+    "knockBackSpeed": 4
   },
   {
     "unitId":      4,
@@ -70,18 +40,8 @@
     "speed":       2,
     "wieldFrames": 10,
     "hitFrame":    4,
-    "animationMaxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 11,
-      "damage": 1
-    },
-    "animationUpdateDurations": {
-      "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
-    }
+    "knockBackFrames": 30,
+    "knockBackSpeed": 4
   },
   {
     "unitId":      5,
@@ -91,17 +51,7 @@
     "speed":       2,
     "wieldFrames": 10,
     "hitFrame":    5,
-    "animationMaxFrameIndexes": {
-      "wait": 2,
-      "walk": 6,
-      "attack": 9,
-      "damage": 1
-    },
-    "animationUpdateDurations": {
-      "wait": 4,
-      "walk": 2,
-      "attack": 2,
-      "damage": 4
-    }
+    "knockBackFrames": 30,
+    "knockBackSpeed": 4
   }
 ]

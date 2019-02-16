@@ -7,6 +7,11 @@ import GameManager from 'managers/GameManager';
  */
 export default class Field extends PIXI.Container {
   /**
+   * 最後に要素を追加した zLine のインデックス
+   */
+  public lastZlineIndex: number = -1;
+
+  /**
    * タップダウン数カウント
    * タップダウン重複処理を防止するために数える
    */
@@ -136,8 +141,33 @@ export default class Field extends PIXI.Container {
    * 指定した zLine インデックスの PIXI.Container に addChild する
    */
   public addChildToZLine(container: PIXI.Container, zlineIndex: number): void {
-    container.position.y = 300 + zlineIndex * 16;
     this.foreZLines[zlineIndex].addChild(container);
+    this.lastZlineIndex = zlineIndex;
+  }
+  /**
+   * 最後に追加した zLine とは異なるインデクスを返す
+   */
+  public getDifferentZlineIndex(): number {
+    // Field に追加する重なり順を決定する
+    const zLineCount = this.zLineCount;
+    let index = Math.floor(Math.random() * this.zLineCount);
+
+    // 最後に追加された Zline と同じ場合は表示が重なって見えてしまうので避ける
+    if (index === this.lastZlineIndex) {
+      index++;
+      if (index > (zLineCount - 1)) {
+        index = 0;
+      }
+    }
+
+    return index;
+  }
+
+  /**
+   * 指定した zLine インデックスの基準 Y 座標を返す
+   */
+  public getZlineBaseY(zlineIndex: number): number {
+    return this.containers.fore.height * 0.5 + zlineIndex * 16;
   }
 
   /**

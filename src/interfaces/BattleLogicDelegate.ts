@@ -22,9 +22,13 @@ export default interface BattleLogicDelegate {
     oldState: number
   ): void;
   /**
-   * UnitEntity が生成された時のコールバック
+   * UnitEntity が歩いた時のコールバック
    */
   onUnitEntityWalked(entity: UnitEntity): void;
+  /**
+   * UnitEntity がノックバックした時のコールバック
+   */
+  onUnitEntityKnockingBack(_entity: UnitEntity, _knockBackRate: number): void;
   /**
    * エンティティの health が変動した際のコールバック
    */
@@ -38,7 +42,7 @@ export default interface BattleLogicDelegate {
   /**
    * 利用可能コストが変動した際のコールバック
    */
-  onAvailableCostUpdated(cost: number): void;
+  onAvailableCostUpdated(cost: number, maxCost: number): void;
   /**
    * ゲームが終了した際のコールバック
    */

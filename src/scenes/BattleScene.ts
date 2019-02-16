@@ -20,6 +20,7 @@ import Fade from 'scenes/transition/Fade';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import UnitButtonFactory from 'modules/UiNodeFactory/battle/UnitButtonFactory';
 import BattleLogic from 'modules/BattleLogic';
+import BattleLogicConfig from 'modules/BattleLogicConfig';
 
 import AttackableEntity from 'entity/AttackableEntity';
 import BaseEntity from 'entity/BaseEntity';
@@ -42,6 +43,8 @@ import CollapseExplodeEffect
  * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
+
+  private static readonly unitLeapHeight: number = 30;
 
   /**
    * このシーンのステート
@@ -69,7 +72,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * ゲームロジックを処理する BattleLogic のインスタンス
    */
-  private manager!: BattleLogic;
+  private battleLogic!: BattleLogic;
+  /**
+   * BattleLogic 用の設定
+   */
+  private battleLogicConfig!: BattleLogicConfig;
   /**
    * 背景の PIXI.Container
    */
@@ -94,17 +101,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private unitAnimationMasterCache: Map<number, UnitAnimationMaster>
     = new Map();
-  /**
-   * Field に最後にユニットを追加した Zline のインデックス
-   * ユニットが重なって表示されるのを防ぐ
-   */
-  private fieldLastAddedZline: {
-    player: number;
-    ai: number;
-  } = {
-    player: -1,
-    ai: -1
-  };
 
   /**
    * コンストラクタ
@@ -118,7 +114,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     // デフォルトのシーンステート
     this.state = BattleSceneState.LOADING_RESOURCES;
     // BattleLogic インスタンスの作成
-    this.manager = new BattleLogic();
+    this.battleLogic = new BattleLogic();
     // Background インスタンスの作成
     this.field = new Field();
 
@@ -127,8 +123,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     this.stageId   = params.stageId;
     this.unitIds   = params.unitIds;
     this.playerBase = params.playerBase;
-    this.manager.costRecoveryPerFrame = params.cost.recoveryPerFrame;
-    this.manager.maxAvailableCost     = params.cost.max;
+
+    this.battleLogicConfig = new BattleLogicConfig({
+      costRecoveryPerFrame: params.cost.recoveryPerFrame,
+      maxAvailableCost: params.cost.max
+    });
   }
 
   /**
@@ -161,11 +160,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         break;
       }
       case BattleSceneState.INGAME: {
-        this.manager.update(delta);
+        this.battleLogic.update(delta);
         break;
       }
       case BattleSceneState.FINISHED: {
-        this.manager.update(delta);
+        this.battleLogic.update(delta);
         break;
       }
     }
@@ -279,14 +278,15 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
-    this.manager.init({
+    this.battleLogic.init({
       stageMaster,
       unitMasters,
       delegator: this,
       playerBase: {
         baseId: this.playerBase.baseId,
         health: this.playerBase.maxHealth
-      }
+      },
+      config: this.battleLogicConfig
     });
 
     if (this.transitionIn.isFinished()) {
@@ -351,9 +351,14 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     base.spawn(entity.isPlayer);
 
+    const zLineIndex = this.field.getDifferentZlineIndex();
+
     const unit = new Unit(entity.unitId, {
       hitFrame: master.hitFrame,
-      spawnPosition: { x: basePosition, y: 0 },
+      spawnPosition: {
+        x: basePosition,
+        y: this.field.getZlineBaseY(zLineIndex)
+      },
       animationMaxFrameIndexes: master.maxFrameIndexes,
       animationUpdateDurations: master.updateDurations
     });
@@ -363,33 +368,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     this.attackables.set(entity.id, unit);
 
-    // Field に追加する重なり順を決定する
-    const zLineCount = this.field.zLineCount;
-    let index = Math.floor(Math.random() * this.field.zLineCount);
-
-    // 最後に追加された Zline と同じ場合は表示が重なって見えてしまうので避ける
-    let lastAddedZline;
-    if (entity.isPlayer) {
-      lastAddedZline = this.fieldLastAddedZline.player;
-    } else {
-      lastAddedZline = this.fieldLastAddedZline.ai;
-    }
-
-    if (index === lastAddedZline) {
-      index++;
-      if (index > (zLineCount - 1)) {
-        index = 0;
-      }
-    }
-
-    this.field.addChildToZLine(unit.sprite, index);
-
-    // 重なって表示されないようにする
-    if (entity.isPlayer) {
-      this.fieldLastAddedZline.player = index;
-    } else {
-      this.fieldLastAddedZline.ai = index;
-    }
+    this.field.addChildToZLine(unit.sprite, zLineIndex);
 
     this.registerUpdatingObject(unit as UpdateObject);
   }
@@ -416,6 +395,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         }
         case AttackableState.ENGAGED: {
           unit.requestAnimation(animationTypes.ATTACK);
+          break;
+        }
+        case AttackableState.KNOCK_BACK: {
+          unit.requestAnimation(animationTypes.DAMAGE);
           break;
         }
         case AttackableState.DEAD: {
@@ -447,8 +430,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 利用可能なコストの値が変動したときのコールバック
    */
-  public onAvailableCostUpdated(cost: number): void {
-    const text = `${Math.floor(cost)}/${this.manager.maxAvailableCost}`;
+  public onAvailableCostUpdated(cost: number, maxCost: number): void {
+    const text = `${Math.floor(cost)}/${maxCost}`;
     (this.uiGraph.cost_text as PIXI.Text).text = text;
 
     // コストに応じてUnitButton のフィルタを切り替える
@@ -555,6 +538,30 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   }
 
   /**
+   * 渡された UnitEntity がノックバック中に呼ばれる
+   */
+  public onUnitEntityKnockingBack(
+    entity: UnitEntity,
+    knockBackRate: number
+  ): void {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return;
+    }
+    const unit = attackable as Unit;
+    const direction = entity.isPlayer ? 1 : -1;
+
+    const physicalDistance = entity.distance * direction;
+    const spawnedPosition = unit.getSpawnedPosition();
+
+    const leap = (knockBackRate >= 1) ? 0 : -Math.sin(knockBackRate * Math.PI);
+
+    unit.sprite.position.x = spawnedPosition.x + physicalDistance;
+    unit.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
+
+  }
+
+  /**
    * 渡されたエンティティの health が増減した場合に呼ばれる
    */
   public onAttackableEntityHealthUpdated(
@@ -639,7 +646,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const unitButton = this.getUiGraphUnitButton(buttonIndex);
     if (unitButton) {
-      this.manager.requestSpawnPlayer(unitButton.unitId);
+      this.battleLogic.requestSpawnPlayer(unitButton.unitId);
     }
   }
 

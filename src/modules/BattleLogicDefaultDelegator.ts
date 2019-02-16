@@ -24,6 +24,10 @@ export default class DefaultDelegator implements BattleLogicDelegate {
   ): void {
   }
   public onUnitEntityWalked(_entity: UnitEntity): void {}
+  public onUnitEntityKnockingBack(
+    _entity: UnitEntity,
+    _knockBackRate: number
+  ): void {}
   public onAttackableEntityHealthUpdated(
     _attacker: AttackableEntity,
     _target: AttackableEntity,
@@ -32,7 +36,7 @@ export default class DefaultDelegator implements BattleLogicDelegate {
     _maxHealth: number
   ): void {
   }
-  public onAvailableCostUpdated(_cost: number): void {}
+  public onAvailableCostUpdated(_cost: number, _maxCost: number): void {}
   public onGameOver(_isPlayerWon: boolean): void {}
   public shouldEngageAttackableEntity(
     _attacker: AttackableEntity,
