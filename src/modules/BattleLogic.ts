@@ -4,6 +4,7 @@ import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import BattleLogicConfig from 'modules/BattleLogicConfig';
 import AttackableState from 'enum/AttackableState';
 import BattleLogicDefaultDelegator from 'modules/BattleLogicDefaultDelegator';
+import AttackableEntity from 'entity/AttackableEntity';
 import UnitEntity from 'entity/UnitEntity';
 import BaseEntity from 'entity/BaseEntity';
 
@@ -390,13 +391,8 @@ export default class BattleLogic {
 
       const targetIsDead = target.currentHealth <= 0;
       const targetIsKnockingBack = target.state === AttackableState.KNOCK_BACK;
-      const notChivalrous = (
-        this.config.chivalrousEngage &&
-        target.engagedEntity &&
-        target.engagedEntity.id !== unit.id
-      );
 
-      if (targetIsDead || targetIsKnockingBack || notChivalrous) {
+      if (targetIsDead || targetIsKnockingBack || !this.isChivalrousEngage(unit, unit.engagedEntity)) {
         unit.engagedEntity = null;
         unit.state = AttackableState.IDLE;
       }
@@ -441,10 +437,7 @@ export default class BattleLogic {
 
       // デリゲータに接敵可能かどうかの判断を委譲する
       if (this.delegator.shouldEngageAttackableEntity(unit, target)) {
-        if (
-          !this.config.chivalrousEngage ||
-          (!target.engagedEntity || target.engagedEntity.id === unit.id)
-        ) {
+        if (this.isChivalrousEngage(unit, target)) {
           unit.engagedEntity = target;
           unit.state = AttackableState.ENGAGED;
         }
@@ -587,5 +580,26 @@ export default class BattleLogic {
     this.delegator.onAvailableCostUpdated(this.availableCost, this.config.maxAvailableCost);
 
     return this.availableCost;
+  }
+
+  /**
+   * 1 対 1 での接敵かどうかを返す
+   * 拠点に対しての接敵は true とする
+   */
+  private isChivalrousEngage(unit: UnitEntity, target: AttackableEntity): boolean {
+    if (!this.config.chivalrousEngage) {
+      return true;
+    }
+
+    if (!target.engagedEntity) {
+      return true;
+    }
+    if (target.engagedEntity.id === unit.id) {
+      return true;
+    }
+    if ((target.engagedEntity as BaseEntity).baseId !== undefined) {
+      return true;
+    }
+    return false;
   }
 }
