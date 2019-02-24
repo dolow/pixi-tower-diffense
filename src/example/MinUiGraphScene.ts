@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { Graph, Node, Event } from 'interfaces/UiGraph';
-import Scene from 'scenes/Scene';
+import Scene from 'example/Scene';
 
 /**
  * データで表現された UI を読み込んで表示するサンプル

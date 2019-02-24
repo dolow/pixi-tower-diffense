@@ -1,8 +1,8 @@
 import * as WebFont from 'webfontloader';
-import 'Config';
-import Resource from 'Resource';
+import 'example/Config';
+import Resource from 'example/Resource';
 import MinUiGraphScene from 'example/MinUiGraphScene';
-import GameManager from 'managers/GameManager';
+import GameManager from 'example/GameManager';
 
 /**
  * ゲームの初期化処理
