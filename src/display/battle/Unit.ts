@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
+import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
 import Attackable from 'display/battle/Attackable';
 import HealthGauge from 'display/battle/single_shot/HealthGauge';
 
@@ -9,9 +10,10 @@ import HealthGauge from 'display/battle/single_shot/HealthGauge';
  */
 export default class Unit extends Attackable {
   /**
-   * ユニット ID
+   * アニメーション情報
    */
-  protected unitId!: number;
+  protected animationMaster!: UnitAnimationMaster;
+
   /**
    * スポーンした座標
    */
@@ -20,26 +22,11 @@ export default class Unit extends Attackable {
   /**
    * 現在のアニメーションフレーム
    */
-  protected animationFrameIndex: number = 1;
+  protected animationFrameId: number = 1;
   /**
    * 再生をリクエストされたアニメーション種別
    */
   protected requestedAnimation: string | null = null;
-
-  /**
-   * 当たり判定が発生するフレームインデックス
-   * マスターデータの値
-   */
-  protected hitFrame: number = 0;
-  /**
-   * アニメーション情報
-   */
-  protected animation: {
-    [key: string]: {
-      maxFrameIndex: number;
-      updateDuration: number;
-    }
-  } = {};
 
   /**
    * HealthGauge インスタンス
@@ -51,34 +38,22 @@ export default class Unit extends Attackable {
    * コンストラクタ
    */
   constructor(
-    unitId: number,
-    animationParam: {
-      hitFrame: number,
-      spawnPosition: { x: number, y: number },
-      animation: {
-        [key: string]: {
-          maxFrameIndex: number;
-          updateDuration: number;
-        }
-      }
-    }
+    animationMaster: UnitAnimationMaster,
+    spawnPosition: { x: number, y: number },
   ) {
     super();
 
     this.animationType = Resource.AnimationTypes.Unit.WAIT;
 
-    this.unitId = unitId;
-
-    this.hitFrame  = animationParam.hitFrame;
-    this.animation = animationParam.animation;
+    this.animationMaster = animationMaster;
 
     this.sprite = new PIXI.Sprite();
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
 
     this.sprite.position.set(
-      animationParam.spawnPosition.x,
-      animationParam.spawnPosition.y
+      spawnPosition.x,
+      spawnPosition.y
     );
 
     this.spawnedPosition.x = this.sprite.position.x;
@@ -91,7 +66,7 @@ export default class Unit extends Attackable {
   public resetAnimation(): void {
     this.requestedAnimation = null;
     this.elapsedFrameCount   = 0;
-    this.animationFrameIndex = 1;
+    this.animationFrameId = 1;
   }
 
   /**
@@ -127,10 +102,11 @@ export default class Unit extends Attackable {
    * 現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す
    */
   public isHitFrame(): boolean {
-    if (this.animationFrameIndex !== this.hitFrame) {
+    if (this.animationFrameId !== this.animationMaster.hitFrame) {
       return false;
     }
-    const animation = this.animation[Resource.AnimationTypes.Unit.ATTACK];
+    const index = Resource.AnimationTypes.Unit.ATTACK as UnitAnimationTypeIndex;
+    const animation = this.animationMaster.types[index];
     if (!animation) {
       return false;
     }
@@ -139,14 +115,15 @@ export default class Unit extends Attackable {
   /**
    * 現在のアニメーションが終了するフレーム時間かどうかを返す
    */
-  public isAnimationLastFrameTime(type: string = this.animationType): boolean {
-    const animation = this.animation[type];
+  public isAnimationLastFrameTime(): boolean {
+    const index = this.animationType as UnitAnimationTypeIndex;
+    const animation = this.animationMaster.types[index];
     if (!animation) {
       return false;
     }
     const duration = animation.updateDuration;
-    const index = animation.maxFrameIndex;
-    const maxFrameTime = duration * index;
+    const lastId = animation.frames.length;
+    const maxFrameTime = duration * lastId;
     return this.elapsedFrameCount === maxFrameTime;
   }
 
@@ -172,23 +149,20 @@ export default class Unit extends Attackable {
    * アニメーションを更新する
    */
   public updateAnimation(): void {
-    const animation = this.animation[this.animationType];
+    const index = this.animationType as UnitAnimationTypeIndex;
+    const animation = this.animationMaster.types[index];
     if (!animation) {
       return;
     }
-    const animationUpdateDuration = animation.updateDuration;
-    if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
+    if ((this.elapsedFrameCount % animation.updateDuration) === 0) {
       if (this.isAnimationLastFrameTime()) {
         this.resetAnimation();
       }
 
-      this.sprite.texture = Resource.TextureFrame.Unit(
-        this.animationType,
-        this.unitId,
-        this.animationFrameIndex
-      );
+      const cacheKey = animation.frames[this.animationFrameId - 1];
+      this.sprite.texture = PIXI.utils.TextureCache[cacheKey];
 
-      this.animationFrameIndex++;
+      this.animationFrameId++;
     }
 
     this.elapsedFrameCount++;
