@@ -1,6 +1,6 @@
 import * as WebFont from 'webfontloader';
 import 'example/Config';
-import Resource from 'Resource';
+import Resource from 'example/Resource';
 import TitleScene from 'example/TitleScene';
 import GameManager from 'example/GameManager';
 

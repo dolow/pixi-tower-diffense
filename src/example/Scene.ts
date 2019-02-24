@@ -12,6 +12,10 @@ import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
  */
 export default abstract class Scene extends PIXI.Container {
   /**
+   * 更新すべきオブジェクトを保持する
+   */
+  protected objectsToUpdate: UpdateObject[] = [];
+  /**
    * 経過フレーム数
    */
   protected elapsedFrameCount: number = 0;
@@ -82,13 +86,26 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
    */
-  protected registerUpdatingObject(_object: UpdateObject): void {
+  protected registerUpdatingObject(object: UpdateObject): void {
+    this.objectsToUpdate.push(object);
   }
 
   /**
    * 更新処理を行うべきオブジェクトを更新する
    */
-  protected updateRegisteredObjects(_delta: number): void {
+  protected updateRegisteredObjects(delta: number): void {
+    const nextObjectsToUpdate = [];
+
+    for (let i = 0; i < this.objectsToUpdate.length; i++) {
+      const obj = this.objectsToUpdate[i];
+      if (!obj || obj.isDestroyed()) {
+          continue;
+      }
+      obj.update(delta);
+      nextObjectsToUpdate.push(obj);
+    }
+
+    this.objectsToUpdate = nextObjectsToUpdate;
   }
 
   /**
