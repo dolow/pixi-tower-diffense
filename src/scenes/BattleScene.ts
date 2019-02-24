@@ -353,13 +353,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const zLineIndex = this.field.getDifferentZlineIndex();
 
-    const unit = new Unit(entity.unitId, {
-      hitFrame: master.hitFrame,
-      spawnPosition: {
-        x: basePosition,
-        y: this.field.getZlineBaseY(zLineIndex)
-      },
-      animation: master.types
+    const unit = new Unit(master, {
+      x: basePosition,
+      y: this.field.getZlineBaseY(zLineIndex)
     });
 
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;

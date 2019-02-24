@@ -1,13 +1,14 @@
+export type UnitAnimationTypeIndex = 'wait' | 'walk' | 'attack' | 'damage';
 /**
  * ユニットアニメーションマスターのスキーマ定義
  */
 export default interface UnitAnimationMaster {
-  unitId:   number;
+  unitId: number;
   hitFrame: number;
   types: {
-    [key: string]: {
-      maxFrameIndex:  number;
+    [key in UnitAnimationTypeIndex]: {
       updateDuration: number;
+      frames: string[];
     }
   };
 }
