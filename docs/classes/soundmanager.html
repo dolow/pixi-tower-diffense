@@ -68,6 +68,8 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>サウンドを扱う
+							Sound の高級機能
+							サウンドを扱う
 						Sound の高級機能</p>
 					</div>
 				</div>
@@ -99,6 +101,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="soundmanager.html#context" class="tsd-kind-icon">context</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#instance" class="tsd-kind-icon">instance</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="soundmanager.html#loadermiddlewareadded" class="tsd-kind-icon">loader<wbr>Middleware<wbr>Added</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="soundmanager.html#supportedextensions" class="tsd-kind-icon">supported<wbr>Extensions</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="soundmanager.html#webaudioinitialized" class="tsd-kind-icon">web<wbr>Audio<wbr>Initialized</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -126,6 +130,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#setwindowlifecycleevent" class="tsd-kind-icon">set<wbr>Window<wbr>Life<wbr>Cycle<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#unregistersound" class="tsd-kind-icon">unregister<wbr>Sound</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="soundmanager.html#usewebaudio" class="tsd-kind-icon">use<wbr>Web<wbr>Audio</a></li>
 							</ul>
 						</section>
 					</div>
@@ -210,26 +215,30 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L27">managers/SoundManager.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/SoundManager.ts#L29">example/SoundManager.ts:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>AudioCntext インスタンス</p>
+							<p>AudioCntext インスタンス
+							AudioCntext インスタンス</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="instance" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> instance</h3>
-					<div class="tsd-signature tsd-kind-icon">instance<span class="tsd-signature-symbol">:</span> <a href="soundmanager.html" class="tsd-signature-type">SoundManager</a></div>
+					<div class="tsd-signature tsd-kind-icon">instance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SoundManager</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L14">managers/SoundManager.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/SoundManager.ts#L11">example/SoundManager.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>シングルトンインスタンス</p>
+							<p>シングルトンインスタンス
+							シングルトンインスタンス</p>
 						</div>
 					</div>
 				</section>
@@ -248,6 +257,36 @@
 						</div>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="supportedextensions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> supported<wbr>Extensions</h3>
+					<div class="tsd-signature tsd-kind-icon">supported<wbr>Extensions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&#x27;mp3&#x27;]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/SoundManager.ts#L24">example/SoundManager.ts:24</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SoundManager がサポートするサウンドファイル拡張子</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="webaudioinitialized" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> web<wbr>Audio<wbr>Initialized</h3>
+					<div class="tsd-signature tsd-kind-icon">web<wbr>Audio<wbr>Initialized<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/SoundManager.ts#L34">example/SoundManager.ts:34</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>WebAudio 利用の初期化済みフラグ</p>
+						</div>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
@@ -261,7 +300,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/managers/SoundManager.ts#L20">managers/SoundManager.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/SoundManager.ts#L17">example/SoundManager.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -781,6 +820,34 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="usewebaudio" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> use<wbr>Web<wbr>Audio</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Web<wbr>Audio<span class="tsd-signature-symbol">(</span>browser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BrowserInfo</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BotInfo</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">NodeInfo</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/SoundManager.ts#L112">example/SoundManager.ts:112</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>browser: <span class="tsd-signature-type">BrowserInfo</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BotInfo</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">NodeInfo</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -818,6 +885,12 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
 								<a href="soundmanager.html#loadermiddlewareadded" class="tsd-kind-icon">loader<wbr>Middleware<wbr>Added</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="soundmanager.html#supportedextensions" class="tsd-kind-icon">supported<wbr>Extensions</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="soundmanager.html#webaudioinitialized" class="tsd-kind-icon">web<wbr>Audio<wbr>Initialized</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
 								<a href="soundmanager.html#sharedcontext" class="tsd-kind-icon">shared<wbr>Context</a>
@@ -869,6 +942,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="soundmanager.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="soundmanager.html#usewebaudio" class="tsd-kind-icon">use<wbr>Web<wbr>Audio</a>
 							</li>
 						</ul>
 					</li>

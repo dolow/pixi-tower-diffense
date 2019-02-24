@@ -1,6 +1,6 @@
 import Resource from 'example/Resource';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
-import AbstractUiGraphScene from 'example/AbstractUiGraphScene';
+import Scene from 'example/Scene';
 import UiNodeFactory from 'example/factory/UiNodeFactory';
 import UnitButtonFactory from 'example/factory/UnitButtonFactory';
 import UnitButton from 'example/UnitButton';
@@ -11,7 +11,7 @@ const dummyCosts   = [10, 20, 30, 40, -1];
 /**
  * データで表現された UI を読み込んで表示するサンプル
  */
-export default class MinUiGraphScene extends AbstractUiGraphScene  {
+export default class OrderScene extends Scene  {
   /**
    * 独自 UiGraph 要素のファクトリを返す
    * このシーンでは UnitButton をカスタム UI 要素として持っている

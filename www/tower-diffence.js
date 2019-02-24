@@ -44291,33 +44291,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./src/Config.ts":
-/*!***********************!*\
-  !*** ./src/Config.ts ***!
-  \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-
-/**
- * 設定オブジェクト
- */
-var Config = Object.freeze({
-    // リソースのエントリーポイント
-    ResourceBaseUrl: 'assets/',
-    // ユニット枠最大数
-    MaxUnitSlotCount: 5
-});
-pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].baseUrl = Config.ResourceBaseUrl;
-/* harmony default export */ __webpack_exports__["default"] = (Config);
-
-
-/***/ }),
-
 /***/ "./src/Resource.ts":
 /*!*************************!*\
   !*** ./src/Resource.ts ***!
@@ -44481,190 +44454,149 @@ var Resource = Object.freeze({
 
 /***/ }),
 
-/***/ "./src/example/AbstractUiGraphScene.ts":
-/*!*********************************************!*\
-  !*** ./src/example/AbstractUiGraphScene.ts ***!
-  \*********************************************/
+/***/ "./src/example/Config.ts":
+/*!*******************************!*\
+  !*** ./src/example/Config.ts ***!
+  \*******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var example_Resource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! example/Resource */ "./src/example/Resource.ts");
-/* harmony import */ var example_UiGraph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/UiGraph */ "./src/example/UiGraph.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
 
 /**
- * UI Graph を用いる抽象クラスのサンプル
- * UiGraph を利用して UI 情報を透過的に読み込み初期化する
+ * 設定オブジェクト
  */
-var AbstractUiGraphScene = /** @class */ (function (_super) {
-    __extends(AbstractUiGraphScene, _super);
-    function AbstractUiGraphScene() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        /**
-         * UiGraph でインスタンス化された PIXI.Container を含むオブジェクト
-         */
-        _this.uiGraph = {};
-        /**
-         * UiGraph でロードされた UI データを配置するための PIXI.Container
-         */
-        _this.uiGraphContainer = new PIXI.Container();
-        return _this;
-    }
-    /**
-     * UI Graph 以外に利用するリソースがある場合に返す
-     */
-    AbstractUiGraphScene.prototype.createInitialResourceList = function () {
-        return [];
-    };
-    /**
-     * リソースロードを開始する
-     */
-    AbstractUiGraphScene.prototype.beginLoadResource = function (onLoaded) {
-        var _this = this;
-        return new Promise(function (resolve) {
-            _this.loadInitialResource(function () { return resolve(); });
-        }).then(function () {
-            return new Promise(function (resolve) {
-                var additionalAssets = _this.onInitialResourceLoaded();
-                _this.loadAdditionalResource(additionalAssets, function () { return resolve(); });
-            });
-        }).then(function () {
-            _this.onAdditionalResourceLoaded();
-            onLoaded();
-            _this.onResourceLoaded();
-        });
-    };
-    /**
-     * UiGraph 情報と createInitialResourceList で指定されたリソースのロードを行う
-     */
-    AbstractUiGraphScene.prototype.loadInitialResource = function (onLoaded) {
-        var assets = this.createInitialResourceList();
-        var name = example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].SceneUiGraph(this);
-        assets.push(name);
-        PIXI.loader.add(this.filterAssets(assets)).load(function () { return onLoaded(); });
-    };
-    /**
-     * loadInitialResource 完了時のコールバックメソッド
-     * 追加でロードしなければならないテクスチャなどの情報を返す
-     */
-    AbstractUiGraphScene.prototype.onInitialResourceLoaded = function () {
-        var additionalAssets = [];
-        var name = example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].SceneUiGraph(this);
-        var uiGraph = PIXI.loader.resources[name];
-        for (var i = 0; i < uiGraph.data.nodes.length; i++) {
-            var node = uiGraph.data.nodes[i];
-            if (node.type === 'sprite') {
-                additionalAssets.push({ name: node.params.textureName, url: node.params.url });
-            }
-        }
-        return additionalAssets;
-    };
-    /**
-     * onInitialResourceLoaded で発生した追加のリソースをロードする
-     */
-    AbstractUiGraphScene.prototype.loadAdditionalResource = function (assets, onLoaded) {
-        PIXI.loader.add(this.filterAssets(assets)).load(function () { return onLoaded(); });
-    };
-    /**
-     * 追加のリソースロード完了時のコールバック
-     */
-    AbstractUiGraphScene.prototype.onAdditionalResourceLoaded = function () {
-        // 抽象クラスでは何もしない
-    };
-    /**
-     * 全てのリソースロード処理完了時のコールバック
-     */
-    AbstractUiGraphScene.prototype.onResourceLoaded = function () {
-        var sceneUiGraphName = example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].SceneUiGraph(this);
-        this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
-        this.addChild(this.uiGraphContainer);
-    };
-    /**
-     * UiGraph 要素を作成する
-     */
-    AbstractUiGraphScene.prototype.prepareUiGraphContainer = function (uiData) {
-        for (var i = 0; i < uiData.nodes.length; i++) {
-            var nodeData = uiData.nodes[i];
-            var factory = example_UiGraph__WEBPACK_IMPORTED_MODULE_1__["default"].getFactory(nodeData.type);
-            if (!factory) {
-                factory = this.getCustomUiGraphFactory(nodeData.type);
-                if (!factory) {
-                    continue;
-                }
-            }
-            var node = factory.createUiNodeByGraphElement(nodeData);
-            if (!node) {
-                continue;
-            }
-            if (nodeData.events) {
-                factory.attachUiEventByGraphElement(nodeData.events, node, this);
-            }
-            this.uiGraph[nodeData.id] = node;
-            this.uiGraphContainer.addChild(node);
-        }
-    };
-    /**
-     * UiGraph にシーン独自の要素を指定する場合にこのメソッドを利用する
-     */
-    AbstractUiGraphScene.prototype.getCustomUiGraphFactory = function (_type) {
-        // 抽象クラスでは何も持たない
-        return null;
-    };
-    /**
-     * 渡されたアセットのリストからロード済みのものをフィルタリングする
-     */
-    AbstractUiGraphScene.prototype.filterAssets = function (assets) {
-        var assetMap = new Map();
-        for (var i = 0; i < assets.length; i++) {
-            var asset = assets[i];
-            if (typeof asset === 'string') {
-                if (!PIXI.loader.resources[asset] && !assetMap.has(asset)) {
-                    assetMap.set(asset, { name: asset, url: asset });
-                }
-            }
-            else {
-                if (!PIXI.loader.resources[asset.name] && !assetMap.has(asset.name)) {
-                    assetMap.set(asset.name, asset);
-                }
-            }
-        }
-        return Array.from(assetMap.values());
-    };
-    return AbstractUiGraphScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_2__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (AbstractUiGraphScene);
+var Config = Object.freeze({
+    // リソースのエントリーポイント
+    ResourceBaseUrl: 'assets/'
+});
+pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].baseUrl = Config.ResourceBaseUrl;
+/* harmony default export */ __webpack_exports__["default"] = (Config);
 
 
 /***/ }),
 
-/***/ "./src/example/MinUiGraphScene.ts":
-/*!****************************************!*\
-  !*** ./src/example/MinUiGraphScene.ts ***!
-  \****************************************/
+/***/ "./src/example/GameManager.ts":
+/*!************************************!*\
+  !*** ./src/example/GameManager.ts ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var example_SoundManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/SoundManager */ "./src/example/SoundManager.ts");
+
+
+/**
+ * ゲーム全体のマネージャ
+ * 主にシーンを扱う
+ */
+var GameManager = /** @class */ (function () {
+    /**
+     * コンストラクタ
+     * PIXI.Application インスタンスはユーザ任意のものを使用する
+     */
+    function GameManager(app) {
+        /**
+         * シーンのトランジション完了フラグ
+         * シーントランジションを制御するためのフラグ
+         */
+        this.sceneTransitionOutFinished = true;
+        this.sceneResourceLoaded = true;
+        if (GameManager.instance) {
+            throw new Error('GameManager can be instantiate only once');
+        }
+        this.game = app;
+    }
+    /**
+     * ゲームを起動する
+     * 画面サイズや PIXI.ApplicationOptions を渡すことができる
+     */
+    GameManager.start = function (params) {
+        // PIXI Application 生成
+        var game = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"](params.glWidth, params.glHeight, params.option);
+        // GameManager インスタンス生成
+        var instance = new GameManager(game);
+        GameManager.instance = instance;
+        example_SoundManager__WEBPACK_IMPORTED_MODULE_1__["default"].init();
+        // canvas を DOM に追加
+        document.body.appendChild(game.view);
+        // メインループ
+        game.ticker.add(function (delta) {
+            if (instance.currentScene) {
+                instance.currentScene.update(delta);
+            }
+        });
+    };
+    /**
+     * 可能であれば新しいシーンへのトランジションを開始する
+     */
+    GameManager.transitionInIfPossible = function (newScene) {
+        var instance = GameManager.instance;
+        if (!instance.sceneResourceLoaded || !instance.sceneTransitionOutFinished) {
+            return false;
+        }
+        if (instance.currentScene) {
+            instance.currentScene.destroy();
+        }
+        instance.currentScene = newScene;
+        if (instance.game) {
+            instance.game.stage.addChild(newScene);
+        }
+        newScene.beginTransitionIn(function (_) { });
+        return true;
+    };
+    /**
+     * シーンをロードする
+     * 新しいシーンのリソース読み込みと古いシーンのトランジションを同時に開始する
+     * いずれも完了したら、新しいシーンのトランジションを開始する
+     */
+    GameManager.loadScene = function (newScene) {
+        var instance = GameManager.instance;
+        if (instance.currentScene) {
+            instance.sceneResourceLoaded = false;
+            instance.sceneTransitionOutFinished = false;
+            newScene.beginLoadResource(function () {
+                instance.sceneResourceLoaded = true;
+                GameManager.transitionInIfPossible(newScene);
+            });
+            instance.currentScene.beginTransitionOut(function (_) {
+                instance.sceneTransitionOutFinished = true;
+                GameManager.transitionInIfPossible(newScene);
+            });
+        }
+        else {
+            instance.sceneTransitionOutFinished = true;
+            newScene.beginLoadResource(function () {
+                instance.sceneResourceLoaded = true;
+                GameManager.transitionInIfPossible(newScene);
+            });
+        }
+    };
+    return GameManager;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (GameManager);
+
+
+/***/ }),
+
+/***/ "./src/example/OrderScene.ts":
+/*!***********************************!*\
+  !*** ./src/example/OrderScene.ts ***!
+  \***********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var example_Resource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! example/Resource */ "./src/example/Resource.ts");
-/* harmony import */ var example_AbstractUiGraphScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/AbstractUiGraphScene */ "./src/example/AbstractUiGraphScene.ts");
+/* harmony import */ var example_Scene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/Scene */ "./src/example/Scene.ts");
 /* harmony import */ var example_factory_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! example/factory/UnitButtonFactory */ "./src/example/factory/UnitButtonFactory.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -44687,16 +44619,16 @@ var dummyCosts = [10, 20, 30, 40, -1];
 /**
  * データで表現された UI を読み込んで表示するサンプル
  */
-var MinUiGraphScene = /** @class */ (function (_super) {
-    __extends(MinUiGraphScene, _super);
-    function MinUiGraphScene() {
+var OrderScene = /** @class */ (function (_super) {
+    __extends(OrderScene, _super);
+    function OrderScene() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * 独自 UiGraph 要素のファクトリを返す
      * このシーンでは UnitButton をカスタム UI 要素として持っている
      */
-    MinUiGraphScene.prototype.getCustomUiGraphFactory = function (type) {
+    OrderScene.prototype.getCustomUiGraphFactory = function (type) {
         if (type === 'unit_button') {
             return new example_factory_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_2__["default"]();
         }
@@ -44705,7 +44637,7 @@ var MinUiGraphScene = /** @class */ (function (_super) {
     /**
      * リソースがロードされた時のコールバック
      */
-    MinUiGraphScene.prototype.onInitialResourceLoaded = function () {
+    OrderScene.prototype.onInitialResourceLoaded = function () {
         var additionalAssets = _super.prototype.onInitialResourceLoaded.call(this);
         for (var i = 0; i < dummyUnitIds.length; i++) {
             additionalAssets.push(example_Resource__WEBPACK_IMPORTED_MODULE_0__["default"].Dynamic.UnitPanel(dummyUnitIds[i]));
@@ -44716,7 +44648,7 @@ var MinUiGraphScene = /** @class */ (function (_super) {
      * リソースロード完了後に実行されるコールバック
      * UnitButton の初期化を行う
      */
-    MinUiGraphScene.prototype.onResourceLoaded = function () {
+    OrderScene.prototype.onResourceLoaded = function () {
         _super.prototype.onResourceLoaded.call(this);
         var slotIndex = 0;
         var keys = Object.keys(this.uiGraph);
@@ -44739,21 +44671,21 @@ var MinUiGraphScene = /** @class */ (function (_super) {
     /**
      * UI 情報として定義されたイベントコールバックメソッド
      */
-    MinUiGraphScene.prototype.onStageArrowTapped = function () {
+    OrderScene.prototype.onStageArrowTapped = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
         console.log('onStageArrowTapped invoked!!', args);
     };
-    MinUiGraphScene.prototype.onUnitArrowTapped = function () {
+    OrderScene.prototype.onUnitArrowTapped = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
         console.log('onUnitArrowTapped invoked!!', args);
     };
-    MinUiGraphScene.prototype.onOkButtonDown = function () {
+    OrderScene.prototype.onOkButtonDown = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -44761,7 +44693,7 @@ var MinUiGraphScene = /** @class */ (function (_super) {
         console.log('onOkButtonDown invoked!!', args);
         this.uiGraph.ok_button_off.visible = false;
     };
-    MinUiGraphScene.prototype.onOkButtonUp = function () {
+    OrderScene.prototype.onOkButtonUp = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -44769,9 +44701,9 @@ var MinUiGraphScene = /** @class */ (function (_super) {
         console.log('onOkButtonUp invoked!!', args);
         this.uiGraph.ok_button_off.visible = true;
     };
-    return MinUiGraphScene;
-}(example_AbstractUiGraphScene__WEBPACK_IMPORTED_MODULE_1__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (MinUiGraphScene);
+    return OrderScene;
+}(example_Scene__WEBPACK_IMPORTED_MODULE_1__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (OrderScene);
 
 
 /***/ }),
@@ -44786,9 +44718,18 @@ var MinUiGraphScene = /** @class */ (function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /**
- * リソースの URL や命名規則のマスタサンプル
+ * リソースの URL や命名規則のマスタ
  */
 var Resource = Object.freeze({
+    /**
+     * マスターデータ API 情報を有するオブジェクト
+     */
+    Api: {
+        UnitAnimation: function (unitIds) {
+            var query = unitIds.join('&unitId[]=');
+            return "master/unit_animation_master.json?unitId[]=" + query;
+        }
+    },
     /**
      * シーン名から UI Graph 用のファイル名を生成
      */
@@ -44797,16 +44738,479 @@ var Resource = Object.freeze({
         return "ui_graph/" + snake_case + ".json";
     },
     /**
-     * 渡されたパラメータによって動的に変わる url を有するオブジェクト
+     * 静的なリソースを有するオブジェクト
      */
+    Static: {
+        BattleBgFores: [
+            'battle/bg_1_1.png',
+            'battle/bg_1_2.png',
+            'battle/bg_1_3.png',
+            'battle/bg_1_4.png',
+            'battle/bg_1_5.png',
+            'battle/bg_1_6.png',
+            'battle/bg_1_7.png',
+            'battle/bg_1_8.png',
+            'battle/bg_1_9.png',
+            'battle/bg_1_10.png'
+        ],
+        BattleBgMiddles: [
+            'battle/bg_2_1.png',
+            'battle/bg_2_2.png',
+            'battle/bg_2_3.png',
+            'battle/bg_2_4.png',
+            'battle/bg_2_5.png',
+            'battle/bg_2_6.png'
+        ],
+        BattleBgBacks: [
+            'battle/bg_3_1.png',
+            'battle/bg_3_2.png',
+            'battle/bg_3_3.png'
+        ]
+    },
     Dynamic: {
         UnitPanel: function (unitId) {
             var id = (unitId > 0) ? unitId : 'empty';
             return "ui/units_panel/button/unit_" + id + ".png";
         }
+    },
+    Audio: {
+        Bgm: {
+            Title: 'audio/bgm_title.mp3'
+        },
+        Se: {}
+    },
+    FontFamily: {
+        Css: 'base.css',
+        Default: 'MisakiGothic'
     }
 });
 /* harmony default export */ __webpack_exports__["default"] = (Resource);
+
+
+/***/ }),
+
+/***/ "./src/example/Scene.ts":
+/*!******************************!*\
+  !*** ./src/example/Scene.ts ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var example_Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/Resource */ "./src/example/Resource.ts");
+/* harmony import */ var example_UiGraph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! example/UiGraph */ "./src/example/UiGraph.ts");
+/* harmony import */ var example_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! example/transition/Immediate */ "./src/example/transition/Immediate.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+/**
+ * ゲームシーンの抽象クラス
+ * UiGraph を利用して UI 情報を透過的に読み込み初期化する
+ * また、シーン間のトランジションイベントを提供する
+ * いずれのイベントも実装クラスにて独自処理の実装を行うことができる
+ */
+var Scene = /** @class */ (function (_super) {
+    __extends(Scene, _super);
+    function Scene() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * 更新すべきオブジェクトを保持する
+         */
+        _this.objectsToUpdate = [];
+        /**
+         * UiGraph でインスタンス化された PIXI.Container を含むオブジェクト
+         */
+        _this.uiGraph = {};
+        /**
+         * UiGraph でロードされた UI データを配置するための PIXI.Container
+         */
+        _this.uiGraphContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        /**
+         * 経過フレーム数
+         */
+        _this.elapsedFrameCount = 0;
+        /**
+         * シーン開始用のトランジションオブジェクト
+         */
+        _this.transitionIn = new example_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        /**
+         * シーン終了用のトランジションオブジェクト
+         */
+        _this.transitionOut = new example_transition_Immediate__WEBPACK_IMPORTED_MODULE_3__["default"]();
+        return _this;
+    }
+    /**
+     * loadInitialResource に用いるリソースリストを作成するメソッド
+     */
+    Scene.prototype.createInitialResourceList = function () {
+        return [];
+    };
+    /**
+     * リソースダウンロードのフローを実行する
+     */
+    Scene.prototype.beginLoadResource = function (onLoaded) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.loadInitialResource(function () { return resolve(); });
+        }).then(function () {
+            return new Promise(function (resolve) {
+                var additionalAssets = _this.onInitialResourceLoaded();
+                _this.loadAdditionalResource(additionalAssets, function () { return resolve(); });
+            });
+        }).then(function () {
+            _this.onAdditionalResourceLoaded();
+            onLoaded();
+            _this.onResourceLoaded();
+        });
+    };
+    /**
+     * 初回リソースのロードを行う
+     */
+    Scene.prototype.loadInitialResource = function (onLoaded) {
+        var assets = this.createInitialResourceList();
+        var name = example_Resource__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+        assets.push(name);
+        var filteredAssets = this.filterLoadedAssets(assets);
+        if (filteredAssets.length > 0) {
+            pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(filteredAssets).load(function () { return onLoaded(); });
+        }
+        else {
+            onLoaded();
+        }
+    };
+    /**
+     * loadInitialResource 完了時のコールバックメソッド
+     * 追加でロードしなければならないテクスチャなどの情報を返す
+     */
+    Scene.prototype.onInitialResourceLoaded = function () {
+        var additionalAssets = [];
+        var name = example_Resource__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+        var uiGraph = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name];
+        for (var i = 0; i < uiGraph.data.nodes.length; i++) {
+            var node = uiGraph.data.nodes[i];
+            if (node.type === 'sprite') {
+                additionalAssets.push({ name: node.params.textureName, url: node.params.url });
+            }
+        }
+        return additionalAssets;
+    };
+    /**
+     * onInitialResourceLoaded で発生した追加のリソースをロードする
+     */
+    Scene.prototype.loadAdditionalResource = function (assets, onLoaded) {
+        pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(this.filterLoadedAssets(assets)).load(function () { return onLoaded(); });
+    };
+    /**
+     * 追加のリソースロード完了時のコールバック
+     */
+    Scene.prototype.onAdditionalResourceLoaded = function () {
+        // 抽象クラスでは何もしない
+    };
+    /**
+     * beginLoadResource 完了時のコールバックメソッド
+     */
+    Scene.prototype.onResourceLoaded = function () {
+        var sceneUiGraphName = example_Resource__WEBPACK_IMPORTED_MODULE_1__["default"].SceneUiGraph(this);
+        this.prepareUiGraphContainer(pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[sceneUiGraphName].data);
+        this.addChild(this.uiGraphContainer);
+    };
+    /**
+     * UiGraph 要素を作成する
+     */
+    Scene.prototype.prepareUiGraphContainer = function (uiData) {
+        for (var i = 0; i < uiData.nodes.length; i++) {
+            var nodeData = uiData.nodes[i];
+            var factory = example_UiGraph__WEBPACK_IMPORTED_MODULE_2__["default"].getFactory(nodeData.type);
+            if (!factory) {
+                factory = this.getCustomUiGraphFactory(nodeData.type);
+                if (!factory) {
+                    continue;
+                }
+            }
+            var node = factory.createUiNodeByGraphElement(nodeData);
+            if (!node) {
+                continue;
+            }
+            if (nodeData.events) {
+                factory.attachUiEventByGraphElement(nodeData.events, node, this);
+            }
+            this.uiGraph[nodeData.id] = node;
+            this.uiGraphContainer.addChild(node);
+        }
+    };
+    /**
+     * UiGraph にシーン独自の要素を指定する場合にこのメソッドを利用する
+     */
+    Scene.prototype.getCustomUiGraphFactory = function (_type) {
+        // 抽象クラスでは何も持たない
+        return null;
+    };
+    /**
+     * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
+     */
+    Scene.prototype.update = function (delta) {
+        this.elapsedFrameCount++;
+        this.updateRegisteredObjects(delta);
+        if (this.transitionIn.isActive()) {
+            this.transitionIn.update(delta);
+        }
+        else if (this.transitionOut.isActive()) {
+            this.transitionOut.update(delta);
+        }
+    };
+    /**
+     * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
+     */
+    Scene.prototype.registerUpdatingObject = function (object) {
+        this.objectsToUpdate.push(object);
+    };
+    /**
+     * 更新処理を行うべきオブジェクトを更新する
+     */
+    Scene.prototype.updateRegisteredObjects = function (delta) {
+        var nextObjectsToUpdate = [];
+        for (var i = 0; i < this.objectsToUpdate.length; i++) {
+            var obj = this.objectsToUpdate[i];
+            if (!obj || obj.isDestroyed()) {
+                continue;
+            }
+            obj.update(delta);
+            nextObjectsToUpdate.push(obj);
+        }
+        this.objectsToUpdate = nextObjectsToUpdate;
+    };
+    /**
+     * シーン追加トランジション開始
+     * 引数でトランジション終了時のコールバックを指定できる
+     */
+    Scene.prototype.beginTransitionIn = function (onTransitionFinished) {
+        var _this = this;
+        this.transitionIn.setCallback(function () { return onTransitionFinished(_this); });
+        var container = this.transitionIn.getContainer();
+        if (container) {
+            this.addChild(container);
+        }
+        this.transitionIn.begin();
+    };
+    /**
+     * シーン削除トランジション開始
+     * 引数でトランジション終了時のコールバックを指定できる
+     */
+    Scene.prototype.beginTransitionOut = function (onTransitionFinished) {
+        var _this = this;
+        this.transitionOut.setCallback(function () { return onTransitionFinished(_this); });
+        var container = this.transitionOut.getContainer();
+        if (container) {
+            this.addChild(container);
+        }
+        this.transitionOut.begin();
+    };
+    /**
+     * 渡されたアセットのリストからロード済みのものをフィルタリングする
+     */
+    Scene.prototype.filterLoadedAssets = function (assets) {
+        var assetMap = new Map();
+        for (var i = 0; i < assets.length; i++) {
+            var asset = assets[i];
+            if (typeof asset === 'string') {
+                if (!pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[asset] && !assetMap.has(asset)) {
+                    assetMap.set(asset, { name: asset, url: asset });
+                }
+            }
+            else {
+                if (!pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[asset.name] && !assetMap.has(asset.name)) {
+                    assetMap.set(asset.name, asset);
+                }
+            }
+        }
+        return Array.from(assetMap.values());
+    };
+    return Scene;
+}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
+/* harmony default export */ __webpack_exports__["default"] = (Scene);
+
+
+/***/ }),
+
+/***/ "./src/example/SoundManager.ts":
+/*!*************************************!*\
+  !*** ./src/example/SoundManager.ts ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/index.js");
+/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(detect_browser__WEBPACK_IMPORTED_MODULE_0__);
+
+/**
+ * サウンドを扱う
+ * Sound の高級機能
+ */
+var SoundManager = /** @class */ (function () {
+    /**
+     * コンストラクタ
+     */
+    function SoundManager() {
+        if (SoundManager.instance) {
+            throw new Error('SoundManager can not be initialized twice');
+        }
+    }
+    Object.defineProperty(SoundManager, "sharedContext", {
+        /**
+         * AudioCntext インスタンスのゲッタ
+         * ブラウザによっては生成数に上限があるため、SoundManager では単一のインスタンスのみ生成する
+         */
+        get: function () {
+            return SoundManager.context;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 初期化処理
+     * ユーザで生成した AudioContext を渡すこともできる
+     */
+    SoundManager.init = function (ctx) {
+        if (SoundManager.instance) {
+            return;
+        }
+        SoundManager.instance = new SoundManager();
+        if (ctx) {
+            SoundManager.context = ctx;
+        }
+        else {
+            var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            SoundManager.context = new AudioContextClass();
+        }
+        var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_0__["detect"])();
+        if (!browser) {
+            return;
+        }
+        SoundManager.useWebAudio(browser);
+        SoundManager.setSoundInitializeEvent(browser);
+    };
+    /**
+     * サウンドを初期化するためのイベントを登録する
+     * 多くのブラウザではタップ等のユーザ操作を行わないとサウンドを再生できない
+     * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
+     */
+    SoundManager.setSoundInitializeEvent = function (browser) {
+        var eventName = (document.ontouchend === undefined) ? 'mousedown' : 'touchend';
+        var soundInitializer;
+        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+        if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) >= 66) {
+            soundInitializer = function () {
+                if (SoundManager.sharedContext) {
+                    SoundManager.sharedContext.resume();
+                }
+                document.body.removeEventListener(eventName, soundInitializer);
+            };
+        }
+        else if (browser.name === 'safari') {
+            soundInitializer = function () {
+                if (SoundManager.sharedContext) {
+                    var silentSource = SoundManager.sharedContext.createBufferSource();
+                    silentSource.buffer = SoundManager.sharedContext.createBuffer(1, 1, 44100);
+                    silentSource.connect(SoundManager.sharedContext.destination);
+                    silentSource.start(0);
+                    silentSource.disconnect();
+                }
+                document.body.removeEventListener(eventName, soundInitializer);
+            };
+        }
+        else {
+            return;
+        }
+        document.body.addEventListener(eventName, soundInitializer);
+    };
+    /**
+     * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
+     */
+    SoundManager.useWebAudio = function (browser) {
+        if (SoundManager.webAudioInitialized) {
+            return;
+        }
+        var supportedExtensions = SoundManager.supportedExtensions;
+        // xhr でバイナリ取得する拡張子を登録
+        for (var i = 0; i < supportedExtensions.length; i++) {
+            var extension = supportedExtensions[i];
+            var PixiResource = PIXI.loaders.Loader.Resource;
+            PixiResource.setExtensionXhrType(extension, PixiResource.XHR_RESPONSE_TYPE.BUFFER);
+            PixiResource.setExtensionLoadType(extension, PixiResource.LOAD_TYPE.XHR);
+        }
+        // Chrome の一部バージョンでサウンドのデコード方法が異なるためメソッドを変える
+        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+        var methodName = 'decodeAudio';
+        if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
+            methodName = 'decodeAudioWithPromise';
+        }
+        // resource-loader ミドルウェアの登録
+        PIXI.loader.use(function (resource, next) {
+            var extension = resource.url.split('?')[0].split('.')[1];
+            if (extension && supportedExtensions.indexOf(extension) !== -1) {
+                // リソースオブジェクトに buffer という名前でプロパティを生やす
+                SoundManager[methodName](resource.data, function (buf) {
+                    resource.buffer = buf;
+                    next();
+                });
+            }
+            else {
+                next();
+            }
+        });
+        SoundManager.webAudioInitialized = true;
+    };
+    /**
+     * オーディオデータのデコード処理
+     */
+    SoundManager.decodeAudio = function (binary, callback) {
+        if (SoundManager.sharedContext) {
+            SoundManager.sharedContext.decodeAudioData(binary, callback);
+        }
+    };
+    /**
+     * オーディオデータのデコード処理
+     * ブラウザ種別やバージョンによっては I/F が異なるため、こちらを使う必要がある
+     */
+    SoundManager.decodeAudioWithPromise = function (binary, callback) {
+        if (SoundManager.sharedContext) {
+            SoundManager.sharedContext.decodeAudioData(binary).then(callback);
+        }
+    };
+    /**
+     * SoundManager がサポートするサウンドファイル拡張子
+     */
+    SoundManager.supportedExtensions = ['mp3'];
+    /**
+     * AudioCntext インスタンス
+     */
+    SoundManager.context = null;
+    /**
+     * WebAudio 利用の初期化済みフラグ
+     */
+    SoundManager.webAudioInitialized = false;
+    return SoundManager;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (SoundManager);
 
 
 /***/ }),
@@ -45210,1427 +45614,10 @@ var UnitButtonFactory = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/index.ts":
-/*!**********************!*\
-  !*** ./src/index.ts ***!
-  \**********************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var webfontloader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webfontloader */ "./node_modules/webfontloader/webfontloader.js");
-/* harmony import */ var webfontloader__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webfontloader__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Config */ "./src/Config.ts");
-/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
-/* harmony import */ var example_MinUiGraphScene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! example/MinUiGraphScene */ "./src/example/MinUiGraphScene.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-
-
-
-
-
-/**
- * ゲームの初期化処理
- */
-function initGame() {
-    var width = 1136;
-    var height = 640;
-    managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].start({
-        glWidth: width,
-        glHeight: height,
-        option: {
-            backgroundColor: 0x222222
-        }
-    });
-    // 最初のシーンの読み込み
-    managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new example_MinUiGraphScene__WEBPACK_IMPORTED_MODULE_3__["default"]());
-    // コンソールからオブジェクトを調査できるように window に生やす
-    Debug: {
-        window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"];
-    }
-}
-var fontLoaded = false;
-var windowLoaded = false;
-/**
- * フォント読みこみ
- * window 読み込みも完了していたらゲームを起動する
- */
-webfontloader__WEBPACK_IMPORTED_MODULE_0__["load"]({
-    custom: {
-        families: [Resource__WEBPACK_IMPORTED_MODULE_2__["default"].FontFamily.Default],
-        urls: ['base.css']
-    },
-    active: function () {
-        fontLoaded = true;
-        if (windowLoaded) {
-            initGame();
-        }
-    }
-});
-/**
- * エントリーポイント
- * フォント読み込みも完了していたらゲームを起動する
- */
-window.onload = function () {
-    windowLoaded = true;
-    if (fontLoaded) {
-        initGame();
-    }
-};
-
-
-/***/ }),
-
-/***/ "./src/managers/GameManager.ts":
-/*!*************************************!*\
-  !*** ./src/managers/GameManager.ts ***!
-  \*************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/index.js");
-/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(detect_browser__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/IndexedDBManager */ "./src/managers/IndexedDBManager.ts");
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-
-
-
-
-/**
- * ゲーム全体のマネージャ
- * 主にシーンを扱う
- */
-var GameManager = /** @class */ (function () {
-    /**
-     * コンストラクタ
-     * PIXI.Application インスタンスはユーザ任意のものを使用する
-     */
-    function GameManager(app) {
-        /**
-         * シーンのリソースロード完了フラグ
-         * シーントランジションを制御するためのフラグ
-         */
-        this.sceneResourceLoaded = true;
-        /**
-         * シーンのトランジション完了フラグ
-         * シーントランジションを制御するためのフラグ
-         */
-        this.sceneTransitionOutFinished = true;
-        if (GameManager.instance) {
-            throw new Error('GameManager can be instantiate only once');
-        }
-        this.game = app;
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_2__["default"].init(function (_e) {
-            console.debug('indexed db could not be initialized');
-        });
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].init();
-    }
-    /**
-     * ゲームを起動する
-     * 画面サイズや PIXI.ApplicationOptions を渡すことができる
-     */
-    GameManager.start = function (params) {
-        // PIXI Application 生成
-        var game = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"](params.glWidth, params.glHeight, params.option);
-        // GameManager インスタンス生成
-        var instance = new GameManager(game);
-        GameManager.instance = instance;
-        // canvas を DOM に追加
-        document.body.appendChild(game.view);
-        // リサイズイベントの登録
-        window.addEventListener('resize', GameManager.resizeCanvas);
-        // サイズ初期化
-        GameManager.resizeCanvas();
-        // 必要であればフルスクリーンの有効化
-        GameManager.enableFullScreenIfNeeded();
-        // メインループ
-        game.ticker.add(function (delta) {
-            if (instance.currentScene) {
-                instance.currentScene.update(delta);
-            }
-            managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].update(delta);
-        });
-    };
-    /**
-     * フルスクリーンに切り替える
-     */
-    GameManager.requestFullScreen = function () {
-        var body = window.document.body;
-        var requestFullScreen = body.requestFullScreen || body.webkitRequestFullScreen;
-        requestFullScreen.call(body);
-    };
-    /**
-     * 可能であれば新しいシーンへのトランジションを開始する
-     */
-    GameManager.transitionInIfPossible = function (newScene) {
-        var instance = GameManager.instance;
-        if (!instance.sceneResourceLoaded || !instance.sceneTransitionOutFinished) {
-            return false;
-        }
-        if (instance.currentScene) {
-            instance.currentScene.destroy();
-        }
-        instance.currentScene = newScene;
-        if (instance.game) {
-            instance.game.stage.addChild(newScene);
-        }
-        newScene.beginTransitionIn(function (_) { });
-        return true;
-    };
-    /**
-     * シーンをロードする
-     * 新しいシーンのリソース読み込みと古いシーンのトランジションを同時に開始する
-     * いずれも完了したら、新しいシーンのトランジションを開始する
-     */
-    GameManager.loadScene = function (newScene) {
-        var instance = GameManager.instance;
-        if (instance.currentScene) {
-            instance.sceneResourceLoaded = false;
-            instance.sceneTransitionOutFinished = false;
-            newScene.beginLoadResource(function () {
-                instance.sceneResourceLoaded = true;
-                GameManager.transitionInIfPossible(newScene);
-            });
-            instance.currentScene.beginTransitionOut(function (_) {
-                instance.sceneTransitionOutFinished = true;
-                GameManager.transitionInIfPossible(newScene);
-            });
-        }
-        else {
-            instance.sceneTransitionOutFinished = true;
-            newScene.beginLoadResource(function () {
-                instance.sceneResourceLoaded = true;
-                GameManager.transitionInIfPossible(newScene);
-            });
-        }
-    };
-    /**
-     * HTML canvas のりサイズ処理を行う
-     */
-    GameManager.resizeCanvas = function () {
-        var game = GameManager.instance.game;
-        var renderer = game.renderer;
-        var canvasWidth;
-        var canvasHeight;
-        var rendererHeightRatio = renderer.height / renderer.width;
-        var windowHeightRatio = window.innerHeight / window.innerWidth;
-        // 画面比率に合わせて縦に合わせるか横に合わせるか決める
-        if (windowHeightRatio > rendererHeightRatio) {
-            canvasWidth = window.innerWidth;
-            canvasHeight = window.innerWidth * (renderer.height / renderer.width);
-        }
-        else {
-            canvasWidth = window.innerHeight * (renderer.width / renderer.height);
-            canvasHeight = window.innerHeight;
-        }
-        game.view.style.width = canvasWidth + "px";
-        game.view.style.height = canvasHeight + "px";
-    };
-    /**
-     * 動作環境に応じて適切ならフルスクリーン設定をする
-     */
-    GameManager.enableFullScreenIfNeeded = function () {
-        var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_1__["detect"])();
-        // iOS は対応していないが一応記述しておく
-        if (browser && (browser.os === 'iOS' || browser.os === 'Android OS')) {
-            var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
-            document.body.addEventListener(eventName, GameManager.requestFullScreen);
-        }
-    };
-    return GameManager;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (GameManager);
-
-
-/***/ }),
-
-/***/ "./src/managers/IndexedDBManager.ts":
-/*!******************************************!*\
-  !*** ./src/managers/IndexedDBManager.ts ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * ブラウザの indexed db API
- */
-var indexedDb = window.indexedDB || window.webkitIndexedDB;
-/**
- * indexed db マネージャ
- * レコードを KVS 形式のインターフェースで取り扱う
- */
-var IndexedDBManager = /** @class */ (function () {
-    function IndexedDBManager() {
-    }
-    /**
-     * マネージャを初期化する
-     * DB 接続を開き保持しておく
-     */
-    IndexedDBManager.init = function (onError) {
-        if (!indexedDb) {
-            console.log('indexed db is not supported');
-        }
-        var request = indexedDb.open(IndexedDBManager.dbName, IndexedDBManager.dbVersion);
-        request.onupgradeneeded = function (e) {
-            IndexedDBManager.upgradeDB(e);
-        };
-        request.onsuccess = function (e) {
-            var db = e.target.result;
-            IndexedDBManager.db = db;
-        };
-        request.onerror = function (e) { return onError(e); };
-    };
-    /**
-     * レコードを保存する
-     */
-    IndexedDBManager.put = function (key, data, onSuccess, onError) {
-        var store = IndexedDBManager.getStoreObject();
-        if (!store) {
-            if (onError) {
-                onError();
-            }
-            return;
-        }
-        var record = IndexedDBManager.createRecordObject(key, data);
-        var request = store.put(record);
-        if (onSuccess) {
-            request.onsuccess = function (e) { onSuccess(e); };
-        }
-        if (onError) {
-            request.onerror = function (e) { onError(e); };
-        }
-    };
-    /**
-     * レコードを取得する
-     * レコードが存在しなければ undefined を返す
-     */
-    IndexedDBManager.get = function (key, onSuccess, onError) {
-        var store = IndexedDBManager.getStoreObject();
-        if (!store) {
-            if (onError) {
-                onError();
-            }
-            return;
-        }
-        var request = store.get(key);
-        request.onsuccess = function (e) {
-            var result = e.target.result;
-            (result)
-                ? onSuccess(result.value, result.key)
-                : onSuccess(undefined, undefined);
-        };
-        if (onError) {
-            request.onerror = function (e) { onError(e); };
-        }
-    };
-    /**
-     * レコードを削除する
-     */
-    IndexedDBManager.delete = function (key, onSuccess, onError) {
-        var store = IndexedDBManager.getStoreObject();
-        if (!store) {
-            if (onError) {
-                onError();
-            }
-            return;
-        }
-        var request = store.delete(key);
-        if (onSuccess) {
-            request.onsuccess = function (e) { onSuccess(e); };
-        }
-        if (onError) {
-            request.onerror = function (e) { onError(e); };
-        }
-    };
-    /**
-     * すべてのレコードを削除する
-     */
-    IndexedDBManager.clear = function (onSuccess, onError) {
-        var store = IndexedDBManager.getStoreObject();
-        if (!store) {
-            if (onError) {
-                onError();
-            }
-            return;
-        }
-        var request = store.clear();
-        if (onSuccess) {
-            request.onsuccess = function (e) { onSuccess(e); };
-        }
-        if (onError) {
-            request.onerror = function (e) { onError(e); };
-        }
-    };
-    /**
-     * onupgradeneeded コールバックを処理しなければならない時に実行するメソッド
-     */
-    IndexedDBManager.upgradeDB = function (e) {
-        var db = e.target.result;
-        var index = IndexedDBManager.storeIndex;
-        var store = db.createObjectStore(IndexedDBManager.storeName, { keyPath: index });
-        store.createIndex(index, index, { unique: true });
-    };
-    /**
-     * トランザクションを生成し、ストアオブジェクトを返す
-     */
-    IndexedDBManager.getStoreObject = function () {
-        if (!IndexedDBManager.db) {
-            return null;
-        }
-        var storeName = IndexedDBManager.storeName;
-        var transaction = IndexedDBManager.db.transaction(storeName, 'readwrite');
-        return transaction.objectStore(storeName);
-    };
-    /**
-     * Key/Value をこのマネージャが扱うオブジェクトに変換する
-     */
-    IndexedDBManager.createRecordObject = function (key, value) {
-        return { key: key, value: value };
-    };
-    /**
-     * このマネージャが扱う固定データベース名
-     */
-    IndexedDBManager.dbName = 'sample-game-db';
-    /**
-     * このマネージャが扱うデータベースバージョン
-     */
-    IndexedDBManager.dbVersion = 1;
-    /**
-     * このマネージャが扱う固定ストア名
-     */
-    IndexedDBManager.storeName = 'sample-game-store';
-    /**
-     * このマネージャが扱う固定ストアのインデックス名称
-     */
-    IndexedDBManager.storeIndex = 'key';
-    /**
-     * IDBDatabase インスタンス
-     */
-    IndexedDBManager.db = null;
-    return IndexedDBManager;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (IndexedDBManager);
-
-
-/***/ }),
-
-/***/ "./src/managers/SoundManager.ts":
-/*!**************************************!*\
-  !*** ./src/managers/SoundManager.ts ***!
-  \**************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/index.js");
-/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(detect_browser__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
-
-
-var SUPPORTED_EXTENSIONS = ['mp3'];
-/**
- * サウンドを扱う
- * Sound の高級機能
- */
-var SoundManager = /** @class */ (function () {
-    /**
-     * コンストラクタ
-     */
-    function SoundManager() {
-        /**
-         * 一時停止中かどうかのフラグ
-         */
-        this.paused = false;
-        /**
-         * フェード処理後に削除する Sound インスタンスのリスト
-         */
-        this.killingSounds = [];
-        /**
-         * SoundManager で監理している Sound インスタンスの Map
-         */
-        this.managedSounds = new Map();
-        if (SoundManager.instance) {
-            throw new Error('SoundManager can not be initialized twice');
-        }
-    }
-    Object.defineProperty(SoundManager, "sharedContext", {
-        /**
-         * AudioCntext インスタンスのゲッタ
-         * ブラウザによっては生成数に上限があるため、SoundManager では単一のインスタンスのみ生成する
-         */
-        get: function () {
-            return SoundManager.context;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * 初期化処理
-     * ユーザで生成した AudioContext を渡すこともできる
-     */
-    SoundManager.init = function (ctx) {
-        if (SoundManager.instance) {
-            return;
-        }
-        SoundManager.instance = new SoundManager();
-        if (ctx) {
-            SoundManager.context = ctx;
-        }
-        else {
-            var AudioContextClass = window.AudioContext || window.webkitAudioContext;
-            SoundManager.context = new AudioContextClass();
-        }
-        var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_0__["detect"])();
-        if (!browser) {
-            return;
-        }
-        SoundManager.addLoaderMiddleware(browser);
-        SoundManager.setSoundInitializeEvent(browser);
-        SoundManager.setWindowLifeCycleEvent(browser);
-    };
-    /**
-     * 毎フレームの更新処理
-     */
-    SoundManager.update = function (_delta) {
-        if (!SoundManager.sharedContext) {
-            return;
-        }
-        // 削除予定のサウンドがあれば削除する
-        var killingSounds = SoundManager.instance.killingSounds;
-        if (killingSounds.length > 0) {
-            var remainedSounds = [];
-            for (var i = 0; i < killingSounds.length; i++) {
-                var item = killingSounds[i];
-                if (SoundManager.sharedContext.currentTime >= item.endAt) {
-                    item.sound.stop();
-                }
-                else {
-                    remainedSounds.push(item);
-                }
-            }
-            SoundManager.instance.killingSounds = remainedSounds;
-        }
-    };
-    /**
-     * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
-     */
-    SoundManager.addLoaderMiddleware = function (browser) {
-        if (SoundManager.loaderMiddlewareAdded) {
-            return;
-        }
-        // xhr でバイナリ取得する拡張子を登録
-        for (var i = 0; i < SUPPORTED_EXTENSIONS.length; i++) {
-            var extension = SUPPORTED_EXTENSIONS[i];
-            var PixiResource = PIXI.loaders.Loader.Resource;
-            PixiResource.setExtensionXhrType(extension, PixiResource.XHR_RESPONSE_TYPE.BUFFER);
-            PixiResource.setExtensionLoadType(extension, PixiResource.LOAD_TYPE.XHR);
-        }
-        // Chrome の一部バージョンでサウンドのデコード方法が異なるためメソッドを変える
-        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
-        var methodName = 'decodeAudio';
-        if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
-            methodName = 'decodeAudioWithPromise';
-        }
-        // resource-loader ミドルウェアの登録
-        PIXI.loader.use(function (resource, next) {
-            var extension = resource.url.split('?')[0].split('.')[1];
-            if (extension && SUPPORTED_EXTENSIONS.indexOf(extension) !== -1) {
-                // リソースオブジェクトに buffer という名前でプロパティを生やす
-                SoundManager[methodName](resource.data, function (buf) {
-                    resource.buffer = buf;
-                    next();
-                });
-            }
-            else {
-                next();
-            }
-        });
-        SoundManager.loaderMiddlewareAdded = true;
-    };
-    /**
-     * オーディオデータのデコード処理
-     */
-    SoundManager.decodeAudio = function (binary, callback) {
-        if (SoundManager.sharedContext) {
-            SoundManager.sharedContext.decodeAudioData(binary, callback);
-        }
-    };
-    /**
-     * オーディオデータのデコード処理
-     * ブラウザ種別やバージョンによっては I/F が異なるため、こちらを使う必要がある
-     */
-    SoundManager.decodeAudioWithPromise = function (binary, callback) {
-        if (SoundManager.sharedContext) {
-            SoundManager.sharedContext.decodeAudioData(binary).then(callback);
-        }
-    };
-    /**
-     * サウンドを初期化するためのイベントを登録する
-     * 多くのブラウザではタップ等のユーザ操作を行わないとサウンドを再生できない
-     * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
-     */
-    SoundManager.setSoundInitializeEvent = function (browser) {
-        var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
-        var soundInitializer;
-        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
-        if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) >= 66) {
-            soundInitializer = function () {
-                if (SoundManager.sharedContext) {
-                    SoundManager.sharedContext.resume();
-                }
-                document.body.removeEventListener(eventName, soundInitializer);
-            };
-        }
-        else if (browser.name === 'safari') {
-            soundInitializer = function () {
-                if (SoundManager.sharedContext) {
-                    var silentSource = SoundManager.sharedContext.createBufferSource();
-                    silentSource.buffer = SoundManager.sharedContext.createBuffer(1, 1, 44100);
-                    silentSource.connect(SoundManager.sharedContext.destination);
-                    silentSource.start(0);
-                    silentSource.disconnect();
-                }
-                document.body.removeEventListener(eventName, soundInitializer);
-            };
-        }
-        else {
-            return;
-        }
-        document.body.addEventListener(eventName, soundInitializer);
-    };
-    /**
-     * HTML window のライフサイクルイベントを登録する
-     * ブラウザのタブ切り替えや非アクティヴ時に音声が鳴ってしまわないようにする
-     */
-    SoundManager.setWindowLifeCycleEvent = function (browser) {
-        if (browser.name === 'safari') {
-            document.addEventListener('webkitvisibilitychange', function () {
-                document.webkitHidden ? SoundManager.pause() : SoundManager.resume();
-            });
-        }
-        else {
-            document.addEventListener('visibilitychange', function () {
-                document.hidden ? SoundManager.pause() : SoundManager.resume();
-            });
-        }
-    };
-    /**
-     * 渡された Sound インスタンスを渡された名前に紐つけて SoundManager 管理下にする
-     */
-    SoundManager.registerSound = function (name, sound) {
-        SoundManager.instance.managedSounds.set(name, sound);
-    };
-    /**
-     * 渡された名前に紐ついている Sound インスタンスを SoundManager 管理下からはずす
-     */
-    SoundManager.unregisterSound = function (name) {
-        SoundManager.instance.managedSounds.delete(name);
-    };
-    /**
-     * Sound インスタンスを SoundManager 管理下として生成し返却する
-     */
-    SoundManager.createSound = function (name, buf) {
-        var sound = new modules_Sound__WEBPACK_IMPORTED_MODULE_1__["default"](buf);
-        SoundManager.registerSound(name, sound);
-        return sound;
-    };
-    /**
-     * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスを返す
-     */
-    SoundManager.getSound = function (name) {
-        return SoundManager.instance.managedSounds.get(name);
-    };
-    /**
-     * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスの存在有無を返す
-     */
-    SoundManager.hasSound = function (name) {
-        return SoundManager.instance.managedSounds.has(name);
-    };
-    /**
-     * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスを破棄する
-     */
-    SoundManager.destroySound = function (name) {
-        var sound = this.getSound(name);
-        SoundManager.unregisterSound(name);
-        if (sound) {
-            sound.stop();
-        }
-    };
-    /**
-     * 管理下の Sound インスタンスをすべて一時停止する
-     */
-    SoundManager.pause = function () {
-        var instance = SoundManager.instance;
-        if (instance.paused) {
-            return;
-        }
-        instance.paused = true;
-        instance.managedSounds.forEach(function (sound) { sound.pause(); });
-    };
-    /**
-     * 管理下の Sound インスタンスの再生をすべて再開する
-     */
-    SoundManager.resume = function () {
-        var instance = SoundManager.instance;
-        if (!instance.paused) {
-            return;
-        }
-        instance.paused = false;
-        instance.managedSounds.forEach(function (sound) { sound.resume(); });
-    };
-    /**
-     * フェード処理を行う
-     */
-    SoundManager.fade = function (sound, targetVolume, seconds, stopOnEnd) {
-        if (stopOnEnd === void 0) { stopOnEnd = false; }
-        if (!SoundManager.sharedContext) {
-            return;
-        }
-        var endAt = SoundManager.sharedContext.currentTime + seconds;
-        sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, endAt);
-        if (stopOnEnd) {
-            SoundManager.instance.killingSounds.push({ sound: sound, endAt: endAt });
-        }
-    };
-    /**
-     * AudioCntext インスタンス
-     */
-    SoundManager.context = null;
-    /**
-     * PIXI.Loader ミドルウェアが登録済みかどうかのフラグ
-     */
-    SoundManager.loaderMiddlewareAdded = false;
-    return SoundManager;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (SoundManager);
-
-
-/***/ }),
-
-/***/ "./src/modules/Sound.ts":
-/*!******************************!*\
-  !*** ./src/modules/Sound.ts ***!
-  \******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-
-/**
- * サウンド処理を行うクラス
- */
-var Sound = /** @class */ (function () {
-    /**
-     * コンストラクタ
-     * AudioBuffer はユーザ側で用意する
-     */
-    function Sound(buf) {
-        /**
-         * ループ再生フラグ
-         */
-        this.loop = false;
-        /**
-         * AudioBufferSourceNode インスタンス
-         */
-        this.source = null;
-        /**
-         * 再生開始フラグ
-         */
-        this.played = false;
-        /**
-         * 一時停止フラグ
-         */
-        this.paused = false;
-        /**
-         * サウンド再生開始時間オフセット
-         */
-        this.offset = 0;
-        /**
-         * AudioContext インスタンスの currentTime を基準に保持する再生開始時間
-         */
-        this.playedAt = 0;
-        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext) {
-            return;
-        }
-        this.buffer = buf;
-        this.gainNode = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext.createGain();
-    }
-    Object.defineProperty(Sound.prototype, "volume", {
-        /**
-         * ボリュームのゲッタ
-         */
-        get: function () {
-            return this.gainNode ? this.gainNode.gain.value : -1;
-        },
-        /**
-         * ボリュームのセッタ
-         */
-        set: function (value) {
-            if (this.gainNode) {
-                this.gainNode.gain.value = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Sound.prototype, "elapsedTime", {
-        /**
-         * サウンド再生時間を返す
-         */
-        get: function () {
-            if (this.paused) {
-                return this.offset;
-            }
-            var audioContext = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext;
-            if (!this.source || !audioContext) {
-                return 0;
-            }
-            var playedTime = audioContext.currentTime - this.playedAt;
-            // ループ再生の場合は合計の再生時間から割り出す
-            if (this.source.loop) {
-                var playLength = this.source.loopEnd - this.source.loopStart;
-                if (playedTime > playLength) {
-                    return this.source.loopStart + (playedTime % playLength);
-                }
-            }
-            return playedTime;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * 再生開始
-     */
-    Sound.prototype.play = function (loop, offset) {
-        var _this = this;
-        if (loop === void 0) { loop = false; }
-        if (offset === void 0) { offset = 0; }
-        var audioContext = managers_SoundManager__WEBPACK_IMPORTED_MODULE_0__["default"].sharedContext;
-        if (!audioContext) {
-            return;
-        }
-        this.loop = loop;
-        // AudioSourceNode の初期化
-        this.source = audioContext.createBufferSource();
-        this.source.loop = this.loop;
-        this.source.loopStart = 0;
-        this.source.loopEnd = this.buffer.duration;
-        this.source.buffer = this.buffer;
-        this.source.onended = function () { return _this.stop(); };
-        this.gainNode.connect(audioContext.destination);
-        this.source.connect(this.gainNode);
-        this.source.start(0, offset);
-        this.playedAt = audioContext.currentTime - offset;
-        this.paused = false;
-        this.played = true;
-    };
-    /**
-     * 停止
-     */
-    Sound.prototype.stop = function () {
-        if (!this.source || !this.played) {
-            return;
-        }
-        this.source.disconnect();
-        try {
-            this.source.buffer = null;
-        }
-        catch (_e) {
-            // Chrome 59 以下は null 代入できない
-            // 後続の処理に問題はないので正常系処理に戻す
-        }
-        this.source.onended = null;
-        this.source = null;
-        this.paused = false;
-    };
-    /**
-     * 一時停止
-     */
-    Sound.prototype.pause = function () {
-        if (this.paused || !this.played) {
-            return;
-        }
-        this.offset = this.elapsedTime;
-        this.stop();
-        this.paused = true;
-    };
-    /**
-     * 再開
-     */
-    Sound.prototype.resume = function () {
-        if (!this.paused || !this.played) {
-            return;
-        }
-        this.play(this.loop, this.offset);
-        this.paused = false;
-    };
-    return Sound;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (Sound);
-
-
-/***/ }),
-
-/***/ "./src/modules/UiGraph.ts":
-/*!********************************!*\
-  !*** ./src/modules/UiGraph.ts ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var modules_UiNodeFactory_TextFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modules/UiNodeFactory/TextFactory */ "./src/modules/UiNodeFactory/TextFactory.ts");
-/* harmony import */ var modules_UiNodeFactory_SpriteFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/UiNodeFactory/SpriteFactory */ "./src/modules/UiNodeFactory/SpriteFactory.ts");
-
-
-/**
- * UI を静的に定義しランタイムでロードするためのモジュール
- * 指定されたノードのファクトリを生成して保持する
- */
-var UiGraph = /** @class */ (function () {
-    function UiGraph() {
-    }
-    /**
-     * ファクトリを取得
-     * なければキャッシュを作る
-     */
-    UiGraph.getFactory = function (type) {
-        if (!UiGraph.cachedFactory[type]) {
-            var Factory = void 0;
-            switch (type) {
-                case 'text':
-                    Factory = modules_UiNodeFactory_TextFactory__WEBPACK_IMPORTED_MODULE_0__["default"];
-                    break;
-                case 'sprite':
-                    Factory = modules_UiNodeFactory_SpriteFactory__WEBPACK_IMPORTED_MODULE_1__["default"];
-                    break;
-            }
-            if (!Factory) {
-                return null;
-            }
-            UiGraph.cachedFactory[type] = new Factory();
-        }
-        return UiGraph.cachedFactory[type];
-    };
-    /**
-     * ファクトリのキャッシュ
-     */
-    UiGraph.cachedFactory = {};
-    return UiGraph;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (UiGraph);
-
-
-/***/ }),
-
-/***/ "./src/modules/UiNodeFactory/SpriteFactory.ts":
-/*!****************************************************!*\
-  !*** ./src/modules/UiNodeFactory/SpriteFactory.ts ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modules/UiNodeFactory/UiNodeFactory */ "./src/modules/UiNodeFactory/UiNodeFactory.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-/**
- * PIXI.Sprite のファクトリ
- * テクスチャに、定義されているテクスチャ名で PIXI.utils.TextureCache から引いたデータを用いる
- */
-var SpriteFactory = /** @class */ (function (_super) {
-    __extends(SpriteFactory, _super);
-    function SpriteFactory() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    SpriteFactory.prototype.createUiNode = function (nodeParams) {
-        var sprite = new PIXI.Sprite();
-        if (nodeParams) {
-            if (nodeParams.textureName && PIXI.utils.TextureCache[nodeParams.textureName]) {
-                sprite.texture = PIXI.utils.TextureCache[nodeParams.textureName];
-            }
-            if (nodeParams.anchor) {
-                sprite.anchor.x = nodeParams.anchor[0];
-                sprite.anchor.y = nodeParams.anchor[1];
-            }
-        }
-        return sprite;
-    };
-    return SpriteFactory;
-}(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (SpriteFactory);
-
-
-/***/ }),
-
-/***/ "./src/modules/UiNodeFactory/TextFactory.ts":
-/*!**************************************************!*\
-  !*** ./src/modules/UiNodeFactory/TextFactory.ts ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modules/UiNodeFactory/UiNodeFactory */ "./src/modules/UiNodeFactory/UiNodeFactory.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-/**
- * PIXI.Text のファクトリ
- */
-var TextFactory = /** @class */ (function (_super) {
-    __extends(TextFactory, _super);
-    function TextFactory() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    TextFactory.prototype.createUiNode = function (nodeParams) {
-        var _a;
-        var textStyleParams = {};
-        var container = new PIXI.Text();
-        if (nodeParams) {
-            if (nodeParams.family !== undefined) {
-                textStyleParams.fontFamily = nodeParams.family;
-            }
-            if (nodeParams.size !== undefined) {
-                textStyleParams.fontSize = nodeParams.size;
-            }
-            if (nodeParams.color !== undefined) {
-                textStyleParams.fill = nodeParams.color;
-            }
-            if (nodeParams.padding !== undefined) {
-                textStyleParams.padding = nodeParams.padding;
-            }
-            if (nodeParams.anchor !== undefined) {
-                (_a = container.anchor).set.apply(_a, nodeParams.anchor);
-            }
-            if (nodeParams.text !== undefined) {
-                container.text = nodeParams.text;
-            }
-        }
-        container.style = new PIXI.TextStyle(textStyleParams);
-        return container;
-    };
-    return TextFactory;
-}(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (TextFactory);
-
-
-/***/ }),
-
-/***/ "./src/modules/UiNodeFactory/UiNodeFactory.ts":
-/*!****************************************************!*\
-  !*** ./src/modules/UiNodeFactory/UiNodeFactory.ts ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-
-/**
- * UiGraph 要素のファクトリの基本クラス
- */
-var UiNodeFactory = /** @class */ (function () {
-    function UiNodeFactory() {
-    }
-    /**
-     * 派生クラスで実装し、適切な UiGraph ノードを生成する
-     * デフォルトでは PIXI.Container インスタンスを返す
-     */
-    UiNodeFactory.prototype.createUiNode = function (_) {
-        return new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
-    };
-    /**
-     * 静的なノードデータから PIXI.Container 派生オブジェクトを生成する
-     */
-    UiNodeFactory.prototype.createUiNodeByGraphElement = function (nodeData) {
-        var node = this.createUiNode(nodeData.params);
-        if (node) {
-            node.name = nodeData.id;
-            node.position.set(nodeData.position[0], nodeData.position[1]);
-        }
-        return node;
-    };
-    /**
-     * 定義されたイベントを実装する
-     */
-    UiNodeFactory.prototype.attachUiEventByGraphElement = function (events, node, target) {
-        node.interactive = true;
-        var _loop_1 = function (i) {
-            var event_1 = events[i];
-            var fx = target[event_1.callback];
-            if (!fx) {
-                return "continue";
-            }
-            node.on(event_1.type, function () { return fx.call.apply(fx, [target].concat(event_1.arguments)); });
-        };
-        for (var i = 0; i < events.length; i++) {
-            _loop_1(i);
-        }
-    };
-    return UiNodeFactory;
-}());
-/* harmony default export */ __webpack_exports__["default"] = (UiNodeFactory);
-
-
-/***/ }),
-
-/***/ "./src/scenes/Scene.ts":
-/*!*****************************!*\
-  !*** ./src/scenes/Scene.ts ***!
-  \*****************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var modules_UiGraph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! modules/UiGraph */ "./src/modules/UiGraph.ts");
-/* harmony import */ var scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/transition/Immediate */ "./src/scenes/transition/Immediate.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-
-
-/**
- * ゲームシーンの抽象クラス
- * UiGraph を利用して UI 情報を透過的に読み込み初期化する
- * また、シーン間のトランジションイベントを提供する
- * いずれのイベントも実装クラスにて独自処理の実装を行うことができる
- */
-var Scene = /** @class */ (function (_super) {
-    __extends(Scene, _super);
-    function Scene() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        /**
-         * 経過フレーム数
-         */
-        _this.elapsedFrameCount = 0;
-        /**
-         * UiGraph を利用して読み込む UI があるかどうか
-         */
-        _this.hasSceneUiGraph = true;
-        /**
-         * UiGraph でロードされた UI データ
-         */
-        _this.uiGraph = {};
-        /**
-         * UiGraph でロードされた UI データを配置するための PIXI.Container
-         * 描画順による前後関係を統制するために一つの Container にまとめる
-         */
-        _this.uiGraphContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
-        /**
-         * 更新すべきオブジェクトを保持する
-         */
-        _this.objectsToUpdate = [];
-        /**
-         * シーン開始用のトランジションオブジェクト
-         */
-        _this.transitionIn = new scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_4__["default"]();
-        /**
-         * シーン終了用のトランジションオブジェクト
-         */
-        _this.transitionOut = new scenes_transition_Immediate__WEBPACK_IMPORTED_MODULE_4__["default"]();
-        return _this;
-    }
-    /**
-     * GameManager によって requestAnimationFrame 毎に呼び出されるメソッド
-     */
-    Scene.prototype.update = function (delta) {
-        this.elapsedFrameCount++;
-        this.updateRegisteredObjects(delta);
-        if (this.transitionIn.isActive()) {
-            this.transitionIn.update(delta);
-        }
-        else if (this.transitionOut.isActive()) {
-            this.transitionOut.update(delta);
-        }
-    };
-    /**
-     * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
-     */
-    Scene.prototype.registerUpdatingObject = function (object) {
-        this.objectsToUpdate.push(object);
-    };
-    /**
-     * 更新処理を行うべきオブジェクトを更新する
-     */
-    Scene.prototype.updateRegisteredObjects = function (delta) {
-        // 破棄されたオブジェクトを圧縮するために残存するオブジェクトのみを保持する
-        var nextObjectsToUpdate = [];
-        for (var i = 0; i < this.objectsToUpdate.length; i++) {
-            var obj = this.objectsToUpdate[i];
-            if (!obj || obj.isDestroyed()) {
-                continue;
-            }
-            obj.update(delta);
-            nextObjectsToUpdate.push(obj);
-        }
-        this.objectsToUpdate = nextObjectsToUpdate;
-    };
-    /**
-     * シーン追加トランジション開始
-     * 引数でトランジション終了時のコールバックを指定できる
-     */
-    Scene.prototype.beginTransitionIn = function (onTransitionFinished) {
-        var _this = this;
-        this.transitionIn.setCallback(function () { return onTransitionFinished(_this); });
-        var container = this.transitionIn.getContainer();
-        if (container) {
-            this.addChild(container);
-        }
-        this.transitionIn.begin();
-    };
-    /**
-     * シーン削除トランジション開始
-     * 引数でトランジション終了時のコールバックを指定できる
-     */
-    Scene.prototype.beginTransitionOut = function (onTransitionFinished) {
-        var _this = this;
-        this.transitionOut.setCallback(function () { return onTransitionFinished(_this); });
-        var container = this.transitionOut.getContainer();
-        if (container) {
-            this.addChild(container);
-        }
-        this.transitionOut.begin();
-    };
-    /**
-     * loadResource に用いるリソースリストを作成するメソッド
-     * デフォルトでは UiGraph のリソースリストを作成する
-     */
-    Scene.prototype.createInitialResourceList = function () {
-        return [];
-    };
-    /**
-     * リソースをロードする
-     * デフォルトでは UiGraph 用の情報が取得される
-     */
-    Scene.prototype.beginLoadResource = function (onLoaded) {
-        var _this = this;
-        return new Promise(function (resolve) {
-            _this.loadInitialResource(function () { return resolve(); });
-        }).then(function () {
-            return new Promise(function (resolve) {
-                var additionalAssets = _this.onInitialResourceLoaded();
-                _this.loadAdditionalResource(additionalAssets, function () { return resolve(); });
-            });
-        }).then(function () {
-            onLoaded();
-        }).then(function () {
-            _this.onResourceLoaded();
-        });
-    };
-    /**
-     * UiGraph 情報のロードを行う
-     */
-    Scene.prototype.loadInitialResource = function (onLoaded) {
-        var assets = this.createInitialResourceList();
-        var name = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
-        if (this.hasSceneUiGraph && !pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name]) {
-            assets.push({ name: name, url: name });
-        }
-        var filteredAssets = this.filterLoadedAssets(assets);
-        if (filteredAssets.length > 0) {
-            pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(filteredAssets).load(function () { return onLoaded(); });
-        }
-        else {
-            onLoaded();
-        }
-    };
-    /**
-     * loadInitialResource 完了時のコールバックメソッド
-     */
-    Scene.prototype.onInitialResourceLoaded = function () {
-        var additionalAssets = [];
-        var name = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
-        var uiGraph = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[name];
-        if (uiGraph) {
-            for (var i = 0; i < uiGraph.data.nodes.length; i++) {
-                var node = uiGraph.data.nodes[i];
-                if (node.type === 'sprite') {
-                    additionalAssets.push({ name: node.params.textureName, url: node.params.url });
-                }
-            }
-        }
-        return additionalAssets;
-    };
-    /**
-     * 初回リソースロードで発生した追加のリソースをロードする
-     */
-    Scene.prototype.loadAdditionalResource = function (assets, onLoaded) {
-        var _this = this;
-        if (assets.length <= 0) {
-            this.onAdditionalResourceLoaded(onLoaded);
-            return;
-        }
-        var filteredAssets = this.filterLoadedAssets(assets);
-        if (filteredAssets.length > 0) {
-            pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].add(filteredAssets).load(function () {
-                _this.onAdditionalResourceLoaded(onLoaded);
-            });
-        }
-        else {
-            this.onAdditionalResourceLoaded(onLoaded);
-        }
-    };
-    /**
-     * 追加のリソースロード完了時のコールバック
-     */
-    Scene.prototype.onAdditionalResourceLoaded = function (onLoaded) {
-        onLoaded();
-    };
-    /**
-     * loadResource 完了時のコールバックメソッド
-     */
-    Scene.prototype.onResourceLoaded = function () {
-        if (this.hasSceneUiGraph) {
-            var sceneUiGraphName = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
-            this.prepareUiGraphContainer(pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[sceneUiGraphName].data);
-            this.addChild(this.uiGraphContainer);
-        }
-    };
-    /**
-     * UiGraph 用の PIXI.Container インスタンスに UiGraph 要素をロードする
-     */
-    Scene.prototype.prepareUiGraphContainer = function (uiData) {
-        for (var i = 0; i < uiData.nodes.length; i++) {
-            var nodeData = uiData.nodes[i];
-            var factory = modules_UiGraph__WEBPACK_IMPORTED_MODULE_3__["default"].getFactory(nodeData.type);
-            if (!factory) {
-                factory = this.getCustomUiGraphFactory(nodeData.type);
-                if (!factory) {
-                    continue;
-                }
-            }
-            var node = factory.createUiNodeByGraphElement(nodeData);
-            if (!node) {
-                continue;
-            }
-            if (nodeData.events) {
-                factory.attachUiEventByGraphElement(nodeData.events, node, this);
-            }
-            this.uiGraph[nodeData.id] = node;
-            this.uiGraphContainer.addChild(node);
-        }
-    };
-    /**
-     * UiGraph にシーン独自の要素を追加する場合にこのメソッドを利用する
-     */
-    Scene.prototype.getCustomUiGraphFactory = function (_type) {
-        return null;
-    };
-    /**
-     * 渡されたアセットのリストからロード済みのものをフィルタリングする
-     */
-    Scene.prototype.filterLoadedAssets = function (assets) {
-        var assetMap = new Map();
-        for (var i = 0; i < assets.length; i++) {
-            var asset = assets[i];
-            if (typeof asset === 'string') {
-                if (!pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[asset] && !assetMap.has(asset)) {
-                    assetMap.set(asset, { name: asset, url: asset });
-                }
-            }
-            else {
-                if (!pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[asset.name] && !assetMap.has(asset.name)) {
-                    assetMap.set(asset.name, asset);
-                }
-            }
-        }
-        return Array.from(assetMap.values());
-    };
-    /**
-     * BGM をループ再生する
-     */
-    Scene.prototype.playBgm = function (soundName) {
-        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(soundName);
-        if (bgm) {
-            bgm.play(true);
-        }
-    };
-    /**
-     * BGM 再生を止める
-     */
-    Scene.prototype.stopBgm = function (soundName) {
-        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(soundName);
-        if (bgm) {
-            bgm.stop();
-        }
-    };
-    /**
-     * 効果音を再生する
-     */
-    Scene.prototype.playSe = function (soundName) {
-        var se = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(soundName);
-        if (se) {
-            se.play();
-        }
-    };
-    return Scene;
-}(pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]));
-/* harmony default export */ __webpack_exports__["default"] = (Scene);
-
-
-/***/ }),
-
-/***/ "./src/scenes/transition/Immediate.ts":
-/*!********************************************!*\
-  !*** ./src/scenes/transition/Immediate.ts ***!
-  \********************************************/
+/***/ "./src/example/transition/Immediate.ts":
+/*!*********************************************!*\
+  !*** ./src/example/transition/Immediate.ts ***!
+  \*********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -46642,6 +45629,7 @@ __webpack_require__.r(__webpack_exports__);
 var Immediate = /** @class */ (function () {
     function Immediate() {
         this.onTransitionFinished = function () { };
+        this.finished = false;
     }
     /**
      * トランジション描画物を含む PIXI.Container インスタンスを返す
@@ -46654,6 +45642,7 @@ var Immediate = /** @class */ (function () {
      * このトランジションは即時終了させる
      */
     Immediate.prototype.begin = function () {
+        this.finished = true;
         this.onTransitionFinished();
     };
     /**
@@ -46665,10 +45654,9 @@ var Immediate = /** @class */ (function () {
     };
     /**
      * トランジションが終了しているかどうかを返す
-     * このトランジションは即時終了するため false になることなはない
      */
     Immediate.prototype.isFinished = function () {
-        return true;
+        return this.finished;
     };
     /**
      * トランジションが実行中かどうかを返す
@@ -46693,6 +45681,78 @@ var Immediate = /** @class */ (function () {
     return Immediate;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (Immediate);
+
+
+/***/ }),
+
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var webfontloader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webfontloader */ "./node_modules/webfontloader/webfontloader.js");
+/* harmony import */ var webfontloader__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webfontloader__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var example_Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! example/Config */ "./src/example/Config.ts");
+/* harmony import */ var example_Resource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! example/Resource */ "./src/example/Resource.ts");
+/* harmony import */ var example_OrderScene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! example/OrderScene */ "./src/example/OrderScene.ts");
+/* harmony import */ var example_GameManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! example/GameManager */ "./src/example/GameManager.ts");
+
+
+
+
+
+/**
+ * ゲームの初期化処理
+ */
+function initGame() {
+    var width = 1136;
+    var height = 640;
+    example_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].start({
+        glWidth: width,
+        glHeight: height,
+        option: {
+            backgroundColor: 0x222222
+        }
+    });
+    // 最初のシーンの読み込み
+    example_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new example_OrderScene__WEBPACK_IMPORTED_MODULE_3__["default"]());
+    // コンソールからオブジェクトを調査できるように window に生やす
+    Debug: {
+        window.GameManager = example_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"];
+    }
+}
+var fontLoaded = false;
+var windowLoaded = false;
+/**
+ * フォント読みこみ
+ * window 読み込みも完了していたらゲームを起動する
+ */
+webfontloader__WEBPACK_IMPORTED_MODULE_0__["load"]({
+    custom: {
+        families: [example_Resource__WEBPACK_IMPORTED_MODULE_2__["default"].FontFamily.Default],
+        urls: ['base.css']
+    },
+    active: function () {
+        fontLoaded = true;
+        if (windowLoaded) {
+            initGame();
+        }
+    }
+});
+/**
+ * エントリーポイント
+ * フォント読み込みも完了していたらゲームを起動する
+ */
+window.onload = function () {
+    windowLoaded = true;
+    if (fontLoaded) {
+        initGame();
+    }
+};
 
 
 /***/ })

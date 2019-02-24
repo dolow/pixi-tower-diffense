@@ -1,15 +1,10 @@
-<<<<<<< HEAD
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
-import AbstractUiGraphScene from 'example/AbstractUiGraphScene';
+import Scene from 'example/Scene';
 import UiNodeFactory from 'example/factory/UiNodeFactory';
-=======
-import AbstractUiGraphScene from 'example/AbstractUiGraphScene';
->>>>>>> feature/ui_graph_modulalize_example
 /**
  * データで表現された UI を読み込んで表示するサンプル
  */
-export default class MinUiGraphScene extends AbstractUiGraphScene {
-<<<<<<< HEAD
+export default class OrderScene extends Scene {
     /**
      * 独自 UiGraph 要素のファクトリを返す
      * このシーンでは UnitButton をカスタム UI 要素として持っている
@@ -24,8 +19,6 @@ export default class MinUiGraphScene extends AbstractUiGraphScene {
      * UnitButton の初期化を行う
      */
     protected onResourceLoaded(): void;
-=======
->>>>>>> feature/ui_graph_modulalize_example
     /**
      * UI 情報として定義されたイベントコールバックメソッド
      */
