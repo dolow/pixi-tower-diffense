@@ -1,8 +1,8 @@
 import * as WebFont from 'webfontloader';
-import 'Config';
-import Resource from 'Resource';
-import MinUiGraphScene from 'example/MinUiGraphScene';
-import GameManager from 'managers/GameManager';
+import 'example/Config';
+import Resource from 'example/Resource';
+import OrderScene from 'example/OrderScene';
+import GameManager from 'example/GameManager';
 
 /**
  * ゲームの初期化処理
@@ -19,7 +19,7 @@ function initGame() {
     }
   });
   // 最初のシーンの読み込み
-  GameManager.loadScene(new MinUiGraphScene());
+  GameManager.loadScene(new OrderScene());
 
   // コンソールからオブジェクトを調査できるように window に生やす
   Debug: {

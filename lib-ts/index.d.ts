@@ -1,1 +1,1 @@
-import 'Config';
+import 'example/Config';

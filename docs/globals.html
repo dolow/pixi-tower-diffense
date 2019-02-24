@@ -68,7 +68,6 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class"><a href="classes/abstractuigraphscene.html" class="tsd-kind-icon">Abstract<wbr>UiGraph<wbr>Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/attacksmokeeffect.html" class="tsd-kind-icon">Attack<wbr>Smoke<wbr>Effect</a></li>
 								<li class="tsd-kind-class"><a href="classes/attackable.html" class="tsd-kind-icon">Attackable</a></li>
 								<li class="tsd-kind-class"><a href="classes/attackableentity.html" class="tsd-kind-icon">Attackable<wbr>Entity</a></li>
@@ -86,7 +85,6 @@
 								<li class="tsd-kind-class"><a href="classes/healthgaugeeffect.html" class="tsd-kind-icon">Health<wbr>Gauge<wbr>Effect</a></li>
 								<li class="tsd-kind-class"><a href="classes/immediate.html" class="tsd-kind-icon">Immediate</a></li>
 								<li class="tsd-kind-class"><a href="classes/indexeddbmanager.html" class="tsd-kind-icon">IndexedDBManager</a></li>
-								<li class="tsd-kind-class"><a href="classes/minuigraphscene.html" class="tsd-kind-icon">Min<wbr>UiGraph<wbr>Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/orderscene.html" class="tsd-kind-icon">Order<wbr>Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/scene.html" class="tsd-kind-icon">Scene</a></li>
 								<li class="tsd-kind-class"><a href="classes/sound.html" class="tsd-kind-icon">Sound</a></li>
@@ -253,15 +251,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="config" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Config</h3>
-					<div class="tsd-signature tsd-kind-icon">Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({// リソースのエントリーポイントResourceBaseUrl: &#x27;assets/&#x27;,// ユニット枠最大数MaxUnitSlotCount: 5})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({// リソースのエントリーポイントResourceBaseUrl: &#x27;assets/&#x27;})</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/Config.ts#L6">Config.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/example/Config.ts#L6">example/Config.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>設定オブジェクト</p>
+							<p>設定オブジェクト
+							設定オブジェクト</p>
 						</div>
 					</div>
 					<div class="tsd-type-declaration">
@@ -293,7 +293,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="resource" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Resource</h3>
-					<div class="tsd-signature tsd-kind-icon">Resource<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({/*** シーン名から UI Graph 用のファイル名を生成*/SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;ui_graph/${snake_case}.json&#x60;;}})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Resource<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Object.freeze({/*** シーン名から UI Graph 用のファイル名を生成*/SceneUiGraph: (scene: Scene): string &#x3D;&gt; {const snake_case &#x3D; scene.constructor.name.replace(/([A-Z])/g,(s) &#x3D;&gt; { return &#x60;_${s.charAt(0).toLowerCase()}&#x60;; }).replace(/^_/, &#x27;&#x27;);return &#x60;ui_graph/${snake_case}.json&#x60;;},/*** マスターデータ API 情報を有するオブジェクト*/Api: {UnitAnimation: (unitIds: number[]): string &#x3D;&gt; {const query &#x3D; unitIds.join(&#x27;&amp;unitId[]&#x3D;&#x27;);return &#x60;master/unit_animation_master.json?unitId[]&#x3D;${query}&#x60;;}},/*** 静的なリソースを有するオブジェクト*/Static: {BattleBgFores: [&#x27;battle/bg_1_1.png&#x27;,&#x27;battle/bg_1_2.png&#x27;,&#x27;battle/bg_1_3.png&#x27;,&#x27;battle/bg_1_4.png&#x27;,&#x27;battle/bg_1_5.png&#x27;,&#x27;battle/bg_1_6.png&#x27;,&#x27;battle/bg_1_7.png&#x27;,&#x27;battle/bg_1_8.png&#x27;,&#x27;battle/bg_1_9.png&#x27;,&#x27;battle/bg_1_10.png&#x27;],BattleBgMiddles: [&#x27;battle/bg_2_1.png&#x27;,&#x27;battle/bg_2_2.png&#x27;,&#x27;battle/bg_2_3.png&#x27;,&#x27;battle/bg_2_4.png&#x27;,&#x27;battle/bg_2_5.png&#x27;,&#x27;battle/bg_2_6.png&#x27;],BattleBgBacks: [&#x27;battle/bg_3_1.png&#x27;,&#x27;battle/bg_3_2.png&#x27;,&#x27;battle/bg_3_3.png&#x27;]},Dynamic: {UnitPanel: (unitId: number): string &#x3D;&gt; {const id &#x3D; (unitId &gt; 0) ? unitId : &#x27;empty&#x27;;return &#x60;ui/units_panel/button/unit_${id}.png&#x60;;}},Audio: {Bgm: {Title: &#x27;audio/bgm_title.mp3&#x27;},Se: {}},FontFamily: {Css: &#x27;base.css&#x27;,Default: &#x27;MisakiGothic&#x27;}})</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/Resource.ts#L6">Resource.ts:6</a></li>
@@ -415,9 +415,6 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="classes/abstractuigraphscene.html" class="tsd-kind-icon">Abstract<wbr>UiGraph<wbr>Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/attacksmokeeffect.html" class="tsd-kind-icon">Attack<wbr>Smoke<wbr>Effect</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -467,9 +464,6 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/indexeddbmanager.html" class="tsd-kind-icon">IndexedDBManager</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/minuigraphscene.html" class="tsd-kind-icon">Min<wbr>UiGraph<wbr>Scene</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/orderscene.html" class="tsd-kind-icon">Order<wbr>Scene</a>
