@@ -11,6 +11,11 @@ import UpdateObject from 'interfaces/UpdateObject';
  */
 export default abstract class Scene extends PIXI.Container {
   /**
+   * 更新すべきオブジェクトを保持する
+   */
+  protected objectsToUpdate: UpdateObject[] = [];
+
+  /**
    * シーン開始用のトランジションオブジェクト
    */
   protected transitionIn:  Transition = new Immediate();
@@ -33,14 +38,28 @@ export default abstract class Scene extends PIXI.Container {
   /**
    * 更新処理を行うべきオブジェクトとして渡されたオブジェクトを登録する
    */
-  protected registerUpdatingObject(_object: UpdateObject): void {
+  protected registerUpdatingObject(object: UpdateObject): void {
+    this.objectsToUpdate.push(object);
   }
 
   /**
    * 更新処理を行うべきオブジェクトを更新する
    */
-  protected updateRegisteredObjects(_delta: number): void {
+  protected updateRegisteredObjects(delta: number): void {
+    const nextObjectsToUpdate = [];
+
+    for (let i = 0; i < this.objectsToUpdate.length; i++) {
+      const obj = this.objectsToUpdate[i];
+      if (!obj || obj.isDestroyed()) {
+          continue;
+      }
+      obj.update(delta);
+      nextObjectsToUpdate.push(obj);
+    }
+
+    this.objectsToUpdate = nextObjectsToUpdate;
   }
+
 
   /**
    * シーン追加トランジション開始
