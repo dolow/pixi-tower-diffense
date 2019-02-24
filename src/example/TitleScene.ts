@@ -2,6 +2,7 @@ import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import GameManager from 'example/GameManager';
 import Resource from 'example/Resource';
 import Scene from 'example/Scene';
+import OrderScene from 'example/OrderScene';
 import Fade from 'example/transition/Fade';
 import Sound from 'example/Sound';
 
@@ -95,6 +96,10 @@ export default class TitleScene extends Scene  {
    * 編成ボタンが離されたときのコールバック
    */
   public showOrderScene(): void {
-    console.log("should go to order scene");
+    if (this.transitionIn.isActive() || this.transitionOut.isActive()) {
+      return;
+    }
+
+    GameManager.loadScene(new OrderScene());
   }
 }

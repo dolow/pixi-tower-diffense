@@ -1,7 +1,31 @@
+import Scene from 'example/Scene';
+
 /**
  * リソースの URL や命名規則のマスタ
  */
 const Resource = Object.freeze({
+  /**
+   * マスターデータ API 情報を有するオブジェクト
+   */
+  Api: {
+    UnitAnimation: (unitIds: number[]): string => {
+      const query = unitIds.join('&unitId[]=');
+      return `master/unit_animation_master.json?unitId[]=${query}`;
+    }
+  },
+
+  /**
+   * シーン名から UI Graph 用のファイル名を生成
+   */
+  SceneUiGraph: (scene: Scene): string => {
+    const snake_case = scene.constructor.name.replace(
+      /([A-Z])/g,
+      (s) => { return `_${s.charAt(0).toLowerCase()}`; }
+    ).replace(/^_/, '');
+
+    return `ui_graph/${snake_case}.json`;
+  },
+
   /**
    * 静的なリソースを有するオブジェクト
    */
@@ -31,6 +55,13 @@ const Resource = Object.freeze({
       'battle/bg_3_2.png',
       'battle/bg_3_3.png'
     ]
+  },
+
+  Dynamic: {
+    UnitPanel: (unitId: number): string => {
+      const id = (unitId > 0) ? unitId : 'empty';
+      return `ui/units_panel/button/unit_${id}.png`;
+    }
   },
 
   Audio: {
