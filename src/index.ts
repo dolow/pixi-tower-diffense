@@ -1,7 +1,7 @@
 import * as WebFont from 'webfontloader';
 import 'example/Config';
 import Resource from 'Resource';
-import TitleScene from 'example/TitleScene';
+import BattleScene from 'example/BattleScene';
 import GameManager from 'example/GameManager';
 
 let fontLoaded   = false;
@@ -39,7 +39,7 @@ function initGame() {
     option: pixiAppOption
   });
   // 最初のシーンの読み込み
-  GameManager.loadScene(new TitleScene());
+  GameManager.loadScene(new BattleScene());
 }
 
 WebFont.load({
