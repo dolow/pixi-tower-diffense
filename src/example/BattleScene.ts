@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
-import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
+import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'example/Scene';
 import Unit from 'example/Unit';
+import GameManager from 'example/GameManager';
 
 /**
  * メインのゲーム部分のシーン
@@ -23,12 +24,44 @@ export default class BattleScene extends Scene {
     = new Map();
 
   /**
+   * Unit インスタンス配列
+   */
+  private units: Unit[] = [];
+
+  /**
    * コンストラクタ
    */
   constructor() {
     super();
 
     this.unitIds = [1,2,3,4,5];
+    this.interactive = true;
+
+    // タップを反応させるための描画
+    const renderer = GameManager.instance.game.renderer;
+    const graphic = new PIXI.Graphics();
+    graphic.beginFill(0x000000);
+    graphic.moveTo(0, 0);
+    graphic.lineTo(renderer.width, 0);
+    graphic.lineTo(renderer.width, renderer.height);
+    graphic.lineTo(0, renderer.height);
+    graphic.endFill();
+    this.addChild(graphic);
+
+    // タップ毎にアニメーションを変える
+    let currentType: UnitAnimationTypeIndex = 'wait';
+    this.on('pointerup', () => {
+      switch (currentType) {
+        case 'wait':   currentType = 'damage'; break;
+        case 'damage': currentType = 'attack'; break;
+        case 'attack': currentType = 'walk';   break;
+        case 'walk':   currentType = 'wait';   break;
+      }
+
+      for (let i = 0; i < this.units.length; i++) {
+        this.units[i].requestAnimation(currentType);
+      }
+    });
   }
 
   /**
@@ -70,6 +103,7 @@ export default class BattleScene extends Scene {
       unit.animationType = 'walk';
       this.addChild(unit.sprite);
       this.registerUpdatingObject(unit);
+      this.units.push(unit);
     }
   }
 }
