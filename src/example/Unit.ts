@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-// import Resource from 'Resource';
+import Resource from 'Resource';
 import UpdateObject from 'interfaces/UpdateObject';
 // import Attackable from 'display/battle/Attackable';
 import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
@@ -21,6 +21,10 @@ export default class Unit implements UpdateObject {
    * 破棄フラグ
    */
   protected destroyed: boolean = false;
+  /**
+   * 経過メインループ数
+   */
+  protected elapsedFrameCount: number = 0;
 
   /**
    * アニメーション情報
@@ -31,11 +35,10 @@ export default class Unit implements UpdateObject {
    * 現在のアニメーションフレーム
    */
   protected animationFrameId: number = 1;
-
   /**
-   * 経過メインループ数
+   * 再生をリクエストされたアニメーション種別
    */
-  protected elapsedFrameCount: number = 0;
+  protected requestedAnimationType: string | null = null;
 
   /**
    * コンストラクタ
@@ -66,8 +69,17 @@ export default class Unit implements UpdateObject {
    * アニメーション再生をリセットする
    */
   public resetAnimation(): void {
+    this.requestedAnimationType = null;
     this.elapsedFrameCount = 0;
     this.animationFrameId = 1;
+  }
+
+  /**
+   * 人師種別のアニメーションの再生をリクエストする
+   * リクエストされたアニメーションは再生可能になり次第再生される
+   */
+  public requestAnimation(type: string): void {
+    this.requestedAnimationType = type;
   }
 
   /**
@@ -75,6 +87,12 @@ export default class Unit implements UpdateObject {
    * requestAnimationFrame 毎のアップデート処理
    */
   public update(_dt: number): void {
+    if (this.requestedAnimationType) {
+      if (this.transformAnimationIfPossible()) {
+        this.requestedAnimationType = null;
+      }
+    }
+
     this.updateAnimation();
   }
 
@@ -109,5 +127,49 @@ export default class Unit implements UpdateObject {
     const lastId = animation.frames.length;
     const maxFrameTime = duration * lastId;
     return this.elapsedFrameCount === maxFrameTime;
+  }
+
+  /**
+   * アニメーション遷移が可能であれば遷移する
+   */
+  private transformAnimationIfPossible(): boolean {
+    if (
+      !this.requestedAnimationType ||
+      this.requestedAnimationType === this.animationType
+    ) {
+      return false;
+    }
+
+    let shouldTransform = false;
+    const animationTypes = Resource.AnimationTypes.Unit;
+
+    switch (this.animationType) {
+      case animationTypes.WAIT:
+      case animationTypes.WALK: {
+        shouldTransform = true;
+        break;
+      }
+      case animationTypes.DAMAGE: {
+        shouldTransform = this.isAnimationLastFrameTime();
+        break;
+      }
+      case animationTypes.ATTACK: {
+        if (this.requestedAnimationType === animationTypes.DAMAGE) {
+          shouldTransform = true;
+        } else {
+          shouldTransform = this.isAnimationLastFrameTime();
+        }
+        break;
+      }
+      default: break;
+    }
+
+    if (shouldTransform) {
+      this.animationType = this.requestedAnimationType;
+      this.resetAnimation();
+      return true;
+    }
+
+    return false;
   }
 }
