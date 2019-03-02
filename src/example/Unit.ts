@@ -45,6 +45,8 @@ export default class Unit implements UpdateObject {
 
     this.animationMaster = animationMaster;
     this.sprite = new PIXI.Sprite();
+    this.sprite.anchor.x = 0.5;
+    this.sprite.anchor.y = 1.0;
   }
 
   /**

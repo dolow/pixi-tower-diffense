@@ -66,7 +66,7 @@ export default class BattleScene extends Scene {
       this.unitAnimationMasterCache.set(master.unitId, master);
 
       const unit = new Unit(master);
-      unit.sprite.position.set(100 + i * 120, 100 + i * 60);
+      unit.sprite.position.set(100 + i * 120, 200 + i * 60);
       unit.animationType = 'walk';
       this.addChild(unit.sprite);
       this.registerUpdatingObject(unit);
