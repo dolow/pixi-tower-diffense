@@ -157,6 +157,8 @@ export default abstract class Scene extends PIXI.Container {
       }
     }
 
-    return Array.from(assetMap.values());
+    const loaderParams: LoaderAddParam[] = [];
+    assetMap.forEach((value: LoaderAddParam) => loaderParams.push(value));
+    return loaderParams;
   }
 }
