@@ -4,6 +4,7 @@ import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'example/Scene';
 import Unit from 'example/Unit';
+import Field from 'example/Field';
 
 /**
  * メインのゲーム部分のシーン
@@ -23,17 +24,26 @@ export default class BattleScene extends Scene {
     = new Map();
 
   /**
+   * Field インスタンス
+   */
+  private field: Field = new Field();
+
+  /**
    * コンストラクタ
    */
   constructor() {
     super();
 
     this.unitIds = [1,2,3,4,5];
+    this.interactive = true;
   }
 
   /**
    * Scene クラスメソッドオーバーライド
    */
+  protected createInitialResourceList(): (string | LoaderAddParam)[] {
+    return super.createInitialResourceList().concat(Field.resourceList);
+  }
 
   /**
    * リソースロード完了コールバック
@@ -56,6 +66,9 @@ export default class BattleScene extends Scene {
    */
   protected onResourceLoaded(): void {
     super.onResourceLoaded();
+
+    this.field.init();
+    this.addChild(this.field);
 
     const resources = PIXI.loader.resources as any;
 
