@@ -67,7 +67,7 @@ export default class BattleScene extends Scene {
   protected onResourceLoaded(): void {
     super.onResourceLoaded();
 
-    this.field.init();
+    this.field.init({ fieldLength: 2000, zLines: 8 });
     this.addChild(this.field);
 
     const resources = PIXI.loader.resources as any;
@@ -78,10 +78,13 @@ export default class BattleScene extends Scene {
       const master = unitAnimationMasters[i];
       this.unitAnimationMasterCache.set(master.unitId, master);
 
+      const index = Math.floor(Math.random() * this.field.zLineCount);
+
       const unit = new Unit(master);
-      unit.sprite.position.set(100 + i * 120, 200 + i * 60);
+      unit.sprite.position.set(100 + i * 44, this.field.getZlineBaseY(index));
       unit.animationType = 'walk';
-      this.addChild(unit.sprite);
+
+      this.field.addChildToZLine(unit.sprite, index);
       this.registerUpdatingObject(unit);
     }
   }

@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'example/Resource';
+import GameManager from 'example/GameManager';
 
 /**
  * ユニットや拠点が配置されるバトル背景のクラス
@@ -20,7 +21,7 @@ export default class Field extends PIXI.Container {
   /**
    * スクロールの限界座標値
    */
-  private foregroundScrollLimit: number = -2000;
+  private foregroundScrollLimit: number = 0;
 
   /**
    * 表示上の前後関係を制御するための PIXI.Container オブジェクト
@@ -30,6 +31,11 @@ export default class Field extends PIXI.Container {
     middle: new PIXI.Container(),
     back:   new PIXI.Container()
   };
+
+  /**
+   * ユニットが配置される前景の PIXI.Container 配列
+   */
+  private foreZLines: PIXI.Container[] = [];
 
   /**
    * このクラスで利用するリソースリスト
@@ -42,6 +48,13 @@ export default class Field extends PIXI.Container {
     );
 
     return list;
+  }
+
+  /**
+   * foreZLines の要素の数を返す
+   */
+  public get zLineCount(): number {
+    return this.foreZLines.length;
   }
 
   /**
@@ -61,7 +74,7 @@ export default class Field extends PIXI.Container {
   /**
    * フィールドの長さとユニットを配置するラインの数で初期化する
    */
-  public init(): void {
+  public init(options: any = { fieldLength: 3000, zLines: 8 }): void {
     const resource = Resource.Static;
     this.addOrderedSprites(resource.BattleBgFores,   this.containers.fore);
     this.addOrderedSprites(resource.BattleBgMiddles, this.containers.middle);
@@ -70,6 +83,31 @@ export default class Field extends PIXI.Container {
     this.addChild(this.containers.back);
     this.addChild(this.containers.middle);
     this.addChild(this.containers.fore);
+
+    // フィールドに奥行きを出すためにユニットを前後に配置できるようにする
+    // z-index の後からの制御はコストが高いため、予め PIXI.Container を割り当てておく
+    for (let i = 0; i < options.zLines; i++) {
+      const line = new PIXI.Container();
+      this.foreZLines.push(line);
+      this.containers.fore.addChild(line);
+    }
+
+    // スクロール範囲
+    this.foregroundScrollLimit = -(options.fieldLength - GameManager.instance.game.view.width);
+  }
+
+  /**
+   * 指定した zLine インデックスの基準 Y 座標を返す
+   */
+  public getZlineBaseY(zlineIndex: number): number {
+    return this.containers.fore.height * 0.5 + zlineIndex * 16;
+  }
+
+  /**
+   * 指定した zLine インデックスの PIXI.Container に addChild する
+   */
+  public addChildToZLine(container: PIXI.Container, zlineIndex: number): void {
+    this.foreZLines[zlineIndex].addChild(container);
   }
 
   /**
