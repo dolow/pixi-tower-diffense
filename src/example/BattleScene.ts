@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'example/Resource';
-import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
+import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'example/Scene';
 import Unit from 'example/Unit';
