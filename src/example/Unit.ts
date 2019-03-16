@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import Resource from 'Resource';
+import Resource from 'example/Resource';
 import UpdateObject from 'interfaces/UpdateObject';
 // import Attackable from 'display/battle/Attackable';
 import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
