@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import Resource from 'Resource';
+import Resource from 'example/Resource';
 import Attackable from 'example/Attackable';
 import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
 

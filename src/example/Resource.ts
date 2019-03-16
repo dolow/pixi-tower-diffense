@@ -79,6 +79,15 @@ const Resource = Object.freeze({
     }
   },
 
+  AnimationTypes: {
+    Unit: {
+      WAIT: 'wait',
+      WALK: 'walk',
+      ATTACK: 'attack',
+      DAMAGE: 'damage'
+    }
+  },
+
   FontFamily: {
     Css: 'base.css',
     Default: 'MisakiGothic'
