@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import Resource from 'Resource';
+import Resource from 'example/Resource';
 
 /**
  * ユニット生成をリクエストするための UI 用のボタン
