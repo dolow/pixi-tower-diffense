@@ -1,31 +1,13 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
-import UpdateObject from 'interfaces/UpdateObject';
-// import Attackable from 'display/battle/Attackable';
+import Attackable from 'example/Attackable';
 import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
 
 /**
  * ユニットの振舞い、及び見た目に関する処理を行う
  * UnitEntity を継承する
  */
-export default class Unit implements UpdateObject {
-  /**
-   * 表示する PIXI.Sprite インスタンス
-   */
-  public sprite!: PIXI.Sprite;
-  /**
-   * 現在のアニメーション種別
-   */
-  public animationType!: string;
-  /**
-   * 破棄フラグ
-   */
-  protected destroyed: boolean = false;
-  /**
-   * 経過メインループ数
-   */
-  protected elapsedFrameCount: number = 0;
-
+export default class Unit extends Attackable {
   /**
    * アニメーション情報
    */
@@ -44,27 +26,14 @@ export default class Unit implements UpdateObject {
    * コンストラクタ
    */
   constructor(animationMaster: UnitAnimationMaster) {
-    //super();
+    super();
+
+    this.animationType = Resource.AnimationTypes.Unit.WAIT;
 
     this.animationMaster = animationMaster;
     this.sprite = new PIXI.Sprite();
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
-  }
-
-  /**
-   * UpdateObject インターフェース実装
-   * 削除フラグが立っているか返す
-   */
-  public isDestroyed(): boolean {
-    return this.destroyed;
-  }
-  /**
-   * このオブジェクトと子要素を破棄する
-   */
-  public destroy(): void {
-    this.sprite.destroy();
-    this.destroyed = true;
   }
 
   /**
