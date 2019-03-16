@@ -12,7 +12,7 @@ export default class BattleLogic {
   /**
    * バトル設定
    */
-  private config: BattleLogicConfig = new BattleLogicConfig();
+  private config: BattleLogicConfig = Object.freeze(new BattleLogicConfig());
   /**
    * BattleLogicDelegate 実装オブジェクト
    */
@@ -51,7 +51,7 @@ export default class BattleLogic {
     config?: BattleLogicConfig
   }): void {
     if (params.config) {
-      this.config = params.config;
+      this.config = Object.freeze(params.config);
     }
 
     // デリゲータのセット
@@ -70,7 +70,7 @@ export default class BattleLogic {
    * ゲーム更新処理
    * 外部から任意のタイミングでコールする
    */
-  public update(_delta: number): void {
+  public update(): void {
     // コスト回復
     this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
     // リクエストされているユニット生成実行

@@ -21,6 +21,10 @@ import Field from 'example/Field';
  * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
+  /**
+   * UI Graph ユニットボタンのキープリフィックス
+   */
+  private static readonly unitButtonPrefix: string = 'unit_button_';
 
   /**
    * このシーンのステート
@@ -180,7 +184,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
       case BattleSceneState.INGAME:
       case BattleSceneState.FINISHED: {
-        this.battleLogic.update(delta);
+        this.battleLogic.update();
         break;
       }
     }
@@ -241,7 +245,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * ボタンインデックスから UnitButton インスタンスを返す
    */
   private getUiGraphUnitButton(index: number): UnitButton | undefined {
-    const uiGraphUnitButtonName = `unit_button_${index + 1}`;
+    const uiGraphUnitButtonName = `${BattleScene.unitButtonPrefix}${index + 1}`;
     return this.uiGraph[uiGraphUnitButtonName] as UnitButton;
   }
 
