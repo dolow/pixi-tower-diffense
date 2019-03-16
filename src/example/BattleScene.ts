@@ -1,6 +1,10 @@
 import * as PIXI from 'pixi.js';
-import Resource from 'Resource';
+<<<<<<< HEAD
+import Resource from 'example/Resource';
 import BattleLogicDelegate from 'example/BattleLogicDelegate';
+=======
+import Resource from 'example/Resource';
+>>>>>>> 932c797... added dynamic unit url to Resource
 import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'example/Scene';
