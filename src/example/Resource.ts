@@ -62,6 +62,9 @@ const Resource = Object.freeze({
   },
 
   Dynamic: {
+    Unit: (unitId: number): string => {
+      return `units/${unitId}.json`;
+    },
     UnitPanel: (unitId: number): string => {
       const id = (unitId > 0) ? unitId : 'empty';
       return `ui/units_panel/button/unit_${id}.png`;

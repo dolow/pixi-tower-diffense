@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import Resource from 'Resource';
+import Resource from 'example/Resource';
 import UpdateObject from 'interfaces/UpdateObject';
 import BattleLogicDelegate from 'example/BattleLogicDelegate';
 import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
