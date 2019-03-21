@@ -135,6 +135,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     this.battleLogic.init({
       delegator: this,
+      player: {
+        unitIds: this.unitIds
+      },
       unitMasters,
       config: this.battleLogicConfig
     });
@@ -221,9 +224,24 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 利用可能なコストの値が変動したときのコールバック
    */
-  public onAvailableCostUpdated(cost: number, maxCost: number): void {
+  public onAvailableCostUpdated(
+    cost: number,
+    maxCost: number,
+    availablePlayerUnitIds: number[]
+  ): void {
     const text = `${Math.floor(cost)}/${maxCost}`;
     (this.uiGraph.cost_text as PIXI.Text).text = text;
+
+    // コストに応じてUnitButton のフィルタを切り替える
+    for (let index = 0; index < this.unitSlotCount; index++) {
+      const unitButton = this.getUiGraphUnitButton(index);
+      if (!unitButton) {
+        continue;
+      }
+
+      const enbaleFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
+      unitButton.toggleFilter(enbaleFilter);
+    }
   }
 
   /**
@@ -275,6 +293,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
 
       unitButton.init(index, unitId, cost);
+      unitButton.toggleFilter(true);
     }
   }
 }

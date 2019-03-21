@@ -43,10 +43,22 @@ export default class BattleLogic {
   }[] = [];
 
   /**
+   * プレイヤー情報
+   */
+  private player: {
+    unitIds: number[]
+  } = {
+    unitIds: []
+  };
+
+  /**
    * デリゲータとマスタ情報で初期化
    */
   public init(params: {
     delegator: BattleLogicDelegate,
+    player: {
+      unitIds: number[]
+    },
     unitMasters: UnitMaster[],
     config?: BattleLogicConfig
   }): void {
@@ -56,7 +68,7 @@ export default class BattleLogic {
 
     // デリゲータのセット
     this.delegator = params.delegator;
-
+    this.player = params.player;
     this.unitMasterCache.clear();
 
     // ユニット情報のキャッシュ
@@ -107,9 +119,27 @@ export default class BattleLogic {
       cost = this.config.maxAvailableCost;
     }
     this.availableCost = cost;
+
     if (this.delegator) {
+      const availablePlayerUnitIds = [];
+      for (let i = 0; i < this.player.unitIds.length; i++) {
+        const unitId = this.player.unitIds[i];
+        const master = this.unitMasterCache.get(unitId);
+        if (!master) {
+          continue;
+        }
+
+        if (this.availableCost >= master.cost) {
+          availablePlayerUnitIds.push(unitId);
+        }
+      }
+
       // コスト更新後処理をデリゲータに委譲する
-      this.delegator.onAvailableCostUpdated(this.availableCost, this.config.maxAvailableCost);
+      this.delegator.onAvailableCostUpdated(
+        this.availableCost,
+        this.config.maxAvailableCost,
+        availablePlayerUnitIds
+      );
     }
 
     return this.availableCost;

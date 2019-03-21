@@ -26,6 +26,10 @@ export default class UnitButton extends PIXI.Container {
    * コストテキスト
    */
   private text!: PIXI.Text;
+  /**
+   * フィルター
+   */
+  private filter: PIXI.filters.ColorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
 
   /**
    * コンストラクタ
@@ -40,6 +44,10 @@ export default class UnitButton extends PIXI.Container {
       fill: 0xffffff,
       padding: 4
     });
+
+    this.filter.desaturate();
+    this.toggleFilter(false);
+    this.button.filters = [this.filter];
 
     this.text.position.set(46, 88);
 
@@ -64,6 +72,13 @@ export default class UnitButton extends PIXI.Container {
     this.unitId = unitId;
     this.button.texture = texture;
     this.text.text = (cost >= 0) ? `${cost}` : '';
+  }
+
+  /**
+   * ColorMatrixFilter の有効/無効を切り替える
+   */
+  public toggleFilter(enabled: boolean): void {
+    this.filter.enabled = enabled;
   }
 
   /**
