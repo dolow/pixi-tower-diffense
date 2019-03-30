@@ -87,6 +87,10 @@ export default class BattleLogic {
     this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
     // リクエストされているユニット生成実行
     this.updateSpawnRequest();
+    // エンティティパラメータの更新
+    this.updateEntityParameter();
+    // エンティティのステート変更
+    this.updateEntityState();
   }
 
   /**
@@ -196,5 +200,60 @@ export default class BattleLogic {
     this.updateAvailableCost(tmpCost);
 
     this.spawnRequestedUnitUnitIds = [];
+  }
+
+  /**
+   * Unit のパラメータを更新する
+   * ステートは全てのパラメータが変化した後に更新する
+   */
+  private updateEntityParameter(): void {
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      const unit = this.unitEntities[i];
+      const master = this.unitMasterCache.get(unit.unitId);
+      if (!master) {
+        continue;
+      }
+
+      this.updateDistance(unit, master);
+    }
+  }
+
+  /**
+   * 移動可能か判定し、可能なら移動させる
+   */
+  private updateDistance(unit: UnitEntity, master: UnitMaster): void {
+    if (unit.state === AttackableState.IDLE) {
+      // 移動可能かどうかの判断をデリゲータに委譲する
+      if (this.delegator) {
+        if (this.delegator.shouldUnitWalk(unit)) {
+          unit.distance += master.speed;
+          // 移動した後の処理をデリゲータに委譲する
+          this.delegator.onUnitEntityWalked(unit);
+        }
+      } else {
+        unit.distance += master.speed;
+      }
+    }
+  }
+
+  /**
+   * エンティティのステートを更新する
+   * ステート優先順位は右記の通り DEAD > KNOCK_BACK > ENGAGED > IDLE
+   * ユニット毎に処理を行うとステートを条件にした処理結果が
+   * タイミングによって異なってしまうのでステート毎に処理を行う
+   */
+  private updateEntityState(): void {
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      const entity = this.unitEntities[i];
+      if (entity.state === AttackableState.IDLE) {
+        this.updateUnitIdleState(entity);
+      }
+    }
+  }
+
+  /**
+   * 何もしていない状態でのステート更新処理
+   */
+  private updateUnitIdleState(_unit: UnitEntity): void {
   }
 }

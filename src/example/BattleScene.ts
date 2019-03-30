@@ -208,10 +208,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     //const zLineIndex = this.field.getDifferentZlineIndex();
     const zLineIndex = Math.floor(Math.random() * this.field.zLineCount);
 
-    const unit = new Unit(master);
+    const spawnPosition = {
+      x: entity.isPlayer ? 100 : 800,
+      y: 300 + zLineIndex * 16
+    };
 
+    const unit = new Unit(master, spawnPosition);
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
-    unit.sprite.position.set(100, 300);
     unit.requestAnimation(Resource.AnimationTypes.Unit.WALK);
 
     this.attackables.set(entity.id, unit);
@@ -242,6 +245,39 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       const enbaleFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
       unitButton.toggleFilter(enbaleFilter);
     }
+  }
+
+  /**
+   * 渡された UnitEntity の distance が変化した時に呼ばれる
+   */
+  public onUnitEntityWalked(entity: UnitEntity): void {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return;
+    }
+    const unit = attackable as Unit;
+    const direction = entity.isPlayer ? 1 : -1;
+
+    const visualDistance = entity.distance * direction;
+    unit.sprite.position.x = unit.distanceBasePosition.x + visualDistance;
+  }
+
+  /**
+   * 渡されたユニットが移動すべきかどうかを返す
+   */
+  public shouldUnitWalk(entity: UnitEntity): boolean {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return false;
+    }
+    if (!(entity as UnitEntity).unitId) {
+      return false;
+    }
+
+    if (attackable.animationType === Resource.AnimationTypes.Unit.WALK) {
+      return true;
+    }
+    return (attackable as Unit).isAnimationLastFrameTime();
   }
 
   /**

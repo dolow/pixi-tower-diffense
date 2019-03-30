@@ -16,4 +16,13 @@ export default interface BattleLogicDelegate {
     maxCost: number,
     availablePlayerUnitIds: number[]
   ): void;
+  /**
+   * UnitEntity が歩いた時のコールバック
+   */
+  onUnitEntityWalked(entity: UnitEntity): void;
+
+  /**
+   * 渡されたユニットが移動可能か返す
+   */
+  shouldUnitWalk(unit: UnitEntity): boolean;
 }
