@@ -2,6 +2,7 @@ import BattleLogicDelegate from 'example/BattleLogicDelegate';
 import BattleLogicConfig from 'example/BattleLogicConfig';
 import UnitEntity from 'example/UnitEntity';
 import UnitMaster from 'example/UnitMaster';
+import StageMaster from 'interfaces/master/StageMaster';
 import AttackableState from 'example/AttackableState';
 
 /**
@@ -33,6 +34,18 @@ export default class BattleLogic {
    * UnitMaster をキャッシュするための Map
    */
   private unitMasterCache: Map<number, UnitMaster> = new Map();
+  /**
+   * フィールドマスタのキャッシュ
+   */
+  private stageMasterCache: StageMaster | null = null;
+  /**
+   * StageMaster.waves をキャッシュするための Map
+   */
+  private aiWaveCache: Map<number, { unitId: number }[]> = new Map();
+  /**
+   * 経過フレーム数
+   */
+  private passedFrameCount: number = 0;
 
   /**
    * 外部から生成をリクエストされたユニット情報を保持する配列
@@ -56,6 +69,7 @@ export default class BattleLogic {
    */
   public init(params: {
     delegator: BattleLogicDelegate,
+    stageMaster: StageMaster,
     player: {
       unitIds: number[]
     },
@@ -76,6 +90,17 @@ export default class BattleLogic {
       const unit = params.unitMasters[i];
       this.unitMasterCache.set(unit.unitId, unit);
     }
+
+    // マスターのキャッシュ処理
+    this.stageMasterCache = params.stageMaster;
+
+    // AI生成情報のキャッシュ
+    const waves = this.stageMasterCache.waves;
+    const keys = Object.keys(waves);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      this.aiWaveCache.set(Number.parseInt(key, 10), waves[key]);
+    }
   }
 
   /**
@@ -85,12 +110,16 @@ export default class BattleLogic {
   public update(): void {
     // コスト回復
     this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
+    // AI ユニットの生成リクエスト発行
+    this.updateAISpawn();
     // リクエストされているユニット生成実行
     this.updateSpawnRequest();
     // エンティティパラメータの更新
     this.updateEntityParameter();
     // エンティティのステート変更
     this.updateEntityState();
+
+    this.passedFrameCount++;
   }
 
   /**
@@ -147,6 +176,21 @@ export default class BattleLogic {
     }
 
     return this.availableCost;
+  }
+
+  /**
+   * 現在のフレームに応じて AI ユニットを生成させる
+   */
+  private updateAISpawn(): void {
+    const waves = this.aiWaveCache.get(this.passedFrameCount);
+    if (!waves) {
+      return;
+    }
+
+    for (let i = 0; i < waves.length; i++) {
+      const unitId = waves[i].unitId;
+      this.requestSpawnAI(unitId);
+    }
   }
 
   /**

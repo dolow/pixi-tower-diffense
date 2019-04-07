@@ -15,6 +15,9 @@ const Resource = Object.freeze({
     Unit: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');
       return `master/unit_master.json?unitId[]=${query}`;
+    },
+    Stage: (stageId: number): string => {
+      return `master/stage_master_${stageId}.json`;
     }
   },
 

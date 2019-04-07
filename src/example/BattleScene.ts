@@ -35,6 +35,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private unitIds!: number[];
   /**
+   * 編成したユニットID配列
+   */
+  private stageId!: number;
+  /**
    * ユニット編成数
    */
   private unitSlotCount!: number;
@@ -69,6 +73,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   constructor() {
     super();
 
+    this.stageId = 1;
     this.unitIds = [1,2,3,4,5];
     this.unitSlotCount = 5;
     this.interactive = true;
@@ -88,7 +93,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * Scene クラスメソッドオーバーライド
    */
   protected createInitialResourceList(): (string | LoaderAddParam)[] {
-    return super.createInitialResourceList().concat(Field.resourceList);
+    return super.createInitialResourceList().concat(
+      Field.resourceList,
+      [Resource.Api.Stage(this.stageId)]
+    );
   }
 
   /**
@@ -97,6 +105,23 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   protected onInitialResourceLoaded(): (LoaderAddParam | string)[] {
     const additionalAssets = super.onInitialResourceLoaded();
+
+    const resources = PIXI.loader.resources as any;
+    const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
+
+    // ユーザの編成で指定されたユニット ID 配列に敵のユニット ID を追加する
+    const keys = Object.keys(stageMaster.waves);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const wave = stageMaster.waves[key];
+      for (let j = 0; j < wave.length; j++) {
+        const unitId = wave[j].unitId;
+        if (this.unitIds.indexOf(unitId) === -1) {
+          this.unitIds.push(unitId);
+        }
+      }
+    }
+
     additionalAssets.push(Resource.Api.UnitAnimation(this.unitIds));
 
     for (let i = 0; i < this.unitIds.length; i++) {
@@ -118,6 +143,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const resources = PIXI.loader.resources as any;
 
+    const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
     const unitMasters = resources[Resource.Api.Unit(this.unitIds)].data;
 
     const animationKey = Resource.Api.UnitAnimation(this.unitIds);
@@ -127,13 +153,17 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       this.unitAnimationMasterCache.set(master.unitId, master);
     }
 
-    this.field.init({ fieldLength: 2000, zLines: 8 });
+    this.field.init({
+      fieldLength: stageMaster.length,
+      zLines: stageMaster.zLines
+    });
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
 
     this.initUnitButtons();
 
     this.battleLogic.init({
+      stageMaster,
       delegator: this,
       player: {
         unitIds: this.unitIds
