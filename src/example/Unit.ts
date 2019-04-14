@@ -80,6 +80,21 @@ export default class Unit extends Attackable {
   }
 
   /**
+   * 現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す
+   */
+  public isHitFrame(): boolean {
+    if (this.animationFrameId !== this.animationMaster.hitFrame) {
+      return false;
+    }
+    const index = Resource.AnimationTypes.Unit.ATTACK as UnitAnimationTypeIndex;
+    const animation = this.animationMaster.types[index];
+    if (!animation) {
+      return false;
+    }
+    return (this.elapsedFrameCount % animation.updateDuration) === 0;
+  }
+
+  /**
    * UpdateObject インターフェース実装
    * requestAnimationFrame 毎のアップデート処理
    */

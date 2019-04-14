@@ -119,6 +119,8 @@ export default class BattleLogic {
     // エンティティのステート変更
     this.updateEntityState();
 
+    this.updatePostProcess();
+
     this.passedFrameCount++;
   }
 
@@ -258,24 +260,67 @@ export default class BattleLogic {
         continue;
       }
 
+      this.updateDamage(unit, master);
       this.updateDistance(unit, master);
     }
   }
 
   /**
-   * 移動可能か判定し、可能なら移動させる
+   * ダメージ判定を行い、必要に応じて以下を更新する。
+   * - currentHealth
+   * - currentFrameDamage
+   */
+  private updateDamage(unit: UnitEntity, master: UnitMaster): void {
+    if (!unit.engagedEntity) {
+      return;
+    }
+
+    // ダメージを与えられるかどうかの判断をデリゲータに委譲する
+    if (!this.delegator || this.delegator.shouldDamage(unit, unit.engagedEntity)) {
+      const newHealth = unit.engagedEntity.currentHealth - master.power;
+      unit.engagedEntity.currentFrameDamage += master.power;
+      unit.engagedEntity.currentHealth = newHealth;
+
+      if (this.delegator) {
+        // ダメージを与えた後の処理をデリゲータに委譲する
+        this.delegator.onAttackableEntityHealthUpdated(
+          unit,
+          unit.engagedEntity,
+          unit.engagedEntity.currentHealth + master.power,
+          unit.engagedEntity.currentHealth,
+          unit.engagedEntity.maxHealth
+        );
+      }
+    }
+  }
+
+  /**
+   * 移動可能か判定し、必要なら以下を更新する。
+   * - distance
+   * - currentKnockBackFrameCount
    */
   private updateDistance(unit: UnitEntity, master: UnitMaster): void {
-    if (unit.state === AttackableState.IDLE) {
-      // 移動可能かどうかの判断をデリゲータに委譲する
+    if (unit.state === AttackableState.KNOCK_BACK) {
+      unit.distance -= master.knockBackSpeed;
+      unit.currentKnockBackFrameCount++;
       if (this.delegator) {
-        if (this.delegator.shouldUnitWalk(unit)) {
+        const rate = unit.currentKnockBackFrameCount / master.knockBackFrames;
+        this.delegator.onUnitEntityKnockingBack(unit, rate);
+      }
+    } else {
+      unit.currentKnockBackFrameCount = 0;
+
+      if (unit.state === AttackableState.IDLE) {
+        // 移動可能かどうかの判断をデリゲータに委譲する
+        if (this.delegator) {
+          if (this.delegator.shouldUnitWalk(unit)) {
+            unit.distance += master.speed;
+            // 移動した後の処理をデリゲータに委譲する
+            this.delegator.onUnitEntityWalked(unit);
+          }
+        } else {
           unit.distance += master.speed;
-          // 移動した後の処理をデリゲータに委譲する
-          this.delegator.onUnitEntityWalked(unit);
         }
-      } else {
-        unit.distance += master.speed;
       }
     }
   }
@@ -287,17 +332,144 @@ export default class BattleLogic {
    * タイミングによって異なってしまうのでステート毎に処理を行う
    */
   private updateEntityState(): void {
+    // ステートの変化をコールバックするために古いステートを保持するコンテナ
+    const unitStates = [];
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      unitStates.push(this.unitEntities[i].state);
+    }
+
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      const entity = this.unitEntities[i];
+      if (entity.state === AttackableState.KNOCK_BACK) {
+        this.updateUnitKnockBackState(entity);
+      }
+    }
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      const entity = this.unitEntities[i];
+      if (entity.state === AttackableState.ENGAGED) {
+        this.updateUnitEngagedState(entity);
+      }
+    }
     for (let i = 0; i < this.unitEntities.length; i++) {
       const entity = this.unitEntities[i];
       if (entity.state === AttackableState.IDLE) {
         this.updateUnitIdleState(entity);
       }
     }
+
+    // エンティティ毎にステートが変更時処理をデリゲータに委譲する
+    if (this.delegator) {
+      for (let i = 0; i < this.unitEntities.length; i++) {
+        const entity = this.unitEntities[i];
+        const oldState = unitStates[i];
+        if (oldState !== entity.state) {
+          this.delegator.onAttackableEntityStateChanged(entity, oldState);
+        }
+      }
+    }
   }
 
   /**
+   * ノックバック時のステート更新処理
+   */
+  private updateUnitKnockBackState(unit: UnitEntity): void {
+    unit.engagedEntity = null;
+
+    // TODO: should not read master for each entity
+    const master = this.unitMasterCache.get(unit.unitId);
+    if (!master) {
+      return;
+    }
+    if (unit.currentKnockBackFrameCount < master.knockBackFrames) {
+      return;
+    }
+
+    unit.state = (unit.currentHealth < 1) ? AttackableState.DEAD : AttackableState.IDLE;
+  }
+  /**
+   * 接敵時のステート更新処理
+   */
+  private updateUnitEngagedState(unit: UnitEntity): void {
+    // IDLE 判定
+    if (unit.engagedEntity) {
+      const target = unit.engagedEntity;
+
+      const targetIsDead = target.currentHealth < 1;
+      const targetIsKnockingBack = target.state === AttackableState.KNOCK_BACK;
+
+      if (targetIsDead || targetIsKnockingBack/* || !this.isChivalrousEngage(unit, unit.engagedEntity)*/) {
+        unit.engagedEntity = null;
+        unit.state = AttackableState.IDLE;
+      }
+    }
+
+    // KNOCK_BACK 判定
+    const oldHealth = unit.currentHealth + unit.currentFrameDamage;
+    for (let i = 0; i < this.config.knockBackHealthThreasholds.length; i++) {
+      const rate = this.config.knockBackHealthThreasholds[i];
+      const threashold = unit.maxHealth * rate;
+      if (unit.currentHealth >= threashold) {
+        continue;
+      }
+      console.log(oldHealth, unit.currentHealth);
+      if (oldHealth >= threashold) {
+        unit.engagedEntity = null;
+        unit.state = AttackableState.KNOCK_BACK;
+        break;
+      }
+    }
+  }
+  /**
    * 何もしていない状態でのステート更新処理
    */
-  private updateUnitIdleState(_unit: UnitEntity): void {
+  private updateUnitIdleState(unit: UnitEntity): void {
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      const target = this.unitEntities[i];
+      // 味方同士ならスキップ
+      if (
+        (unit.isPlayer  && target.isPlayer) ||
+        (!unit.isPlayer && !target.isPlayer)
+      ) {
+        continue;
+      }
+      // ターゲットが接敵可能なステートでなければスキップ
+      if (
+        target.state !== AttackableState.IDLE &&
+        target.state !== AttackableState.ENGAGED
+      ) {
+        continue;
+      }
+
+      // デリゲータに接敵可能かどうかの判断を委譲する
+      if (this.delegator && this.delegator.shouldEngageAttackableEntity(unit, target)) {
+        // if (this.isChivalrousEngage(unit, target)) {
+          unit.engagedEntity = target;
+          unit.state = AttackableState.ENGAGED;
+        // }
+        // 必要であれば接敵後の処理をデリゲータに委譲する
+        break;
+      }
+    }
+  }
+
+  /**
+   * メインループ後処理
+   */
+  private updatePostProcess(): void {
+    // unitEntities 配列の圧縮
+    const activeUnitEntities: UnitEntity[] = [];
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      const entity = this.unitEntities[i];
+      if (entity.state !== AttackableState.DEAD) {
+        activeUnitEntities.push(entity);
+      }
+    }
+
+    this.unitEntities = activeUnitEntities;
+
+    // 現在フレームで受けたダメージをリセット
+    for (let i = 0; i < this.unitEntities.length; i++) {
+      this.unitEntities[i].currentFrameDamage = 0;
+    }
   }
 }

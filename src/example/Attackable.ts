@@ -43,6 +43,18 @@ export default abstract class Attackable implements UpdateObject {
   }
 
   /**
+   * 接敵しているかどうかを返す
+   */
+  public isFoeContact(target: PIXI.Container): boolean {
+    const r1x1 = this.sprite.position.x;
+    const r1x2 = this.sprite.position.x + this.sprite.width;
+    const r2x1 = target.position.x;
+    const r2x2 = target.position.x + target.width;
+
+    return (r1x1 < r2x2 && r1x2 > r2x1);
+  }
+
+  /**
    * アニメーション時間をリセットする
    */
   public resetAnimation(): void {

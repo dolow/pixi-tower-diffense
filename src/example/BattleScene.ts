@@ -6,7 +6,9 @@ import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'example/Scene';
 import UnitButton from 'example/UnitButton';
+import AttackableEntity from 'example/AttackableEntity';
 import UnitEntity from 'example/UnitEntity';
+import AttackableState from 'example/AttackableState';
 import Attackable from 'example/Attackable';
 import Unit from 'example/Unit';
 import UiNodeFactory from 'example/factory/UiNodeFactory';
@@ -278,6 +280,43 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   }
 
   /**
+   * エンティティのステートが変更された際のコールバック
+   */
+  public onAttackableEntityStateChanged(
+    entity: AttackableEntity,
+    _oldState: number
+  ): void {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return;
+    }
+
+    if ((entity as UnitEntity).unitId) {
+      const unit = attackable as Unit;
+      const animationTypes = Resource.AnimationTypes.Unit;
+      switch (entity.state) {
+        case AttackableState.IDLE: {
+          unit.requestAnimation(animationTypes.WALK);
+          break;
+        }
+        case AttackableState.ENGAGED: {
+          unit.requestAnimation(animationTypes.ATTACK);
+          break;
+        }
+        case AttackableState.KNOCK_BACK: {
+          unit.requestAnimation(animationTypes.DAMAGE);
+          break;
+        }
+        case AttackableState.DEAD: {
+          attackable.destroy();
+          break;
+        }
+        default: break;
+      }
+    }
+  }
+
+  /**
    * 渡された UnitEntity の distance が変化した時に呼ばれる
    */
   public onUnitEntityWalked(entity: UnitEntity): void {
@@ -290,6 +329,70 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const visualDistance = entity.distance * direction;
     unit.sprite.position.x = unit.distanceBasePosition.x + visualDistance;
+  }
+
+  /**
+   * 渡された UnitEntity がノックバック中に呼ばれる
+   */
+  public onUnitEntityKnockingBack(
+    entity: UnitEntity,
+    _knockBackRate: number
+  ): void {
+    const attackable = this.attackables.get(entity.id);
+    if (!attackable) {
+      return;
+    }
+    const unit = attackable as Unit;
+    const direction = entity.isPlayer ? 1 : -1;
+
+    const physicalDistance = entity.distance * direction;
+    const spawnedPosition = unit.distanceBasePosition;
+
+    unit.sprite.position.x = spawnedPosition.x + physicalDistance;
+
+    //const leap = (knockBackRate >= 1) ? 0 : -Math.sin(knockBackRate * Math.PI);
+    //unit.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
+  }
+
+  /**
+   * 渡されたエンティティの health が増減した場合に呼ばれる
+   */
+  public onAttackableEntityHealthUpdated(
+    _attacker: AttackableEntity,
+    _target: AttackableEntity,
+    _fromHealth: number,
+    _toHealth: number,
+    _maxHealth: number
+  ): void {
+
+  }
+
+  /**
+   * 渡されたエンティティ同士が攻撃可能か返す
+   */
+  public shouldDamage(
+    attackerEntity: AttackableEntity,
+    targetEntity: AttackableEntity
+  ): boolean {
+    const attackerAttackable = this.attackables.get(attackerEntity.id);
+    if (!attackerAttackable) {
+      return false;
+    }
+    const targetAttackable = this.attackables.get(targetEntity.id);
+    if (!targetAttackable) {
+      return false;
+    }
+    if (!(attackerEntity as UnitEntity).unitId) {
+      return false;
+    }
+
+    const unit = attackerAttackable as Unit;
+
+    if (!unit.isHitFrame()) {
+      return false;
+    }
+
+    return unit.isFoeContact(targetAttackable.sprite);
   }
 
   /**
@@ -308,6 +411,25 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       return true;
     }
     return (attackable as Unit).isAnimationLastFrameTime();
+  }
+
+  /**
+   * 渡されたエンティティ同士が接敵可能か返す
+   */
+  public shouldEngageAttackableEntity(
+    attacker: AttackableEntity,
+    target: AttackableEntity
+  ): boolean {
+    const attackerAttackable = this.attackables.get(attacker.id);
+    if (!attackerAttackable) {
+      return false;
+    }
+    const targetAttackable = this.attackables.get(target.id);
+    if (!targetAttackable) {
+      return false;
+    }
+
+    return attackerAttackable.isFoeContact(targetAttackable.sprite);
   }
 
   /**
