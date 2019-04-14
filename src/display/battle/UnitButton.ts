@@ -13,10 +13,6 @@ export default class UnitButton extends PIXI.Container {
    * ボタンに割り当てられたユニットの ID
    */
   public unitId: number = -1;
-  /**
-   * 表示するユニットコスト
-   */
-  public cost: number = -1;
 
   /**
    * ボタン画像
@@ -44,7 +40,7 @@ export default class UnitButton extends PIXI.Container {
 
     this.text.position.set(46, 88);
     this.filter.desaturate();
-    this.filter.enabled = false;
+    this.toggleFilter(false);
     this.button.filters = [this.filter];
 
     if (texture) {
@@ -81,8 +77,7 @@ export default class UnitButton extends PIXI.Container {
 
     this.unitId  = unitId;
     this.button.texture = texture;
-    this.cost = cost;
-    this.text.text = (this.cost >= 0) ? `${this.cost}` : '';
+    this.text.text = (cost >= 0) ? `${cost}` : '';
   }
 
   /**

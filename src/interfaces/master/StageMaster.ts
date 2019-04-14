@@ -5,13 +5,13 @@ export default interface StageMaster {
   id: number;
   length: number;
   zLines: number;
-  playerBase: {
+  playerCastle: {
     position: {
       x: number;
     };
   };
-  aiBase: {
-    baseId: number;
+  aiCastle: {
+    castleId: number;
     position: {
       x: number;
     };

@@ -17,7 +17,7 @@ export default class Unit extends Attackable {
   /**
    * スポーンした座標
    */
-  protected spawnedPosition: PIXI.Point = new PIXI.Point(0, 0);
+  protected spawnedPosition!: PIXI.Point;
 
   /**
    * 現在のアニメーションフレーム
@@ -33,6 +33,13 @@ export default class Unit extends Attackable {
    * Unit で管理する
    */
   protected healthGauge: HealthGauge | null = null;
+
+  /**
+   * spawnedPosition を返す
+   */
+  public get distanceBasePosition(): PIXI.Point {
+    return this.spawnedPosition;
+  }
 
   /**
    * コンストラクタ
@@ -56,8 +63,11 @@ export default class Unit extends Attackable {
       spawnPosition.y
     );
 
-    this.spawnedPosition.x = this.sprite.position.x;
-    this.spawnedPosition.y = this.sprite.position.y;
+    this.spawnedPosition = new PIXI.Point(
+      this.sprite.position.x,
+      this.sprite.position.y
+    );
+    Object.freeze(this.spawnedPosition);
   }
 
   /**
@@ -92,13 +102,6 @@ export default class Unit extends Attackable {
   }
 
   /**
-   * spawnedPosition を返す
-   */
-  public getSpawnedPosition(): PIXI.Point {
-    return this.spawnedPosition;
-  }
-
-  /**
    * 現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す
    */
   public isHitFrame(): boolean {
@@ -110,6 +113,7 @@ export default class Unit extends Attackable {
     if (!animation) {
       return false;
     }
+
     return (this.elapsedFrameCount % animation.updateDuration) === 0;
   }
   /**

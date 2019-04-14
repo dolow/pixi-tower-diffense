@@ -7,7 +7,7 @@ export default class BaseEntity extends AttackableEntity {
   /**
    * 拠点 ID
    */
-  public baseId: number = 0;
+  public castleId: number = 0;
 
   /**
    * コンストラクタ
@@ -15,6 +15,7 @@ export default class BaseEntity extends AttackableEntity {
   constructor(baseId: number, isPlayer: boolean) {
     super(isPlayer);
 
-    this.baseId = baseId;
+    this.castleId = baseId;
+    this.isUnit = false;
   }
 }

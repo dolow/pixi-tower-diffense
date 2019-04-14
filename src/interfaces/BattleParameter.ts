@@ -5,8 +5,8 @@ export default interface BattleParameter {
   unitSlotCount: number;
   stageId: number;
   unitIds: number[];
-  playerBase: {
-    baseId: number;
+  playerCastle: {
+    castleId: number;
     maxHealth: number;
   };
   cost: {

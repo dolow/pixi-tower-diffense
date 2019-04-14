@@ -2,13 +2,13 @@
   "id": 1,
   "length": 2000,
   "zLines": 10,
-  "playerBase": {
+  "playerCastle": {
     "position": {
       "x": 200
     }
   },
-  "aiBase": {
-    "baseId": 2,
+  "aiCastle": {
+    "castleId": 2,
     "position": {
       "x": 2000
     },

@@ -5,13 +5,13 @@ import Attackable from 'display/battle/Attackable';
 import CollapseExplodeEffect
     from 'display/battle/single_shot/CollapseExplodeEffect';
 
-const baseId1SpawnFrameCount = 16;
+const castleId1SpawnFrameCount = 16;
 
 /**
  * 拠点の振舞い、及び見た目に関する処理を行う
  * Attackable を継承する
  */
-export default class Base extends Attackable {
+export default class Castle extends Attackable {
   /**
    * 爆発エフェクト用コンテナ
    */
@@ -20,7 +20,7 @@ export default class Base extends Attackable {
   /**
    * 拠点 ID
    */
-  protected baseId!: number;
+  protected castleId!: number;
 
   /**
    * 初期座標、アニメーションなどで更新されるため覚えておく
@@ -37,20 +37,20 @@ export default class Base extends Attackable {
   /**
    * コンストラクタ
    */
-  constructor(baseId: number) {
+  constructor(castleId: number) {
     super();
 
-    this.baseId = baseId;
+    this.castleId = castleId;
 
-    this.animationType = Resource.AnimationTypes.Base.IDLE;
+    this.animationType = Resource.AnimationTypes.Castle.IDLE;
 
-    this.sprite = new PIXI.Sprite(Resource.TextureFrame.Base(baseId));
+    this.sprite = new PIXI.Sprite(Resource.TextureFrame.Castle(castleId));
 
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
 
     // 本来はアニメーション系ミドルウェアで設定する部分
-    switch (baseId) {
+    switch (castleId) {
       case 1: this.sprite.position.y = 300; break;
       default: this.sprite.position.y = 200; break;
     }
@@ -70,7 +70,7 @@ export default class Base extends Attackable {
    * アニメーションを初期化する
    */
   public resetAnimation(): void {
-    this.animationType = Resource.AnimationTypes.Base.IDLE;
+    this.animationType = Resource.AnimationTypes.Castle.IDLE;
     this.elapsedFrameCount = 0;
   }
 
@@ -78,7 +78,7 @@ export default class Base extends Attackable {
    * 破壊状態にする
    */
   public collapse(): void {
-    this.animationType = Resource.AnimationTypes.Base.COLLAPSE;
+    this.animationType = Resource.AnimationTypes.Castle.COLLAPSE;
     this.elapsedFrameCount = 0;
   }
   /**
@@ -89,7 +89,7 @@ export default class Base extends Attackable {
       this.playSpawnSe();
     }
 
-    this.animationType = Resource.AnimationTypes.Base.SPAWN;
+    this.animationType = Resource.AnimationTypes.Castle.SPAWN;
     this.elapsedFrameCount = 0;
   }
 
@@ -98,7 +98,7 @@ export default class Base extends Attackable {
    */
   public updateAnimation(): void {
     switch (this.animationType) {
-      case Resource.AnimationTypes.Base.COLLAPSE: {
+      case Resource.AnimationTypes.Castle.COLLAPSE: {
         this.explodeContainer.position.set(
           this.sprite.position.x - this.sprite.width * this.sprite.anchor.x,
           this.sprite.position.y - this.sprite.height * this.sprite.anchor.y
@@ -110,23 +110,23 @@ export default class Base extends Attackable {
         this.sprite.position.x = this.sprite.position.x + 4 * direction;
         break;
       }
-      case Resource.AnimationTypes.Base.SPAWN: {
-        if (this.baseId === 1) {
-          this.sprite.texture = Resource.TextureFrame.Base(this.baseId, 2);
+      case Resource.AnimationTypes.Castle.SPAWN: {
+        if (this.castleId === 1) {
+          this.sprite.texture = Resource.TextureFrame.Castle(this.castleId, 2);
 
-          if (this.elapsedFrameCount >= baseId1SpawnFrameCount) {
+          if (this.elapsedFrameCount >= castleId1SpawnFrameCount) {
             this.resetAnimation();
           }
         } else {
-          this.animationType = Resource.AnimationTypes.Base.IDLE;
+          this.animationType = Resource.AnimationTypes.Castle.IDLE;
         }
         break;
       }
-      case Resource.AnimationTypes.Base.IDLE:
+      case Resource.AnimationTypes.Castle.IDLE:
       default: {
-        if (this.baseId === 1) {
-          this.sprite.texture = Resource.TextureFrame.Base(this.baseId, 1);
-        } else if (this.baseId === 2) {
+        if (this.castleId === 1) {
+          this.sprite.texture = Resource.TextureFrame.Castle(this.castleId, 1);
+        } else if (this.castleId === 2) {
           const r  = 20;  // range
           const t  = 400; // duration
 
