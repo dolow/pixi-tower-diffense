@@ -1,19 +1,19 @@
 import AttackableEntity from 'entity/AttackableEntity';
 import UnitEntity from 'entity/UnitEntity';
-import BaseEntity from 'entity/BaseEntity';
+import CastleEntity from 'entity/CastleEntity';
 
 /**
  * BattleLogic が委譲する処理を著したインターフェース
  */
 export default interface BattleLogicDelegate {
   /**
-   * BaseEntity が生成された時のコールバック
+   * CastleEntity が生成された時のコールバック
    */
-  onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void;
+  onCastleEntitySpawned(entity: CastleEntity, castlePosition: number): void;
   /**
    * UnitEntity が生成された時のコールバック
    */
-  onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void;
+  onUnitEntitySpawned(entity: UnitEntity, castlePosition: number): void;
   /**
    * エンティティのステートが変更した際のコールバック
    */
@@ -42,7 +42,11 @@ export default interface BattleLogicDelegate {
   /**
    * 利用可能コストが変動した際のコールバック
    */
-  onAvailableCostUpdated(cost: number, maxCost: number): void;
+  onAvailableCostUpdated(
+    cost: number,
+    maxCost: number,
+    availablePlayerUnitIds: number[]
+  ): void;
   /**
    * ゲームが終了した際のコールバック
    */

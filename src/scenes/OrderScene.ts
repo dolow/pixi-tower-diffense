@@ -327,7 +327,7 @@ export default class OrderScene extends Scene  {
       unitIds,
       unitSlotCount: Config.MaxUnitSlotCount,
       stageId: this.currentStageId,
-      playerBase: this.userBattle.base,
+      playerCastle: this.userBattle.castle,
       cost: this.userBattle.cost
     };
   }

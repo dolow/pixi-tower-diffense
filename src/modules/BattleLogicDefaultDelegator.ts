@@ -1,21 +1,21 @@
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import AttackableEntity from 'entity/AttackableEntity';
 import UnitEntity from 'entity/UnitEntity';
-import BaseEntity from 'entity/BaseEntity';
+import CastleEntity from 'entity/CastleEntity';
 
 /**
  * BattleLogicDelegate のデフォルト実装
  * 基本的には何もしない
  */
 export default class DefaultDelegator implements BattleLogicDelegate {
-  public onBaseEntitySpawned(
-    _entity: BaseEntity,
-    _basePosition: number
+  public onCastleEntitySpawned(
+    _entity: CastleEntity,
+    _castlePosition: number
   ): void {
   }
   public onUnitEntitySpawned(
     _entity: UnitEntity,
-    _basePosition: number
+    _castlePosition: number
   ): void {
   }
   public onAttackableEntityStateChanged(

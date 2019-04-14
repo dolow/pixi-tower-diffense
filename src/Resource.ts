@@ -47,8 +47,8 @@ const Resource = Object.freeze({
       const id = (unitId > 0) ? unitId : 'empty';
       return `ui/units_panel/button/unit_${id}.png`;
     },
-    Base: (baseId: number): string => {
-      return `battle/base/${baseId}.json`;
+    Castle: (castleId: number): string => {
+      return `battle/castle/${castleId}.json`;
     }
   },
   /**
@@ -123,8 +123,8 @@ const Resource = Object.freeze({
       const key = `unit_${unitId}_${unitActionType}_${index}.png`;
       return PIXI.utils.TextureCache[key];
     },
-    Base: (baseId: number, index: number = 1): PIXI.Texture => {
-      return PIXI.utils.TextureCache[`base_${baseId}_${index}.png`];
+    Castle: (castleId: number, index: number = 1): PIXI.Texture => {
+      return PIXI.utils.TextureCache[`base_${castleId}_${index}.png`];
     },
     CollapseExplode: (index: number = 1): PIXI.Texture => {
       return PIXI.utils.TextureCache[`effect_1_${index}.png`];
@@ -144,7 +144,7 @@ const Resource = Object.freeze({
       ATTACK: 'attack',
       DAMAGE: 'damage'
     }),
-    Base: Object.freeze({
+    Castle: Object.freeze({
       IDLE: 'idle',
       SPAWN: 'spawn',
       COLLAPSE: 'collapse'

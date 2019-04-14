@@ -1,0 +1,52 @@
+[
+  {
+    "castleId":    1,
+    "cost":        0,
+    "maxHealth":   100,
+    "power":       0,
+    "speed":       0,
+    "hitFrame":    0,
+    "knockBackFrames": 0,
+    "knockBackSpeed": 0
+  },
+  {
+    "castleId":    2,
+    "cost":        0,
+    "maxHealth":   200,
+    "power":       0,
+    "speed":       0,
+    "hitFrame":    0,
+    "knockBackFrames": 0,
+    "knockBackSpeed": 0
+  },
+  {
+    "castleId":    3,
+    "cost":        0,
+    "maxHealth":   300,
+    "power":       0,
+    "speed":       0,
+    "hitFrame":    0,
+    "knockBackFrames": 0,
+    "knockBackSpeed": 0
+  },
+  {
+    "castleId":    4,
+    "cost":        0,
+    "maxHealth":   400,
+    "power":       0,
+    "speed":       0,
+    "hitFrame":    0,
+    "knockBackFrames": 0,
+    "knockBackSpeed": 0
+  },
+  {
+    "castleId":    2,
+    "cost":        0,
+    "maxHealth":   500,
+    "power":       0,
+    "speed":       0,
+    "hitFrame":    0,
+    "knockBackFrames": 0,
+    "knockBackSpeed": 0
+  },
+]

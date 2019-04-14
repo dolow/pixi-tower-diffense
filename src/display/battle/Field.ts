@@ -191,7 +191,7 @@ export default class Field extends PIXI.Container {
     const xPos = event.data.global.x;
     const distance = xPos - this.lastPointerPositionX;
 
-    let newForegroundPos = this.position.x + distance;
+    let newForegroundPos = this.containers.fore.position.x + distance;
 
     if (newForegroundPos > 0) {
       newForegroundPos = 0;
@@ -200,9 +200,9 @@ export default class Field extends PIXI.Container {
     }
 
     // 背景に奥行きを出すために前景・中景・後景に分けてスクロール量を変化させる
-    this.position.x = newForegroundPos;
-    this.containers.middle.position.x = newForegroundPos * -0.6;
-    this.containers.back.position.x   = newForegroundPos * -0.9;
+    this.containers.fore.position.x   = newForegroundPos;
+    this.containers.middle.position.x = newForegroundPos * 0.5;
+    this.containers.back.position.x   = newForegroundPos * 0.2;
 
     this.lastPointerPositionX = xPos;
   }

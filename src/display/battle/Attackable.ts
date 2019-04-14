@@ -14,10 +14,6 @@ export default abstract class Attackable implements UpdateObject {
    */
   public animationType!: string;
   /**
-   * 現在のアニメーションフレーム
-   */
-  protected animationFrameIndex: number = 1;
-  /**
    * 経過フレーム数
    */
   protected elapsedFrameCount: number = 0;
@@ -56,13 +52,6 @@ export default abstract class Attackable implements UpdateObject {
     const r2x2 = target.position.x + target.width;
 
     return (r1x1 < r2x2 && r1x2 > r2x1);
-  }
-
-  /**
-   * 現在のアニメーション種別を返す
-   */
-  public getAnimationType(): string {
-    return this.animationType;
   }
 
   /**

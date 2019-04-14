@@ -23,12 +23,12 @@ import BattleLogic from 'modules/BattleLogic';
 import BattleLogicConfig from 'modules/BattleLogicConfig';
 
 import AttackableEntity from 'entity/AttackableEntity';
-import BaseEntity from 'entity/BaseEntity';
+import CastleEntity from 'entity/CastleEntity';
 import UnitEntity from 'entity/UnitEntity';
 
 import Attackable from 'display/battle/Attackable';
 import Unit from 'display/battle/Unit';
-import Base from 'display/battle/Base';
+import Castle from 'display/battle/Castle';
 
 import UnitButton from 'display/battle/UnitButton';
 import Field from 'display/battle/Field';
@@ -43,8 +43,12 @@ import CollapseExplodeEffect
  * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
-
   private static readonly unitLeapHeight: number = 30;
+
+  /**
+   * UI Graph ユニットボタンのキープリフィックス
+   */
+  private static readonly unitButtonPrefix: string = 'unit_button_';
 
   /**
    * このシーンのステート
@@ -61,8 +65,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 編成した拠点パラメータ
    */
-  private playerBase!: {
-    baseId: number;
+  private playerCastle!: {
+    castleId: number;
     maxHealth: number;
   };
   /**
@@ -87,11 +91,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private attackables: Map<number, Attackable> = new Map();
   /**
-   * エンティティの ID で紐付けられた有効な Base インスタンスのマップ
+   * エンティティの ID で紐付けられた有効な Castle インスタンスのマップ
    */
-  private bases: {
-    player: Base | null;
-    ai: Base | null;
+  private castles: {
+    player: Castle | null;
+    ai: Castle | null;
   } = {
     player: null,
     ai: null
@@ -122,7 +126,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     this.unitSlotCount = params.unitSlotCount;
     this.stageId   = params.stageId;
     this.unitIds   = params.unitIds;
-    this.playerBase = params.playerBase;
+    this.playerCastle = params.playerCastle;
 
     this.battleLogicConfig = new BattleLogicConfig({
       costRecoveryPerFrame: params.cost.recoveryPerFrame,
@@ -159,12 +163,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         this.state = BattleSceneState.INGAME;
         break;
       }
-      case BattleSceneState.INGAME: {
-        this.battleLogic.update(delta);
-        break;
-      }
+      case BattleSceneState.INGAME:
       case BattleSceneState.FINISHED: {
-        this.battleLogic.update(delta);
+        this.battleLogic.update();
         break;
       }
     }
@@ -185,14 +186,14 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     let assets = super.createInitialResourceList();
     assets = assets.concat(
       Field.resourceList,
-      Base.resourceList,
+      Castle.resourceList,
       AttackSmoke.resourceList,
       Dead.resourceList,
       CollapseExplodeEffect.resourceList,
       BattleResult.resourceList,
       [
         Resource.Api.Stage(this.stageId),
-        Resource.Dynamic.Base(this.playerBase.baseId),
+        Resource.Dynamic.Castle(this.playerCastle.castleId),
         Resource.Audio.Bgm.Battle,
         Resource.Audio.Se.Attack1,
         Resource.Audio.Se.Attack2,
@@ -217,7 +218,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
     // ステージ情報を取得するまでは AI 拠点テクスチャは分からないのでここでロードする
-    additionalAssets.push(Resource.Dynamic.Base(stageMaster.aiBase.baseId));
+    additionalAssets.push(Resource.Dynamic.Castle(stageMaster.aiCastle.castleId));
 
     // ユーザの編成で指定されたユニット ID 配列に敵のユニット ID を追加する
     const keys = Object.keys(stageMaster.waves);
@@ -282,9 +283,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       stageMaster,
       unitMasters,
       delegator: this,
-      playerBase: {
-        baseId: this.playerBase.baseId,
-        health: this.playerBase.maxHealth
+      player: {
+        unitIds: this.unitIds,
+        castle: {
+          id: this.playerCastle.castleId,
+          health: this.playerCastle.maxHealth
+        }
       },
       config: this.battleLogicConfig
     });
@@ -312,49 +316,49 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
 
   /**
-   * BaseEntity が生成されたときのコールバック
+   * CastleEntity が生成されたときのコールバック
    */
-  public onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void {
+  public onCastleEntitySpawned(entity: CastleEntity, castlePosition: number): void {
     // 拠点の描画物を生成する
-    const base = new Base(entity.baseId);
-    base.sprite.position.x = basePosition;
+    const castle = new Castle(entity.castleId);
+    castle.sprite.position.x = castlePosition;
     if (!entity.isPlayer) {
-      base.sprite.scale.x = -1.0;
+      castle.sprite.scale.x = -1.0;
     }
-    this.field.addChildAsForeBackgroundEffect(base.sprite);
+    this.field.addChildAsForeBackgroundEffect(castle.sprite);
 
-    this.registerUpdatingObject(base);
+    this.registerUpdatingObject(castle);
 
     if (entity.isPlayer) {
-      this.bases.player = base;
+      this.castles.player = castle;
     } else {
-      this.bases.ai = base;
+      this.castles.ai = castle;
     }
 
-    this.attackables.set(entity.id, base);
+    this.attackables.set(entity.id, castle);
   }
 
   /**
    * UnitEntity が生成されたときのコールバック
    * id に紐つけて表示物を生成する
    */
-  public onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void {
+  public onUnitEntitySpawned(entity: UnitEntity, castlePosition: number): void {
     const master = this.unitAnimationMasterCache.get(entity.unitId);
     if (!master) {
       return;
     }
 
-    const base = (entity.isPlayer) ? this.bases.player : this.bases.ai;
-    if (!base) {
+    const castle = (entity.isPlayer) ? this.castles.player : this.castles.ai;
+    if (!castle) {
       return;
     }
 
-    base.spawn(entity.isPlayer);
+    castle.spawn(entity.isPlayer);
 
     const zLineIndex = this.field.getDifferentZlineIndex();
 
     const unit = new Unit(master, {
-      x: basePosition,
+      x: castlePosition,
       y: this.field.getZlineBaseY(zLineIndex)
     });
 
@@ -401,8 +405,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
           const effect = new Dead(!entity.isPlayer);
           const sprite = attackable.sprite;
           const position = sprite.position;
-          const yBase = sprite.height * (1.0 - sprite.anchor.y);
-          const yAdjust = yBase - effect.height;
+          const yCastle = sprite.height * (1.0 - sprite.anchor.y);
+          const yAdjust = yCastle - effect.height;
           effect.position.set(position.x, position.y + yAdjust);
           sprite.parent.addChild(effect);
           this.registerUpdatingObject(effect);
@@ -415,9 +419,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     } else {
       if (entity.state === AttackableState.DEAD) {
         // 拠点が破壊されたときは破壊エフェクトを開始させる
-        const base = attackable as Base;
-        base.collapse();
-        this.field.addChildAsForeForegroundEffect(base.explodeContainer);
+        const castle = attackable as Castle;
+        castle.collapse();
+        this.field.addChildAsForeForegroundEffect(castle.explodeContainer);
       }
     }
   }
@@ -425,7 +429,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 利用可能なコストの値が変動したときのコールバック
    */
-  public onAvailableCostUpdated(cost: number, maxCost: number): void {
+  public onAvailableCostUpdated(
+    cost: number,
+    maxCost: number,
+    availablePlayerUnitIds: number[]
+  ): void {
     const text = `${Math.floor(cost)}/${maxCost}`;
     (this.uiGraph.cost_text as PIXI.Text).text = text;
 
@@ -436,9 +444,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         continue;
       }
 
-      if (unitButton.cost >= 0) {
-        unitButton.toggleFilter(cost < unitButton.cost);
-      }
+      const enbaleFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
+      unitButton.toggleFilter(enbaleFilter);
     }
   }
 
@@ -529,7 +536,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const direction = entity.isPlayer ? 1 : -1;
 
     const physicalDistance = entity.distance * direction;
-    unit.sprite.position.x = unit.getSpawnedPosition().x + physicalDistance;
+    unit.sprite.position.x = unit.distanceBasePosition.x + physicalDistance;
   }
 
   /**
@@ -547,13 +554,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const direction = entity.isPlayer ? 1 : -1;
 
     const physicalDistance = entity.distance * direction;
-    const spawnedPosition = unit.getSpawnedPosition();
+    const spawnedPosition = unit.distanceBasePosition;
 
     const leap = (knockBackRate >= 1) ? 0 : -Math.sin(knockBackRate * Math.PI);
 
     unit.sprite.position.x = spawnedPosition.x + physicalDistance;
     unit.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
-
   }
 
   /**
@@ -609,7 +615,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     );
   }
   /**
-  * 渡されたユニットが移動すべきかどうかを返す
+   * 渡されたユニットが移動すべきかどうかを返す
    */
   public shouldUnitWalk(entity: UnitEntity): boolean {
     const attackable = this.attackables.get(entity.id);
@@ -620,7 +626,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       return false;
     }
 
-    if (attackable.getAnimationType() === Resource.AnimationTypes.Unit.WALK) {
+    if (attackable.animationType === Resource.AnimationTypes.Unit.WALK) {
       return true;
     }
     return (attackable as Unit).isAnimationLastFrameTime();
@@ -703,7 +709,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * ボタンインデックスから UnitButton インスタンスを返す
    */
   private getUiGraphUnitButton(index: number): UnitButton | undefined {
-    const uiGraphUnitButtonName = `unit_button_${index + 1}`;
+    const uiGraphUnitButtonName = `${BattleScene.unitButtonPrefix}${index + 1}`;
     return this.uiGraph[uiGraphUnitButtonName] as UnitButton;
   }
 

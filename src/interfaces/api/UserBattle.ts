@@ -4,8 +4,8 @@
 export default interface UserBattle {
   unlockedUnitIds: number[];
   unlockedStageId: number;
-  base: {
-    baseId: number;
+  castle: {
+    castleId: number;
     maxHealth: number;
   };
   cost: {

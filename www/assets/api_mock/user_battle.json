@@ -1,8 +1,8 @@
 {
   "unlockedUnitIds": [-1, 1, 2, 3, 4, 5],
   "unlockedStageId": 3,
-  "base": {
-    "baseId": 1,
+  "castle": {
+    "castleId": 1,
     "maxHealth": 100
   },
   "cost": {
