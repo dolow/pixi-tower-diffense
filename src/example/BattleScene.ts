@@ -4,7 +4,7 @@ import GameManager from 'example/GameManager';
 import OrderScene from 'example/OrderScene';
 import UpdateObject from 'interfaces/UpdateObject';
 import BattleLogicDelegate from 'example/BattleLogicDelegate';
-import CastleMaster from 'interfaces/master/CastleMaster';
+import CastleMaster from 'example/CastleMaster';
 import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'example/Scene';
