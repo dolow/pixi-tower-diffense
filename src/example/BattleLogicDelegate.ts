@@ -7,6 +7,10 @@ import UnitEntity from 'example/UnitEntity';
  */
 export default interface BattleLogicDelegate {
   /**
+   * ゲームが終了した際のコールバック
+   */
+  onGameOver(isPlayerWon: boolean): void;
+  /**
    * CastleEntity が生成された時のコールバック
    */
   onCastleEntitySpawned(entity: CastleEntity, isPlayer: boolean): void;

@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'example/Resource';
+import GameManager from 'example/GameManager';
+import OrderScene from 'example/OrderScene';
 import UpdateObject from 'interfaces/UpdateObject';
 import BattleLogicDelegate from 'example/BattleLogicDelegate';
 import CastleMaster from 'interfaces/master/CastleMaster';
@@ -98,7 +100,6 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       knockBackSpeed:  0
     };
     this.unitSlotCount = 5;
-    this.interactive = true;
 
     // デフォルトのシーンステート
     this.state = BattleSceneState.LOADING_RESOURCES;
@@ -263,6 +264,28 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     }
 
     this.updateRegisteredObjects(delta);
+  }
+
+  /**
+   * 勝敗が決定したときのコールバック
+   */
+  public onGameOver(_isPlayerWon: boolean): void {
+    this.state = BattleSceneState.FINISHED;
+
+    // 攻撃をやめる
+    this.attackables.forEach((attackable) => {
+      const unit = attackable as Unit;
+      if (!unit.requestAnimation) {
+        return;
+      }
+      unit.requestAnimation(Resource.AnimationTypes.Unit.WAIT);
+    });
+
+    this.interactive = true;
+    this.on(
+      'pointerdown',
+      (_e: PIXI.interaction.InteractionEvent) => this.backToOrderScene()
+    );
   }
 
   /**
@@ -543,5 +566,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       unitButton.init(index, unitId, cost);
       unitButton.toggleFilter(true);
     }
+  }
+
+  /**
+   * 編成画面へ戻る
+   */
+  private backToOrderScene(): void {
+    GameManager.loadScene(new OrderScene());
   }
 }

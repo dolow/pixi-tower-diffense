@@ -51,6 +51,10 @@ export default class BattleLogic {
    */
   private aiWaveCache: Map<number, { unitId: number }[]> = new Map();
   /**
+   * 勝敗が決まっているかどうか
+   */
+  private isGameOver: boolean = false;
+  /**
    * 経過フレーム数
    */
   private passedFrameCount: number = 0;
@@ -127,16 +131,20 @@ export default class BattleLogic {
    * 外部から任意のタイミングでコールする
    */
   public update(): void {
-    // コスト回復
-    this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
-    // AI ユニットの生成リクエスト発行
-    this.updateAISpawn();
-    // リクエストされているユニット生成実行
-    this.updateSpawnRequest();
-    // エンティティパラメータの更新
-    this.updateEntityParameter();
-    // エンティティのステート変更
-    this.updateEntityState();
+    if (!this.isGameOver) {
+      // ゲーム終了判定
+      this.updateGameOver();
+      // コスト回復
+      this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
+      // AI ユニットの生成リクエスト発行
+      this.updateAISpawn();
+      // リクエストされているユニット生成実行
+      this.updateSpawnRequest();
+      // エンティティパラメータの更新
+      this.updateEntityParameter();
+      // エンティティのステート変更
+      this.updateEntityState();
+    }
 
     this.updatePostProcess();
 
@@ -162,6 +170,47 @@ export default class BattleLogic {
    */
   public requestSpawnAI(unitId: number): void {
     this.requestSpawn(unitId, false);
+  }
+
+  /**
+   * バトル状況からゲーム終了かどうかを判断する
+   */
+  private updateGameOver(): void {
+    let playerWon = false;
+    let aiWon = false;
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      const entity = this.attackableEntities[i];
+      if (!(entity as CastleEntity).castleId) {
+        continue;
+      }
+
+      if (entity.currentHealth < 1) {
+        if (entity.isPlayer) {
+          aiWon = true;
+        } else {
+          playerWon = true;
+        }
+      }
+    }
+
+    this.isGameOver = (playerWon || aiWon);
+
+    if (this.isGameOver) {
+      // バトル終了の場合はすべてのユニットを待機アニメーションに変える
+      for (let i = 0; i < this.attackableEntities.length; i++) {
+        const entity = this.attackableEntities[i];
+        if ((entity as CastleEntity).castleId) {
+          continue;
+        }
+        entity.state = AttackableState.IDLE;
+      }
+
+      // バトル終了後処理をデリゲータに委譲する
+      if (this.delegator) {
+        // プレイヤーの勝利を優先する
+        this.delegator.onGameOver(playerWon);
+      }
+    }
   }
 
   /**
