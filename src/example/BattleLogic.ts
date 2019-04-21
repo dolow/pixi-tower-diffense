@@ -411,7 +411,7 @@ export default class BattleLogic {
       if (unit.currentHealth >= threashold) {
         continue;
       }
-      console.log(oldHealth, unit.currentHealth);
+      
       if (oldHealth >= threashold) {
         unit.engagedEntity = null;
         unit.state = AttackableState.KNOCK_BACK;
