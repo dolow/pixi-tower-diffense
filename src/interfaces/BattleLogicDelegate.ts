@@ -9,11 +9,11 @@ export default interface BattleLogicDelegate {
   /**
    * CastleEntity が生成された時のコールバック
    */
-  onCastleEntitySpawned(entity: CastleEntity, castlePosition: number): void;
+  onCastleEntitySpawned(entity: CastleEntity, isPlayer: boolean): void;
   /**
    * UnitEntity が生成された時のコールバック
    */
-  onUnitEntitySpawned(entity: UnitEntity, castlePosition: number): void;
+  onUnitEntitySpawned(entity: UnitEntity): void;
   /**
    * エンティティのステートが変更した際のコールバック
    */
@@ -24,11 +24,11 @@ export default interface BattleLogicDelegate {
   /**
    * UnitEntity が歩いた時のコールバック
    */
-  onUnitEntityWalked(entity: UnitEntity): void;
+  onAttackableEntityWalked(entity: AttackableEntity): void;
   /**
    * UnitEntity がノックバックした時のコールバック
    */
-  onUnitEntityKnockingBack(_entity: UnitEntity, _knockBackRate: number): void;
+  onAttackableEntityKnockingBack(entity: AttackableEntity, knockBackRate: number): void;
   /**
    * エンティティの health が変動した際のコールバック
    */
@@ -65,5 +65,5 @@ export default interface BattleLogicDelegate {
   /**
    * 渡されたユニットが移動可能か返す
    */
-  shouldUnitWalk(unit: UnitEntity): boolean;
+  shouldAttackableWalk(attackable: AttackableEntity): boolean;
 }

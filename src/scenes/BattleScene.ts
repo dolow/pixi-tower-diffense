@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
 
+import CastleMaster from 'interfaces/master/CastleMaster';
 import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import UpdateObject from 'interfaces/UpdateObject';
@@ -43,6 +44,7 @@ import CollapseExplodeEffect
  * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
+  private static readonly castleXOffset: number = 200;
   private static readonly unitLeapHeight: number = 30;
 
   /**
@@ -65,10 +67,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 編成した拠点パラメータ
    */
-  private playerCastle!: {
-    castleId: number;
-    maxHealth: number;
-  };
+  private playerCastle!: CastleMaster;
   /**
    * 編成したユニットID配列
    */
@@ -218,7 +217,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
     // ステージ情報を取得するまでは AI 拠点テクスチャは分からないのでここでロードする
-    additionalAssets.push(Resource.Dynamic.Castle(stageMaster.aiCastle.castleId));
+    additionalAssets.push(Resource.Dynamic.Castle(stageMaster.aiCastleId));
 
     // ユーザの編成で指定されたユニット ID 配列に敵のユニット ID を追加する
     const keys = Object.keys(stageMaster.waves);
@@ -235,6 +234,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     // ステージ情報を取得するまでは AI ユニット情報が分からないのでここでロードする
     additionalAssets.push(Resource.Api.Unit(this.unitIds));
+    additionalAssets.push(Resource.Api.Castle([stageMaster.aiCastleId]));
     additionalAssets.push(Resource.Api.UnitAnimation(this.unitIds));
 
     for (let i = 0; i < this.unitIds.length; i++) {
@@ -259,8 +259,17 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     const resources = PIXI.loader.resources;
 
-    const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
-    const unitMasters = resources[Resource.Api.Unit(this.unitIds)].data;
+    const stageMaster  = resources[Resource.Api.Stage(this.stageId)].data;
+    const castleMaster = resources[Resource.Api.Castle([stageMaster.aiCastleId])].data;
+    const unitMasters  = resources[Resource.Api.Unit(this.unitIds)].data;
+
+    const aiCastleMasters = castleMaster.filter((master: CastleMaster) => {
+      return master.castleId === stageMaster.aiCastleId;
+    });
+
+    if (aiCastleMasters.length === 0) {
+      throw new Error('could not retrieve ai castle master data');
+    }
 
     const animationKey = Resource.Api.UnitAnimation(this.unitIds);
     const unitAnimationMasters = resources[animationKey].data;
@@ -285,10 +294,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       delegator: this,
       player: {
         unitIds: this.unitIds,
-        castle: {
-          id: this.playerCastle.castleId,
-          health: this.playerCastle.maxHealth
-        }
+        castle: this.playerCastle
+      },
+      ai: {
+        castle: aiCastleMasters[0]
       },
       config: this.battleLogicConfig
     });
@@ -318,16 +327,24 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * CastleEntity が生成されたときのコールバック
    */
-  public onCastleEntitySpawned(entity: CastleEntity, castlePosition: number): void {
+  public onCastleEntitySpawned(entity: CastleEntity, isPlayer: boolean): void {
+    const stageMaster = PIXI.loader.resources[Resource.Api.Stage(this.stageId)].data;
+
+    let castleY = 200;
+    switch (entity.castleId) {
+      case 1: castleY = 300; break;
+      default: castleY = 200; break;
+    }
     // 拠点の描画物を生成する
-    const castle = new Castle(entity.castleId);
-    castle.sprite.position.x = castlePosition;
+    const castle = new Castle(entity.castleId, {
+      x: (isPlayer)
+        ? BattleScene.castleXOffset
+        : stageMaster.length - BattleScene.castleXOffset,
+      y: castleY
+    });
     if (!entity.isPlayer) {
       castle.sprite.scale.x = -1.0;
     }
-    this.field.addChildAsForeBackgroundEffect(castle.sprite);
-
-    this.registerUpdatingObject(castle);
 
     if (entity.isPlayer) {
       this.castles.player = castle;
@@ -336,18 +353,21 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     }
 
     this.attackables.set(entity.id, castle);
+
+    this.field.addChildToZLine(castle.sprite, 0);
+
+    this.registerUpdatingObject(castle as UpdateObject);
   }
 
   /**
    * UnitEntity が生成されたときのコールバック
    * id に紐つけて表示物を生成する
    */
-  public onUnitEntitySpawned(entity: UnitEntity, castlePosition: number): void {
-    const master = this.unitAnimationMasterCache.get(entity.unitId);
-    if (!master) {
+  public onUnitEntitySpawned(entity: UnitEntity): void {
+    const animationMaster = this.unitAnimationMasterCache.get(entity.unitId);
+    if (!animationMaster) {
       return;
     }
-
     const castle = (entity.isPlayer) ? this.castles.player : this.castles.ai;
     if (!castle) {
       return;
@@ -355,20 +375,20 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     castle.spawn(entity.isPlayer);
 
+    const stageMaster = PIXI.loader.resources[Resource.Api.Stage(this.stageId)].data;
     const zLineIndex = this.field.getDifferentZlineIndex();
 
-    const unit = new Unit(master, {
-      x: castlePosition,
+    const unit = new Unit(animationMaster, {
+      x: (entity.isPlayer)
+        ? BattleScene.castleXOffset
+        : stageMaster.length - BattleScene.castleXOffset,
       y: this.field.getZlineBaseY(zLineIndex)
     });
-
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
     unit.requestAnimation(Resource.AnimationTypes.Unit.WALK);
 
     this.attackables.set(entity.id, unit);
-
     this.field.addChildToZLine(unit.sprite, zLineIndex);
-
     this.registerUpdatingObject(unit as UpdateObject);
   }
 
@@ -421,7 +441,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         // 拠点が破壊されたときは破壊エフェクトを開始させる
         const castle = attackable as Castle;
         castle.collapse();
-        this.field.addChildAsForeForegroundEffect(castle.explodeContainer);
+        this.field.addChildAsForeBackgroundEffect(castle.explodeContainer);
       }
     }
   }
@@ -527,39 +547,37 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 渡された UnitEntity の distance が変化した時に呼ばれる
    */
-  public onUnitEntityWalked(entity: UnitEntity): void {
+  public onAttackableEntityWalked(entity: AttackableEntity): void {
     const attackable = this.attackables.get(entity.id);
     if (!attackable) {
       return;
     }
-    const unit = attackable as Unit;
     const direction = entity.isPlayer ? 1 : -1;
 
     const physicalDistance = entity.distance * direction;
-    unit.sprite.position.x = unit.distanceBasePosition.x + physicalDistance;
+    attackable.sprite.position.x = attackable.distanceBasePosition.x + physicalDistance;
   }
 
   /**
    * 渡された UnitEntity がノックバック中に呼ばれる
    */
-  public onUnitEntityKnockingBack(
-    entity: UnitEntity,
+  public onAttackableEntityKnockingBack(
+    entity: AttackableEntity,
     knockBackRate: number
   ): void {
     const attackable = this.attackables.get(entity.id);
     if (!attackable) {
       return;
     }
-    const unit = attackable as Unit;
     const direction = entity.isPlayer ? 1 : -1;
 
     const physicalDistance = entity.distance * direction;
-    const spawnedPosition = unit.distanceBasePosition;
+    const spawnedPosition = attackable.distanceBasePosition;
 
     const leap = (knockBackRate >= 1) ? 0 : -Math.sin(knockBackRate * Math.PI);
 
-    unit.sprite.position.x = spawnedPosition.x + physicalDistance;
-    unit.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
+    attackable.sprite.position.x = spawnedPosition.x + physicalDistance;
+    attackable.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
   }
 
   /**
@@ -617,7 +635,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 渡されたユニットが移動すべきかどうかを返す
    */
-  public shouldUnitWalk(entity: UnitEntity): boolean {
+  public shouldAttackableWalk(entity: AttackableEntity): boolean {
     const attackable = this.attackables.get(entity.id);
     if (!attackable) {
       return false;

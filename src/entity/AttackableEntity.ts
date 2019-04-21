@@ -12,10 +12,6 @@ export default class AttackableEntity {
    */
   public isPlayer: boolean = true;
   /**
-   * ユニットかどうか
-   */
-  public isUnit: boolean = true;
-  /**
    * ステート
    */
   public state: number = 0;
