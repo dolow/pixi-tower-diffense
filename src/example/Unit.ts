@@ -23,43 +23,16 @@ export default class Unit extends Attackable {
   protected requestedAnimationType: string | null = null;
 
   /**
-   * スポーンした座標
-   */
-  protected spawnedPosition: PIXI.Point;
-
-  /**
-   * spawnedPosition を返す
-   */
-  public get distanceBasePosition(): PIXI.Point {
-    return this.spawnedPosition;
-  }
-
-  /**
    * コンストラクタ
    */
   constructor(
     animationMaster: UnitAnimationMaster,
     spawnPosition: { x: number, y: number }
   ) {
-    super();
+    super(spawnPosition);
 
     this.animationType = Resource.AnimationTypes.Unit.WAIT;
-
     this.animationMaster = animationMaster;
-    this.sprite = new PIXI.Sprite();
-    this.sprite.anchor.x = 0.5;
-    this.sprite.anchor.y = 1.0;
-
-    this.sprite.position.set(
-      spawnPosition.x,
-      spawnPosition.y
-    );
-
-    this.spawnedPosition = new PIXI.Point(
-      this.sprite.position.x,
-      this.sprite.position.y
-    );
-    Object.freeze(this.spawnedPosition);
   }
 
   /**

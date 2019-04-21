@@ -1,4 +1,5 @@
 import AttackableEntity from 'example/AttackableEntity';
+import CastleEntity from 'example/CastleEntity';
 import UnitEntity from 'example/UnitEntity';
 
 /**
@@ -6,9 +7,13 @@ import UnitEntity from 'example/UnitEntity';
  */
 export default interface BattleLogicDelegate {
   /**
+   * CastleEntity が生成された時のコールバック
+   */
+  onCastleEntitySpawned(entity: CastleEntity, isPlayer: boolean): void;
+  /**
    * UnitEntity が生成された時のコールバック
    */
-  onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void;
+  onUnitEntitySpawned(entity: UnitEntity): void;
   /**
    * 利用可能コストが変動した際のコールバック
    */
@@ -27,11 +32,11 @@ export default interface BattleLogicDelegate {
   /**
    * UnitEntity が歩いた時のコールバック
    */
-  onUnitEntityWalked(entity: UnitEntity): void;
+  onAttackableEntityWalked(entity: AttackableEntity): void;
   /**
    * UnitEntity がノックバックした時のコールバック
    */
-  onUnitEntityKnockingBack(_entity: UnitEntity, _knockBackRate: number): void;
+  onAttackableEntityKnockingBack(entity: AttackableEntity, knockBackRate: number): void;
 
   /**
    * エンティティの health が変動した際のコールバック
@@ -51,7 +56,7 @@ export default interface BattleLogicDelegate {
   /**
    * 渡されたユニットが移動可能か返す
    */
-  shouldUnitWalk(unit: UnitEntity): boolean;
+  shouldAttackableWalk(attackable: AttackableEntity): boolean;
 
   /**
    * 渡されたエンティティが接敵可能か返す

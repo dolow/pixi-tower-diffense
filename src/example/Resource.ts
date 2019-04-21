@@ -16,6 +16,10 @@ const Resource = Object.freeze({
       const query = unitIds.join('&unitId[]=');
       return `master/unit_master.json?unitId[]=${query}`;
     },
+    Castle: (castleIds: number[]): string => {
+      const query = castleIds.join('&castleId[]=');
+      return `master/castle_master.json?castleId[]=${query}`;
+    },
     Stage: (stageId: number): string => {
       return `master/stage_master_${stageId}.json`;
     }
@@ -68,9 +72,18 @@ const Resource = Object.freeze({
     Unit: (unitId: number): string => {
       return `units/${unitId}.json`;
     },
+    Castle: (castleId: number): string => {
+      return `battle/castle/${castleId}.json`;
+    },
     UnitPanel: (unitId: number): string => {
       const id = (unitId > 0) ? unitId : 'empty';
       return `ui/units_panel/button/unit_${id}.png`;
+    }
+  },
+
+  TextureFrame: {
+    Castle: (castleId: number, index: number = 1): PIXI.Texture => {
+      return PIXI.utils.TextureCache[`base_${castleId}_${index}.png`];
     }
   },
 
