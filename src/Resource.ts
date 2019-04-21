@@ -33,6 +33,10 @@ const Resource = Object.freeze({
     UnitAnimation: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');
       return `master/unit_animation_master.json?unitId[]=${query}`;
+    },
+    Castle: (castleIds: number[]): string => {
+      const query = castleIds.join('&castleId[]=');
+      return `master/castle_master.json?castleId[]=${query}`;
     }
   },
 

@@ -31,7 +31,6 @@ export default class Field extends PIXI.Container {
    * 表示上の前後関係を制御するための PIXI.Container オブジェクト
    */
   private containers: { [key: string]: PIXI.Container } = {
-    foreForegroundEffect: new PIXI.Container(),
     fore: new PIXI.Container(),
     foreBackgroundEffect: new PIXI.Container(),
     middle: new PIXI.Container(),
@@ -110,7 +109,6 @@ export default class Field extends PIXI.Container {
     this.addChild(this.containers.middle);
     this.addChild(this.containers.fore);
     this.containers.fore.addChild(this.containers.foreBackgroundEffect);
-    this.addChild(this.containers.foreForegroundEffect);
 
     // フィールドに奥行きを出すためにユニットを前後に配置できるようにする
     // z-index の後からの制御はコストが高いため、予め PIXI.Container を割り当てておく
@@ -130,12 +128,6 @@ export default class Field extends PIXI.Container {
    */
   public addChildAsForeBackgroundEffect(container: PIXI.Container): void {
     this.containers.foreBackgroundEffect.addChild(container);
-  }
-  /**
-   * 前景内で前景エフェクトとして addChild する
-   */
-  public addChildAsForeForegroundEffect(container: PIXI.Container): void {
-    this.containers.foreForegroundEffect.addChild(container);
   }
   /**
    * 指定した zLine インデックスの PIXI.Container に addChild する

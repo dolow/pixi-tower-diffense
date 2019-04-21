@@ -10,6 +10,10 @@ export default abstract class Attackable implements UpdateObject {
    */
   public sprite!: PIXI.Sprite;
   /**
+   * スポーンした座標
+   */
+  protected spawnedPosition!: PIXI.Point;
+  /**
    * 現在のアニメーション種別
    */
   public animationType!: string;
@@ -22,8 +26,30 @@ export default abstract class Attackable implements UpdateObject {
    */
   protected destroyed: boolean = false;
 
-  constructor() {
+  /**
+   * spawnedPosition を返す
+   */
+  public get distanceBasePosition(): PIXI.Point {
+    return this.spawnedPosition;
+  }
+
+  constructor(spawnPosition:  { x: number, y: number }) {
     this.animationType = '';
+
+    this.sprite = new PIXI.Sprite();
+    this.sprite.anchor.x = 0.5;
+    this.sprite.anchor.y = 1.0;
+    this.sprite.position.set(
+      spawnPosition.x,
+      spawnPosition.y
+    );
+
+    this.spawnedPosition = new PIXI.Point(
+      this.sprite.position.x,
+      this.sprite.position.y
+    );
+
+    Object.freeze(this.spawnedPosition);
   }
 
   /**

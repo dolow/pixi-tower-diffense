@@ -13,7 +13,7 @@
     "unitId":      2,
     "cost":        20,
     "maxHealth":   60,
-    "power":       10,
+    "power":       2,
     "speed":       1,
     "hitFrame":    2,
     "knockBackFrames": 30,

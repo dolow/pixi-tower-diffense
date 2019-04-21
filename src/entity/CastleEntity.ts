@@ -1,9 +1,10 @@
 import AttackableEntity from 'entity/AttackableEntity';
+import CastleMaster from 'interfaces/master/CastleMaster';
 
 /**
  * 拠点のパラメータ
  */
-export default class BaseEntity extends AttackableEntity {
+export default class CastleEntity extends AttackableEntity {
   /**
    * 拠点 ID
    */
@@ -12,10 +13,11 @@ export default class BaseEntity extends AttackableEntity {
   /**
    * コンストラクタ
    */
-  constructor(baseId: number, isPlayer: boolean) {
+  constructor(master: CastleMaster, isPlayer: boolean) {
     super(isPlayer);
 
-    this.castleId = baseId;
-    this.isUnit = false;
+    this.castleId = master.castleId;
+    this.maxHealth = master.maxHealth;
+    this.currentHealth = this.maxHealth;
   }
 }

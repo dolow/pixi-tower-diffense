@@ -23,11 +23,6 @@ export default class Castle extends Attackable {
   protected castleId!: number;
 
   /**
-   * 初期座標、アニメーションなどで更新されるため覚えておく
-   */
-  protected originalPositon: PIXI.Point = new PIXI.Point();
-
-  /**
    * このクラスで利用するリソースリスト
    */
   public static get resourceList(): string[] {
@@ -37,25 +32,17 @@ export default class Castle extends Attackable {
   /**
    * コンストラクタ
    */
-  constructor(castleId: number) {
-    super();
+  constructor(
+    castleId: number,
+    spawnPosition: { x: number, y: number }
+  ) {
+    super(spawnPosition);
 
     this.castleId = castleId;
 
     this.animationType = Resource.AnimationTypes.Castle.IDLE;
 
-    this.sprite = new PIXI.Sprite(Resource.TextureFrame.Castle(castleId));
-
-    this.sprite.anchor.x = 0.5;
-    this.sprite.anchor.y = 1.0;
-
-    // 本来はアニメーション系ミドルウェアで設定する部分
-    switch (castleId) {
-      case 1: this.sprite.position.y = 300; break;
-      default: this.sprite.position.y = 200; break;
-    }
-
-    this.originalPositon.set(this.sprite.position.x, this.sprite.position.y);
+    this.sprite.texture = Resource.TextureFrame.Castle(castleId);
   }
 
   /**
@@ -126,12 +113,12 @@ export default class Castle extends Attackable {
       default: {
         if (this.castleId === 1) {
           this.sprite.texture = Resource.TextureFrame.Castle(this.castleId, 1);
-        } else if (this.castleId === 2) {
+        } else {
           const r  = 20;  // range
           const t  = 400; // duration
 
           const wave = Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
-          this.sprite.position.y = this.originalPositon.y + -r * wave;
+          this.sprite.position.y = this.spawnedPosition.y + -r * wave;
         }
 
         break;

@@ -2,8 +2,14 @@
   "unlockedUnitIds": [-1, 1, 2, 3, 4, 5],
   "unlockedStageId": 3,
   "castle": {
-    "castleId": 1,
-    "maxHealth": 100
+    "castleId":    1,
+    "cost":        0,
+    "maxHealth":   100,
+    "power":       0,
+    "speed":       0,
+    "hitFrame":    0,
+    "knockBackFrames": 0,
+    "knockBackSpeed": 0
   },
   "cost": {
     "max": 100,

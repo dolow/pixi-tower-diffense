@@ -1,17 +1,13 @@
 import StageMaster from 'interfaces/master/StageMaster';
+import AttackableMaster from 'interfaces/master/AttackableMaster';
 import UnitMaster from 'interfaces/master/UnitMaster';
+import CastleMaster from 'interfaces/master/CastleMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
 import BattleLogicConfig from 'modules/BattleLogicConfig';
 import AttackableState from 'enum/AttackableState';
-import BattleLogicDefaultDelegator from 'modules/BattleLogicDefaultDelegator';
 import AttackableEntity from 'entity/AttackableEntity';
 import UnitEntity from 'entity/UnitEntity';
 import CastleEntity from 'entity/CastleEntity';
-
-// 拠点配列のプレイヤー拠点要素のインデックス
-const CASTLE_ENTITIES_PLAYER_INDEX = 0;
-// 拠点配列のAI拠点要素のインデックス
-const CASTLE_ENTITIES_AI_INDEX = 1;
 
 /**
  * ゲーム内バトルパートのマネージャ
@@ -26,7 +22,7 @@ export default class BattleLogic {
   /**
    * BattleLogicDelegate 実装オブジェクト
    */
-  private delegator: BattleLogicDelegate = new BattleLogicDefaultDelegator();
+  private delegator?: BattleLogicDelegate;
 
   /**
    * 現在の利用可能なコスト
@@ -39,11 +35,14 @@ export default class BattleLogic {
   /**
    * 生成済みの Unit インスタンスを保持する配列
    */
-  private unitEntities: UnitEntity[] = [];
+  private attackableEntities: AttackableEntity[] = [];
   /**
    * 生成済みの Castle インスタンスを保持する配列
    */
-  private castleEntities: CastleEntity[] = [];
+  private castleEntities?: {
+    player: CastleEntity,
+    ai: CastleEntity
+  };
 
   /**
    * フィールドマスタのキャッシュ
@@ -53,6 +52,10 @@ export default class BattleLogic {
    * UnitMaster をキャッシュするための Map
    */
   private unitMasterCache: Map<number, UnitMaster> = new Map();
+  /**
+   * CastleMaster をキャッシュするための Map
+   */
+  private castleMasterCache: Map<number, CastleMaster> = new Map();
   /**
    * StageMaster.waves をキャッシュするための Map
    */
@@ -77,18 +80,9 @@ export default class BattleLogic {
   /**
    * プレイヤー情報
    */
-  private player: {
-    unitIds: number[],
-    castle: {
-      id: number,
-      health: number
-    };
-  } = {
-    unitIds: [],
-    castle: {
-      id: -1,
-      health: 0
-    }
+  private player?: {
+    unitIds: number[];
+    castle: CastleMaster;
   };
 
   /**
@@ -100,10 +94,10 @@ export default class BattleLogic {
     unitMasters: UnitMaster[],
     player: {
       unitIds: number[],
-      castle: {
-        id: number,
-        health: number
-      }
+      castle: CastleMaster
+    },
+    ai: {
+      castle: CastleMaster
     },
     config?: BattleLogicConfig
   }): void {
@@ -120,6 +114,9 @@ export default class BattleLogic {
 
     // マスターのキャッシュ処理
     this.stageMasterCache = params.stageMaster;
+    // 拠点マスターのキャッシュ処理
+    this.castleMasterCache.set(this.player.castle.castleId, this.player.castle);
+    this.castleMasterCache.set(params.ai.castle.castleId, params.ai.castle);
 
     // AI生成情報のキャッシュ
     const waves = this.stageMasterCache.waves;
@@ -135,33 +132,10 @@ export default class BattleLogic {
       this.unitMasterCache.set(unit.unitId, unit);
     }
 
-    const aiCastle = this.stageMasterCache.aiCastle;
-
-    const playerCastleEntity = new CastleEntity(this.player.castle.id, true);
-    const aiCastleEntity = new CastleEntity(aiCastle.castleId, false);
-
-    // 拠点エンティティの ID 割当て
-    playerCastleEntity.id = this.nextEntityId++;
-    aiCastleEntity.id = this.nextEntityId++;
-    // 拠点エンティティの health 設定
-    playerCastleEntity.maxHealth = this.player.castle.health;
-    aiCastleEntity.maxHealth = aiCastle.health;
-    playerCastleEntity.currentHealth = this.player.castle.health;
-    aiCastleEntity.currentHealth = aiCastle.health;
-
-    // 拠点エンティティの保持
-    this.castleEntities[CASTLE_ENTITIES_PLAYER_INDEX] = playerCastleEntity;
-    this.castleEntities[CASTLE_ENTITIES_AI_INDEX] = aiCastleEntity;
-
-    // デリゲータに拠点エンティティが生成時の処理を行わせる
-    this.delegator.onCastleEntitySpawned(
-      playerCastleEntity,
-      this.stageMasterCache.playerCastle.position.x
-    );
-    this.delegator.onCastleEntitySpawned(
-      aiCastleEntity,
-      this.stageMasterCache.aiCastle.position.x
-    );
+    this.castleEntities = {
+      player: this.spawnCastle(this.player.castle, true),
+      ai: this.spawnCastle(params.ai.castle, false)
+    };
   }
 
   /**
@@ -214,21 +188,20 @@ export default class BattleLogic {
    * メインループ後処理
    */
   private updatePostProcess(): void {
-    // unitEntities 配列の圧縮
-    const activeUnitEntities: UnitEntity[] = [];
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      const entity = this.unitEntities[i];
-      //if (!this.isDied(entity)) {
+    // attackableEntities 配列の圧縮
+    const activeAttackableEntities: AttackableEntity[] = [];
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      const entity = this.attackableEntities[i];
       if (entity.state !== AttackableState.DEAD) {
-        activeUnitEntities.push(entity);
+        activeAttackableEntities.push(entity);
       }
     }
 
-    this.unitEntities = activeUnitEntities;
+    this.attackableEntities = activeAttackableEntities;
 
     // 現在フレームで受けたダメージをリセット
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      this.unitEntities[i].currentFrameDamage = 0;
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      this.attackableEntities[i].currentFrameDamage = 0;
     }
   }
 
@@ -237,15 +210,17 @@ export default class BattleLogic {
    * ステートは全てのパラメータが変化した後に更新する
    */
   private updateEntityParameter(): void {
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      const unit = this.unitEntities[i];
-      const master = this.unitMasterCache.get(unit.unitId);
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      const attackable = this.attackableEntities[i];
+      const master = (attackable as UnitEntity).unitId
+        ? this.unitMasterCache.get((attackable as UnitEntity).unitId)
+        : this.castleMasterCache.get((attackable as CastleEntity).castleId);
       if (!master) {
         continue;
       }
 
-      this.updateDamage(unit, master);
-      this.updateDistance(unit, master);
+      this.updateDamage(attackable, master);
+      this.updateDistance(attackable, master);
     }
   }
 
@@ -257,53 +232,39 @@ export default class BattleLogic {
    */
   private updateEntityState(): void {
     // ステートの変化をコールバックするために古いステートを保持するコンテナ
-    const unitStates = [];
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      unitStates.push(this.unitEntities[i].state);
+    const attackableStates = [];
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      attackableStates.push(this.attackableEntities[i].state);
     }
 
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      const entity = this.unitEntities[i];
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      const entity = this.attackableEntities[i];
       if (entity.state === AttackableState.KNOCK_BACK) {
-        this.updateUnitKnockBackState(entity);
+        this.updateAttackableKnockBackState(entity);
       }
     }
 
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      const entity = this.unitEntities[i];
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      const entity = this.attackableEntities[i];
       if (entity.state === AttackableState.ENGAGED) {
-        this.updateUnitEngagedState(entity);
+        this.updateAttackableEngagedState(entity);
       }
     }
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      const entity = this.unitEntities[i];
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      const entity = this.attackableEntities[i];
       if (entity.state === AttackableState.IDLE) {
-        this.updateUnitIdleState(entity);
+        this.updateAttackableIdleState(entity);
       }
     }
 
     // エンティティ毎にステートが変更時処理をデリゲータに委譲する
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      const entity = this.unitEntities[i];
-      const oldState = unitStates[i];
-      if (oldState !== entity.state) {
-        this.delegator.onAttackableEntityStateChanged(entity, oldState);
-      }
-    }
-
-    // 拠点のステート操作
-    // AI のステートを先に評価、同一フレーム内で引き分けた場合はプレーヤーの勝利
-    let castle = this.castleEntities[CASTLE_ENTITIES_AI_INDEX];
-    if (castle.state !== AttackableState.DEAD && castle.currentHealth < 1) {
-      const oldState = castle.state;
-      castle.state = AttackableState.DEAD;
-      this.delegator.onAttackableEntityStateChanged(castle, oldState);
-    } else {
-      castle = this.castleEntities[CASTLE_ENTITIES_PLAYER_INDEX];
-      if (castle.state !== AttackableState.DEAD && castle.currentHealth < 1) {
-        const oldState = castle.state;
-        castle.state = AttackableState.DEAD;
-        this.delegator.onAttackableEntityStateChanged(castle, oldState);
+    if (this.delegator) {
+      for (let i = 0; i < this.attackableEntities.length; i++) {
+        const entity = this.attackableEntities[i];
+        const oldState = attackableStates[i];
+        if (oldState !== entity.state) {
+          this.delegator.onAttackableEntityStateChanged(entity, oldState);
+        }
       }
     }
   }
@@ -313,24 +274,27 @@ export default class BattleLogic {
    * - currentHealth
    * - currentFrameDamage
    */
-  private updateDamage(unit: UnitEntity, master: UnitMaster): void {
-    if (!unit.engagedEntity) {
+  private updateDamage(attackable: AttackableEntity, master: AttackableMaster): void {
+    if (!attackable.engagedEntity) {
       return;
     }
 
     // ダメージを与えられるかどうかの判断をデリゲータに委譲する
-    if (this.delegator.shouldDamage(unit, unit.engagedEntity)) {
-      const newHealth = unit.engagedEntity.currentHealth - master.power;
-      unit.engagedEntity.currentFrameDamage += master.power;
-      unit.engagedEntity.currentHealth = newHealth;
+    const shouldDamage = this.delegator ? this.delegator.shouldDamage(attackable, attackable.engagedEntity) : true;
+    if (shouldDamage) {
+      const newHealth = attackable.engagedEntity.currentHealth - master.power;
+      attackable.engagedEntity.currentFrameDamage += master.power;
+      attackable.engagedEntity.currentHealth = newHealth;
       // ダメージを与えた後の処理をデリゲータに委譲する
-      this.delegator.onAttackableEntityHealthUpdated(
-        unit,
-        unit.engagedEntity,
-        unit.engagedEntity.currentHealth + master.power,
-        unit.engagedEntity.currentHealth,
-        unit.engagedEntity.maxHealth
-      );
+      if (this.delegator) {
+        this.delegator.onAttackableEntityHealthUpdated(
+          attackable,
+          attackable.engagedEntity,
+          attackable.engagedEntity.currentHealth + master.power,
+          attackable.engagedEntity.currentHealth,
+          attackable.engagedEntity.maxHealth
+        );
+      }
     }
   }
   /**
@@ -338,23 +302,28 @@ export default class BattleLogic {
    * - distance
    * - currentKnockBackFrameCount
    */
-  private updateDistance(unit: UnitEntity, master: UnitMaster): void {
-    if (unit.state === AttackableState.KNOCK_BACK) {
-      unit.distance -= master.knockBackSpeed;
-      unit.currentKnockBackFrameCount++;
-      const rate = unit.currentKnockBackFrameCount / master.knockBackFrames;
-      this.delegator.onUnitEntityKnockingBack(unit, rate);
+  private updateDistance(attackable: AttackableEntity, master: AttackableMaster): void {
+    if (attackable.state === AttackableState.KNOCK_BACK) {
+      attackable.distance -= master.knockBackSpeed;
+      attackable.currentKnockBackFrameCount++;
+      if (this.delegator) {
+        const rate = attackable.currentKnockBackFrameCount / master.knockBackFrames;
+        this.delegator.onAttackableEntityKnockingBack(attackable, rate);
+      }
     } else {
-      unit.currentKnockBackFrameCount = 0;
+      attackable.currentKnockBackFrameCount = 0;
 
-      if (unit.state === AttackableState.IDLE) {
-        unit.currentKnockBackFrameCount = 0;
+      if (attackable.state === AttackableState.IDLE) {
+        attackable.currentKnockBackFrameCount = 0;
 
         // 移動可能かどうかの判断をデリゲータに委譲する
-        if (this.delegator.shouldUnitWalk(unit)) {
-          unit.distance += master.speed;
+        const shouldWalk = this.delegator ? this.delegator.shouldAttackableWalk(attackable) : true;
+        if (shouldWalk) {
+          attackable.distance += master.speed;
           // 移動した後の処理をデリゲータに委譲する
-          this.delegator.onUnitEntityWalked(unit);
+          if (this.delegator) {
+            this.delegator.onAttackableEntityWalked(attackable);
+          }
         }
       }
     }
@@ -363,56 +332,59 @@ export default class BattleLogic {
   /**
    * ノックバック時のステート更新処理
    */
-  private updateUnitKnockBackState(unit: UnitEntity): void {
-    unit.engagedEntity = null;
+  private updateAttackableKnockBackState(attackable: AttackableEntity): void {
+    attackable.engagedEntity = null;
 
     // TODO: should not read master for each entity
-    const master = this.unitMasterCache.get(unit.unitId);
+    const master = (attackable as UnitEntity).unitId
+      ? this.unitMasterCache.get((attackable as UnitEntity).unitId)
+      : this.castleMasterCache.get((attackable as CastleEntity).castleId);
+
     if (!master) {
       return;
     }
-    if (unit.currentKnockBackFrameCount < master.knockBackFrames) {
+    if (master.knockBackFrames !== 0 && attackable.currentKnockBackFrameCount < master.knockBackFrames) {
       return;
     }
 
-    unit.state = (unit.currentHealth < 1) ? AttackableState.DEAD : AttackableState.IDLE;
+    attackable.state = (attackable.currentHealth < 1) ? AttackableState.DEAD : AttackableState.IDLE;
   }
   /**
    * 接敵時のステート更新処理
    */
-  private updateUnitEngagedState(unit: UnitEntity): void {
+  private updateAttackableEngagedState(attackable: AttackableEntity): void {
     // DEAD 判定
-    if (unit.currentHealth < 1) {
-      unit.engagedEntity = null;
+    if (attackable.currentHealth < 1) {
+      attackable.engagedEntity = null;
       // ノックバックさせてから DEAD に遷移
-      unit.state = AttackableState.KNOCK_BACK;
+      attackable.state = AttackableState.KNOCK_BACK;
       return;
     }
 
     // IDLE 判定
-    if (unit.engagedEntity) {
-      const target = unit.engagedEntity;
+    if (attackable.engagedEntity) {
+      const target = attackable.engagedEntity;
 
       const targetIsDead = target.currentHealth < 1;
       const targetIsKnockingBack = target.state === AttackableState.KNOCK_BACK;
 
-      if (targetIsDead || targetIsKnockingBack || !this.isChivalrousEngage(unit, unit.engagedEntity)) {
-        unit.engagedEntity = null;
-        unit.state = AttackableState.IDLE;
+      if (targetIsDead || targetIsKnockingBack || !this.chivalrousFilter(attackable, attackable.engagedEntity)) {
+        attackable.engagedEntity = null;
+        attackable.state = AttackableState.IDLE;
       }
     }
 
     // KNOCK_BACK 判定
-    const oldHealth = unit.currentHealth + unit.currentFrameDamage;
+    const oldHealth = attackable.currentHealth + attackable.currentFrameDamage;
     for (let i = 0; i < this.config.knockBackHealthThreasholds.length; i++) {
       const rate = this.config.knockBackHealthThreasholds[i];
-      const threashold = unit.maxHealth * rate;
-      if (unit.currentHealth >= threashold) {
+      const threashold = attackable.maxHealth * rate;
+      if (attackable.currentHealth >= threashold) {
         continue;
       }
       if (oldHealth >= threashold) {
-        unit.engagedEntity = null;
-        unit.state = AttackableState.KNOCK_BACK;
+        attackable.engagedEntity = null;
+        attackable.state = AttackableState.KNOCK_BACK;
         break;
       }
     }
@@ -420,19 +392,20 @@ export default class BattleLogic {
   /**
    * 何もしていない状態でのステート更新処理
    */
-  private updateUnitIdleState(unit: UnitEntity): void {
-    // ユニットに対しての接敵判定、ユニットを無視して拠点に攻撃させない
-    for (let i = 0; i < this.unitEntities.length; i++) {
-      const target = this.unitEntities[i];
+  private updateAttackableIdleState(attackable: AttackableEntity): void {
+    for (let i = 0; i < this.attackableEntities.length; i++) {
+      const target = this.attackableEntities[i];
+      const targetIsCastle = (target as CastleEntity).castleId !== undefined;
       // 味方同士ならスキップ
       if (
-        (unit.isPlayer  && target.isPlayer) ||
-        (!unit.isPlayer && !target.isPlayer)
+        (attackable.isPlayer  && target.isPlayer) ||
+        (!attackable.isPlayer && !target.isPlayer)
       ) {
         continue;
       }
       // ターゲットが接敵可能なステートでなければスキップ
       if (
+        !targetIsCastle &&
         target.state !== AttackableState.IDLE &&
         target.state !== AttackableState.ENGAGED
       ) {
@@ -440,30 +413,15 @@ export default class BattleLogic {
       }
 
       // デリゲータに接敵可能かどうかの判断を委譲する
-      if (this.delegator.shouldEngageAttackableEntity(unit, target)) {
-        if (this.isChivalrousEngage(unit, target)) {
-          unit.engagedEntity = target;
-          unit.state = AttackableState.ENGAGED;
+      // TODO: implement logical condition, default true currently
+      const shouldEngage = this.delegator ? this.delegator.shouldEngageAttackableEntity(attackable, target) : true;
+      if (shouldEngage) {
+        if (this.chivalrousFilter(attackable, target)) {
+          attackable.engagedEntity = target;
+          attackable.state = AttackableState.ENGAGED;
         }
         // 必要であれば接敵後の処理をデリゲータに委譲する
         break;
-      }
-    }
-
-    // 拠点に対しての接敵判定
-    if (!unit.engagedEntity) {
-      if (unit.isPlayer) {
-        const castleEntity = this.castleEntities[CASTLE_ENTITIES_AI_INDEX];
-        if (this.delegator.shouldEngageAttackableEntity(unit, castleEntity)) {
-          unit.engagedEntity = castleEntity;
-          unit.state = AttackableState.ENGAGED;
-        }
-      } else {
-        const castleEntity = this.castleEntities[CASTLE_ENTITIES_PLAYER_INDEX];
-        if (this.delegator.shouldEngageAttackableEntity(unit, castleEntity)) {
-          unit.engagedEntity = castleEntity;
-          unit.state = AttackableState.ENGAGED;
-        }
       }
     }
   }
@@ -477,13 +435,18 @@ export default class BattleLogic {
 
     if (this.isGameOver) {
       // バトル終了の場合はすべてのユニットを待機アニメーションに変える
-      for (let i = 0; i < this.unitEntities.length; i++) {
-        const entity = this.unitEntities[i];
+      for (let i = 0; i < this.attackableEntities.length; i++) {
+        const entity = this.attackableEntities[i];
+        if ((entity as CastleEntity).castleId) {
+          continue;
+        }
         entity.state = AttackableState.IDLE;
       }
 
       // バトル終了後処理をデリゲータに委譲する
-      this.delegator.onGameOver(isPlayerWon);
+      if (this.delegator) {
+        this.delegator.onGameOver(isPlayerWon);
+      }
     }
   }
 
@@ -491,13 +454,19 @@ export default class BattleLogic {
    * プレイヤーが勝利しているかどうかを返す
    */
   private isPlayerWon(): boolean {
-    return this.castleEntities[CASTLE_ENTITIES_AI_INDEX].currentHealth < 1;
+    if (!this.castleEntities) {
+      throw new Error('castle entities are missing');
+    }
+    return this.castleEntities.ai.currentHealth < 1;
   }
   /**
    * AI が勝利しているかどうかを返す
    */
   private isAiWon(): boolean {
-    return this.castleEntities[CASTLE_ENTITIES_PLAYER_INDEX].currentHealth < 1;
+    if (!this.castleEntities) {
+      throw new Error('castle entities are missing');
+    }
+    return this.castleEntities.player.currentHealth < 1;
   }
 
   /**
@@ -539,20 +508,12 @@ export default class BattleLogic {
         continue;
       }
 
-      // ユニット生成位置を知らせるために拠点の位置を保持する
-      let castleLocation;
-
       if (reservedUnit.isPlayer) {
         // コストが足りなければ何もしない
         if ((tmpCost - master.cost) < 0) {
           continue;
         }
-
         tmpCost -= master.cost;
-
-        castleLocation = this.stageMasterCache.playerCastle.position.x;
-      } else {
-        castleLocation = this.stageMasterCache.aiCastle.position.x;
       }
 
       const entity = new UnitEntity(reservedUnit.unitId, reservedUnit.isPlayer);
@@ -560,10 +521,12 @@ export default class BattleLogic {
       entity.maxHealth = master.maxHealth;
       entity.currentHealth = master.maxHealth;
       entity.state = AttackableState.IDLE;
-      this.unitEntities.push(entity);
+      this.attackableEntities.push(entity);
 
       // ユニット生成後処理をデリゲータに移譲する
-      this.delegator.onUnitEntitySpawned(entity, castleLocation);
+      if (this.delegator) {
+        this.delegator.onUnitEntitySpawned(entity);
+      }
     }
 
     this.updateAvailableCost(tmpCost);
@@ -582,8 +545,8 @@ export default class BattleLogic {
     this.availableCost = cost;
 
     const availablePlayerUnitIds = [];
-    for (let i = 0; i < this.player.unitIds.length; i++) {
-      const unitId = this.player.unitIds[i];
+    for (let i = 0; i < this.player!.unitIds.length; i++) {
+      const unitId = this.player!.unitIds[i];
       const master = this.unitMasterCache.get(unitId);
       if (!master) {
         continue;
@@ -595,33 +558,60 @@ export default class BattleLogic {
     }
 
     // コスト更新後処理をデリゲータに委譲する
-    this.delegator.onAvailableCostUpdated(
-      this.availableCost,
-      this.config.maxAvailableCost,
-      availablePlayerUnitIds
-    );
+    if (this.delegator) {
+      this.delegator.onAvailableCostUpdated(
+        this.availableCost,
+        this.config.maxAvailableCost,
+        availablePlayerUnitIds
+      );
+    }
 
     return this.availableCost;
   }
 
   /**
-   * 1 対 1 での接敵かどうかを返す
-   * 拠点に対しての接敵は true とする
+   * 1 対 多での接敵を許容する場合は true を返す
+   * 例外的に 1 対 多 を許容する場合があり、例えば拠点に対しての接敵は true とする
    */
-  private isChivalrousEngage(unit: UnitEntity, target: AttackableEntity): boolean {
-    if (!this.config.chivalrousEngage) {
-      return true;
+  private chivalrousFilter(attackable: AttackableEntity, target: AttackableEntity): boolean {
+    // 設定で 1 対 多が許容されていれば true
+    if (this.config.chivalrousEngage) {
+      // 相手が接敵していなければ接敵する
+      if (!target.engagedEntity) {
+        return true;
+      }
+      // 相手が拠点ならば接敵する
+      if ((target as CastleEntity).castleId !== undefined) {
+        return true;
+      }
+      // 相手の接敵中のエンティティが拠点ならば接敵する
+      if ((target.engagedEntity as CastleEntity).castleId !== undefined) {
+        return true;
+      }
+      // 相手が自身と接敵中ならば接敵する
+      if (target.engagedEntity.id === attackable.id) {
+        return true;
+      }
+
+      return false;
     }
 
-    if (!target.engagedEntity) {
-      return true;
+    // それいがいはデフォルトで許容
+    return true;
+  }
+
+  private spawnCastle(castle: CastleMaster, isPlayer: boolean): CastleEntity {
+    const entity = new CastleEntity(castle, isPlayer);
+    // 拠点エンティティの ID 割当て
+    entity.id = this.nextEntityId++;
+    entity.state = AttackableState.IDLE;
+    this.attackableEntities.push(entity);
+
+    // デリゲータに拠点エンティティが生成時の処理を行わせる
+    if (this.delegator) {
+      this.delegator.onCastleEntitySpawned(entity, isPlayer);
     }
-    if (target.engagedEntity.id === unit.id) {
-      return true;
-    }
-    if ((target.engagedEntity as CastleEntity).castleId !== undefined) {
-      return true;
-    }
-    return false;
+
+    return entity;
   }
 }

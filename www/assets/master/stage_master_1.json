@@ -2,18 +2,7 @@
   "id": 1,
   "length": 2000,
   "zLines": 10,
-  "playerCastle": {
-    "position": {
-      "x": 200
-    }
-  },
-  "aiCastle": {
-    "castleId": 2,
-    "position": {
-      "x": 2000
-    },
-    "health": 200
-  },
+  "aiCastleId": 2,
   "waves": {
     "10": [
       { "unitId": 1 }
