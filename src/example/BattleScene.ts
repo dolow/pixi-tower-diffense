@@ -27,6 +27,10 @@ import Field from 'example/Field';
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
+   * ステージの長さに対する拠点座標のオフセット
+   */
+  private static readonly castleXOffset: number = 200;
+  /**
    * UI Graph ユニットボタンのキープリフィックス
    */
   private static readonly unitButtonPrefix: string = 'unit_button_';
@@ -130,7 +134,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const resources = PIXI.loader.resources as any;
     const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
 
-    additionalAssets.push(Resource.Dynamic.Castle(stageMaster.aiCastle.castleId));
+    additionalAssets.push(Resource.Dynamic.Castle(stageMaster.aiCastleId));
 
     // ユーザの編成で指定されたユニット ID 配列に敵のユニット ID を追加する
     const keys = Object.keys(stageMaster.waves);
@@ -145,7 +149,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
     }
 
-    additionalAssets.push(Resource.Api.Castle([stageMaster.aiCastle.castleId]));
+    additionalAssets.push(Resource.Api.Castle([stageMaster.aiCastleId]));
     additionalAssets.push(Resource.Api.UnitAnimation(this.unitIds));
 
     for (let i = 0; i < this.unitIds.length; i++) {
@@ -168,11 +172,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const resources = PIXI.loader.resources as any;
 
     const stageMaster  = resources[Resource.Api.Stage(this.stageId)].data;
-    const castleMaster = resources[Resource.Api.Castle([stageMaster.aiCastle.castleId])].data;
+    const castleMaster = resources[Resource.Api.Castle([stageMaster.aiCastleId])].data;
     const unitMasters  = resources[Resource.Api.Unit(this.unitIds)].data;
 
     const aiCastleMasters = castleMaster.filter((master: CastleMaster) => {
-      return master.castleId === stageMaster.aiCastle.castleId;
+      return master.castleId === stageMaster.aiCastleId;
     });
 
     if (aiCastleMasters.length === 0) {
@@ -270,8 +274,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     // 拠点の描画物を生成する
     const castle = new Castle(entity.castleId, {
       x: (isPlayer)
-        ? stageMaster.playerCastle.position.x
-        : stageMaster.aiCastle.position.x,
+        ? BattleScene.castleXOffset
+        : stageMaster.length - BattleScene.castleXOffset,
       y: 300
     });
 
@@ -300,7 +304,9 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const zLineIndex = Math.floor(Math.random() * this.field.zLineCount);
 
     const unit = new Unit(animationMaster, {
-      x: entity.isPlayer ? stageMaster.playerCastle.position.x : stageMaster.aiCastle.position.x,
+      x: (entity.isPlayer)
+        ? BattleScene.castleXOffset
+        : stageMaster.length - BattleScene.castleXOffset,
       y: 300 + zLineIndex * 16
     });
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
