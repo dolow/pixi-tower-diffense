@@ -4,7 +4,7 @@ import Resource from 'example/Resource';
 import Scene from 'example/Scene';
 import OrderScene from 'example/OrderScene';
 import Fade from 'example/transition/Fade';
-import Sound from 'example/Sound';
+import SoundManager from 'example/SoundManager';
 
 /**
  * タイトルシーン
@@ -79,8 +79,10 @@ export default class TitleScene extends Scene  {
     this.text.position.set(renderer.width * 0.5, renderer.height * 0.5);
     this.addChild(this.text);
 
-    const sound = new Sound((resources[Resource.Audio.Bgm.Title] as any).buffer);
-    sound.play();
+    const bgmKey = Resource.Audio.Bgm.Title;
+    const soundBuffer = (resources[bgmKey] as any).buffer;
+    const bgm = SoundManager.createSound(bgmKey, soundBuffer);
+    bgm.play(true);
   }
 
   public update(dt: number): void {

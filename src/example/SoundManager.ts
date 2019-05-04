@@ -1,4 +1,5 @@
 import { detect, BrowserInfo, BotInfo, NodeInfo } from 'detect-browser';
+import Sound from 'example/Sound';
 
 /**
  * サウンドを扱う
@@ -32,6 +33,20 @@ export default class SoundManager {
    * WebAudio 利用の初期化済みフラグ
    */
   private static webAudioInitialized: boolean = false;
+
+  /**
+   * 一時停止中かどうかのフラグ
+   */
+  private paused: boolean = false;
+
+  /**
+   * フェード処理後に削除する Sound インスタンスのリスト
+   */
+  private killingSounds: { sound: Sound, endAt: number }[] = [];
+  /**
+   * SoundManager で監理している Sound インスタンスの Map
+   */
+  private managedSounds: Map<string, Sound> = new Map();
 
   /**
    * コンストラクタ
@@ -70,6 +85,62 @@ export default class SoundManager {
   }
 
   /**
+   * Sound インスタンスを SoundManager 管理下として生成し返却する
+   */
+  public static createSound(name: string, buf: AudioBuffer): Sound {
+    const sound = new Sound(buf);
+    SoundManager.registerSound(name, sound);
+    return sound;
+  }
+  /**
+   * 渡された Sound インスタンスを渡された名前に紐つけて SoundManager 管理下にする
+   */
+  public static registerSound(name: string, sound: Sound): void {
+    SoundManager.instance.managedSounds.set(name, sound);
+  }
+  /**
+   * 渡された名前に紐ついている Sound インスタンスを SoundManager 管理下からはずす
+   */
+  public static unregisterSound(name: string): void {
+    SoundManager.instance.managedSounds.delete(name);
+  }
+  /**
+   * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスを返す
+   */
+  public static getSound(name: string): Sound | undefined {
+    return SoundManager.instance.managedSounds.get(name);
+  }
+  /**
+   * 渡された名前に紐付く SoundManager 管理下の Sound インスタンスの存在有無を返す
+   */
+  public static hasSound(name: string): boolean {
+    return SoundManager.instance.managedSounds.has(name);
+  }
+
+  /**
+   * 管理下の Sound インスタンスをすべて一時停止する
+   */
+  public static pause(): void {
+    const instance = SoundManager.instance;
+    if (instance.paused) {
+      return;
+    }
+    instance.paused = true;
+    instance.managedSounds.forEach((sound) => { sound.pause(); });
+  }
+  /**
+   * 管理下の Sound インスタンスの再生をすべて再開する
+   */
+  public static resume(): void {
+    const instance = SoundManager.instance;
+    if (!instance.paused) {
+      return;
+    }
+    instance.paused = false;
+    instance.managedSounds.forEach((sound) => { sound.resume(); });
+  }
+
+  /**
    * サウンドを初期化するためのイベントを登録する
    * 多くのブラウザではタップ等のユーザ操作を行わないとサウンドを再生できない
    * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
@@ -104,6 +175,27 @@ export default class SoundManager {
     }
 
     document.body.addEventListener(eventName, soundInitializer);
+  }
+
+  /**
+   * フェード処理を行う
+   */
+  public static fade(
+    sound: Sound,
+    targetVolume: number,
+    seconds: number,
+    stopOnEnd: boolean = false
+  ): void {
+    if (!SoundManager.sharedContext) {
+      return;
+    }
+
+    const endAt = SoundManager.sharedContext.currentTime + seconds;
+
+    sound.gainNode.gain.exponentialRampToValueAtTime(targetVolume, endAt);
+    if (stopOnEnd) {
+      SoundManager.instance.killingSounds.push({ sound, endAt });
+    }
   }
 
   /**

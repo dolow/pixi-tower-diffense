@@ -5,7 +5,9 @@ import * as PIXI from 'pixi.js';
  */
 const Config = Object.freeze({
   // リソースのエントリーポイント
-  ResourceBaseUrl: 'assets/'
+  ResourceBaseUrl: 'assets/',
+  // ユニット枠最大数
+  MaxUnitSlotCount: 5
 });
 
 PIXI.loader.baseUrl = Config.ResourceBaseUrl;

@@ -8,9 +8,16 @@ const Resource = Object.freeze({
    * マスターデータ API 情報を有するオブジェクト
    */
   Api: {
+    UserBattle: (userId: number): string => {
+      const query = `?userId=${userId}`;
+      return `api_mock/user_battle.json${query}`;
+    },
     UnitAnimation: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');
       return `master/unit_animation_master.json?unitId[]=${query}`;
+    },
+    AllUnit: (): string => {
+      return 'master/unit_master.json';
     },
     Unit: (unitIds: number[]): string => {
       const query = unitIds.join('&unitId[]=');

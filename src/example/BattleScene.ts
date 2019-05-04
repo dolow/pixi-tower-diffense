@@ -3,6 +3,7 @@ import Resource from 'example/Resource';
 import GameManager from 'example/GameManager';
 import OrderScene from 'example/OrderScene';
 import UpdateObject from 'interfaces/UpdateObject';
+import BattleParameter from 'example/BattleParameter';
 import BattleLogicDelegate from 'example/BattleLogicDelegate';
 import CastleMaster from 'example/CastleMaster';
 import UnitAnimationMaster from 'interfaces/master/UnitAnimationMaster';
@@ -22,6 +23,7 @@ import BattleSceneState from 'example/BattleSceneState';
 import BattleLogic from 'example/BattleLogic';
 import BattleLogicConfig from 'example/BattleLogicConfig';
 import Field from 'example/Field';
+import Fade from 'example/transition/Fade';
 
 /**
  * メインのゲーム部分のシーン
@@ -85,30 +87,26 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * コンストラクタ
    */
-  constructor() {
+  constructor(params: BattleParameter) {
     super();
 
-    this.stageId = 1;
-    this.unitIds = [1,2,3,4,5];
-    this.playerCastle = {
-      castleId:  1,
-      cost:      0,
-      maxHealth: 100,
-      power:     0,
-      speed:     0,
-      knockBackFrames: 0,
-      knockBackSpeed:  0
-    };
-    this.unitSlotCount = 5;
+    this.transitionIn  = new Fade(1.0, 0.0, -0.02);
+    this.transitionOut = new Fade(0.0, 1.0, 0.02);
 
     // デフォルトのシーンステート
     this.state = BattleSceneState.LOADING_RESOURCES;
 
     // BattleLogic インスタンスの作成
     this.battleLogic = new BattleLogic();
+
+    this.unitSlotCount = params.unitSlotCount;
+    this.stageId   = params.stageId;
+    this.unitIds   = params.unitIds;
+    this.playerCastle = params.playerCastle;
+
     this.battleLogicConfig = new BattleLogicConfig({
-      costRecoveryPerFrame: 0.1,
-      maxAvailableCost: 100
+      costRecoveryPerFrame: params.cost.recoveryPerFrame,
+      maxAvailableCost: params.cost.max
     });
   }
 
@@ -155,8 +153,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     for (let i = 0; i < this.unitIds.length; i++) {
       const unitId = this.unitIds[i];
+      // 無効なユニット ID を渡した場合に空のユニットボタン扱いになる
       additionalAssets.push(Resource.Dynamic.UnitPanel(unitId));
-      additionalAssets.push(Resource.Dynamic.Unit(unitId));
+      // 無効なユニット ID ではリソースは取得できない
+      if (unitId > 0) {
+        additionalAssets.push(Resource.Dynamic.Unit(unitId));
+      }
     }
 
     additionalAssets.push(Resource.Api.Unit(this.unitIds));
@@ -264,6 +266,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     }
 
     this.updateRegisteredObjects(delta);
+
+    if (this.transitionIn.isActive()) {
+      this.transitionIn.update(delta);
+    } else if (this.transitionOut.isActive()) {
+      this.transitionOut.update(delta);
+    }
   }
 
   /**
