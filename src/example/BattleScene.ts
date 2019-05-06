@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'example/Resource';
 import GameManager from 'example/GameManager';
+import SoundManager from 'example/SoundManager';
 import OrderScene from 'example/OrderScene';
 import UpdateObject from 'interfaces/UpdateObject';
 import BattleParameter from 'example/BattleParameter';
@@ -118,7 +119,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       Field.resourceList,
       [
         Resource.Api.Stage(this.stageId),
-        Resource.Dynamic.Castle(this.playerCastle.castleId)
+        Resource.Dynamic.Castle(this.playerCastle.castleId),
+        Resource.Audio.Bgm.Battle,
+        Resource.Audio.Se.Win,
+        Resource.Audio.Se.Lose,
+        Resource.Audio.Se.Attack1,
+        Resource.Audio.Se.Attack2,
+        Resource.Audio.Se.UnitSpawn,
       ]
     );
   }
@@ -197,6 +204,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       fieldLength: stageMaster.length,
       zLines: stageMaster.zLines
     });
+
+    this.initSound();
     this.initUnitButtons();
     this.addChild(this.field);
     this.addChild(this.uiGraphContainer);
@@ -277,7 +286,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   /**
    * 勝敗が決定したときのコールバック
    */
-  public onGameOver(_isPlayerWon: boolean): void {
+  public onGameOver(isPlayerWon: boolean): void {
     this.state = BattleSceneState.FINISHED;
 
     // 攻撃をやめる
@@ -294,6 +303,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       'pointerdown',
       (_e: PIXI.interaction.InteractionEvent) => this.backToOrderScene()
     );
+
+    // BGM を止める
+    this.stopBgm(Resource.Audio.Bgm.Battle);
+    // ゲームオーバーサウンドを再生
+    this.playSe(isPlayerWon ? Resource.Audio.Se.Win : Resource.Audio.Se.Lose);
   }
 
   /**
@@ -346,6 +360,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     this.attackables.set(entity.id, unit);
     this.field.addChildToZLine(unit.sprite, zLineIndex);
     this.registerUpdatingObject(unit as UpdateObject);
+
+    if (entity.isPlayer) {
+      this.playSe(Resource.Audio.Se.UnitSpawn);
+    }
   }
 
   /**
@@ -455,7 +473,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     _toHealth: number,
     _maxHealth: number
   ): void {
-
+    // ランダムに攻撃効果音を再生する
+    this.playSe((Math.random() >= 0.5)
+      ? Resource.Audio.Se.Attack1
+      : Resource.Audio.Se.Attack2
+    );
   }
 
   /**
@@ -581,5 +603,28 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private backToOrderScene(): void {
     GameManager.loadScene(new OrderScene());
+  }
+
+  /**
+   * サウンドの初期化
+   */
+  private initSound(): void {
+    const resources = PIXI.loader.resources as any;
+    const audioMaster = Resource.Audio;
+    const soundList = [
+      audioMaster.Bgm.Battle,
+      audioMaster.Se.Attack1,
+      audioMaster.Se.Attack2,
+      audioMaster.Se.UnitSpawn,
+      audioMaster.Se.Win,
+      audioMaster.Se.Lose
+    ];
+
+    for (let i = 0; i < soundList.length; i++) {
+      const name = soundList[i];
+      SoundManager.createSound(name, resources[name].buffer);
+    }
+
+    this.playBgm(audioMaster.Bgm.Battle);
   }
 }

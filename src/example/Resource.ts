@@ -96,9 +96,15 @@ const Resource = Object.freeze({
 
   Audio: {
     Bgm: {
-      Title: 'audio/bgm_title.mp3'
+      Title: 'audio/bgm_title.mp3',
+      Battle: 'audio/bgm_battle.mp3'
     },
     Se: {
+      Attack1: 'audio/se_attack_1.mp3',
+      Attack2: 'audio/se_attack_2.mp3',
+      UnitSpawn: 'audio/se_unit_spawn.mp3',
+      Win: 'audio/se_win.mp3',
+      Lose: 'audio/se_lose.mp3'
     }
   },
 

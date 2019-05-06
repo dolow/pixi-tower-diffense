@@ -7,6 +7,7 @@ import UiNodeFactory from 'example/factory/UiNodeFactory';
 import Immediate from 'example/transition/Immediate';
 import UpdateObject from 'interfaces/UpdateObject';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
+import SoundManager from 'example/SoundManager';
 
 /**
  * ゲームシーンの抽象クラス
@@ -255,5 +256,35 @@ export default abstract class Scene extends PIXI.Container {
     const loaderParams: LoaderAddParam[] = [];
     assetMap.forEach((value: LoaderAddParam) => loaderParams.push(value));
     return loaderParams;
+  }
+
+  /**
+   * BGM をループ再生する
+   */
+  protected playBgm(soundName: string): void {
+    const bgm = SoundManager.getSound(soundName);
+    if (bgm) {
+      bgm.play(true);
+    }
+  }
+
+  /**
+   * BGM 再生を止める
+   */
+  protected stopBgm(soundName: string): void {
+    const bgm = SoundManager.getSound(soundName);
+    if (bgm) {
+      bgm.stop();
+    }
+  }
+
+  /**
+   * 効果音を再生する
+   */
+  protected playSe(soundName: string): void {
+    const se = SoundManager.getSound(soundName);
+    if (se) {
+      se.play();
+    }
   }
 }
