@@ -86,6 +86,14 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   private attackables: Map<number, Attackable> = new Map();
 
   /**
+   * ユニットボタンをグルーピングする PIXI.Container
+   */
+  private unitButtonContainers = {
+    active: new PIXI.Container(),
+    inactive: new PIXI.Container(),
+  };
+
+  /**
    * コンストラクタ
    */
   constructor(params: BattleParameter) {
@@ -384,8 +392,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         continue;
       }
 
-      const enbaleFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
-      unitButton.toggleFilter(enbaleFilter);
+      const enableFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
+      this.toggleUnitButtonFilter(unitButton, enableFilter);
     }
   }
 
@@ -572,6 +580,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * ユニットボタンの初期化
    */
   private initUnitButtons(): void {
+    this.uiGraphContainer.addChild(this.unitButtonContainers.active);
+    this.uiGraphContainer.addChild(this.unitButtonContainers.inactive);
+
+    const filter = new PIXI.filters.ColorMatrixFilter();
+    filter.desaturate();
+    this.unitButtonContainers.inactive.filters = [filter];
+
     const key = Resource.Api.Unit(this.unitIds);
     const unitMasters = PIXI.loader.resources[key].data;
     for (let index = 0; index < this.unitSlotCount; index++) {
@@ -594,7 +609,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
       }
 
       unitButton.init(index, unitId, cost);
-      unitButton.toggleFilter(true);
+      this.toggleUnitButtonFilter(unitButton, true);
     }
   }
 
@@ -626,5 +641,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     }
 
     this.playBgm(audioMaster.Bgm.Battle);
+  }
+
+  private toggleUnitButtonFilter(unitButton: UnitButton, enable: boolean): void {
+    unitButton.parent.removeChild(unitButton);
+    (enable ? this.unitButtonContainers.inactive : this.unitButtonContainers.active).addChild(unitButton);
   }
 }

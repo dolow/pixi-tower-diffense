@@ -47,7 +47,6 @@ export default class UnitButton extends PIXI.Container {
 
     this.filter.desaturate();
     this.toggleFilter(false);
-    this.button.filters = [this.filter];
 
     this.text.position.set(46, 88);
 
@@ -78,7 +77,7 @@ export default class UnitButton extends PIXI.Container {
    * ColorMatrixFilter の有効/無効を切り替える
    */
   public toggleFilter(enabled: boolean): void {
-    this.filter.enabled = enabled;
+    this.button.filters = enabled ? [this.filter] : null;
   }
 
   /**

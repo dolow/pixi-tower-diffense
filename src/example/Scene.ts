@@ -124,7 +124,7 @@ export default abstract class Scene extends PIXI.Container {
   protected onResourceLoaded(): void {
     const sceneUiGraphName = Resource.SceneUiGraph(this);
     this.prepareUiGraphContainer(PIXI.loader.resources[sceneUiGraphName].data);
-    this.addChild(this.uiGraphContainer);
+    this.addChildAt(this.uiGraphContainer, 0);
   }
 
   /**

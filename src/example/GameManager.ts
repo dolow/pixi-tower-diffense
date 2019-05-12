@@ -80,7 +80,7 @@ export default class GameManager {
     }
 
     if (instance.currentScene) {
-      instance.currentScene.destroy();
+      instance.currentScene.destroy({ children: true });
     }
     instance.currentScene = newScene;
 

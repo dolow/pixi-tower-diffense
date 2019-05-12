@@ -1,7 +1,8 @@
+import * as PIXI from 'pixi.js';
 import * as WebFont from 'webfontloader';
 import 'example/Config';
 import Resource from 'Resource';
-import BattleScene from 'example/BattleScene';
+import TitleScene from 'example/TitleScene';
 import GameManager from 'example/GameManager';
 
 let fontLoaded   = false;
@@ -39,7 +40,7 @@ function initGame() {
     option: pixiAppOption
   });
   // 最初のシーンの読み込み
-  GameManager.loadScene(new BattleScene());
+  GameManager.loadScene(new TitleScene());
 }
 
 WebFont.load({
@@ -47,12 +48,19 @@ WebFont.load({
     families: [Resource.FontFamily.Default],
     urls: [Resource.FontFamily.Css]
   },
+  inactive: () => {
+    fontLoaded = true;
+    if (windowLoaded) {
+      initGame();
+    }
+  },
   active: () => {
     fontLoaded = true;
     if (windowLoaded) {
       initGame();
     }
-  }
+  },
+  timeout: 5000
 });
 
 /**
