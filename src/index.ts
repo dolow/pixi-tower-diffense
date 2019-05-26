@@ -66,9 +66,15 @@ WebFont.load({
 /**
  * エントリーポイント
  */
-window.onload = () => {
+const onload = () => {
   windowLoaded = true;
   if (fontLoaded) {
     initGame();
   }
+}
+
+window.onload = onload;
+
+if (document.readyState === 'complete') {
+  onload();
 }

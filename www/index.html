@@ -3,7 +3,27 @@
 <head>
   <meta charset='utf-8'/>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover'/>
-  <script type='text/javascript' src='tower-diffence.js'></script>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <script type='text/javascript'>
+    function addScript() {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'tower-diffence.js';
+      document.body.appendChild(script);
+    }
+    navigator.serviceWorker.register('./serviceworker.js').then((registration) => {
+      if (registration.active) {
+        addScript();
+      } else {
+        const worker = registration.installing || registration.waiting;
+        worker.addEventListener('statechange', () => {
+          if (worker.state === 'activated') {
+            addScript();
+          }
+        });
+      };
+    });
+  </script>
   <title>tower diffence</title>
 </head>
 <body>
