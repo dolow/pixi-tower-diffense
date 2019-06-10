@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import { detect, BrowserInfo, BotInfo, NodeInfo } from 'detect-browser';
 import Sound from 'modules/Sound';
 

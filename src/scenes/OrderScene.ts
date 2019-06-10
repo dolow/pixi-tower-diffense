@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import Config from  'Config';
 import Resource from 'Resource';
 import GameManager from 'managers/GameManager';
@@ -14,7 +15,7 @@ import BattleScene from 'scenes/BattleScene';
 import Fade from 'scenes/transition/Fade';
 import UnitButton from 'display/battle/UnitButton';
 
-// デブッグ用ユーザID
+// デバッグ用ユーザID
 const DUMMY_USER_ID = 1;
 
 /**

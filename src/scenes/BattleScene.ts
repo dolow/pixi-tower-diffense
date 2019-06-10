@@ -384,6 +384,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         : stageMaster.length - BattleScene.castleXOffset,
       y: this.field.getZlineBaseY(zLineIndex)
     });
+    unit.sprite.name = `unit ${entity.id}`;
     unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
     unit.requestAnimation(Resource.AnimationTypes.Unit.WALK);
 
@@ -464,8 +465,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         continue;
       }
 
-      const enbaleFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
-      unitButton.toggleFilter(enbaleFilter);
+      const enableFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
+      unitButton.toggleFilter(enableFilter);
     }
   }
 

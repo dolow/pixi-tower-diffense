@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
 import GameManager from 'managers/GameManager';
 import SoundManager from 'managers/SoundManager';
