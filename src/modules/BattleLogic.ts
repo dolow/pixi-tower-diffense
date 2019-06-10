@@ -168,7 +168,8 @@ export default class BattleLogic {
       // ゲーム終了判定
       this.updateGameOver();
       // コスト回復
-      this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
+      const newCost = this.availableCost + this.config.costRecoveryPerFrame;
+      this.updateAvailableCost(newCost);
       // AI ユニットの生成リクエスト発行
       this.updateAISpawn();
       // リクエストされているユニット生成実行
@@ -274,13 +275,18 @@ export default class BattleLogic {
    * - currentHealth
    * - currentFrameDamage
    */
-  private updateDamage(attackable: AttackableEntity, master: AttackableMaster): void {
+  private updateDamage(
+    attackable: AttackableEntity,
+    master: AttackableMaster
+  ): void {
     if (!attackable.engagedEntity) {
       return;
     }
 
     // ダメージを与えられるかどうかの判断をデリゲータに委譲する
-    const shouldDamage = this.delegator ? this.delegator.shouldDamage(attackable, attackable.engagedEntity) : true;
+    const shouldDamage = this.delegator
+      ? this.delegator.shouldDamage(attackable, attackable.engagedEntity)
+      : true;
     if (shouldDamage) {
       const newHealth = attackable.engagedEntity.currentHealth - master.power;
       attackable.engagedEntity.currentFrameDamage += master.power;
@@ -302,12 +308,16 @@ export default class BattleLogic {
    * - distance
    * - currentKnockBackFrameCount
    */
-  private updateDistance(attackable: AttackableEntity, master: AttackableMaster): void {
+  private updateDistance(
+    attackable: AttackableEntity,
+    master: AttackableMaster
+  ): void {
     if (attackable.state === AttackableState.KNOCK_BACK) {
       attackable.distance -= master.knockBackSpeed;
       attackable.currentKnockBackFrameCount++;
       if (this.delegator) {
-        const rate = attackable.currentKnockBackFrameCount / master.knockBackFrames;
+        const rate =
+          attackable.currentKnockBackFrameCount / master.knockBackFrames;
         this.delegator.onAttackableEntityKnockingBack(attackable, rate);
       }
     } else {
@@ -317,7 +327,9 @@ export default class BattleLogic {
         attackable.currentKnockBackFrameCount = 0;
 
         // 移動可能かどうかの判断をデリゲータに委譲する
-        const shouldWalk = this.delegator ? this.delegator.shouldAttackableWalk(attackable) : true;
+        const shouldWalk = this.delegator
+          ? this.delegator.shouldAttackableWalk(attackable)
+          : true;
         if (shouldWalk) {
           attackable.distance += master.speed;
           // 移動した後の処理をデリゲータに委譲する
@@ -343,11 +355,16 @@ export default class BattleLogic {
     if (!master) {
       return;
     }
-    if (master.knockBackFrames !== 0 && attackable.currentKnockBackFrameCount < master.knockBackFrames) {
+    if (
+      master.knockBackFrames !== 0 &&
+      attackable.currentKnockBackFrameCount < master.knockBackFrames
+    ) {
       return;
     }
 
-    attackable.state = (attackable.currentHealth < 1) ? AttackableState.DEAD : AttackableState.IDLE;
+    attackable.state = (attackable.currentHealth < 1)
+      ? AttackableState.DEAD
+      : AttackableState.IDLE;
   }
   /**
    * 接敵時のステート更新処理
@@ -368,7 +385,11 @@ export default class BattleLogic {
       const targetIsDead = target.currentHealth < 1;
       const targetIsKnockingBack = target.state === AttackableState.KNOCK_BACK;
 
-      if (targetIsDead || targetIsKnockingBack || !this.chivalrousFilter(attackable, attackable.engagedEntity)) {
+      if (
+        targetIsDead ||
+        targetIsKnockingBack ||
+        !this.chivalrousFilter(attackable, attackable.engagedEntity)
+      ) {
         attackable.engagedEntity = null;
         attackable.state = AttackableState.IDLE;
       }
@@ -414,7 +435,9 @@ export default class BattleLogic {
 
       // デリゲータに接敵可能かどうかの判断を委譲する
       // TODO: implement logical condition, default true currently
-      const shouldEngage = this.delegator ? this.delegator.shouldEngageAttackableEntity(attackable, target) : true;
+      const shouldEngage = this.delegator
+        ? this.delegator.shouldEngageAttackableEntity(attackable, target)
+        : true;
       if (shouldEngage) {
         if (this.chivalrousFilter(attackable, target)) {
           attackable.engagedEntity = target;
@@ -573,7 +596,10 @@ export default class BattleLogic {
    * 1 対 多での接敵を許容する場合は true を返す
    * 例外的に 1 対 多 を許容する場合があり、例えば拠点に対しての接敵は true とする
    */
-  private chivalrousFilter(attackable: AttackableEntity, target: AttackableEntity): boolean {
+  private chivalrousFilter(
+    attackable: AttackableEntity,
+    target: AttackableEntity
+  ): boolean {
     // 設定で 1 対 多が許容されていれば true
     if (this.config.chivalrousEngage) {
       // 相手が接敵していなければ接敵する

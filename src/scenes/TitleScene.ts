@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
 import GameManager from 'managers/GameManager';
 import SoundManager from 'managers/SoundManager';
@@ -44,8 +43,9 @@ export default class TitleScene extends Scene  {
   protected onResourceLoaded(): void {
     super.onResourceLoaded();
 
+    const loader = GameManager.instance.game.loader;
     const bgmTitleName = Resource.Audio.Bgm.Title;
-    const resource = PIXI.loader.resources[bgmTitleName] as any;
+    const resource = loader.resources[bgmTitleName] as any;
     SoundManager.createSound(bgmTitleName, resource.buffer);
 
     this.playBgm(Resource.Audio.Bgm.Title);

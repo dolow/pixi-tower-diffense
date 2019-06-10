@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import GameManager from 'managers/GameManager';
 import Scene from  'scenes/Scene';
 
 /**
@@ -165,7 +166,7 @@ const Resource = Object.freeze({
    * スプライトシートの最大フレーム数を返す関数
    */
   MaxFrameIndex: (resourceKey: string): number => {
-    const json = PIXI.loader.resources[resourceKey];
+    const json = GameManager.instance.game.loader.resources[resourceKey];
     if (!json || !json.data || !json.data.frames) {
       return -1;
     }

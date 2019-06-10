@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { detect } from 'detect-browser';
+import ApplicationOptionsV5 from 'interfaces/pixiv5/ApplicationOptionsV5';
+import Config from 'Config';
 import IndexedDBManager from 'managers/IndexedDBManager';
 import SoundManager from 'managers/SoundManager';
 import Scene from 'scenes/Scene';
@@ -49,19 +51,23 @@ export default class GameManager {
 
   /**
    * ゲームを起動する
-   * 画面サイズや PIXI.ApplicationOptions を渡すことができる
+   * 画面サイズや ApplicationOptionsV5 を渡すことができる
    */
   public static start(params: {
     glWidth: number,
     glHeight: number,
-    option?: PIXI.ApplicationOptions
+    option?: ApplicationOptionsV5
   }): void {
-    // PIXI Application 生成
-    const game = new PIXI.Application(
-      params.glWidth,
-      params.glHeight,
+    const appOption = Object.assign(
+      {
+        width: params.glWidth,
+        height: params.glHeight
+      },
       params.option
     );
+    // PIXI Application 生成
+    const game = new PIXI.Application(appOption);
+    game.loader.baseUrl = Config.ResourceBaseUrl;
     // GameManager インスタンス生成
     const instance = new GameManager(game);
     GameManager.instance = instance;

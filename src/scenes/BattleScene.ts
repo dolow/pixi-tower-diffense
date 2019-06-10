@@ -213,7 +213,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   protected onInitialResourceLoaded(): (LoaderAddParam | string)[] {
     const additionalAssets = super.onInitialResourceLoaded();
 
-    const resources = PIXI.loader.resources as any;
+    const resources = GameManager.instance.game.loader.resources as any;
 
     const stageMaster = resources[Resource.Api.Stage(this.stageId)].data;
     // ステージ情報を取得するまでは AI 拠点テクスチャは分からないのでここでロードする
@@ -257,11 +257,12 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
   protected onResourceLoaded(): void {
     super.onResourceLoaded();
 
-    const resources = PIXI.loader.resources;
+    const resources = GameManager.instance.game.loader.resources;
+    const api = Resource.Api;
 
-    const stageMaster  = resources[Resource.Api.Stage(this.stageId)].data;
-    const castleMaster = resources[Resource.Api.Castle([stageMaster.aiCastleId])].data;
-    const unitMasters  = resources[Resource.Api.Unit(this.unitIds)].data;
+    const stageMaster  = resources[api.Stage(this.stageId)].data;
+    const castleMaster = resources[api.Castle([stageMaster.aiCastleId])].data;
+    const unitMasters  = resources[api.Unit(this.unitIds)].data;
 
     const aiCastleMasters = castleMaster.filter((master: CastleMaster) => {
       return master.castleId === stageMaster.aiCastleId;
@@ -328,7 +329,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * CastleEntity が生成されたときのコールバック
    */
   public onCastleEntitySpawned(entity: CastleEntity, isPlayer: boolean): void {
-    const stageMaster = PIXI.loader.resources[Resource.Api.Stage(this.stageId)].data;
+    const loader = GameManager.instance.game.loader;
+    const stageMaster = loader.resources[Resource.Api.Stage(this.stageId)].data;
 
     let castleY = 200;
     switch (entity.castleId) {
@@ -375,7 +377,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
 
     castle.spawn(entity.isPlayer);
 
-    const stageMaster = PIXI.loader.resources[Resource.Api.Stage(this.stageId)].data;
+    const loader = GameManager.instance.game.loader;
+    const stageMaster = loader.resources[Resource.Api.Stage(this.stageId)].data;
     const zLineIndex = this.field.getDifferentZlineIndex();
 
     const unit = new Unit(animationMaster, {
@@ -465,8 +468,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
         continue;
       }
 
-      const enableFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
-      unitButton.toggleFilter(enableFilter);
+      const unitIdIndex = availablePlayerUnitIds.indexOf(unitButton.unitId);
+      unitButton.toggleFilter((unitIdIndex === -1));
     }
   }
 
@@ -556,7 +559,8 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const direction = entity.isPlayer ? 1 : -1;
 
     const physicalDistance = entity.distance * direction;
-    attackable.sprite.position.x = attackable.distanceBasePosition.x + physicalDistance;
+    const basePos = attackable.distanceBasePosition.x;
+    attackable.sprite.position.x = basePos + physicalDistance;
   }
 
   /**
@@ -576,9 +580,10 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     const spawnedPosition = attackable.distanceBasePosition;
 
     const leap = (knockBackRate >= 1) ? 0 : -Math.sin(knockBackRate * Math.PI);
+    const leapHeight = (leap * BattleScene.unitLeapHeight);
 
     attackable.sprite.position.x = spawnedPosition.x + physicalDistance;
-    attackable.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
+    attackable.sprite.position.y = spawnedPosition.y + leapHeight;
   }
 
   /**
@@ -674,7 +679,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * サウンドの初期化
    */
   private initSound(): void {
-    const resources = PIXI.loader.resources as any;
+    const resources = GameManager.instance.game.loader.resources as any;
     const audioMaster = Resource.Audio;
     const soundList = [
       audioMaster.Bgm.Battle,
@@ -699,7 +704,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    */
   private initUnitButtons(): void {
     const key = Resource.Api.Unit(this.unitIds);
-    const unitMasters = PIXI.loader.resources[key].data;
+    const unitMasters = GameManager.instance.game.loader.resources[key].data;
     for (let index = 0; index < this.unitSlotCount; index++) {
       const unitButton = this.getUiGraphUnitButton(index);
       if (!unitButton) {
@@ -747,7 +752,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
    * 編成画面へ戻る
    */
   private backToOrderScene(): void {
-    const resources = PIXI.loader.resources as any;
+    const resources = GameManager.instance.game.loader.resources as any;
 
     const keys = Object.keys(resources);
     for (let i = 0; i < keys.length; i++) {

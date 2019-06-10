@@ -4,6 +4,10 @@ import * as PIXI from 'pixi.js';
  */
 export default class Field extends PIXI.Container {
     /**
+     * 最後に要素を追加した zLine のインデックス
+     */
+    lastZlineIndex: number;
+    /**
      * タップダウン数カウント
      * タップダウン重複処理を防止するために数える
      */
@@ -46,13 +50,17 @@ export default class Field extends PIXI.Container {
      */
     addChildAsForeBackgroundEffect(container: PIXI.Container): void;
     /**
-     * 前景内で前景エフェクトとして addChild する
-     */
-    addChildAsForeForegroundEffect(container: PIXI.Container): void;
-    /**
      * 指定した zLine インデックスの PIXI.Container に addChild する
      */
     addChildToZLine(container: PIXI.Container, zlineIndex: number): void;
+    /**
+     * 最後に追加した zLine とは異なるインデクスを返す
+     */
+    getDifferentZlineIndex(): number;
+    /**
+     * 指定した zLine インデックスの基準 Y 座標を返す
+     */
+    getZlineBaseY(zlineIndex: number): number;
     /**
      * タップ押下時の制御コールバック
      */

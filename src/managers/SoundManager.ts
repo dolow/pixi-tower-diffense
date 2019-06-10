@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { detect, BrowserInfo, BotInfo, NodeInfo } from 'detect-browser';
+import GameManager from 'managers/GameManager';
 import Sound from 'modules/Sound';
 
 /**
@@ -127,7 +128,7 @@ export default class SoundManager {
     // xhr でバイナリ取得する拡張子を登録
     for (let i = 0; i < supportedExtensions.length; i++) {
       const extension = supportedExtensions[i];
-      const PixiResource = PIXI.loaders.Loader.Resource;
+      const PixiResource = PIXI.LoaderResource;
       PixiResource.setExtensionXhrType(
         extension,
         PixiResource.XHR_RESPONSE_TYPE.BUFFER
@@ -148,7 +149,7 @@ export default class SoundManager {
     }
 
     // resource-loader ミドルウェアの登録
-    PIXI.loader.use((resource: any, next: Function) =>  {
+    GameManager.instance.game.loader.use((resource: any, next: Function) =>  {
       const extension = resource.url.split('?')[0].split('.')[1];
       if (extension && supportedExtensions.indexOf(extension) !== -1) {
         // リソースオブジェクトに buffer という名前でプロパティを生やす

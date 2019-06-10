@@ -100,7 +100,7 @@ export default class OrderScene extends Scene  {
   protected onInitialResourceLoaded(): (LoaderAddParam | string)[] {
     const additionalAssets = super.onInitialResourceLoaded();
 
-    const resources = PIXI.loader.resources;
+    const resources = GameManager.instance.game.loader.resources;
 
     this.unitButtonTexturesCache.clear();
     this.unitMasterCache.clear();
@@ -141,7 +141,7 @@ export default class OrderScene extends Scene  {
     for (let i = 0; i < this.userBattle.unlockedUnitIds.length; i++) {
       const unitId = this.userBattle.unlockedUnitIds[i];
       const url = Resource.Dynamic.UnitPanel(unitId);
-      const resources = PIXI.loader.resources;
+      const resources = GameManager.instance.game.loader.resources;
       this.unitButtonTexturesCache.set(unitId, resources[url].texture);
     }
 
@@ -339,7 +339,8 @@ export default class OrderScene extends Scene  {
   private playBgmIfNeeded(): void {
     const bgmTitleName = Resource.Audio.Bgm.Title;
     if (!SoundManager.hasSound(bgmTitleName)) {
-      const resource = PIXI.loader.resources[bgmTitleName] as any;
+      const loader = GameManager.instance.game.loader;
+      const resource = loader.resources[bgmTitleName] as any;
       const bgm = SoundManager.createSound(bgmTitleName, resource.buffer);
       bgm.play(true);
     }

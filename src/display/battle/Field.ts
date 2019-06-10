@@ -89,6 +89,8 @@ export default class Field extends PIXI.Container {
       back:   Resource.Static.BattleBgBacks
     };
 
+    const game = GameManager.instance.game;
+
     // 前景、中景、後景の Sprite を作成する
     const layers = Object.keys(tiles);
     for (let i = 0; i < layers.length; i++) {
@@ -96,7 +98,7 @@ export default class Field extends PIXI.Container {
       const layerTiles = tiles[layer];
       let x = 0;
       for (let j = 0; j < layerTiles.length; j++) {
-        const texture = PIXI.loader.resources[layerTiles[j]].texture;
+        const texture = game.loader.resources[layerTiles[j]].texture;
         const sprite = new PIXI.Sprite(texture);
         sprite.position.x = x;
         x += sprite.width;
@@ -119,7 +121,7 @@ export default class Field extends PIXI.Container {
     }
 
     // 的拠点よりも少し後ろを見せるための余剰スクロール範囲
-    const spareLength = GameManager.instance.game.view.width * 0.75;
+    const spareLength = game.view.width * 0.75;
     this.foregroundScrollLimit = -(options.fieldLength - spareLength);
   }
 

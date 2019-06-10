@@ -83,7 +83,6 @@
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
 					<li><a href="../classes/battlescene.html" class="tsd-signature-type">BattleScene</a></li>
-					<li><a href="../classes/defaultdelegator.html" class="tsd-signature-type">DefaultDelegator</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -94,15 +93,16 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onattackableentityhealthupdated" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onattackableentityknockingback" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Knocking<wbr>Back</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onattackableentitystatechanged" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>State<wbr>Changed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onattackableentitywalked" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Walked</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onbaseentityspawned" class="tsd-kind-icon">on<wbr>Base<wbr>Entity<wbr>Spawned</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#oncastleentityspawned" class="tsd-kind-icon">on<wbr>Castle<wbr>Entity<wbr>Spawned</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#ongameover" class="tsd-kind-icon">on<wbr>Game<wbr>Over</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onunitentityspawned" class="tsd-kind-icon">on<wbr>Unit<wbr>Entity<wbr>Spawned</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#onunitentitywalked" class="tsd-kind-icon">on<wbr>Unit<wbr>Entity<wbr>Walked</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#shouldattackablewalk" class="tsd-kind-icon">should<wbr>Attackable<wbr>Walk</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#shouldengageattackableentity" class="tsd-kind-icon">should<wbr>Engage<wbr>Attackable<wbr>Entity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="battlelogicdelegate.html#shouldunitwalk" class="tsd-kind-icon">should<wbr>Unit<wbr>Walk</a></li>
 							</ul>
 						</section>
 					</div>
@@ -120,7 +120,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L28">interfaces/BattleLogicDelegate.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L35">interfaces/BattleLogicDelegate.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -144,6 +144,37 @@
 								</li>
 								<li>
 									<h5>maxHealth: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onattackableentityknockingback" class="tsd-anchor"></a>
+					<h3>on<wbr>Attackable<wbr>Entity<wbr>Knocking<wbr>Back</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Knocking<wbr>Back<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a>, knockBackRate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L31">interfaces/BattleLogicDelegate.ts:31</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UnitEntity がノックバックした時のコールバック</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>entity: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
+								</li>
+								<li>
+									<h5>knockBackRate: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -182,16 +213,44 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="onavailablecostupdated" class="tsd-anchor"></a>
-					<h3>on<wbr>Available<wbr>Cost<wbr>Updated</h3>
+					<a name="onattackableentitywalked" class="tsd-anchor"></a>
+					<h3>on<wbr>Attackable<wbr>Entity<wbr>Walked</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated<span class="tsd-signature-symbol">(</span>cost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Walked<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L38">interfaces/BattleLogicDelegate.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L27">interfaces/BattleLogicDelegate.ts:27</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>UnitEntity が歩いた時のコールバック</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>entity: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onavailablecostupdated" class="tsd-anchor"></a>
+					<h3>on<wbr>Available<wbr>Cost<wbr>Updated</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated<span class="tsd-signature-symbol">(</span>cost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxCost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, availablePlayerUnitIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L45">interfaces/BattleLogicDelegate.ts:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -204,16 +263,22 @@
 								<li>
 									<h5>cost: <span class="tsd-signature-type">number</span></h5>
 								</li>
+								<li>
+									<h5>maxCost: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>availablePlayerUnitIds: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="onbaseentityspawned" class="tsd-anchor"></a>
-					<h3>on<wbr>Base<wbr>Entity<wbr>Spawned</h3>
+					<a name="oncastleentityspawned" class="tsd-anchor"></a>
+					<h3>on<wbr>Castle<wbr>Entity<wbr>Spawned</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Base<wbr>Entity<wbr>Spawned<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a>, basePosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Castle<wbr>Entity<wbr>Spawned<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/castleentity.html" class="tsd-signature-type">CastleEntity</a>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -224,16 +289,16 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>BaseEntity が生成された時のコールバック</p>
+									<p>CastleEntity が生成された時のコールバック</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>entity: <a href="../classes/baseentity.html" class="tsd-signature-type">BaseEntity</a></h5>
+									<h5>entity: <a href="../classes/castleentity.html" class="tsd-signature-type">CastleEntity</a></h5>
 								</li>
 								<li>
-									<h5>basePosition: <span class="tsd-signature-type">number</span></h5>
+									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -250,7 +315,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L42">interfaces/BattleLogicDelegate.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L53">interfaces/BattleLogicDelegate.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -272,7 +337,7 @@
 					<a name="onunitentityspawned" class="tsd-anchor"></a>
 					<h3>on<wbr>Unit<wbr>Entity<wbr>Spawned</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Entity<wbr>Spawned<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a>, basePosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Entity<wbr>Spawned<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -291,39 +356,36 @@
 								<li>
 									<h5>entity: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
-								<li>
-									<h5>basePosition: <span class="tsd-signature-type">number</span></h5>
-								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="onunitentitywalked" class="tsd-anchor"></a>
-					<h3>on<wbr>Unit<wbr>Entity<wbr>Walked</h3>
+					<a name="shouldattackablewalk" class="tsd-anchor"></a>
+					<h3>should<wbr>Attackable<wbr>Walk</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Unit<wbr>Entity<wbr>Walked<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Attackable<wbr>Walk<span class="tsd-signature-symbol">(</span>attackable<span class="tsd-signature-symbol">: </span><a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L24">interfaces/BattleLogicDelegate.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L68">interfaces/BattleLogicDelegate.ts:68</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>UnitEntity が生成された時のコールバック</p>
+									<p>渡されたユニットが移動可能か返す</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>entity: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
+									<h5>attackable: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -337,7 +399,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L50">interfaces/BattleLogicDelegate.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L64">interfaces/BattleLogicDelegate.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -368,7 +430,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L46">interfaces/BattleLogicDelegate.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L57">interfaces/BattleLogicDelegate.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -383,34 +445,6 @@
 								</li>
 								<li>
 									<h5>target: <a href="../classes/attackableentity.html" class="tsd-signature-type">AttackableEntity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="shouldunitwalk" class="tsd-anchor"></a>
-					<h3>should<wbr>Unit<wbr>Walk</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Unit<wbr>Walk<span class="tsd-signature-symbol">(</span>unit<span class="tsd-signature-symbol">: </span><a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/interfaces/BattleLogicDelegate.ts#L54">interfaces/BattleLogicDelegate.ts:54</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>渡されたユニットが移動可能か返す</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>unit: <a href="../classes/unitentity.html" class="tsd-signature-type">UnitEntity</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -438,13 +472,19 @@
 								<a href="battlelogicdelegate.html#onattackableentityhealthupdated" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Health<wbr>Updated</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="battlelogicdelegate.html#onattackableentityknockingback" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Knocking<wbr>Back</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlelogicdelegate.html#onattackableentitystatechanged" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>State<wbr>Changed</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="battlelogicdelegate.html#onattackableentitywalked" class="tsd-kind-icon">on<wbr>Attackable<wbr>Entity<wbr>Walked</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlelogicdelegate.html#onavailablecostupdated" class="tsd-kind-icon">on<wbr>Available<wbr>Cost<wbr>Updated</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="battlelogicdelegate.html#onbaseentityspawned" class="tsd-kind-icon">on<wbr>Base<wbr>Entity<wbr>Spawned</a>
+								<a href="battlelogicdelegate.html#oncastleentityspawned" class="tsd-kind-icon">on<wbr>Castle<wbr>Entity<wbr>Spawned</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlelogicdelegate.html#ongameover" class="tsd-kind-icon">on<wbr>Game<wbr>Over</a>
@@ -453,16 +493,13 @@
 								<a href="battlelogicdelegate.html#onunitentityspawned" class="tsd-kind-icon">on<wbr>Unit<wbr>Entity<wbr>Spawned</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="battlelogicdelegate.html#onunitentitywalked" class="tsd-kind-icon">on<wbr>Unit<wbr>Entity<wbr>Walked</a>
+								<a href="battlelogicdelegate.html#shouldattackablewalk" class="tsd-kind-icon">should<wbr>Attackable<wbr>Walk</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlelogicdelegate.html#shoulddamage" class="tsd-kind-icon">should<wbr>Damage</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="battlelogicdelegate.html#shouldengageattackableentity" class="tsd-kind-icon">should<wbr>Engage<wbr>Attackable<wbr>Entity</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="battlelogicdelegate.html#shouldunitwalk" class="tsd-kind-icon">should<wbr>Unit<wbr>Walk</a>
 							</li>
 						</ul>
 					</li>

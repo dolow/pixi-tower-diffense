@@ -1,6 +1,7 @@
 import * as WebFont from 'webfontloader';
 import 'Config';
 import Resource from 'Resource';
+import ApplicationOptionsV5 from 'interfaces/pixiv5/ApplicationOptionsV5';
 import TitleScene from 'scenes/TitleScene';
 import GameManager from 'managers/GameManager';
 
@@ -11,7 +12,7 @@ function initGame() {
   const width = 1136;
   const height = 640;
 
-  const pixiAppOption: PIXI.ApplicationOptions = {
+  const pixiAppOption: ApplicationOptionsV5 = {
     backgroundColor: 0x222222
   };
 
@@ -22,16 +23,15 @@ function initGame() {
     // 画面キャプチャ
     pixiAppOption.preserveDrawingBuffer = true;
     document.body.addEventListener('keydown', (event) => {
-      if (event.ctrlKey === true && event.key === 'c') {
-        const a = document.createElement("a");
+      if (event.ctrlKey && event.key === 'c') {
+        const a = document.createElement('a');
 
-        a.setAttribute("href", GameManager.instance.game.view.toDataURL());
-        a.setAttribute("download", `figure_${new Date().getTime()}`);
+        a.setAttribute('href', GameManager.instance.game.view.toDataURL());
+        a.setAttribute('download', `figure_${new Date().getTime()}`);
         a.click();
       }
     });
   }
-
 
   GameManager.start({
     glWidth: width,

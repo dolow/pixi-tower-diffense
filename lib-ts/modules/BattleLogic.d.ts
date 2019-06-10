@@ -1,24 +1,21 @@
 import StageMaster from 'interfaces/master/StageMaster';
 import UnitMaster from 'interfaces/master/UnitMaster';
+import CastleMaster from 'interfaces/master/CastleMaster';
 import BattleLogicDelegate from 'interfaces/BattleLogicDelegate';
-import UnitEntity from 'entity/UnitEntity';
+import BattleLogicConfig from 'modules/BattleLogicConfig';
 /**
  * ゲーム内バトルパートのマネージャ
  * ゲームロジックを中心に扱う
  */
 export default class BattleLogic {
     /**
-     * フレームごとのコスト回復量
+     * バトル設定
      */
-    costRecoveryPerFrame: number;
-    /**
-     * 利用可能コストの上限値
-     */
-    maxAvailableCost: number;
+    private config;
     /**
      * BattleLogicDelegate 実装オブジェクト
      */
-    private delegator;
+    private delegator?;
     /**
      * 現在の利用可能なコスト
      */
@@ -30,11 +27,11 @@ export default class BattleLogic {
     /**
      * 生成済みの Unit インスタンスを保持する配列
      */
-    private unitEntities;
+    private attackableEntities;
     /**
-     * 生成済みの Base インスタンスを保持する配列
+     * 生成済みの Castle インスタンスを保持する配列
      */
-    private baseEntities;
+    private castleEntities?;
     /**
      * フィールドマスタのキャッシュ
      */
@@ -43,6 +40,10 @@ export default class BattleLogic {
      * UnitMaster をキャッシュするための Map
      */
     private unitMasterCache;
+    /**
+     * CastleMaster をキャッシュするための Map
+     */
+    private castleMasterCache;
     /**
      * StageMaster.waves をキャッシュするための Map
      */
@@ -60,16 +61,24 @@ export default class BattleLogic {
      */
     private isGameOver;
     /**
+     * プレイヤー情報
+     */
+    private player?;
+    /**
      * デリゲータとマスタ情報で初期化
      */
     init(params: {
         delegator: BattleLogicDelegate;
         stageMaster: StageMaster;
         unitMasters: UnitMaster[];
-        playerBase: {
-            baseId: number;
-            health: number;
+        player: {
+            unitIds: number[];
+            castle: CastleMaster;
         };
+        ai: {
+            castle: CastleMaster;
+        };
+        config?: BattleLogicConfig;
     }): void;
     /**
      * Unit 生成をリクエストする
@@ -86,14 +95,14 @@ export default class BattleLogic {
      */
     requestSpawnAI(unitId: number): void;
     /**
-     * 渡された Unit が、ロジック上死亡扱いであるかどうかを返す
-     */
-    isDied(unit: UnitEntity): boolean;
-    /**
      * ゲーム更新処理
      * 外部から任意のタイミングでコールする
      */
-    update(_delta: number): void;
+    update(): void;
+    /**
+     * メインループ後処理
+     */
+    private updatePostProcess;
     /**
      * Unit のパラメータを更新する
      * ステートは全てのパラメータが変化した後に更新する
@@ -101,31 +110,35 @@ export default class BattleLogic {
     private updateEntityParameter;
     /**
      * エンティティのステートを更新する
-     * ステート優先順位は右記の通り DEAD > ENGAGED > IDLE
+     * ステート優先順位は右記の通り DEAD > KNOCK_BACK > ENGAGED > IDLE
      * ユニット毎に処理を行うとステートを条件にした処理結果が
      * タイミングによって異なってしまうのでステート毎に処理を行う
      */
     private updateEntityState;
     /**
-     * ダメージ判定を行い、必要なら health を上限させる
+     * ダメージ判定を行い、必要に応じて以下を更新する。
+     * - currentHealth
+     * - currentFrameDamage
      */
     private updateDamage;
     /**
-     * 移動可能か判定し、可能なら移動させる
+     * 移動可能か判定し、必要なら以下を更新する。
+     * - distance
+     * - currentKnockBackFrameCount
      */
     private updateDistance;
     /**
-     * 死亡時のステート更新処理
+     * ノックバック時のステート更新処理
      */
-    private updateUnitDeadState;
+    private updateAttackableKnockBackState;
     /**
      * 接敵時のステート更新処理
      */
-    private updateUnitEngagedState;
+    private updateAttackableEngagedState;
     /**
      * 何もしていない状態でのステート更新処理
      */
-    private updateUnitIdleState;
+    private updateAttackableIdleState;
     /**
      * バトル状況からゲーム終了かどうかを判断する
      */
@@ -151,4 +164,10 @@ export default class BattleLogic {
      * 利用可能なコストを更新し、専用のコールバックをコールする
      */
     private updateAvailableCost;
+    /**
+     * 1 対 多での接敵を許容する場合は true を返す
+     * 例外的に 1 対 多 を許容する場合があり、例えば拠点に対しての接敵は true とする
+     */
+    private chivalrousFilter;
+    private spawnCastle;
 }

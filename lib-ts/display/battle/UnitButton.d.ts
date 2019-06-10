@@ -12,10 +12,6 @@ export default class UnitButton extends PIXI.Container {
      */
     unitId: number;
     /**
-     * 表示するユニットコスト
-     */
-    cost: number;
-    /**
      * ボタン画像
      */
     private button;
@@ -24,6 +20,10 @@ export default class UnitButton extends PIXI.Container {
      */
     private text;
     /**
+     * フィルター
+     */
+    private filter;
+    /**
      * コンストラクタ
      */
     constructor(texture?: PIXI.Texture);
@@ -31,6 +31,10 @@ export default class UnitButton extends PIXI.Container {
      * ボタン枠インデックスとユニット ID で初期化する
      */
     init(slotIndex: number, unitId?: number, cost?: number): void;
+    /**
+     * ColorMatrixFilter の有効/無効を切り替える
+     */
+    toggleFilter(enabled: boolean): void;
     /**
      * ユニットを変更する
      */

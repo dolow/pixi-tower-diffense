@@ -3,6 +3,7 @@ import Resource from 'Resource';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import * as UI from 'interfaces/UiGraph/index';
 import Transition from 'interfaces/Transition';
+import GameManager from 'managers/GameManager';
 import SoundManager from 'managers/SoundManager';
 import UiGraph from 'modules/UiGraph';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
@@ -154,14 +155,15 @@ export default abstract class Scene extends PIXI.Container {
   protected loadInitialResource(onLoaded: () => void): void {
     const assets = this.createInitialResourceList();
     const name = Resource.Api.SceneUiGraph(this);
-    if (this.hasSceneUiGraph && !PIXI.loader.resources[name]) {
+    const loader = GameManager.instance.game.loader;
+    if (this.hasSceneUiGraph && !loader.resources[name]) {
       assets.push({ name, url: name });
     }
 
     const filteredAssets = this.filterLoadedAssets(assets);
 
     if (filteredAssets.length > 0) {
-      PIXI.loader.add(filteredAssets).load(() => onLoaded());
+      loader.add(filteredAssets).load(() => onLoaded());
     } else {
       onLoaded();
     }
@@ -174,7 +176,7 @@ export default abstract class Scene extends PIXI.Container {
     const additionalAssets = [];
 
     const name = Resource.Api.SceneUiGraph(this);
-    const uiGraph = PIXI.loader.resources[name];
+    const uiGraph = GameManager.instance.game.loader.resources[name];
     if (uiGraph) {
       for (let i = 0; i < uiGraph.data.nodes.length; i++) {
         const node = uiGraph.data.nodes[i];
@@ -204,7 +206,7 @@ export default abstract class Scene extends PIXI.Container {
     const filteredAssets = this.filterLoadedAssets(assets);
 
     if (filteredAssets.length > 0) {
-      PIXI.loader.add(filteredAssets).load(() => {
+      GameManager.instance.game.loader.add(filteredAssets).load(() => {
         this.onAdditionalResourceLoaded(onLoaded);
       });
     } else {
@@ -225,7 +227,7 @@ export default abstract class Scene extends PIXI.Container {
   protected onResourceLoaded(): void {
     if (this.hasSceneUiGraph) {
       const sceneUiGraphName = Resource.Api.SceneUiGraph(this);
-      const resources = PIXI.loader.resources;
+      const resources = GameManager.instance.game.loader.resources;
       this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
       this.addChild(this.uiGraphContainer);
     }
@@ -275,14 +277,16 @@ export default abstract class Scene extends PIXI.Container {
   ): LoaderAddParam[] {
     const assetMap = new Map<string, LoaderAddParam>();
 
+    const loader = GameManager.instance.game.loader;
+
     for (let i = 0; i < assets.length; i++) {
       const asset = assets[i];
       if (typeof asset === 'string') {
-        if (!PIXI.loader.resources[asset] && !assetMap.has(asset)) {
+        if (!loader.resources[asset] && !assetMap.has(asset)) {
           assetMap.set(asset, { name: asset, url: asset });
         }
       } else {
-        if (!PIXI.loader.resources[asset.name] && !assetMap.has(asset.name)) {
+        if (!loader.resources[asset.name] && !assetMap.has(asset.name)) {
           assetMap.set(asset.name, asset);
         }
       }

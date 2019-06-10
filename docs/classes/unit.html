@@ -104,26 +104,27 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="unit.html#animationframeindex" class="tsd-kind-icon">animation<wbr>Frame<wbr>Index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#animationmaxframeindexes" class="tsd-kind-icon">animation<wbr>Max<wbr>Frame<wbr>Indexes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#animationframeid" class="tsd-kind-icon">animation<wbr>Frame<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#animationmaster" class="tsd-kind-icon">animation<wbr>Master</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#animationtype" class="tsd-kind-icon">animation<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#animationupdatedurations" class="tsd-kind-icon">animation<wbr>Update<wbr>Durations</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="unit.html#destroyed" class="tsd-kind-icon">destroyed</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="unit.html#elapsedframecount" class="tsd-kind-icon">elapsed<wbr>Frame<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#healthgauge" class="tsd-kind-icon">health<wbr>Gauge</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#hitframe" class="tsd-kind-icon">hit<wbr>Frame</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#requestedanimation" class="tsd-kind-icon">requested<wbr>Animation</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#spawnedposition" class="tsd-kind-icon">spawned<wbr>Position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="unit.html#spawnedposition" class="tsd-kind-icon">spawned<wbr>Position</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#sprite" class="tsd-kind-icon">sprite</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="unit.html#unitid" class="tsd-kind-icon">unit<wbr>Id</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#distancebaseposition" class="tsd-kind-icon">distance<wbr>Base<wbr>Position</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#destroy" class="tsd-kind-icon">destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#getanimationtype" class="tsd-kind-icon">get<wbr>Animation<wbr>Type</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="unit.html#getspawnedposition" class="tsd-kind-icon">get<wbr>Spawned<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="unit.html#isanimationlastframetime" class="tsd-kind-icon">is<wbr>Animation<wbr>Last<wbr>Frame<wbr>Time</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#isdestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="unit.html#isfoecontact" class="tsd-kind-icon">is<wbr>Foe<wbr>Contact</a></li>
@@ -145,14 +146,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Unit<span class="tsd-signature-symbol">(</span>unitId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, animationParam<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Unit<span class="tsd-signature-symbol">(</span>animationMaster<span class="tsd-signature-symbol">: </span><a href="../interfaces/unitanimationmaster.html" class="tsd-signature-type">UnitAnimationMaster</a>, spawnPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="attackable.html">Attackable</a>.<a href="attackable.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L49">display/battle/Unit.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L30">display/battle/Unit.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -163,40 +164,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>unitId: <span class="tsd-signature-type">number</span></h5>
+									<h5>animationMaster: <a href="../interfaces/unitanimationmaster.html" class="tsd-signature-type">UnitAnimationMaster</a></h5>
 								</li>
 								<li>
-									<h5>animationParam: <span class="tsd-signature-type">object</span></h5>
+									<h5>spawnPosition: <span class="tsd-signature-type">object</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
-											<h5>animation<wbr>Max<wbr>Frame<wbr>Indexes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-index-signature">
-													<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
-												</li>
-											</ul>
+											<h5>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5>animation<wbr>Update<wbr>Durations<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-index-signature">
-													<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
-												</li>
-											</ul>
-										</li>
-										<li class="tsd-parameter">
-											<h5>hit<wbr>Frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>spawn<wbr>Position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter">
-													<h5>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-												</li>
-												<li class="tsd-parameter">
-													<h5>y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-												</li>
-											</ul>
+											<h5>y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -208,14 +185,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-					<a name="animationframeindex" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> animation<wbr>Frame<wbr>Index</h3>
-					<div class="tsd-signature tsd-kind-icon">animation<wbr>Frame<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="animationframeid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> animation<wbr>Frame<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">animation<wbr>Frame<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
-						<p>Overrides <a href="attackable.html">Attackable</a>.<a href="attackable.html#animationframeindex">animationFrameIndex</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L23">display/battle/Unit.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L20">display/battle/Unit.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -225,27 +201,18 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="animationmaxframeindexes" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> animation<wbr>Max<wbr>Frame<wbr>Indexes</h3>
-					<div class="tsd-signature tsd-kind-icon">animation<wbr>Max<wbr>Frame<wbr>Indexes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="animationmaster" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> animation<wbr>Master</h3>
+					<div class="tsd-signature tsd-kind-icon">animation<wbr>Master<span class="tsd-signature-symbol">:</span> <a href="../interfaces/unitanimationmaster.html" class="tsd-signature-type">UnitAnimationMaster</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L38">display/battle/Unit.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L15">display/battle/Unit.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>最大のフレームインデックス
-							マスターデータの値</p>
+							<p>アニメーション情報</p>
 						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -255,37 +222,13 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="attackable.html">Attackable</a>.<a href="attackable.html#animationtype">animationType</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L15">display/battle/Attackable.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L19">display/battle/Attackable.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>現在のアニメーション種別</p>
 						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="animationupdatedurations" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> animation<wbr>Update<wbr>Durations</h3>
-					<div class="tsd-signature tsd-kind-icon">animation<wbr>Update<wbr>Durations<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L43">display/battle/Unit.ts:43</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>フレーム更新に必要なrequestAnimationFrame数
-							マスターデータの値</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
@@ -326,7 +269,7 @@
 					<div class="tsd-signature tsd-kind-icon">health<wbr>Gauge<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HealthGauge</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L49">display/battle/Unit.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L30">display/battle/Unit.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -337,28 +280,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="hitframe" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> hit<wbr>Frame</h3>
-					<div class="tsd-signature tsd-kind-icon">hit<wbr>Frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L33">display/battle/Unit.ts:33</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>当たり判定が発生するフレームインデックス
-							マスターデータの値</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="requestedanimation" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> requested<wbr>Animation</h3>
 					<div class="tsd-signature tsd-kind-icon">requested<wbr>Animation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L27">display/battle/Unit.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L24">display/battle/Unit.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -367,13 +294,14 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="spawnedposition" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> spawned<wbr>Position</h3>
-					<div class="tsd-signature tsd-kind-icon">spawned<wbr>Position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span><span class="tsd-signature-symbol"> =&nbsp;new PIXI.Point(0, 0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">spawned<wbr>Position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="attackable.html">Attackable</a>.<a href="attackable.html#spawnedposition">spawnedPosition</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L18">display/battle/Unit.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L15">display/battle/Attackable.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -398,20 +326,31 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="unitid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> unit<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">unit<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L14">display/battle/Unit.ts:14</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>ユニット ID</p>
-						</div>
-					</div>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="distancebaseposition" class="tsd-anchor"></a>
+					<h3>distance<wbr>Base<wbr>Position</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> distanceBasePosition<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Point</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="attackable.html">Attackable</a>.<a href="attackable.html#distancebaseposition">distanceBasePosition</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L32">display/battle/Attackable.ts:32</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>spawnedPosition を返す</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Point</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -427,7 +366,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="attackable.html">Attackable</a>.<a href="attackable.html#destroy">destroy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L85">display/battle/Attackable.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L100">display/battle/Attackable.ts:100</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -439,62 +378,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="getanimationtype" class="tsd-anchor"></a>
-					<h3>get<wbr>Animation<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Animation<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="attackable.html">Attackable</a>.<a href="attackable.html#getanimationtype">getAnimationType</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L64">display/battle/Attackable.ts:64</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>現在のアニメーション種別を返す</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getspawnedposition" class="tsd-anchor"></a>
-					<h3>get<wbr>Spawned<wbr>Position</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Spawned<wbr>Position<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Point</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L120">display/battle/Unit.ts:120</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>spawnedPosition を返す</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Point</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="isanimationlastframetime" class="tsd-anchor"></a>
 					<h3>is<wbr>Animation<wbr>Last<wbr>Frame<wbr>Time</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Animation<wbr>Last<wbr>Frame<wbr>Time<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Animation<wbr>Last<wbr>Frame<wbr>Time<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L137">display/battle/Unit.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L94">display/battle/Unit.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -502,12 +396,6 @@
 									<p>現在のアニメーションが終了するフレーム時間かどうかを返す</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> type: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;this.animationType</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -524,7 +412,7 @@
 								<p>Implementation of <a href="../interfaces/updateobject.html">UpdateObject</a>.<a href="../interfaces/updateobject.html#isdestroyed">isDestroyed</a></p>
 								<p>Inherited from <a href="attackable.html">Attackable</a>.<a href="attackable.html#isdestroyed">isDestroyed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L37">display/battle/Attackable.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L59">display/battle/Attackable.ts:59</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -548,7 +436,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="attackable.html">Attackable</a>.<a href="attackable.html#isfoecontact">isFoeContact</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L52">display/battle/Attackable.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Attackable.ts#L74">display/battle/Attackable.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -576,7 +464,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L127">display/battle/Unit.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L79">display/battle/Unit.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -598,7 +486,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L113">display/battle/Unit.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L72">display/battle/Unit.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -628,7 +516,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="attackable.html">Attackable</a>.<a href="attackable.html#resetanimation">resetAnimation</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L89">display/battle/Unit.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L48">display/battle/Unit.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -650,7 +538,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L145">display/battle/Unit.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L109">display/battle/Unit.ts:109</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -681,7 +569,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L184">display/battle/Unit.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L150">display/battle/Unit.ts:150</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -705,7 +593,7 @@
 								<p>Implementation of <a href="../interfaces/updateobject.html">UpdateObject</a>.<a href="../interfaces/updateobject.html#update">update</a></p>
 								<p>Overrides <a href="attackable.html">Attackable</a>.<a href="attackable.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L99">display/battle/Unit.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L58">display/battle/Unit.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -735,7 +623,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="attackable.html">Attackable</a>.<a href="attackable.html#updateanimation">updateAnimation</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L162">display/battle/Unit.ts:162</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/display/battle/Unit.ts#L127">display/battle/Unit.ts:127</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -767,17 +655,14 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 								<a href="unit.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="unit.html#animationframeindex" class="tsd-kind-icon">animation<wbr>Frame<wbr>Index</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="unit.html#animationframeid" class="tsd-kind-icon">animation<wbr>Frame<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="unit.html#animationmaxframeindexes" class="tsd-kind-icon">animation<wbr>Max<wbr>Frame<wbr>Indexes</a>
+								<a href="unit.html#animationmaster" class="tsd-kind-icon">animation<wbr>Master</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="unit.html#animationtype" class="tsd-kind-icon">animation<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="unit.html#animationupdatedurations" class="tsd-kind-icon">animation<wbr>Update<wbr>Durations</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="unit.html#destroyed" class="tsd-kind-icon">destroyed</a>
@@ -789,28 +674,19 @@
 								<a href="unit.html#healthgauge" class="tsd-kind-icon">health<wbr>Gauge</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="unit.html#hitframe" class="tsd-kind-icon">hit<wbr>Frame</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="unit.html#requestedanimation" class="tsd-kind-icon">requested<wbr>Animation</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="unit.html#spawnedposition" class="tsd-kind-icon">spawned<wbr>Position</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="unit.html#sprite" class="tsd-kind-icon">sprite</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="unit.html#unitid" class="tsd-kind-icon">unit<wbr>Id</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="unit.html#distancebaseposition" class="tsd-kind-icon">distance<wbr>Base<wbr>Position</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="unit.html#destroy" class="tsd-kind-icon">destroy</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="unit.html#getanimationtype" class="tsd-kind-icon">get<wbr>Animation<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="unit.html#getspawnedposition" class="tsd-kind-icon">get<wbr>Spawned<wbr>Position</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="unit.html#isanimationlastframetime" class="tsd-kind-icon">is<wbr>Animation<wbr>Last<wbr>Frame<wbr>Time</a>

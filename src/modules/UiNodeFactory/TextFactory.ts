@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import * as UI from 'interfaces/UiGraph/index';
+import TextStyleOptionsV5 from 'interfaces/pixiv5/TextStyleOptionsV5';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 
 /**
@@ -7,9 +8,7 @@ import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
  */
 export default class TextFactory extends UiNodeFactory {
   public createUiNode(nodeParams?: UI.TextNodeParams): PIXI.Container | null {
-    const textStyleParams: PIXI.TextStyleOptions = {};
-
-    const container = new PIXI.Text();
+    const textStyleParams: TextStyleOptionsV5 = {};
 
     if (nodeParams) {
       if (nodeParams.family !== undefined) {
@@ -24,15 +23,17 @@ export default class TextFactory extends UiNodeFactory {
       if (nodeParams.padding !== undefined) {
         textStyleParams.padding = nodeParams.padding;
       }
-      if (nodeParams.anchor !== undefined) {
-        container.anchor.set(...nodeParams.anchor);
-      }
-      if (nodeParams.text !== undefined) {
-        container.text = nodeParams.text;
-      }
     }
 
-    container.style = new PIXI.TextStyle(textStyleParams);
+    const style = new PIXI.TextStyle(textStyleParams);
+    const container = new PIXI.Text(
+      nodeParams && nodeParams.text ? nodeParams.text : '',
+      style
+    );
+
+    if (nodeParams && nodeParams.anchor !== undefined) {
+      container.anchor.set(...nodeParams.anchor);
+    }
 
     return container;
   }

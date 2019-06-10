@@ -37,7 +37,8 @@ export default class BattleLogicConfig {
       this.chivalrousEngage = params.chivalrousEngage;
     }
     if (params.knockBackHealthThreasholds) {
-      this.knockBackHealthThreasholds = params.knockBackHealthThreasholds.sort().reverse();
+      this.knockBackHealthThreasholds
+        = params.knockBackHealthThreasholds.sort().reverse();
     }
   }
 }

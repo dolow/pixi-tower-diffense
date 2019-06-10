@@ -14,6 +14,10 @@ export default class Sound {
      */
     readonly elapsedTime: number;
     /**
+     * paused の public ゲッタ
+     */
+    isPaused(): boolean;
+    /**
      * GainNode インスタンス
      */
     gainNode: GainNode;

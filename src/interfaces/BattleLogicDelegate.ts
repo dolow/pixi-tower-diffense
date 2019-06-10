@@ -28,7 +28,10 @@ export default interface BattleLogicDelegate {
   /**
    * UnitEntity がノックバックした時のコールバック
    */
-  onAttackableEntityKnockingBack(entity: AttackableEntity, knockBackRate: number): void;
+  onAttackableEntityKnockingBack(
+    entity: AttackableEntity,
+    knockBackRate: number
+  ): void;
   /**
    * エンティティの health が変動した際のコールバック
    */

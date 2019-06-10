@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import PixiApplicationOptionsV5 from 'interfaces/pixiv5/ApplicationOptionsV5';
 import Scene from 'scenes/Scene';
 /**
  * ゲーム全体のマネージャ
@@ -35,12 +36,12 @@ export default class GameManager {
     constructor(app: PIXI.Application);
     /**
      * ゲームを起動する
-     * 画面サイズや PIXI.ApplicationOptions を渡すことができる
+     * 画面サイズや PixiApplicationOptionsV5 を渡すことができる
      */
     static start(params: {
         glWidth: number;
         glHeight: number;
-        option?: PIXI.ApplicationOptions;
+        option?: PixiApplicationOptionsV5;
     }): void;
     /**
      * フルスクリーンに切り替える

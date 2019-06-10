@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
-import UnitAnimationMaster, { UnitAnimationTypeIndex } from 'interfaces/master/UnitAnimationMaster';
+import UnitAnimationMaster, {
+  UnitAnimationTypeIndex
+} from 'interfaces/master/UnitAnimationMaster';
 import Attackable from 'display/battle/Attackable';
 import HealthGauge from 'display/battle/single_shot/HealthGauge';
 

@@ -65,17 +65,18 @@ export default abstract class Scene extends PIXI.Container {
      */
     beginTransitionOut(onTransitionFinished: (scene: Scene) => void): void;
     /**
-     * loadResource に用いるリソースリストを作成するメソッド
+     * loadInitialResource に用いるリソースリストを作成するメソッド
      * デフォルトでは UiGraph のリソースリストを作成する
      */
     protected createInitialResourceList(): (LoaderAddParam | string)[];
     /**
-     * リソースをロードする
+     * リソースダウンロードのフローを実行する
      * デフォルトでは UiGraph 用の情報が取得される
      */
     beginLoadResource(onLoaded: () => void): Promise<void>;
     /**
-     * UiGraph 情報のロードを行う
+     * リソースダウンロードのフローを実行する
+     * UiGraph 情報も含まれる
      */
     protected loadInitialResource(onLoaded: () => void): void;
     /**
@@ -91,7 +92,7 @@ export default abstract class Scene extends PIXI.Container {
      */
     protected onAdditionalResourceLoaded(onLoaded: () => void): void;
     /**
-     * loadResource 完了時のコールバックメソッド
+     * beginLoadResource 完了時のコールバックメソッド
      */
     protected onResourceLoaded(): void;
     /**

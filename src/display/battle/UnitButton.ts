@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Resource from 'Resource';
+import GameManager from 'managers/GameManager';
 
 /**
  * ユニット生成をリクエストするための UI 用のボタン
@@ -30,7 +31,8 @@ export default class UnitButton extends PIXI.Container {
   /**
    * フィルター
    */
-  private filter: PIXI.filters.ColorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
+  private filter: PIXI.filters.ColorMatrixFilter
+    = new PIXI.filters.ColorMatrixFilter();
 
   /**
    * コンストラクタ
@@ -85,7 +87,7 @@ export default class UnitButton extends PIXI.Container {
    */
   private getTexture(unitId: number = -1): PIXI.Texture | null {
     const resourceId = Resource.Dynamic.UnitPanel(unitId);
-    const resource = PIXI.loader.resources[resourceId];
+    const resource = GameManager.instance.game.loader.resources[resourceId];
     if (!resource || !resource.texture) {
       return null;
     }
