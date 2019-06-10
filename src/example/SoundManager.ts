@@ -82,6 +82,7 @@ export default class SoundManager {
 
     SoundManager.useWebAudio(browser);
     SoundManager.setSoundInitializeEvent(browser);
+    SoundManager.setWindowLifeCycleEvent(browser);
   }
 
   /**
@@ -256,5 +257,33 @@ export default class SoundManager {
     if (SoundManager.sharedContext) {
       SoundManager.sharedContext.decodeAudioData(binary).then(callback);
     }
+  }
+
+  /**
+   * HTML window のライフサイクルイベントを登録する
+   * ブラウザのタブ切り替えや非アクティヴ時に音声が鳴ってしまわないようにする
+   */
+  public static setWindowLifeCycleEvent(
+    browser: BrowserInfo | BotInfo | NodeInfo
+  ): void {
+    if (browser.name === 'safari') {
+      window.addEventListener('webkitvisibilitychange', () => {
+        (document as any).webkitHidden
+          ? SoundManager.pause()
+          : SoundManager.resume();
+      });
+    } else {
+      window.addEventListener('visibilitychange', () => {
+        document.hidden ? SoundManager.pause() : SoundManager.resume();
+      });
+    }
+    /*
+    window.addEventListener('blur', () => {
+      SoundManager.pause();
+    });
+    window.addEventListener('focus', () => {
+      SoundManager.resume();
+    });
+    */
   }
 }

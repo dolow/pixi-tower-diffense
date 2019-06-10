@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import Config from  'example/Config';
 import Resource from 'example/Resource';
 import GameManager from 'example/GameManager';
+import IndexedDBManager from 'example/IndexedDBManager';
 import SoundManager from 'example/SoundManager';
 import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import UnitMaster from 'example/UnitMaster';
@@ -41,6 +42,10 @@ export default class OrderScene extends Scene  {
    * 選択中のステージID
    */
   private currentStageId: number = 1;
+  /**
+   * 前回編成したユニットID配列
+   */
+  private lastUnitIds: number[] = [];
 
   /**
    * コンストラクタ
@@ -73,6 +78,31 @@ export default class OrderScene extends Scene  {
     assets.push(Resource.Audio.Bgm.Title);
 
     return assets;
+  }
+
+
+  /**
+   * リソースをロードする
+   * 基本実装をオーバーライドし、 indexed db のレコードを取得する
+   */
+  public beginLoadResource(onLoaded: () => void): Promise<void> {
+    // Indexed DB にレコードが存在すれば最後の編成情報を復元する
+    return Promise.all([
+      new Promise((resolve) => {
+        this.loadStageIdFromDB((stageId) => {
+          this.currentStageId = stageId || 1;
+          resolve();
+        });
+      }),
+      new Promise((resolve) => {
+        this.loadUnitIdsFromDB((unitIds) => {
+          this.lastUnitIds = unitIds || [];
+          resolve();
+        });
+      })
+    ]).then(() => {
+      return super.beginLoadResource(onLoaded);
+    });
   }
 
   /**
@@ -211,7 +241,17 @@ export default class OrderScene extends Scene  {
       const entity = this.uiGraph[key];
       if (entity.constructor.name === 'UnitButton') {
         const unitButton = (entity as UnitButton);
-        unitButton.init(slotIndex);
+        if (this.lastUnitIds.length >= slotIndex + 1) {
+          const unitId = this.lastUnitIds[slotIndex];
+          const unitMaster = this.unitMasterCache.get(unitId);
+          if (unitMaster) {
+            unitButton.init(slotIndex, unitId, unitMaster.cost);
+          } else {
+            unitButton.init(slotIndex, unitId);
+          }
+        } else {
+          unitButton.init(slotIndex);
+        }
         this.unitButtons.set(slotIndex, unitButton);
         slotIndex++;
         if (slotIndex >= Config.MaxUnitSlotCount) {
@@ -257,6 +297,9 @@ export default class OrderScene extends Scene  {
     this.fadeOutBgm();
     SoundManager.unregisterSound(Resource.Audio.Bgm.Title);
 
+    this.saveStageIdToDB(params.stageId);
+    this.saveUnitIdsToDB(params.unitIds);
+
     GameManager.loadScene(new BattleScene(params));
 
     return true;
@@ -292,5 +335,30 @@ export default class OrderScene extends Scene  {
     if (bgm) {
       SoundManager.fade(bgm, 0.01, 0.5, true);
     }
+  }
+
+  /**
+   * DB へユニットID配列を保存する
+   */
+  private saveUnitIdsToDB(unitIds: number[]): void {
+    IndexedDBManager.put('lastUnitOrder', unitIds);
+  }
+  /**
+   * DB からユニットID配列を取得する
+   */
+  private loadUnitIdsFromDB(callback: (unitIds: number[]) => void): void {
+    IndexedDBManager.get('lastUnitOrder', (unitIds) => { callback(unitIds); });
+  }
+  /**
+   * DB へステージIDを保存する
+   */
+  private saveStageIdToDB(stageId: number): void {
+    IndexedDBManager.put('lastStageId', stageId);
+  }
+  /**
+   * DB からステージIDを取得する
+   */
+  private loadStageIdFromDB(callback: (stageId: number) => void): void {
+    IndexedDBManager.get('lastStageId', (stageId) => { callback(stageId); });
   }
 }
