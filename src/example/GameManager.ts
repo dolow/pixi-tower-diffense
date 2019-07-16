@@ -27,6 +27,8 @@ export default class GameManager {
    */
   private currentScene?: Scene;
 
+  private sceneResourceLoaded: boolean = true;
+
   /**
    * コンストラクタ
    * PIXI.Application インスタンスはユーザ任意のものを使用する
@@ -70,7 +72,7 @@ export default class GameManager {
   public static transitionInIfPossible(newScene: Scene): boolean {
     const instance = GameManager.instance;
 
-    if (!instance.sceneTransitionOutFinished) {
+    if (!instance.sceneResourceLoaded || !instance.sceneTransitionOutFinished) {
       return false;
     }
 
@@ -93,18 +95,27 @@ export default class GameManager {
    * 新しいシーンのリソース読み込みと古いシーンのトランジションを同時に開始する
    * いずれも完了したら、新しいシーンのトランジションを開始する
    */
-  public static loadScene(newScene: Scene): void {
-    const instance = GameManager.instance;
+   public static loadScene(newScene: Scene): void {
+     const instance = GameManager.instance;
 
-    if (instance.currentScene) {
-      instance.sceneTransitionOutFinished = false;
-      instance.currentScene.beginTransitionOut((_: Scene) => {
-        instance.sceneTransitionOutFinished = true;
-        GameManager.transitionInIfPossible(newScene);
-      });
-    } else {
-      instance.sceneTransitionOutFinished = true;
-      GameManager.transitionInIfPossible(newScene);
-    }
-  }
+     if (instance.currentScene) {
+       instance.sceneResourceLoaded = false;
+       instance.sceneTransitionOutFinished = false;
+       newScene.beginLoadResource(() => {
+         instance.sceneResourceLoaded = true;
+         GameManager.transitionInIfPossible(newScene);
+       });
+       instance.currentScene.beginTransitionOut((_: Scene) => {
+         instance.sceneTransitionOutFinished = true;
+         GameManager.transitionInIfPossible(newScene);
+       });
+     } else {
+       instance.sceneTransitionOutFinished = true;
+       newScene.beginLoadResource(() => {
+         instance.sceneResourceLoaded = true;
+         GameManager.transitionInIfPossible(newScene);
+       });
+     }
+   }
+
 }
