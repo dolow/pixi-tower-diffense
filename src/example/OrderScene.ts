@@ -347,7 +347,11 @@ export default class OrderScene extends Scene  {
    * DB からユニットID配列を取得する
    */
   private loadUnitIdsFromDB(callback: (unitIds: number[]) => void): void {
-    IndexedDBManager.get('lastUnitOrder', (unitIds) => { callback(unitIds); });
+    IndexedDBManager.get(
+      'lastUnitOrder',
+      (unitIds) => { callback(unitIds); },
+      (_e) => { callback([]); }
+    );
   }
   /**
    * DB へステージIDを保存する
@@ -359,6 +363,10 @@ export default class OrderScene extends Scene  {
    * DB からステージIDを取得する
    */
   private loadStageIdFromDB(callback: (stageId: number) => void): void {
-    IndexedDBManager.get('lastStageId', (stageId) => { callback(stageId); });
+    IndexedDBManager.get(
+      'lastStageId',
+      (stageId) => { callback(stageId); },
+      (_e) => { callback(0); }
+    );
   }
 }
