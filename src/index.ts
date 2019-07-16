@@ -1,5 +1,7 @@
-import FirstScene from 'example/FirstScene';
+//import FirstScene from 'example/FirstScene';
+import TitleScene from 'example/TitleScene';
 import GameManager from 'example/GameManager';
+import 'example/Config';
 
 /**
  * エントリーポイント
@@ -13,7 +15,7 @@ window.onload = () => {
     }
   });
   // 最初のシーンの読み込み
-  GameManager.loadScene(new FirstScene());
+  GameManager.loadScene(new TitleScene());
 
   // コンソールからオブジェクトを調査できるように window に生やす
   Debug: {
