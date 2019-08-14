@@ -1,9 +1,9 @@
 [
   {
     "unitId":      1,
-    "cost":        10,
+    "cost":        8,
     "maxHealth":   20,
-    "power":       10,
+    "power":       6,
     "speed":       2,
     "hitFrame":    4,
     "knockBackFrames": 30,
@@ -11,7 +11,7 @@
   },
   {
     "unitId":      2,
-    "cost":        20,
+    "cost":        15,
     "maxHealth":   60,
     "power":       2,
     "speed":       1,
@@ -21,9 +21,9 @@
   },
   {
     "unitId":      3,
-    "cost":        30,
+    "cost":        24,
     "maxHealth":   20,
-    "power":       20,
+    "power":       4,
     "speed":       3,
     "hitFrame":    3,
     "knockBackFrames": 30,
@@ -31,9 +31,9 @@
   },
   {
     "unitId":      4,
-    "cost":        40,
-    "maxHealth":   30,
-    "power":       30,
+    "cost":        32,
+    "maxHealth":   40,
+    "power":       16,
     "speed":       2,
     "hitFrame":    4,
     "knockBackFrames": 30,
@@ -41,10 +41,10 @@
   },
   {
     "unitId":      5,
-    "cost":        50,
-    "maxHealth":   20,
-    "power":       50,
-    "speed":       2,
+    "cost":        40,
+    "maxHealth":   100,
+    "power":       22,
+    "speed":       1.5,
     "hitFrame":    5,
     "knockBackFrames": 30,
     "knockBackSpeed": 4
