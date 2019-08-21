@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["tower-diffence"] = factory();
+		exports["tower-diffense"] = factory();
 	else
-		root["tower-diffence"] = factory();
+		root["tower-diffense"] = factory();
 })(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -44327,6 +44327,9 @@ pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].baseUrl = Config.ResourceBaseUrl;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+
 /**
  * リソースの URL や命名規則のマスタ
  */
@@ -44356,6 +44359,10 @@ var Resource = Object.freeze({
         UnitAnimation: function (unitIds) {
             var query = unitIds.join('&unitId[]=');
             return "master/unit_animation_master.json?unitId[]=" + query;
+        },
+        Castle: function (castleIds) {
+            var query = castleIds.join('&castleId[]=');
+            return "master/castle_master.json?castleId[]=" + query;
         }
     },
     /**
@@ -44369,8 +44376,8 @@ var Resource = Object.freeze({
             var id = (unitId > 0) ? unitId : 'empty';
             return "ui/units_panel/button/unit_" + id + ".png";
         },
-        Base: function (baseId) {
-            return "battle/base/" + baseId + ".json";
+        Castle: function (castleId) {
+            return "battle/castle/" + castleId + ".json";
         }
     },
     /**
@@ -44431,19 +44438,20 @@ var Resource = Object.freeze({
      */
     TextureFrame: {
         Unit: function (unitActionType, unitId, index) {
-            return PIXI.utils.TextureCache["unit_" + unitId + "_" + unitActionType + "_" + index + ".png"];
+            var key = "unit_" + unitId + "_" + unitActionType + "_" + index + ".png";
+            return pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[key];
         },
-        Base: function (baseId, index) {
+        Castle: function (castleId, index) {
             if (index === void 0) { index = 1; }
-            return PIXI.utils.TextureCache["base_" + baseId + "_" + index + ".png"];
+            return pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache["base_" + castleId + "_" + index + ".png"];
         },
         CollapseExplode: function (index) {
             if (index === void 0) { index = 1; }
-            return PIXI.utils.TextureCache["effect_1_" + index + ".png"];
+            return pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache["effect_1_" + index + ".png"];
         },
         AttackSmoke: function (index) {
             if (index === void 0) { index = 1; }
-            return PIXI.utils.TextureCache["effect_2_" + index + ".png"];
+            return pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache["effect_2_" + index + ".png"];
         }
     },
     /**
@@ -44456,20 +44464,21 @@ var Resource = Object.freeze({
             ATTACK: 'attack',
             DAMAGE: 'damage'
         }),
-        Base: Object.freeze({
+        Castle: Object.freeze({
             IDLE: 'idle',
             SPAWN: 'spawn',
             COLLAPSE: 'collapse'
         })
     },
     FontFamily: {
+        Css: 'base.css',
         Default: 'MisakiGothic'
     },
     /**
      * スプライトシートの最大フレーム数を返す関数
      */
     MaxFrameIndex: function (resourceKey) {
-        var json = PIXI.loader.resources[resourceKey];
+        var json = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[resourceKey];
         if (!json || !json.data || !json.data.frames) {
             return -1;
         }
@@ -44490,15 +44499,14 @@ var Resource = Object.freeze({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+
 /**
  * エンティティの振舞い、及び見た目に関する処理を行う
  */
 var Attackable = /** @class */ (function () {
-    function Attackable() {
-        /**
-         * 現在のアニメーションフレーム
-         */
-        this.animationFrameIndex = 1;
+    function Attackable(spawnPosition) {
         /**
          * 経過フレーム数
          */
@@ -44508,7 +44516,23 @@ var Attackable = /** @class */ (function () {
          */
         this.destroyed = false;
         this.animationType = '';
+        this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
+        this.sprite.anchor.x = 0.5;
+        this.sprite.anchor.y = 1.0;
+        this.sprite.position.set(spawnPosition.x, spawnPosition.y);
+        this.spawnedPosition = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Point"](this.sprite.position.x, this.sprite.position.y);
+        Object.freeze(this.spawnedPosition);
     }
+    Object.defineProperty(Attackable.prototype, "distanceBasePosition", {
+        /**
+         * spawnedPosition を返す
+         */
+        get: function () {
+            return this.spawnedPosition;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * UpdateObject インターフェース実装
      * 削除フラグが立っているか返す
@@ -44534,12 +44558,6 @@ var Attackable = /** @class */ (function () {
         return (r1x1 < r2x2 && r1x2 > r2x1);
     };
     /**
-     * 現在のアニメーション種別を返す
-     */
-    Attackable.prototype.getAnimationType = function () {
-        return this.animationType;
-    };
-    /**
      * アニメーション時間をリセットする
      */
     Attackable.prototype.resetAnimation = function () {
@@ -44561,190 +44579,6 @@ var Attackable = /** @class */ (function () {
     return Attackable;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (Attackable);
-
-
-/***/ }),
-
-/***/ "./src/display/battle/Base.ts":
-/*!************************************!*\
-  !*** ./src/display/battle/Base.ts ***!
-  \************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var display_battle_Attackable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! display/battle/Attackable */ "./src/display/battle/Attackable.ts");
-/* harmony import */ var display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/single_shot/CollapseExplodeEffect */ "./src/display/battle/single_shot/CollapseExplodeEffect.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-
-
-var baseId1SpawnFrameCount = 16;
-/**
- * 拠点の振舞い、及び見た目に関する処理を行う
- * Attackable を継承する
- */
-var Base = /** @class */ (function (_super) {
-    __extends(Base, _super);
-    /**
-     * コンストラクタ
-     */
-    function Base(baseId) {
-        var _this = _super.call(this) || this;
-        /**
-         * 爆発エフェクト用コンテナ
-         */
-        _this.explodeContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
-        /**
-         * 初期座標、アニメーションなどで更新されるため覚えておく
-         */
-        _this.originalPositon = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Point"]();
-        _this.baseId = baseId;
-        _this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
-        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"](Resource__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Base(baseId));
-        _this.sprite.anchor.x = 0.5;
-        _this.sprite.anchor.y = 1.0;
-        // 本来はアニメーション系ミドルウェアで設定する部分
-        switch (baseId) {
-            case 1:
-                _this.sprite.position.y = 300;
-                break;
-            default:
-                _this.sprite.position.y = 200;
-                break;
-        }
-        _this.originalPositon.set(_this.sprite.position.x, _this.sprite.position.y);
-        return _this;
-    }
-    Object.defineProperty(Base, "resourceList", {
-        /**
-         * このクラスで利用するリソースリスト
-         */
-        get: function () {
-            return [Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * UpdateObject インターフェース実装
-     * requestAnimationFrame 毎のアップデート処理
-     */
-    Base.prototype.update = function (_dt) {
-        this.updateAnimation();
-    };
-    /**
-     * アニメーションを初期化する
-     */
-    Base.prototype.resetAnimation = function () {
-        this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
-        this.elapsedFrameCount = 0;
-    };
-    /**
-     * 破壊状態にする
-     */
-    Base.prototype.collapse = function () {
-        this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.COLLAPSE;
-        this.elapsedFrameCount = 0;
-    };
-    /**
-     * ユニット生成状態にする
-     */
-    Base.prototype.spawn = function (playSe) {
-        if (playSe) {
-            this.playSpawnSe();
-        }
-        this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.SPAWN;
-        this.elapsedFrameCount = 0;
-    };
-    /**
-     * アニメーションを更新する
-     */
-    Base.prototype.updateAnimation = function () {
-        switch (this.animationType) {
-            case Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.COLLAPSE: {
-                this.explodeContainer.position.set(this.sprite.position.x - this.sprite.width * this.sprite.anchor.x, this.sprite.position.y - this.sprite.height * this.sprite.anchor.y);
-                if ((this.elapsedFrameCount % 10) === 0) {
-                    this.spawnCollapseExplode();
-                }
-                var direction = (this.elapsedFrameCount % 2 === 0) ? 1 : -1;
-                this.sprite.position.x = this.sprite.position.x + 4 * direction;
-                break;
-            }
-            case Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.SPAWN: {
-                if (this.baseId === 1) {
-                    this.sprite.texture = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Base(this.baseId, 2);
-                    if (this.elapsedFrameCount >= baseId1SpawnFrameCount) {
-                        this.resetAnimation();
-                    }
-                }
-                else {
-                    this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE;
-                }
-                break;
-            }
-            case Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Base.IDLE:
-            default: {
-                if (this.baseId === 1) {
-                    this.sprite.texture = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Base(this.baseId, 1);
-                }
-                else if (this.baseId === 2) {
-                    var r = 20; // range
-                    var t = 400; // duration
-                    var wave = Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
-                    this.sprite.position.y = this.originalPositon.y + -r * wave;
-                }
-                break;
-            }
-        }
-        for (var i = 0; i < this.explodeContainer.children.length; i++) {
-            var effect = this.explodeContainer.children[i];
-            effect.update(1);
-        }
-        this.elapsedFrameCount++;
-    };
-    /**
-     * 破壊時の爆発を生成する
-     */
-    Base.prototype.spawnCollapseExplode = function () {
-        var scale = 1.0 + Math.random() % 0.8 - 0.4;
-        var effect = new display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__["default"]();
-        effect.position.x = Math.random() * this.sprite.width;
-        effect.position.y = Math.random() * this.sprite.height;
-        effect.scale.set(scale);
-        this.explodeContainer.addChild(effect);
-    };
-    /**
-     * ユニット生成時の効果音を再生する
-     */
-    Base.prototype.playSpawnSe = function () {
-        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
-        if (sound) {
-            sound.play();
-        }
-    };
-    return Base;
-}(display_battle_Attackable__WEBPACK_IMPORTED_MODULE_3__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (Base);
 
 
 /***/ }),
@@ -44848,6 +44682,174 @@ var BattleResult = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/display/battle/Castle.ts":
+/*!**************************************!*\
+  !*** ./src/display/battle/Castle.ts ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var display_battle_Attackable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! display/battle/Attackable */ "./src/display/battle/Attackable.ts");
+/* harmony import */ var display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! display/battle/single_shot/CollapseExplodeEffect */ "./src/display/battle/single_shot/CollapseExplodeEffect.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+var castleId1SpawnFrameCount = 16;
+/**
+ * 拠点の振舞い、及び見た目に関する処理を行う
+ * Attackable を継承する
+ */
+var Castle = /** @class */ (function (_super) {
+    __extends(Castle, _super);
+    /**
+     * コンストラクタ
+     */
+    function Castle(castleId, spawnPosition) {
+        var _this = _super.call(this, spawnPosition) || this;
+        /**
+         * 爆発エフェクト用コンテナ
+         */
+        _this.explodeContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+        _this.castleId = castleId;
+        _this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.IDLE;
+        _this.sprite.texture = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Castle(castleId);
+        return _this;
+    }
+    Object.defineProperty(Castle, "resourceList", {
+        /**
+         * このクラスで利用するリソースリスト
+         */
+        get: function () {
+            return [Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * UpdateObject インターフェース実装
+     * requestAnimationFrame 毎のアップデート処理
+     */
+    Castle.prototype.update = function (_dt) {
+        this.updateAnimation();
+    };
+    /**
+     * アニメーションを初期化する
+     */
+    Castle.prototype.resetAnimation = function () {
+        this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.IDLE;
+        this.elapsedFrameCount = 0;
+    };
+    /**
+     * 破壊状態にする
+     */
+    Castle.prototype.collapse = function () {
+        this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.COLLAPSE;
+        this.elapsedFrameCount = 0;
+    };
+    /**
+     * ユニット生成状態にする
+     */
+    Castle.prototype.spawn = function (playSe) {
+        if (playSe) {
+            this.playSpawnSe();
+        }
+        this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.SPAWN;
+        this.elapsedFrameCount = 0;
+    };
+    /**
+     * アニメーションを更新する
+     */
+    Castle.prototype.updateAnimation = function () {
+        switch (this.animationType) {
+            case Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.COLLAPSE: {
+                this.explodeContainer.position.set(this.sprite.position.x - this.sprite.width * this.sprite.anchor.x, this.sprite.position.y - this.sprite.height * this.sprite.anchor.y);
+                if ((this.elapsedFrameCount % 10) === 0) {
+                    this.spawnCollapseExplode();
+                }
+                var direction = (this.elapsedFrameCount % 2 === 0) ? 1 : -1;
+                this.sprite.position.x = this.sprite.position.x + 4 * direction;
+                break;
+            }
+            case Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.SPAWN: {
+                if (this.castleId === 1) {
+                    this.sprite.texture = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Castle(this.castleId, 2);
+                    if (this.elapsedFrameCount >= castleId1SpawnFrameCount) {
+                        this.resetAnimation();
+                    }
+                }
+                else {
+                    this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.IDLE;
+                }
+                break;
+            }
+            case Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Castle.IDLE:
+            default: {
+                if (this.castleId === 1) {
+                    this.sprite.texture = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Castle(this.castleId, 1);
+                }
+                else {
+                    var r = 20; // range
+                    var t = 400; // duration
+                    var wave = Math.sin((2 * Math.PI / t) * this.elapsedFrameCount);
+                    this.sprite.position.y = this.spawnedPosition.y + -r * wave;
+                }
+                break;
+            }
+        }
+        for (var i = 0; i < this.explodeContainer.children.length; i++) {
+            var effect = this.explodeContainer.children[i];
+            effect.update(1);
+        }
+        this.elapsedFrameCount++;
+    };
+    /**
+     * 破壊時の爆発を生成する
+     */
+    Castle.prototype.spawnCollapseExplode = function () {
+        var scale = 1.0 + Math.random() % 0.8 - 0.4;
+        var effect = new display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_4__["default"]();
+        effect.position.x = Math.random() * this.sprite.width;
+        effect.position.y = Math.random() * this.sprite.height;
+        effect.scale.set(scale);
+        this.explodeContainer.addChild(effect);
+    };
+    /**
+     * ユニット生成時の効果音を再生する
+     */
+    Castle.prototype.playSpawnSe = function () {
+        var sound = managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].getSound(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+        if (sound) {
+            sound.play();
+        }
+    };
+    return Castle;
+}(display_battle_Attackable__WEBPACK_IMPORTED_MODULE_3__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Castle);
+
+
+/***/ }),
+
 /***/ "./src/display/battle/Field.ts":
 /*!*************************************!*\
   !*** ./src/display/battle/Field.ts ***!
@@ -44888,6 +44890,10 @@ var Field = /** @class */ (function (_super) {
     function Field() {
         var _this = _super.call(this) || this;
         /**
+         * 最後に要素を追加した zLine のインデックス
+         */
+        _this.lastZlineIndex = -1;
+        /**
          * タップダウン数カウント
          * タップダウン重複処理を防止するために数える
          */
@@ -44905,7 +44911,6 @@ var Field = /** @class */ (function (_super) {
          * 表示上の前後関係を制御するための PIXI.Container オブジェクト
          */
         _this.containers = {
-            foreForegroundEffect: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             fore: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             foreBackgroundEffect: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
             middle: new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Container"](),
@@ -44974,7 +44979,6 @@ var Field = /** @class */ (function (_super) {
         this.addChild(this.containers.middle);
         this.addChild(this.containers.fore);
         this.containers.fore.addChild(this.containers.foreBackgroundEffect);
-        this.addChild(this.containers.foreForegroundEffect);
         // フィールドに奥行きを出すためにユニットを前後に配置できるようにする
         // z-index の後からの制御はコストが高いため、予め PIXI.Container を割り当てておく
         for (var i = 0; i < options.zLines; i++) {
@@ -44993,17 +44997,33 @@ var Field = /** @class */ (function (_super) {
         this.containers.foreBackgroundEffect.addChild(container);
     };
     /**
-     * 前景内で前景エフェクトとして addChild する
-     */
-    Field.prototype.addChildAsForeForegroundEffect = function (container) {
-        this.containers.foreForegroundEffect.addChild(container);
-    };
-    /**
      * 指定した zLine インデックスの PIXI.Container に addChild する
      */
     Field.prototype.addChildToZLine = function (container, zlineIndex) {
-        container.position.y = 300 + zlineIndex * 16;
         this.foreZLines[zlineIndex].addChild(container);
+        this.lastZlineIndex = zlineIndex;
+    };
+    /**
+     * 最後に追加した zLine とは異なるインデクスを返す
+     */
+    Field.prototype.getDifferentZlineIndex = function () {
+        // Field に追加する重なり順を決定する
+        var zLineCount = this.zLineCount;
+        var index = Math.floor(Math.random() * this.zLineCount);
+        // 最後に追加された Zline と同じ場合は表示が重なって見えてしまうので避ける
+        if (index === this.lastZlineIndex) {
+            index++;
+            if (index > (zLineCount - 1)) {
+                index = 0;
+            }
+        }
+        return index;
+    };
+    /**
+     * 指定した zLine インデックスの基準 Y 座標を返す
+     */
+    Field.prototype.getZlineBaseY = function (zlineIndex) {
+        return this.containers.fore.height * 0.5 + zlineIndex * 16;
     };
     /**
      * タップ押下時の制御コールバック
@@ -45023,7 +45043,7 @@ var Field = /** @class */ (function (_super) {
         }
         var xPos = event.data.global.x;
         var distance = xPos - this.lastPointerPositionX;
-        var newForegroundPos = this.position.x + distance;
+        var newForegroundPos = this.containers.fore.position.x + distance;
         if (newForegroundPos > 0) {
             newForegroundPos = 0;
         }
@@ -45031,9 +45051,9 @@ var Field = /** @class */ (function (_super) {
             newForegroundPos = this.foregroundScrollLimit;
         }
         // 背景に奥行きを出すために前景・中景・後景に分けてスクロール量を変化させる
-        this.position.x = newForegroundPos;
-        this.containers.middle.position.x = newForegroundPos * -0.6;
-        this.containers.back.position.x = newForegroundPos * -0.9;
+        this.containers.fore.position.x = newForegroundPos;
+        this.containers.middle.position.x = newForegroundPos * 0.5;
+        this.containers.back.position.x = newForegroundPos * 0.2;
         this.lastPointerPositionX = xPos;
     };
     /**
@@ -45092,51 +45112,23 @@ var Unit = /** @class */ (function (_super) {
     /**
      * コンストラクタ
      */
-    function Unit(unitId, animationParam) {
-        var _this = _super.call(this) || this;
-        /**
-         * スポーンした座標
-         */
-        _this.spawnedPosition = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Point"](0, 0);
+    function Unit(animationMaster, spawnPosition) {
+        var _this = _super.call(this, spawnPosition) || this;
         /**
          * 現在のアニメーションフレーム
          */
-        _this.animationFrameIndex = 1;
+        _this.animationFrameId = 1;
         /**
          * 再生をリクエストされたアニメーション種別
          */
         _this.requestedAnimation = null;
-        /**
-         * 当たり判定が発生するフレームインデックス
-         * マスターデータの値
-         */
-        _this.hitFrame = 0;
-        /**
-         * 最大のフレームインデックス
-         * マスターデータの値
-         */
-        _this.animationMaxFrameIndexes = {};
-        /**
-         * フレーム更新に必要なrequestAnimationFrame数
-         * マスターデータの値
-         */
-        _this.animationUpdateDurations = {};
         /**
          * HealthGauge インスタンス
          * Unit で管理する
          */
         _this.healthGauge = null;
         _this.animationType = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WAIT;
-        _this.unitId = unitId;
-        _this.hitFrame = animationParam.hitFrame;
-        _this.animationMaxFrameIndexes = animationParam.animationMaxFrameIndexes;
-        _this.animationUpdateDurations = animationParam.animationUpdateDurations;
-        _this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
-        _this.sprite.anchor.x = 0.5;
-        _this.sprite.anchor.y = 1.0;
-        _this.sprite.position.set(animationParam.spawnPosition.x, animationParam.spawnPosition.y);
-        _this.spawnedPosition.x = _this.sprite.position.x;
-        _this.spawnedPosition.y = _this.sprite.position.y;
+        _this.animationMaster = animationMaster;
         return _this;
     }
     /**
@@ -45145,7 +45137,7 @@ var Unit = /** @class */ (function (_super) {
     Unit.prototype.resetAnimation = function () {
         this.requestedAnimation = null;
         this.elapsedFrameCount = 0;
-        this.animationFrameIndex = 1;
+        this.animationFrameId = 1;
     };
     /**
      * UpdateObject インターフェース実装
@@ -45167,27 +45159,31 @@ var Unit = /** @class */ (function (_super) {
         this.requestedAnimation = type;
     };
     /**
-     * spawnedPosition を返す
-     */
-    Unit.prototype.getSpawnedPosition = function () {
-        return this.spawnedPosition;
-    };
-    /**
      * 現在のアニメーションフレームのインデックスが当たり判定の発生するインデックスかどうかを返す
      */
     Unit.prototype.isHitFrame = function () {
-        if (this.animationFrameIndex !== this.hitFrame) {
+        if (this.animationFrameId !== this.animationMaster.hitFrame) {
             return false;
         }
-        var updateDuration = this.animationUpdateDurations[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.ATTACK];
-        return (this.elapsedFrameCount % updateDuration) === 0;
+        var index = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.ATTACK;
+        var animation = this.animationMaster.types[index];
+        if (!animation) {
+            return false;
+        }
+        return (this.elapsedFrameCount % animation.updateDuration) === 0;
     };
     /**
      * 現在のアニメーションが終了するフレーム時間かどうかを返す
      */
-    Unit.prototype.isAnimationLastFrameTime = function (type) {
-        if (type === void 0) { type = this.animationType; }
-        var maxFrameTime = this.animationUpdateDurations[type] * this.animationMaxFrameIndexes[type];
+    Unit.prototype.isAnimationLastFrameTime = function () {
+        var index = this.animationType;
+        var animation = this.animationMaster.types[index];
+        if (!animation) {
+            return false;
+        }
+        var duration = animation.updateDuration;
+        var lastId = animation.frames.length;
+        var maxFrameTime = duration * lastId;
         return this.elapsedFrameCount === maxFrameTime;
     };
     /**
@@ -45197,21 +45193,27 @@ var Unit = /** @class */ (function (_super) {
         if (this.healthGauge) {
             this.healthGauge.destroy();
         }
+        var anchor = this.sprite.anchor;
         this.healthGauge = new display_battle_single_shot_HealthGauge__WEBPACK_IMPORTED_MODULE_3__["default"](fromPercent, toPercent);
-        this.healthGauge.position.set(this.sprite.position.x - (this.healthGauge.gaugeWidth * this.sprite.anchor.x), this.sprite.position.y - (this.healthGauge.gaugeHeight * this.sprite.anchor.y));
+        this.healthGauge.position.set(this.sprite.position.x - (this.healthGauge.gaugeWidth * anchor.x), this.sprite.position.y - (this.healthGauge.gaugeHeight * anchor.y));
         return this.healthGauge;
     };
     /**
      * アニメーションを更新する
      */
     Unit.prototype.updateAnimation = function () {
-        var animationUpdateDuration = this.animationUpdateDurations[this.animationType];
-        if ((this.elapsedFrameCount % animationUpdateDuration) === 0) {
+        var index = this.animationType;
+        var animation = this.animationMaster.types[index];
+        if (!animation) {
+            return;
+        }
+        if ((this.elapsedFrameCount % animation.updateDuration) === 0) {
             if (this.isAnimationLastFrameTime()) {
                 this.resetAnimation();
             }
-            this.sprite.texture = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].TextureFrame.Unit(this.animationType, this.unitId, this.animationFrameIndex);
-            this.animationFrameIndex++;
+            var cacheKey = animation.frames[this.animationFrameId - 1];
+            this.sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[cacheKey];
+            this.animationFrameId++;
         }
         this.elapsedFrameCount++;
     };
@@ -45232,8 +45234,9 @@ var Unit = /** @class */ (function (_super) {
                 }
                 break;
             }
+            case animationTypes.DAMAGE:
             case animationTypes.ATTACK: {
-                this.animationType = animationTypes.ATTACK;
+                this.animationType = this.requestedAnimation;
                 this.resetAnimation();
                 return true;
             }
@@ -45294,17 +45297,26 @@ var UnitButton = /** @class */ (function (_super) {
          */
         _this.unitId = -1;
         /**
-         * 表示するユニットコスト
+         * ボタン画像
          */
-        _this.cost = -1;
         _this.button = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
+        /**
+         * コストテキスト
+         */
         _this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Text"]('', {
             fontFamily: Resource__WEBPACK_IMPORTED_MODULE_1__["default"].FontFamily.Default,
             fontSize: 24,
             fill: 0xffffff,
             padding: 4
         });
+        /**
+         * フィルター
+         */
+        _this.filter = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["filters"].ColorMatrixFilter();
         _this.text.position.set(46, 88);
+        _this.filter.desaturate();
+        _this.toggleFilter(false);
+        _this.button.filters = [_this.filter];
         if (texture) {
             _this.button.texture = texture;
         }
@@ -45318,14 +45330,14 @@ var UnitButton = /** @class */ (function (_super) {
     UnitButton.prototype.init = function (slotIndex, unitId, cost) {
         if (unitId === void 0) { unitId = -1; }
         if (cost === void 0) { cost = -1; }
-        var texture = this.getTexture(unitId);
-        if (!texture) {
-            return;
-        }
         this.slotIndex = slotIndex;
-        this.unitId = unitId;
-        this.button.texture = texture;
-        this.text.text = (cost >= 0) ? "" + cost : '';
+        this.changeUnit(unitId, cost);
+    };
+    /**
+     * ColorMatrixFilter の有効/無効を切り替える
+     */
+    UnitButton.prototype.toggleFilter = function (enabled) {
+        this.filter.enabled = enabled;
     };
     /**
      * ユニットを変更する
@@ -45433,9 +45445,10 @@ var AttackSmokeEffect = /** @class */ (function (_super) {
         this.elapsedFrameCount++;
         // 半透明を表現
         this.sprite.visible = (this.elapsedFrameCount % 2 === 0);
+        var frequency = AttackSmokeEffect.TextureFrameUpdateFrequency;
         // テクスチャ更新周期になったら次のテクスチャに切り替える
-        if (this.elapsedFrameCount % AttackSmokeEffect.TextureFrameUpdateFrequency === 0) {
-            var count = this.elapsedFrameCount / AttackSmokeEffect.TextureFrameUpdateFrequency;
+        if (this.elapsedFrameCount % frequency === 0) {
+            var count = this.elapsedFrameCount / frequency;
             var index = Math.floor(count) + 1;
             // すべてのテクスチャが再生されたら自然消滅させる
             if (index > Resource__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Static.AttackSmoke)) {
@@ -45540,9 +45553,10 @@ var CollapseExplodeEffect = /** @class */ (function (_super) {
         if (this.elapsedFrameCount === 1) {
             this.playSe();
         }
+        var frequency = CollapseExplodeEffect.TextureFrameUpdateFrequency;
         // テクスチャ更新周期になったら次のテクスチャに切り替える
-        if (this.elapsedFrameCount % CollapseExplodeEffect.TextureFrameUpdateFrequency === 0) {
-            var count = this.elapsedFrameCount / CollapseExplodeEffect.TextureFrameUpdateFrequency;
+        if (this.elapsedFrameCount % frequency === 0) {
+            var count = this.elapsedFrameCount / frequency;
             var index = Math.floor(count) + 1;
             // すべてのテクスチャが再生されたら自然消滅させる
             if (index > Resource__WEBPACK_IMPORTED_MODULE_1__["default"].MaxFrameIndex(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Static.CollapseExplode)) {
@@ -45822,9 +45836,10 @@ var HealthGaugeEffect = /** @class */ (function (_super) {
             var reduceDistance = this.fromPercent - this.toPercent;
             var reduceProgress = this.elapsedFrameCount / this.reducingFrameCount;
             var currentPercent = this.fromPercent - reduceDistance * reduceProgress;
+            var width = this.gaugeWidth * currentPercent;
             this.currentGraphic.clear();
             this.currentGraphic.beginFill(this.currentColor, 1);
-            this.currentGraphic.drawRect(0, 0, this.gaugeWidth * currentPercent, this.gaugeHeight);
+            this.currentGraphic.drawRect(0, 0, width, this.gaugeHeight);
         }
         else if (this.elapsedFrameCount > this.activeFrameCount) {
             // 規定フレーム数再生したら自然消滅させる
@@ -45879,6 +45894,14 @@ var AttackableEntity = /** @class */ (function () {
          */
         this.currentHealth = 0;
         /**
+         * 現在フレームでのダメージ数
+         */
+        this.currentFrameDamage = 0;
+        /**
+         * ノックバック経過フレーム数
+         */
+        this.currentKnockBackFrameCount = 0;
+        /**
          * 拠点からの距離
          */
         this.distance = 0;
@@ -45895,10 +45918,10 @@ var AttackableEntity = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/entity/BaseEntity.ts":
-/*!**********************************!*\
-  !*** ./src/entity/BaseEntity.ts ***!
-  \**********************************/
+/***/ "./src/entity/CastleEntity.ts":
+/*!************************************!*\
+  !*** ./src/entity/CastleEntity.ts ***!
+  \************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45922,23 +45945,25 @@ var __extends = (undefined && undefined.__extends) || (function () {
 /**
  * 拠点のパラメータ
  */
-var BaseEntity = /** @class */ (function (_super) {
-    __extends(BaseEntity, _super);
+var CastleEntity = /** @class */ (function (_super) {
+    __extends(CastleEntity, _super);
     /**
      * コンストラクタ
      */
-    function BaseEntity(baseId, isPlayer) {
+    function CastleEntity(master, isPlayer) {
         var _this = _super.call(this, isPlayer) || this;
         /**
          * 拠点 ID
          */
-        _this.baseId = 0;
-        _this.baseId = baseId;
+        _this.castleId = 0;
+        _this.castleId = master.castleId;
+        _this.maxHealth = master.maxHealth;
+        _this.currentHealth = _this.maxHealth;
         return _this;
     }
-    return BaseEntity;
+    return CastleEntity;
 }(entity_AttackableEntity__WEBPACK_IMPORTED_MODULE_0__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (BaseEntity);
+/* harmony default export */ __webpack_exports__["default"] = (CastleEntity);
 
 
 /***/ }),
@@ -46006,8 +46031,9 @@ __webpack_require__.r(__webpack_exports__);
 var AttackableState = Object.freeze({
     IDLE: 1,
     ENGAGED: 2,
-    DEAD: 3,
-    WAIT: 4
+    KNOCK_BACK: 3,
+    DEAD: 4,
+    WAIT: 5
 });
 /* harmony default export */ __webpack_exports__["default"] = (AttackableState);
 
@@ -46064,19 +46090,30 @@ __webpack_require__.r(__webpack_exports__);
 function initGame() {
     var width = 1136;
     var height = 640;
+    var pixiAppOption = {
+        backgroundColor: 0x222222
+    };
+    Debug: {
+        // コンソールからオブジェクトを調査できるように window に生やす
+        window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"];
+        // 画面キャプチャ
+        pixiAppOption.preserveDrawingBuffer = true;
+        document.body.addEventListener('keydown', function (event) {
+            if (event.ctrlKey === true && event.key === 'c') {
+                var a = document.createElement("a");
+                a.setAttribute("href", managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].instance.game.view.toDataURL());
+                a.setAttribute("download", "figure_" + new Date().getTime());
+                a.click();
+            }
+        });
+    }
     managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].start({
         glWidth: width,
         glHeight: height,
-        option: {
-            backgroundColor: 0x222222
-        }
+        option: pixiAppOption
     });
     // 最初のシーンの読み込み
     managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_TitleScene__WEBPACK_IMPORTED_MODULE_3__["default"]());
-    // コンソールからオブジェクトを調査できるように window に生やす
-    Debug: {
-        window.GameManager = managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"];
-    }
 }
 var fontLoaded = false;
 var windowLoaded = false;
@@ -46153,10 +46190,6 @@ var GameManager = /** @class */ (function () {
             throw new Error('GameManager can be instantiate only once');
         }
         this.game = app;
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_2__["default"].init(function (_e) {
-            console.debug('indexed db could not be initialized');
-        });
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].init();
     }
     /**
      * ゲームを起動する
@@ -46168,6 +46201,10 @@ var GameManager = /** @class */ (function () {
         // GameManager インスタンス生成
         var instance = new GameManager(game);
         GameManager.instance = instance;
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_2__["default"].init(function (_e) {
+            console.debug('indexed db could not be initialized');
+        });
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].init();
         // canvas を DOM に追加
         document.body.appendChild(game.view);
         // リサイズイベントの登録
@@ -46201,7 +46238,7 @@ var GameManager = /** @class */ (function () {
             return false;
         }
         if (instance.currentScene) {
-            instance.currentScene.destroy();
+            instance.currentScene.destroy({ children: true });
         }
         instance.currentScene = newScene;
         if (instance.game) {
@@ -46266,7 +46303,8 @@ var GameManager = /** @class */ (function () {
         var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_1__["detect"])();
         // iOS は対応していないが一応記述しておく
         if (browser && (browser.os === 'iOS' || browser.os === 'Android OS')) {
-            var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+            var type = typeof document.ontouchend;
+            var eventName = (type === 'undefined') ? 'mousedown' : 'touchend';
             document.body.addEventListener(eventName, GameManager.requestFullScreen);
         }
     };
@@ -46402,7 +46440,8 @@ var IndexedDBManager = /** @class */ (function () {
     IndexedDBManager.upgradeDB = function (e) {
         var db = e.target.result;
         var index = IndexedDBManager.storeIndex;
-        var store = db.createObjectStore(IndexedDBManager.storeName, { keyPath: index });
+        var storeName = IndexedDBManager.storeName;
+        var store = db.createObjectStore(storeName, { keyPath: index });
         store.createIndex(index, index, { unique: true });
     };
     /**
@@ -46458,12 +46497,14 @@ var IndexedDBManager = /** @class */ (function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/index.js");
-/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(detect_browser__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/index.js");
+/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(detect_browser__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var modules_Sound__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! modules/Sound */ "./src/modules/Sound.ts");
 
 
-var SUPPORTED_EXTENSIONS = ['mp3'];
+
 /**
  * サウンドを扱う
  * Sound の高級機能
@@ -46516,11 +46557,11 @@ var SoundManager = /** @class */ (function () {
             var AudioContextClass = window.AudioContext || window.webkitAudioContext;
             SoundManager.context = new AudioContextClass();
         }
-        var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_0__["detect"])();
+        var browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_1__["detect"])();
         if (!browser) {
             return;
         }
-        SoundManager.addLoaderMiddleware(browser);
+        SoundManager.useWebAudio(browser);
         SoundManager.setSoundInitializeEvent(browser);
         SoundManager.setWindowLifeCycleEvent(browser);
     };
@@ -46550,27 +46591,30 @@ var SoundManager = /** @class */ (function () {
     /**
      * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
      */
-    SoundManager.addLoaderMiddleware = function (browser) {
-        if (SoundManager.loaderMiddlewareAdded) {
+    SoundManager.useWebAudio = function (browser) {
+        if (SoundManager.webAudioInitialized) {
             return;
         }
+        var supportedExtensions = SoundManager.supportedExtensions;
         // xhr でバイナリ取得する拡張子を登録
-        for (var i = 0; i < SUPPORTED_EXTENSIONS.length; i++) {
-            var extension = SUPPORTED_EXTENSIONS[i];
-            var PixiResource = PIXI.loaders.Loader.Resource;
+        for (var i = 0; i < supportedExtensions.length; i++) {
+            var extension = supportedExtensions[i];
+            var PixiResource = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loaders"].Loader.Resource;
             PixiResource.setExtensionXhrType(extension, PixiResource.XHR_RESPONSE_TYPE.BUFFER);
             PixiResource.setExtensionLoadType(extension, PixiResource.LOAD_TYPE.XHR);
         }
         // Chrome の一部バージョンでサウンドのデコード方法が異なるためメソッドを変える
-        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+        var majorVersion = (browser.version)
+            ? browser.version.split('.')[0]
+            : '0';
         var methodName = 'decodeAudio';
         if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) === 64) {
             methodName = 'decodeAudioWithPromise';
         }
         // resource-loader ミドルウェアの登録
-        PIXI.loader.use(function (resource, next) {
+        pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].use(function (resource, next) {
             var extension = resource.url.split('?')[0].split('.')[1];
-            if (extension && SUPPORTED_EXTENSIONS.indexOf(extension) !== -1) {
+            if (extension && supportedExtensions.indexOf(extension) !== -1) {
                 // リソースオブジェクトに buffer という名前でプロパティを生やす
                 SoundManager[methodName](resource.data, function (buf) {
                     resource.buffer = buf;
@@ -46581,7 +46625,7 @@ var SoundManager = /** @class */ (function () {
                 next();
             }
         });
-        SoundManager.loaderMiddlewareAdded = true;
+        SoundManager.webAudioInitialized = true;
     };
     /**
      * オーディオデータのデコード処理
@@ -46606,9 +46650,12 @@ var SoundManager = /** @class */ (function () {
      * そのため、初回画面タップ時にダミーの音声を再生させて以降のサウンド再生処理を許容できるようにする
      */
     SoundManager.setSoundInitializeEvent = function (browser) {
-        var eventName = (typeof document.ontouchend === 'undefined') ? 'mousedown' : 'touchend';
+        var type = typeof document.ontouchend;
+        var eventName = (type === 'undefined') ? 'mousedown' : 'touchend';
         var soundInitializer;
-        var majorVersion = (browser.version) ? browser.version.split('.')[0] : '0';
+        var majorVersion = (browser.version)
+            ? browser.version.split('.')[0]
+            : '0';
         if (browser.name === 'chrome' && Number.parseInt(majorVersion, 10) >= 66) {
             soundInitializer = function () {
                 if (SoundManager.sharedContext) {
@@ -46619,10 +46666,11 @@ var SoundManager = /** @class */ (function () {
         }
         else if (browser.name === 'safari') {
             soundInitializer = function () {
-                if (SoundManager.sharedContext) {
-                    var silentSource = SoundManager.sharedContext.createBufferSource();
-                    silentSource.buffer = SoundManager.sharedContext.createBuffer(1, 1, 44100);
-                    silentSource.connect(SoundManager.sharedContext.destination);
+                var context = SoundManager.sharedContext;
+                if (context) {
+                    var silentSource = context.createBufferSource();
+                    silentSource.buffer = context.createBuffer(1, 1, 44100);
+                    silentSource.connect(context.destination);
                     silentSource.start(0);
                     silentSource.disconnect();
                 }
@@ -46641,7 +46689,9 @@ var SoundManager = /** @class */ (function () {
     SoundManager.setWindowLifeCycleEvent = function (browser) {
         if (browser.name === 'safari') {
             document.addEventListener('webkitvisibilitychange', function () {
-                document.webkitHidden ? SoundManager.pause() : SoundManager.resume();
+                document.webkitHidden
+                    ? SoundManager.pause()
+                    : SoundManager.resume();
             });
         }
         else {
@@ -46666,7 +46716,7 @@ var SoundManager = /** @class */ (function () {
      * Sound インスタンスを SoundManager 管理下として生成し返却する
      */
     SoundManager.createSound = function (name, buf) {
-        var sound = new modules_Sound__WEBPACK_IMPORTED_MODULE_1__["default"](buf);
+        var sound = new modules_Sound__WEBPACK_IMPORTED_MODULE_2__["default"](buf);
         SoundManager.registerSound(name, sound);
         return sound;
     };
@@ -46733,9 +46783,13 @@ var SoundManager = /** @class */ (function () {
      */
     SoundManager.context = null;
     /**
-     * PIXI.Loader ミドルウェアが登録済みかどうかのフラグ
+     * WebAudio 利用の初期化済みフラグ
      */
-    SoundManager.loaderMiddlewareAdded = false;
+    SoundManager.webAudioInitialized = false;
+    /**
+     * SoundManager がサポートするサウンドファイル拡張子
+     */
+    SoundManager.supportedExtensions = ['mp3'];
     return SoundManager;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (SoundManager);
@@ -46752,20 +46806,14 @@ var SoundManager = /** @class */ (function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! enum/AttackableState */ "./src/enum/AttackableState.ts");
-/* harmony import */ var modules_BattleLogicDefaultDelegator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/BattleLogicDefaultDelegator */ "./src/modules/BattleLogicDefaultDelegator.ts");
+/* harmony import */ var modules_BattleLogicConfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modules/BattleLogicConfig */ "./src/modules/BattleLogicConfig.ts");
+/* harmony import */ var enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! enum/AttackableState */ "./src/enum/AttackableState.ts");
 /* harmony import */ var entity_UnitEntity__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! entity/UnitEntity */ "./src/entity/UnitEntity.ts");
-/* harmony import */ var entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! entity/BaseEntity */ "./src/entity/BaseEntity.ts");
+/* harmony import */ var entity_CastleEntity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! entity/CastleEntity */ "./src/entity/CastleEntity.ts");
 
 
 
 
-// ID を無効にする時の値
-var INVALID_UNIT_ID = -1;
-// 拠点配列のプレイヤー拠点要素のインデックス
-var BASE_ENTITIES_PLAYER_INDEX = 0;
-// 拠点配列のAI拠点要素のインデックス
-var BASE_ENTITIES_AI_INDEX = 1;
 /**
  * ゲーム内バトルパートのマネージャ
  * ゲームロジックを中心に扱う
@@ -46773,17 +46821,9 @@ var BASE_ENTITIES_AI_INDEX = 1;
 var BattleLogic = /** @class */ (function () {
     function BattleLogic() {
         /**
-         * フレームごとのコスト回復量
+         * バトル設定
          */
-        this.costRecoveryPerFrame = 0;
-        /**
-         * 利用可能コストの上限値
-         */
-        this.maxAvailableCost = 100;
-        /**
-         * BattleLogicDelegate 実装オブジェクト
-         */
-        this.delegator = new modules_BattleLogicDefaultDelegator__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        this.config = Object.freeze(new modules_BattleLogicConfig__WEBPACK_IMPORTED_MODULE_0__["default"]());
         /**
          * 現在の利用可能なコスト
          */
@@ -46795,11 +46835,7 @@ var BattleLogic = /** @class */ (function () {
         /**
          * 生成済みの Unit インスタンスを保持する配列
          */
-        this.unitEntities = [];
-        /**
-         * 生成済みの Base インスタンスを保持する配列
-         */
-        this.baseEntities = [];
+        this.attackableEntities = [];
         /**
          * フィールドマスタのキャッシュ
          */
@@ -46808,6 +46844,10 @@ var BattleLogic = /** @class */ (function () {
          * UnitMaster をキャッシュするための Map
          */
         this.unitMasterCache = new Map();
+        /**
+         * CastleMaster をキャッシュするための Map
+         */
+        this.castleMasterCache = new Map();
         /**
          * StageMaster.waves をキャッシュするための Map
          */
@@ -46829,13 +46869,20 @@ var BattleLogic = /** @class */ (function () {
      * デリゲータとマスタ情報で初期化
      */
     BattleLogic.prototype.init = function (params) {
+        if (params.config) {
+            this.config = Object.freeze(params.config);
+        }
         // デリゲータのセット
         this.delegator = params.delegator;
+        this.player = params.player;
         // キャッシュクリア
         this.aiWaveCache.clear();
         this.unitMasterCache.clear();
         // マスターのキャッシュ処理
         this.stageMasterCache = params.stageMaster;
+        // 拠点マスターのキャッシュ処理
+        this.castleMasterCache.set(this.player.castle.castleId, this.player.castle);
+        this.castleMasterCache.set(params.ai.castle.castleId, params.ai.castle);
         // AI生成情報のキャッシュ
         var waves = this.stageMasterCache.waves;
         var keys = Object.keys(waves);
@@ -46848,22 +46895,10 @@ var BattleLogic = /** @class */ (function () {
             var unit = params.unitMasters[i];
             this.unitMasterCache.set(unit.unitId, unit);
         }
-        var playerBaseEntity = new entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__["default"](params.playerBase.baseId, true);
-        var aiBaseEntity = new entity_BaseEntity__WEBPACK_IMPORTED_MODULE_3__["default"](this.stageMasterCache.aiBase.baseId, false);
-        // 拠点エンティティの ID 割当て
-        playerBaseEntity.id = this.nextEntityId++;
-        aiBaseEntity.id = this.nextEntityId++;
-        // 拠点エンティティの health 設定
-        playerBaseEntity.maxHealth = params.playerBase.health;
-        aiBaseEntity.maxHealth = this.stageMasterCache.aiBase.health;
-        playerBaseEntity.currentHealth = params.playerBase.health;
-        aiBaseEntity.currentHealth = this.stageMasterCache.aiBase.health;
-        // 拠点エンティティの保持
-        this.baseEntities[BASE_ENTITIES_PLAYER_INDEX] = playerBaseEntity;
-        this.baseEntities[BASE_ENTITIES_AI_INDEX] = aiBaseEntity;
-        // デリゲータに拠点エンティティが生成時の処理を行わせる
-        this.delegator.onBaseEntitySpawned(playerBaseEntity, this.stageMasterCache.playerBase.position.x);
-        this.delegator.onBaseEntitySpawned(aiBaseEntity, this.stageMasterCache.aiBase.position.x);
+        this.castleEntities = {
+            player: this.spawnCastle(this.player.castle, true),
+            ai: this.spawnCastle(params.ai.castle, false)
+        };
     };
     /**
      * Unit 生成をリクエストする
@@ -46886,21 +46921,15 @@ var BattleLogic = /** @class */ (function () {
         this.requestSpawn(unitId, false);
     };
     /**
-     * 渡された Unit が、ロジック上死亡扱いであるかどうかを返す
-     */
-    BattleLogic.prototype.isDied = function (unit) {
-        return unit.id === INVALID_UNIT_ID;
-    };
-    /**
      * ゲーム更新処理
      * 外部から任意のタイミングでコールする
      */
-    BattleLogic.prototype.update = function (_delta) {
+    BattleLogic.prototype.update = function () {
         if (!this.isGameOver) {
             // ゲーム終了判定
             this.updateGameOver();
             // コスト回復
-            this.updateAvailableCost(this.availableCost + this.costRecoveryPerFrame);
+            this.updateAvailableCost(this.availableCost + this.config.costRecoveryPerFrame);
             // AI ユニットの生成リクエスト発行
             this.updateAISpawn();
             // リクエストされているユニット生成実行
@@ -46910,177 +46939,217 @@ var BattleLogic = /** @class */ (function () {
             // エンティティのステート変更
             this.updateEntityState();
         }
-        // unitEntities 配列の圧縮
-        var activeUnitEntities = [];
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (!this.isDied(entity)) {
-                activeUnitEntities.push(entity);
+        this.updatePostProcess();
+        this.passedFrameCount++;
+    };
+    /**
+     * メインループ後処理
+     */
+    BattleLogic.prototype.updatePostProcess = function () {
+        // attackableEntities 配列の圧縮
+        var activeAttackableEntities = [];
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            var entity = this.attackableEntities[i];
+            if (entity.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD) {
+                activeAttackableEntities.push(entity);
             }
         }
-        this.unitEntities = activeUnitEntities;
-        this.passedFrameCount++;
+        this.attackableEntities = activeAttackableEntities;
+        // 現在フレームで受けたダメージをリセット
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            this.attackableEntities[i].currentFrameDamage = 0;
+        }
     };
     /**
      * Unit のパラメータを更新する
      * ステートは全てのパラメータが変化した後に更新する
      */
     BattleLogic.prototype.updateEntityParameter = function () {
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            this.updateDamage(this.unitEntities[i]);
-            this.updateDistance(this.unitEntities[i]);
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            var attackable = this.attackableEntities[i];
+            var master = attackable.unitId
+                ? this.unitMasterCache.get(attackable.unitId)
+                : this.castleMasterCache.get(attackable.castleId);
+            if (!master) {
+                continue;
+            }
+            this.updateDamage(attackable, master);
+            this.updateDistance(attackable, master);
         }
     };
     /**
      * エンティティのステートを更新する
-     * ステート優先順位は右記の通り DEAD > ENGAGED > IDLE
+     * ステート優先順位は右記の通り DEAD > KNOCK_BACK > ENGAGED > IDLE
      * ユニット毎に処理を行うとステートを条件にした処理結果が
      * タイミングによって異なってしまうのでステート毎に処理を行う
      */
     BattleLogic.prototype.updateEntityState = function () {
         // ステートの変化をコールバックするために古いステートを保持するコンテナ
-        var unitStates = [];
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            unitStates.push(this.unitEntities[i].state);
+        var attackableStates = [];
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            attackableStates.push(this.attackableEntities[i].state);
         }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD) {
-                this.updateUnitDeadState(entity);
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            var entity = this.attackableEntities[i];
+            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].KNOCK_BACK) {
+                this.updateAttackableKnockBackState(entity);
             }
         }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].ENGAGED) {
-                this.updateUnitEngagedState(entity);
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            var entity = this.attackableEntities[i];
+            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].ENGAGED) {
+                this.updateAttackableEngagedState(entity);
             }
         }
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE) {
-                this.updateUnitIdleState(entity);
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            var entity = this.attackableEntities[i];
+            if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE) {
+                this.updateAttackableIdleState(entity);
             }
         }
         // エンティティ毎にステートが変更時処理をデリゲータに委譲する
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var entity = this.unitEntities[i];
-            var oldState = unitStates[i];
-            if (oldState !== entity.state) {
-                this.delegator.onAttackableEntityStateChanged(entity, oldState);
-            }
-        }
-        // 拠点のステート操作
-        // AI のステートを先に評価、同一フレーム内で引き分けた場合はプレーヤーの勝利
-        var base = this.baseEntities[BASE_ENTITIES_AI_INDEX];
-        if (base.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD && base.currentHealth <= 0) {
-            var oldState = base.state;
-            base.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
-            this.delegator.onAttackableEntityStateChanged(base, oldState);
-        }
-        else {
-            base = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
-            if (base.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD && base.currentHealth <= 0) {
-                var oldState = base.state;
-                base.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
-                this.delegator.onAttackableEntityStateChanged(base, oldState);
+        if (this.delegator) {
+            for (var i = 0; i < this.attackableEntities.length; i++) {
+                var entity = this.attackableEntities[i];
+                var oldState = attackableStates[i];
+                if (oldState !== entity.state) {
+                    this.delegator.onAttackableEntityStateChanged(entity, oldState);
+                }
             }
         }
     };
     /**
-     * ダメージ判定を行い、必要なら health を上限させる
+     * ダメージ判定を行い、必要に応じて以下を更新する。
+     * - currentHealth
+     * - currentFrameDamage
      */
-    BattleLogic.prototype.updateDamage = function (unit) {
-        if (!unit.engagedEntity) {
-            return;
-        }
-        var master = this.unitMasterCache.get(unit.unitId);
-        if (!master) {
+    BattleLogic.prototype.updateDamage = function (attackable, master) {
+        if (!attackable.engagedEntity) {
             return;
         }
         // ダメージを与えられるかどうかの判断をデリゲータに委譲する
-        if (this.delegator.shouldDamage(unit, unit.engagedEntity)) {
-            unit.engagedEntity.currentHealth = unit.engagedEntity.currentHealth - master.power;
+        var shouldDamage = this.delegator ? this.delegator.shouldDamage(attackable, attackable.engagedEntity) : true;
+        if (shouldDamage) {
+            var newHealth = attackable.engagedEntity.currentHealth - master.power;
+            attackable.engagedEntity.currentFrameDamage += master.power;
+            attackable.engagedEntity.currentHealth = newHealth;
             // ダメージを与えた後の処理をデリゲータに委譲する
-            this.delegator.onAttackableEntityHealthUpdated(unit, unit.engagedEntity, unit.engagedEntity.currentHealth + master.power, unit.engagedEntity.currentHealth, unit.engagedEntity.maxHealth);
+            if (this.delegator) {
+                this.delegator.onAttackableEntityHealthUpdated(attackable, attackable.engagedEntity, attackable.engagedEntity.currentHealth + master.power, attackable.engagedEntity.currentHealth, attackable.engagedEntity.maxHealth);
+            }
         }
     };
     /**
-     * 移動可能か判定し、可能なら移動させる
+     * 移動可能か判定し、必要なら以下を更新する。
+     * - distance
+     * - currentKnockBackFrameCount
      */
-    BattleLogic.prototype.updateDistance = function (unit) {
-        if (unit.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE) {
-            return;
+    BattleLogic.prototype.updateDistance = function (attackable, master) {
+        if (attackable.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].KNOCK_BACK) {
+            attackable.distance -= master.knockBackSpeed;
+            attackable.currentKnockBackFrameCount++;
+            if (this.delegator) {
+                var rate = attackable.currentKnockBackFrameCount / master.knockBackFrames;
+                this.delegator.onAttackableEntityKnockingBack(attackable, rate);
+            }
         }
-        var master = this.unitMasterCache.get(unit.unitId);
+        else {
+            attackable.currentKnockBackFrameCount = 0;
+            if (attackable.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE) {
+                attackable.currentKnockBackFrameCount = 0;
+                // 移動可能かどうかの判断をデリゲータに委譲する
+                var shouldWalk = this.delegator ? this.delegator.shouldAttackableWalk(attackable) : true;
+                if (shouldWalk) {
+                    attackable.distance += master.speed;
+                    // 移動した後の処理をデリゲータに委譲する
+                    if (this.delegator) {
+                        this.delegator.onAttackableEntityWalked(attackable);
+                    }
+                }
+            }
+        }
+    };
+    /**
+     * ノックバック時のステート更新処理
+     */
+    BattleLogic.prototype.updateAttackableKnockBackState = function (attackable) {
+        attackable.engagedEntity = null;
+        // TODO: should not read master for each entity
+        var master = attackable.unitId
+            ? this.unitMasterCache.get(attackable.unitId)
+            : this.castleMasterCache.get(attackable.castleId);
         if (!master) {
             return;
         }
-        // 移動可能かどうかの判断をデリゲータに委譲する
-        if (this.delegator.shouldUnitWalk(unit)) {
-            unit.distance += master.speed;
-            // 移動した後の処理をデリゲータに委譲する
-            this.delegator.onUnitEntityWalked(unit);
+        if (master.knockBackFrames !== 0 && attackable.currentKnockBackFrameCount < master.knockBackFrames) {
+            return;
         }
-    };
-    /**
-     * 死亡時のステート更新処理
-     */
-    BattleLogic.prototype.updateUnitDeadState = function (unit) {
-        unit.id = INVALID_UNIT_ID;
+        attackable.state = (attackable.currentHealth < 1) ? enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].DEAD : enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
     };
     /**
      * 接敵時のステート更新処理
      */
-    BattleLogic.prototype.updateUnitEngagedState = function (unit) {
-        // ロック解除判定
-        if (unit.engagedEntity && unit.engagedEntity.currentHealth <= 0) {
-            unit.engagedEntity = null;
-            unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
+    BattleLogic.prototype.updateAttackableEngagedState = function (attackable) {
+        // DEAD 判定
+        if (attackable.currentHealth < 1) {
+            attackable.engagedEntity = null;
+            // ノックバックさせてから DEAD に遷移
+            attackable.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].KNOCK_BACK;
+            return;
         }
-        // 自身の DEAD 判定
-        if (unit.currentHealth <= 0) {
-            unit.engagedEntity = null;
-            unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].DEAD;
+        // IDLE 判定
+        if (attackable.engagedEntity) {
+            var target = attackable.engagedEntity;
+            var targetIsDead = target.currentHealth < 1;
+            var targetIsKnockingBack = target.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].KNOCK_BACK;
+            if (targetIsDead || targetIsKnockingBack || !this.chivalrousFilter(attackable, attackable.engagedEntity)) {
+                attackable.engagedEntity = null;
+                attackable.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
+            }
+        }
+        // KNOCK_BACK 判定
+        var oldHealth = attackable.currentHealth + attackable.currentFrameDamage;
+        for (var i = 0; i < this.config.knockBackHealthThreasholds.length; i++) {
+            var rate = this.config.knockBackHealthThreasholds[i];
+            var threashold = attackable.maxHealth * rate;
+            if (attackable.currentHealth >= threashold) {
+                continue;
+            }
+            if (oldHealth >= threashold) {
+                attackable.engagedEntity = null;
+                attackable.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].KNOCK_BACK;
+                break;
+            }
         }
     };
     /**
      * 何もしていない状態でのステート更新処理
      */
-    BattleLogic.prototype.updateUnitIdleState = function (unit) {
-        // ユニットに対しての接敵判定、ユニットを無視して拠点に攻撃させない
-        for (var i = 0; i < this.unitEntities.length; i++) {
-            var target = this.unitEntities[i];
-            // 味方同士でなければスキップ
-            if ((unit.isPlayer && target.isPlayer) || (!unit.isPlayer && !target.isPlayer)) {
+    BattleLogic.prototype.updateAttackableIdleState = function (attackable) {
+        for (var i = 0; i < this.attackableEntities.length; i++) {
+            var target = this.attackableEntities[i];
+            var targetIsCastle = target.castleId !== undefined;
+            // 味方同士ならスキップ
+            if ((attackable.isPlayer && target.isPlayer) ||
+                (!attackable.isPlayer && !target.isPlayer)) {
                 continue;
             }
             // ターゲットが接敵可能なステートでなければスキップ
-            if (target.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE && target.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].ENGAGED) {
+            if (!targetIsCastle &&
+                target.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE &&
+                target.state !== enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].ENGAGED) {
                 continue;
             }
             // デリゲータに接敵可能かどうかの判断を委譲する
-            if (this.delegator.shouldEngageAttackableEntity(unit, target)) {
-                unit.engagedEntity = target;
-                unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].ENGAGED;
+            // TODO: implement logical condition, default true currently
+            var shouldEngage = this.delegator ? this.delegator.shouldEngageAttackableEntity(attackable, target) : true;
+            if (shouldEngage) {
+                if (this.chivalrousFilter(attackable, target)) {
+                    attackable.engagedEntity = target;
+                    attackable.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].ENGAGED;
+                }
                 // 必要であれば接敵後の処理をデリゲータに委譲する
                 break;
-            }
-        }
-        // 拠点に対しての接敵判定
-        if (!unit.engagedEntity) {
-            if (unit.isPlayer) {
-                var baseEntity = this.baseEntities[BASE_ENTITIES_AI_INDEX];
-                if (this.delegator.shouldEngageAttackableEntity(unit, baseEntity)) {
-                    unit.engagedEntity = baseEntity;
-                    unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].ENGAGED;
-                }
-            }
-            else {
-                var baseEntity = this.baseEntities[BASE_ENTITIES_PLAYER_INDEX];
-                if (this.delegator.shouldEngageAttackableEntity(unit, baseEntity)) {
-                    unit.engagedEntity = baseEntity;
-                    unit.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].ENGAGED;
-                }
             }
         }
     };
@@ -47092,25 +47161,36 @@ var BattleLogic = /** @class */ (function () {
         this.isGameOver = (isPlayerWon || this.isAiWon());
         if (this.isGameOver) {
             // バトル終了の場合はすべてのユニットを待機アニメーションに変える
-            for (var i = 0; i < this.unitEntities.length; i++) {
-                var entity = this.unitEntities[i];
-                entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
+            for (var i = 0; i < this.attackableEntities.length; i++) {
+                var entity = this.attackableEntities[i];
+                if (entity.castleId) {
+                    continue;
+                }
+                entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
             }
             // バトル終了後処理をデリゲータに委譲する
-            this.delegator.onGameOver(isPlayerWon);
+            if (this.delegator) {
+                this.delegator.onGameOver(isPlayerWon);
+            }
         }
     };
     /**
      * プレイヤーが勝利しているかどうかを返す
      */
     BattleLogic.prototype.isPlayerWon = function () {
-        return this.baseEntities[BASE_ENTITIES_AI_INDEX].currentHealth <= 0;
+        if (!this.castleEntities) {
+            throw new Error('castle entities are missing');
+        }
+        return this.castleEntities.ai.currentHealth < 1;
     };
     /**
      * AI が勝利しているかどうかを返す
      */
     BattleLogic.prototype.isAiWon = function () {
-        return this.baseEntities[BASE_ENTITIES_PLAYER_INDEX].currentHealth <= 0;
+        if (!this.castleEntities) {
+            throw new Error('castle entities are missing');
+        }
+        return this.castleEntities.player.currentHealth < 1;
     };
     /**
      * 現在のフレームに応じて AI ユニットを生成させる
@@ -47144,27 +47224,23 @@ var BattleLogic = /** @class */ (function () {
             if (!master) {
                 continue;
             }
-            // ユニット生成位置を知らせるために拠点の位置を保持する
-            var baseLocation = void 0;
             if (reservedUnit.isPlayer) {
                 // コストが足りなければ何もしない
                 if ((tmpCost - master.cost) < 0) {
                     continue;
                 }
                 tmpCost -= master.cost;
-                baseLocation = this.stageMasterCache.playerBase.position.x;
-            }
-            else {
-                baseLocation = this.stageMasterCache.aiBase.position.x;
             }
             var entity = new entity_UnitEntity__WEBPACK_IMPORTED_MODULE_2__["default"](reservedUnit.unitId, reservedUnit.isPlayer);
             entity.id = this.nextEntityId++;
             entity.maxHealth = master.maxHealth;
             entity.currentHealth = master.maxHealth;
-            entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_0__["default"].IDLE;
-            this.unitEntities.push(entity);
+            entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
+            this.attackableEntities.push(entity);
             // ユニット生成後処理をデリゲータに移譲する
-            this.delegator.onUnitEntitySpawned(entity, baseLocation);
+            if (this.delegator) {
+                this.delegator.onUnitEntitySpawned(entity);
+            }
         }
         this.updateAvailableCost(tmpCost);
         this.spawnRequestedUnitUnitIds = [];
@@ -47174,13 +47250,66 @@ var BattleLogic = /** @class */ (function () {
      */
     BattleLogic.prototype.updateAvailableCost = function (newCost) {
         var cost = newCost;
-        if (cost > this.maxAvailableCost) {
-            cost = this.maxAvailableCost;
+        if (cost > this.config.maxAvailableCost) {
+            cost = this.config.maxAvailableCost;
         }
         this.availableCost = cost;
-        // コスト更新後処理をデリゲータに移譲する
-        this.delegator.onAvailableCostUpdated(this.availableCost);
+        var availablePlayerUnitIds = [];
+        for (var i = 0; i < this.player.unitIds.length; i++) {
+            var unitId = this.player.unitIds[i];
+            var master = this.unitMasterCache.get(unitId);
+            if (!master) {
+                continue;
+            }
+            if (this.availableCost >= master.cost) {
+                availablePlayerUnitIds.push(unitId);
+            }
+        }
+        // コスト更新後処理をデリゲータに委譲する
+        if (this.delegator) {
+            this.delegator.onAvailableCostUpdated(this.availableCost, this.config.maxAvailableCost, availablePlayerUnitIds);
+        }
         return this.availableCost;
+    };
+    /**
+     * 1 対 多での接敵を許容する場合は true を返す
+     * 例外的に 1 対 多 を許容する場合があり、例えば拠点に対しての接敵は true とする
+     */
+    BattleLogic.prototype.chivalrousFilter = function (attackable, target) {
+        // 設定で 1 対 多が許容されていれば true
+        if (this.config.chivalrousEngage) {
+            // 相手が接敵していなければ接敵する
+            if (!target.engagedEntity) {
+                return true;
+            }
+            // 相手が拠点ならば接敵する
+            if (target.castleId !== undefined) {
+                return true;
+            }
+            // 相手の接敵中のエンティティが拠点ならば接敵する
+            if (target.engagedEntity.castleId !== undefined) {
+                return true;
+            }
+            // 相手が自身と接敵中ならば接敵する
+            if (target.engagedEntity.id === attackable.id) {
+                return true;
+            }
+            return false;
+        }
+        // それいがいはデフォルトで許容
+        return true;
+    };
+    BattleLogic.prototype.spawnCastle = function (castle, isPlayer) {
+        var entity = new entity_CastleEntity__WEBPACK_IMPORTED_MODULE_3__["default"](castle, isPlayer);
+        // 拠点エンティティの ID 割当て
+        entity.id = this.nextEntityId++;
+        entity.state = enum_AttackableState__WEBPACK_IMPORTED_MODULE_1__["default"].IDLE;
+        this.attackableEntities.push(entity);
+        // デリゲータに拠点エンティティが生成時の処理を行わせる
+        if (this.delegator) {
+            this.delegator.onCastleEntitySpawned(entity, isPlayer);
+        }
+        return entity;
     };
     return BattleLogic;
 }());
@@ -47189,45 +47318,53 @@ var BattleLogic = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/modules/BattleLogicDefaultDelegator.ts":
-/*!****************************************************!*\
-  !*** ./src/modules/BattleLogicDefaultDelegator.ts ***!
-  \****************************************************/
+/***/ "./src/modules/BattleLogicConfig.ts":
+/*!******************************************!*\
+  !*** ./src/modules/BattleLogicConfig.ts ***!
+  \******************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/**
- * BattleLogicDelegate のデフォルト実装
- * 基本的には何もしない
- */
-var DefaultDelegator = /** @class */ (function () {
-    function DefaultDelegator() {
+var BattleLogicConfig = /** @class */ (function () {
+    function BattleLogicConfig(params) {
+        /**
+         * フレームごとのコスト回復量
+         */
+        this.costRecoveryPerFrame = 0;
+        /**
+         * 利用可能コストの上限値
+         */
+        this.maxAvailableCost = 100;
+        /**
+         * 1 対 1 の接敵のみを許可するかどうか
+         */
+        this.chivalrousEngage = true;
+        /**
+         * ノックバック条件となる体力閾値
+         * [0.5] の場合、体力が 0.5 以上から 0.5 未満に変動した場合にノックバックする
+         */
+        this.knockBackHealthThreasholds = [0.25, 0.5, 0.75];
+        if (!params) {
+            return;
+        }
+        if (params.costRecoveryPerFrame) {
+            this.costRecoveryPerFrame = params.costRecoveryPerFrame;
+        }
+        if (params.maxAvailableCost) {
+            this.maxAvailableCost = params.maxAvailableCost;
+        }
+        if (params.chivalrousEngage) {
+            this.chivalrousEngage = params.chivalrousEngage;
+        }
+        if (params.knockBackHealthThreasholds) {
+            this.knockBackHealthThreasholds = params.knockBackHealthThreasholds.sort().reverse();
+        }
     }
-    DefaultDelegator.prototype.onBaseEntitySpawned = function (_entity, _basePosition) {
-    };
-    DefaultDelegator.prototype.onUnitEntitySpawned = function (_entity, _basePosition) {
-    };
-    DefaultDelegator.prototype.onAttackableEntityStateChanged = function (_entity, _oldState) {
-    };
-    DefaultDelegator.prototype.onUnitEntityWalked = function (_entity) { };
-    DefaultDelegator.prototype.onAttackableEntityHealthUpdated = function (_attacker, _target, _fromHealth, _toHealth, _maxHealth) {
-    };
-    DefaultDelegator.prototype.onAvailableCostUpdated = function (_cost) { };
-    DefaultDelegator.prototype.onGameOver = function (_isPlayerWon) { };
-    DefaultDelegator.prototype.shouldEngageAttackableEntity = function (_attacker, _target) {
-        return true;
-    };
-    DefaultDelegator.prototype.shouldDamage = function (_attacker, _target) {
-        return true;
-    };
-    DefaultDelegator.prototype.shouldUnitWalk = function (_unit) {
-        return true;
-    };
-    return DefaultDelegator;
+    return BattleLogicConfig;
 }());
-/* harmony default export */ __webpack_exports__["default"] = (DefaultDelegator);
+/* harmony default export */ __webpack_exports__["default"] = (BattleLogicConfig);
 
 
 /***/ }),
@@ -47314,7 +47451,7 @@ var Sound = /** @class */ (function () {
             }
             var playedTime = audioContext.currentTime - this.playedAt;
             // ループ再生の場合は合計の再生時間から割り出す
-            if (this.source.loop) {
+            if (this.loop) {
                 var playLength = this.source.loopEnd - this.source.loopStart;
                 if (playedTime > playLength) {
                     return this.source.loopStart + (playedTime % playLength);
@@ -47325,6 +47462,12 @@ var Sound = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    /**
+     * paused の public ゲッタ
+     */
+    Sound.prototype.isPaused = function () {
+        return this.paused;
+    };
     /**
      * 再生開始
      */
@@ -47374,7 +47517,7 @@ var Sound = /** @class */ (function () {
      * 一時停止
      */
     Sound.prototype.pause = function () {
-        if (this.paused || !this.played) {
+        if (this.paused || !this.played || !this.source) {
             return;
         }
         this.offset = this.elapsedTime;
@@ -47460,7 +47603,9 @@ var UiGraph = /** @class */ (function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modules/UiNodeFactory/UiNodeFactory */ "./src/modules/UiNodeFactory/UiNodeFactory.ts");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/UiNodeFactory/UiNodeFactory */ "./src/modules/UiNodeFactory/UiNodeFactory.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47475,6 +47620,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+
 /**
  * PIXI.Sprite のファクトリ
  * テクスチャに、定義されているテクスチャ名で PIXI.utils.TextureCache から引いたデータを用いる
@@ -47485,10 +47631,11 @@ var SpriteFactory = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     SpriteFactory.prototype.createUiNode = function (nodeParams) {
-        var sprite = new PIXI.Sprite();
+        var sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"]();
         if (nodeParams) {
-            if (nodeParams.textureName && PIXI.utils.TextureCache[nodeParams.textureName]) {
-                sprite.texture = PIXI.utils.TextureCache[nodeParams.textureName];
+            var textureName = nodeParams.textureName;
+            if (textureName && pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureName]) {
+                sprite.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureName];
             }
             if (nodeParams.anchor) {
                 sprite.anchor.x = nodeParams.anchor[0];
@@ -47498,7 +47645,7 @@ var SpriteFactory = /** @class */ (function (_super) {
         return sprite;
     };
     return SpriteFactory;
-}(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
+}(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (SpriteFactory);
 
 
@@ -47513,7 +47660,9 @@ var SpriteFactory = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! modules/UiNodeFactory/UiNodeFactory */ "./src/modules/UiNodeFactory/UiNodeFactory.ts");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! modules/UiNodeFactory/UiNodeFactory */ "./src/modules/UiNodeFactory/UiNodeFactory.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47528,6 +47677,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+
 /**
  * PIXI.Text のファクトリ
  */
@@ -47539,7 +47689,7 @@ var TextFactory = /** @class */ (function (_super) {
     TextFactory.prototype.createUiNode = function (nodeParams) {
         var _a;
         var textStyleParams = {};
-        var container = new PIXI.Text();
+        var container = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Text"]();
         if (nodeParams) {
             if (nodeParams.family !== undefined) {
                 textStyleParams.fontFamily = nodeParams.family;
@@ -47560,11 +47710,11 @@ var TextFactory = /** @class */ (function (_super) {
                 container.text = nodeParams.text;
             }
         }
-        container.style = new PIXI.TextStyle(textStyleParams);
+        container.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["TextStyle"](textStyleParams);
         return container;
     };
     return TextFactory;
-}(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_0__["default"]));
+}(modules_UiNodeFactory_UiNodeFactory__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (TextFactory);
 
 
@@ -47671,8 +47821,9 @@ var UnitButtonFactory = /** @class */ (function (_super) {
     UnitButtonFactory.prototype.createUiNode = function (nodeParams) {
         var texture = undefined;
         if (nodeParams) {
-            if (nodeParams.textureName && pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[nodeParams.textureName]) {
-                texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[nodeParams.textureName];
+            var textureName = nodeParams.textureName;
+            if (textureName && pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureName]) {
+                texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__["utils"].TextureCache[textureName];
             }
         }
         return new display_battle_UnitButton__WEBPACK_IMPORTED_MODULE_2__["default"](texture);
@@ -47705,13 +47856,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
 /* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
 /* harmony import */ var modules_BattleLogic__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! modules/BattleLogic */ "./src/modules/BattleLogic.ts");
-/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
-/* harmony import */ var display_battle_Base__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Base */ "./src/display/battle/Base.ts");
-/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
-/* harmony import */ var display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/BattleResult */ "./src/display/battle/BattleResult.ts");
-/* harmony import */ var display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/single_shot/AttackSmoke */ "./src/display/battle/single_shot/AttackSmoke.ts");
-/* harmony import */ var display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/single_shot/Dead */ "./src/display/battle/single_shot/Dead.ts");
-/* harmony import */ var display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/single_shot/CollapseExplodeEffect */ "./src/display/battle/single_shot/CollapseExplodeEffect.ts");
+/* harmony import */ var modules_BattleLogicConfig__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! modules/BattleLogicConfig */ "./src/modules/BattleLogicConfig.ts");
+/* harmony import */ var display_battle_Unit__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! display/battle/Unit */ "./src/display/battle/Unit.ts");
+/* harmony import */ var display_battle_Castle__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! display/battle/Castle */ "./src/display/battle/Castle.ts");
+/* harmony import */ var display_battle_Field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! display/battle/Field */ "./src/display/battle/Field.ts");
+/* harmony import */ var display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! display/battle/BattleResult */ "./src/display/battle/BattleResult.ts");
+/* harmony import */ var display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! display/battle/single_shot/AttackSmoke */ "./src/display/battle/single_shot/AttackSmoke.ts");
+/* harmony import */ var display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! display/battle/single_shot/Dead */ "./src/display/battle/single_shot/Dead.ts");
+/* harmony import */ var display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! display/battle/single_shot/CollapseExplodeEffect */ "./src/display/battle/single_shot/CollapseExplodeEffect.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47725,6 +47877,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -47759,9 +47912,9 @@ var BattleScene = /** @class */ (function (_super) {
          */
         _this.attackables = new Map();
         /**
-         * エンティティの ID で紐付けられた有効な Base インスタンスのマップ
+         * エンティティの ID で紐付けられた有効な Castle インスタンスのマップ
          */
-        _this.bases = {
+        _this.castles = {
             player: null,
             ai: null
         };
@@ -47769,29 +47922,23 @@ var BattleScene = /** @class */ (function (_super) {
          * ユニットアニメーションマスターのキャッシュ
          */
         _this.unitAnimationMasterCache = new Map();
-        /**
-         * Field に最後にユニットを追加した Zline のインデックス
-         * ユニットが重なって表示されるのを防ぐ
-         */
-        _this.fieldLastAddedZline = {
-            player: -1,
-            ai: -1
-        };
         _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](1.0, 0.0, -0.02);
         _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](0.0, 1.0, 0.02);
         // デフォルトのシーンステート
         _this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].LOADING_RESOURCES;
         // BattleLogic インスタンスの作成
-        _this.manager = new modules_BattleLogic__WEBPACK_IMPORTED_MODULE_10__["default"]();
+        _this.battleLogic = new modules_BattleLogic__WEBPACK_IMPORTED_MODULE_10__["default"]();
         // Background インスタンスの作成
-        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"]();
+        _this.field = new display_battle_Field__WEBPACK_IMPORTED_MODULE_14__["default"]();
         // ユーザパラメータの設定
         _this.unitSlotCount = params.unitSlotCount;
         _this.stageId = params.stageId;
         _this.unitIds = params.unitIds;
-        _this.playerBase = params.playerBase;
-        _this.manager.costRecoveryPerFrame = params.cost.recoveryPerFrame;
-        _this.manager.maxAvailableCost = params.cost.max;
+        _this.playerCastle = params.playerCastle;
+        _this.battleLogicConfig = new modules_BattleLogicConfig__WEBPACK_IMPORTED_MODULE_11__["default"]({
+            costRecoveryPerFrame: params.cost.recoveryPerFrame,
+            maxAvailableCost: params.cost.max
+        });
         return _this;
     }
     /**
@@ -47822,12 +47969,9 @@ var BattleScene = /** @class */ (function (_super) {
                 this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].INGAME;
                 break;
             }
-            case enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].INGAME: {
-                this.manager.update(delta);
-                break;
-            }
+            case enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].INGAME:
             case enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].FINISHED: {
-                this.manager.update(delta);
+                this.battleLogic.update();
                 break;
             }
         }
@@ -47844,9 +47988,9 @@ var BattleScene = /** @class */ (function (_super) {
      */
     BattleScene.prototype.createInitialResourceList = function () {
         var assets = _super.prototype.createInitialResourceList.call(this);
-        assets = assets.concat(display_battle_Field__WEBPACK_IMPORTED_MODULE_13__["default"].resourceList, display_battle_Base__WEBPACK_IMPORTED_MODULE_12__["default"].resourceList, display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList, display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList, display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList, display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList, [
+        assets = assets.concat(display_battle_Field__WEBPACK_IMPORTED_MODULE_14__["default"].resourceList, display_battle_Castle__WEBPACK_IMPORTED_MODULE_13__["default"].resourceList, display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_16__["default"].resourceList, display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_17__["default"].resourceList, display_battle_single_shot_CollapseExplodeEffect__WEBPACK_IMPORTED_MODULE_18__["default"].resourceList, display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_15__["default"].resourceList, [
             Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Stage(this.stageId),
-            Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Base(this.playerBase.baseId),
+            Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Castle(this.playerCastle.castleId),
             Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle,
             Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack1,
             Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2,
@@ -47866,7 +48010,7 @@ var BattleScene = /** @class */ (function (_super) {
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
         var stageMaster = resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Stage(this.stageId)].data;
         // ステージ情報を取得するまでは AI 拠点テクスチャは分からないのでここでロードする
-        additionalAssets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Base(stageMaster.aiBase.baseId));
+        additionalAssets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.Castle(stageMaster.aiCastleId));
         // ユーザの編成で指定されたユニット ID 配列に敵のユニット ID を追加する
         var keys = Object.keys(stageMaster.waves);
         for (var i = 0; i < keys.length; i++) {
@@ -47881,6 +48025,7 @@ var BattleScene = /** @class */ (function (_super) {
         }
         // ステージ情報を取得するまでは AI ユニット情報が分からないのでここでロードする
         additionalAssets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Unit(this.unitIds));
+        additionalAssets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Castle([stageMaster.aiCastleId]));
         additionalAssets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.UnitAnimation(this.unitIds));
         for (var i = 0; i < this.unitIds.length; i++) {
             var unitId = this.unitIds[i];
@@ -47900,25 +48045,40 @@ var BattleScene = /** @class */ (function (_super) {
         _super.prototype.onResourceLoaded.call(this);
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
         var stageMaster = resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Stage(this.stageId)].data;
+        var castleMaster = resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Castle([stageMaster.aiCastleId])].data;
         var unitMasters = resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Unit(this.unitIds)].data;
-        var unitAnimationMasters = resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.UnitAnimation(this.unitIds)].data;
+        var aiCastleMasters = castleMaster.filter(function (master) {
+            return master.castleId === stageMaster.aiCastleId;
+        });
+        if (aiCastleMasters.length === 0) {
+            throw new Error('could not retrieve ai castle master data');
+        }
+        var animationKey = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.UnitAnimation(this.unitIds);
+        var unitAnimationMasters = resources[animationKey].data;
         for (var i = 0; i < unitAnimationMasters.length; i++) {
             var master = unitAnimationMasters[i];
             this.unitAnimationMasterCache.set(master.unitId, master);
         }
-        this.field.init({ fieldLength: stageMaster.length, zLines: stageMaster.zLines });
+        this.field.init({
+            fieldLength: stageMaster.length,
+            zLines: stageMaster.zLines
+        });
         this.initSound();
         this.initUnitButtons();
         this.addChild(this.field);
         this.addChild(this.uiGraphContainer);
-        this.manager.init({
+        this.battleLogic.init({
             stageMaster: stageMaster,
             unitMasters: unitMasters,
             delegator: this,
-            playerBase: {
-                baseId: this.playerBase.baseId,
-                health: this.playerBase.maxHealth
-            }
+            player: {
+                unitIds: this.unitIds,
+                castle: this.playerCastle
+            },
+            ai: {
+                castle: aiCastleMasters[0]
+            },
+            config: this.battleLogicConfig
         });
         if (this.transitionIn.isFinished()) {
             this.state = enum_BattleSceneState__WEBPACK_IMPORTED_MODULE_3__["default"].READY;
@@ -47941,73 +48101,66 @@ var BattleScene = /** @class */ (function (_super) {
      * BattleLogicDelegate 実装
      */
     /**
-     * BaseEntity が生成されたときのコールバック
+     * CastleEntity が生成されたときのコールバック
      */
-    BattleScene.prototype.onBaseEntitySpawned = function (entity, basePosition) {
-        // 拠点の描画物を生成する
-        var base = new display_battle_Base__WEBPACK_IMPORTED_MODULE_12__["default"](entity.baseId);
-        base.sprite.position.x = basePosition;
-        if (!entity.isPlayer) {
-            base.sprite.scale.x = -1.0;
+    BattleScene.prototype.onCastleEntitySpawned = function (entity, isPlayer) {
+        var stageMaster = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Stage(this.stageId)].data;
+        var castleY = 200;
+        switch (entity.castleId) {
+            case 1:
+                castleY = 300;
+                break;
+            default:
+                castleY = 200;
+                break;
         }
-        this.field.addChildAsForeBackgroundEffect(base.sprite);
-        this.registerUpdatingObject(base);
+        // 拠点の描画物を生成する
+        var castle = new display_battle_Castle__WEBPACK_IMPORTED_MODULE_13__["default"](entity.castleId, {
+            x: (isPlayer)
+                ? BattleScene.castleXOffset
+                : stageMaster.length - BattleScene.castleXOffset,
+            y: castleY
+        });
+        if (!entity.isPlayer) {
+            castle.sprite.scale.x = -1.0;
+        }
         if (entity.isPlayer) {
-            this.bases.player = base;
+            this.castles.player = castle;
         }
         else {
-            this.bases.ai = base;
+            this.castles.ai = castle;
         }
-        this.attackables.set(entity.id, base);
+        this.attackables.set(entity.id, castle);
+        this.field.addChildToZLine(castle.sprite, 0);
+        this.registerUpdatingObject(castle);
     };
     /**
      * UnitEntity が生成されたときのコールバック
      * id に紐つけて表示物を生成する
      */
-    BattleScene.prototype.onUnitEntitySpawned = function (entity, basePosition) {
-        var master = this.unitAnimationMasterCache.get(entity.unitId);
-        if (!master) {
+    BattleScene.prototype.onUnitEntitySpawned = function (entity) {
+        var animationMaster = this.unitAnimationMasterCache.get(entity.unitId);
+        if (!animationMaster) {
             return;
         }
-        var base = (entity.isPlayer) ? this.bases.player : this.bases.ai;
-        if (!base) {
+        var castle = (entity.isPlayer) ? this.castles.player : this.castles.ai;
+        if (!castle) {
             return;
         }
-        base.spawn(entity.isPlayer);
-        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_11__["default"](entity.unitId, {
-            hitFrame: master.hitFrame,
-            spawnPosition: { x: basePosition, y: 0 },
-            animationMaxFrameIndexes: master.maxFrameIndexes,
-            animationUpdateDurations: master.updateDurations
+        castle.spawn(entity.isPlayer);
+        var stageMaster = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Stage(this.stageId)].data;
+        var zLineIndex = this.field.getDifferentZlineIndex();
+        var unit = new display_battle_Unit__WEBPACK_IMPORTED_MODULE_12__["default"](animationMaster, {
+            x: (entity.isPlayer)
+                ? BattleScene.castleXOffset
+                : stageMaster.length - BattleScene.castleXOffset,
+            y: this.field.getZlineBaseY(zLineIndex)
         });
+        unit.sprite.name = "unit " + entity.id;
         unit.sprite.scale.x = (entity.isPlayer) ? 1.0 : -1.0;
         unit.requestAnimation(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WALK);
         this.attackables.set(entity.id, unit);
-        // Field に追加する重なり順を決定する
-        var zLineCount = this.field.zLineCount;
-        var index = Math.floor(Math.random() * this.field.zLineCount);
-        // 最後に追加された Zline と同じ場合は表示が重なって見えてしまうので避ける
-        var lastAddedZline;
-        if (entity.isPlayer) {
-            lastAddedZline = this.fieldLastAddedZline.player;
-        }
-        else {
-            lastAddedZline = this.fieldLastAddedZline.ai;
-        }
-        if (index === lastAddedZline) {
-            index++;
-            if (index > (zLineCount - 1)) {
-                index = 0;
-            }
-        }
-        this.field.addChildToZLine(unit.sprite, index);
-        // 重なって表示されないようにする
-        if (entity.isPlayer) {
-            this.fieldLastAddedZline.player = index;
-        }
-        else {
-            this.fieldLastAddedZline.ai = index;
-        }
+        this.field.addChildToZLine(unit.sprite, zLineIndex);
         this.registerUpdatingObject(unit);
     };
     /**
@@ -48030,12 +48183,18 @@ var BattleScene = /** @class */ (function (_super) {
                     unit.requestAnimation(animationTypes.ATTACK);
                     break;
                 }
+                case enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__["default"].KNOCK_BACK: {
+                    unit.requestAnimation(animationTypes.DAMAGE);
+                    break;
+                }
                 case enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD: {
                     // 死亡時は死亡エフェクトを表示してもともとのユニット描画物は破棄する
-                    var effect = new display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_16__["default"](!entity.isPlayer);
+                    var effect = new display_battle_single_shot_Dead__WEBPACK_IMPORTED_MODULE_17__["default"](!entity.isPlayer);
                     var sprite = attackable.sprite;
-                    var yAdjust = sprite.height * (1.0 - sprite.anchor.y) - effect.height;
-                    effect.position.set(sprite.position.x, sprite.position.y + yAdjust);
+                    var position = sprite.position;
+                    var yCastle = sprite.height * (1.0 - sprite.anchor.y);
+                    var yAdjust = yCastle - effect.height;
+                    effect.position.set(position.x, position.y + yAdjust);
                     sprite.parent.addChild(effect);
                     this.registerUpdatingObject(effect);
                     attackable.destroy();
@@ -48047,18 +48206,27 @@ var BattleScene = /** @class */ (function (_super) {
         else {
             if (entity.state === enum_AttackableState__WEBPACK_IMPORTED_MODULE_2__["default"].DEAD) {
                 // 拠点が破壊されたときは破壊エフェクトを開始させる
-                var base = attackable;
-                base.collapse();
-                this.field.addChildAsForeForegroundEffect(base.explodeContainer);
+                var castle = attackable;
+                castle.collapse();
+                this.field.addChildAsForeBackgroundEffect(castle.explodeContainer);
             }
         }
     };
     /**
      * 利用可能なコストの値が変動したときのコールバック
      */
-    BattleScene.prototype.onAvailableCostUpdated = function (cost) {
-        var text = Math.floor(cost) + "/" + this.manager.maxAvailableCost;
+    BattleScene.prototype.onAvailableCostUpdated = function (cost, maxCost, availablePlayerUnitIds) {
+        var text = Math.floor(cost) + "/" + maxCost;
         this.uiGraph.cost_text.text = text;
+        // コストに応じてUnitButton のフィルタを切り替える
+        for (var index = 0; index < this.unitSlotCount; index++) {
+            var unitButton = this.getUiGraphUnitButton(index);
+            if (!unitButton) {
+                continue;
+            }
+            var enableFilter = (availablePlayerUnitIds.indexOf(unitButton.unitId) === -1);
+            unitButton.toggleFilter(enableFilter);
+        }
     };
     /**
      * 勝敗が決定したときのコールバック
@@ -48074,7 +48242,7 @@ var BattleScene = /** @class */ (function (_super) {
             unit.requestAnimation(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WAIT);
         });
         // ゲームオーバー表示をする
-        var result = new display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_14__["default"](isPlayerWon);
+        var result = new display_battle_BattleResult__WEBPACK_IMPORTED_MODULE_15__["default"](isPlayerWon);
         result.onAnimationEnded = this.enableBackToOrderScene.bind(this);
         this.uiGraphContainer.addChild(result);
         this.registerUpdatingObject(result);
@@ -48121,14 +48289,29 @@ var BattleScene = /** @class */ (function (_super) {
     /**
      * 渡された UnitEntity の distance が変化した時に呼ばれる
      */
-    BattleScene.prototype.onUnitEntityWalked = function (entity) {
+    BattleScene.prototype.onAttackableEntityWalked = function (entity) {
         var attackable = this.attackables.get(entity.id);
         if (!attackable) {
             return;
         }
-        var unit = attackable;
         var direction = entity.isPlayer ? 1 : -1;
-        unit.sprite.position.x = unit.getSpawnedPosition().x + entity.distance * direction;
+        var physicalDistance = entity.distance * direction;
+        attackable.sprite.position.x = attackable.distanceBasePosition.x + physicalDistance;
+    };
+    /**
+     * 渡された UnitEntity がノックバック中に呼ばれる
+     */
+    BattleScene.prototype.onAttackableEntityKnockingBack = function (entity, knockBackRate) {
+        var attackable = this.attackables.get(entity.id);
+        if (!attackable) {
+            return;
+        }
+        var direction = entity.isPlayer ? 1 : -1;
+        var physicalDistance = entity.distance * direction;
+        var spawnedPosition = attackable.distanceBasePosition;
+        var leap = (knockBackRate >= 1) ? 0 : -Math.sin(knockBackRate * Math.PI);
+        attackable.sprite.position.x = spawnedPosition.x + physicalDistance;
+        attackable.sprite.position.y = spawnedPosition.y + (leap * BattleScene.unitLeapHeight);
     };
     /**
      * 渡されたエンティティの health が増減した場合に呼ばれる
@@ -48140,7 +48323,7 @@ var BattleScene = /** @class */ (function (_super) {
         }
         var targetSprite = targetAttackable.sprite;
         // 攻撃時砂煙演出の表示
-        var smoke = new display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_15__["default"]();
+        var smoke = new display_battle_single_shot_AttackSmoke__WEBPACK_IMPORTED_MODULE_16__["default"]();
         var xRand = Math.random() * targetSprite.width;
         var yRand = Math.random() * targetSprite.height;
         var xAdjust = targetSprite.width * (0.5 + targetSprite.anchor.x);
@@ -48170,9 +48353,9 @@ var BattleScene = /** @class */ (function (_super) {
             : Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.Attack2);
     };
     /**
-    * 渡されたユニットが移動すべきかどうかを返す
+     * 渡されたユニットが移動すべきかどうかを返す
      */
-    BattleScene.prototype.shouldUnitWalk = function (entity) {
+    BattleScene.prototype.shouldAttackableWalk = function (entity) {
         var attackable = this.attackables.get(entity.id);
         if (!attackable) {
             return false;
@@ -48180,7 +48363,7 @@ var BattleScene = /** @class */ (function (_super) {
         if (!entity.unitId) {
             return false;
         }
-        if (attackable.getAnimationType() === Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WALK) {
+        if (attackable.animationType === Resource__WEBPACK_IMPORTED_MODULE_1__["default"].AnimationTypes.Unit.WALK) {
             return true;
         }
         return attackable.isAnimationLastFrameTime();
@@ -48198,7 +48381,7 @@ var BattleScene = /** @class */ (function (_super) {
         }
         var unitButton = this.getUiGraphUnitButton(buttonIndex);
         if (unitButton) {
-            this.manager.requestSpawnPlayer(unitButton.unitId);
+            this.battleLogic.requestSpawnPlayer(unitButton.unitId);
         }
     };
     /**
@@ -48207,20 +48390,27 @@ var BattleScene = /** @class */ (function (_super) {
     BattleScene.prototype.initSound = function () {
         var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
         var audioMaster = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio;
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(audioMaster.Bgm.Battle, resources[audioMaster.Bgm.Battle].buffer);
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(audioMaster.Se.Attack1, resources[audioMaster.Se.Attack1].buffer);
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(audioMaster.Se.Attack2, resources[audioMaster.Se.Attack2].buffer);
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(audioMaster.Se.Bomb, resources[audioMaster.Se.Bomb].buffer);
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(audioMaster.Se.UnitSpawn, resources[audioMaster.Se.UnitSpawn].buffer);
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(audioMaster.Se.Win, resources[audioMaster.Se.Win].buffer);
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(audioMaster.Se.Lose, resources[audioMaster.Se.Lose].buffer);
-        this.playBgm(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Battle);
+        var soundList = [
+            audioMaster.Bgm.Battle,
+            audioMaster.Se.Attack1,
+            audioMaster.Se.Attack2,
+            audioMaster.Se.Bomb,
+            audioMaster.Se.UnitSpawn,
+            audioMaster.Se.Win,
+            audioMaster.Se.Lose
+        ];
+        for (var i = 0; i < soundList.length; i++) {
+            var name_1 = soundList[i];
+            managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(name_1, resources[name_1].buffer);
+        }
+        this.playBgm(audioMaster.Bgm.Battle);
     };
     /**
      * ユニットボタンの初期化
      */
     BattleScene.prototype.initUnitButtons = function () {
-        var unitMasters = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Unit(this.unitIds)].data;
+        var key = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.Unit(this.unitIds);
+        var unitMasters = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[key].data;
         for (var index = 0; index < this.unitSlotCount; index++) {
             var unitButton = this.getUiGraphUnitButton(index);
             if (!unitButton) {
@@ -48238,13 +48428,14 @@ var BattleScene = /** @class */ (function (_super) {
                 }
             }
             unitButton.init(index, unitId, cost);
+            unitButton.toggleFilter(true);
         }
     };
     /**
      * ボタンインデックスから UnitButton インスタンスを返す
      */
     BattleScene.prototype.getUiGraphUnitButton = function (index) {
-        var uiGraphUnitButtonName = "unit_button_" + (index + 1);
+        var uiGraphUnitButtonName = "" + BattleScene.unitButtonPrefix + (index + 1);
         return this.uiGraph[uiGraphUnitButtonName];
     };
     /**
@@ -48270,6 +48461,12 @@ var BattleScene = /** @class */ (function (_super) {
         }
         managers_GameManager__WEBPACK_IMPORTED_MODULE_4__["default"].loadScene(new scenes_OrderScene__WEBPACK_IMPORTED_MODULE_7__["default"]());
     };
+    BattleScene.castleXOffset = 200;
+    BattleScene.unitLeapHeight = 30;
+    /**
+     * UI Graph ユニットボタンのキープリフィックス
+     */
+    BattleScene.unitButtonPrefix = 'unit_button_';
     return BattleScene;
 }(scenes_Scene__WEBPACK_IMPORTED_MODULE_6__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BattleScene);
@@ -48286,15 +48483,17 @@ var BattleScene = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! Config */ "./src/Config.ts");
-/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-/* harmony import */ var managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/IndexedDBManager */ "./src/managers/IndexedDBManager.ts");
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
-/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var Config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Config */ "./src/Config.ts");
+/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! managers/IndexedDBManager */ "./src/managers/IndexedDBManager.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! modules/UiNodeFactory/battle/UnitButtonFactory */ "./src/modules/UiNodeFactory/battle/UnitButtonFactory.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_BattleScene__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! scenes/BattleScene */ "./src/scenes/BattleScene.ts");
+/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -48317,7 +48516,8 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-// デブッグ用ユーザID
+
+// デバッグ用ユーザID
 var DUMMY_USER_ID = 1;
 /**
  * 編成シーン
@@ -48353,8 +48553,8 @@ var OrderScene = /** @class */ (function (_super) {
          * 前回編成したユニットID配列
          */
         _this.lastUnitIds = [];
-        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](1.0, 0.0, -0.02);
-        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_8__["default"](0.0, 1.0, 0.02);
+        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_9__["default"](1.0, 0.0, -0.02);
+        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_9__["default"](0.0, 1.0, 0.02);
         return _this;
     }
     /**
@@ -48362,10 +48562,10 @@ var OrderScene = /** @class */ (function (_super) {
      */
     OrderScene.prototype.createInitialResourceList = function () {
         var assets = _super.prototype.createInitialResourceList.call(this);
-        assets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.UserBattle(DUMMY_USER_ID));
-        assets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.AllUnit());
-        assets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
-        assets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+        assets.push(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Api.UserBattle(DUMMY_USER_ID));
+        assets.push(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Api.AllUnit());
+        assets.push(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Bgm.Title);
+        assets.push(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Se.UnitSpawn);
         return assets;
     };
     /**
@@ -48397,24 +48597,24 @@ var OrderScene = /** @class */ (function (_super) {
      */
     OrderScene.prototype.onInitialResourceLoaded = function () {
         var additionalAssets = _super.prototype.onInitialResourceLoaded.call(this);
-        var resources = PIXI.loader.resources;
+        var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
         this.unitButtonTexturesCache.clear();
         this.unitMasterCache.clear();
-        var userBattleUrl = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.UserBattle(DUMMY_USER_ID);
+        var userBattleUrl = Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Api.UserBattle(DUMMY_USER_ID);
         this.userBattle = resources[userBattleUrl].data;
         if (!this.userBattle) {
             throw new Error('user_battle record could not be retrieved');
         }
-        var allUnitMaster = resources[Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.AllUnit()].data;
+        var allUnitMaster = resources[Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Api.AllUnit()].data;
         for (var i = 0; i < allUnitMaster.length; i++) {
             var unitMaster = allUnitMaster[i];
             this.unitMasterCache.set(unitMaster.unitId, unitMaster);
         }
-        var seKey = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn;
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].createSound(seKey, resources[seKey].buffer);
+        var seKey = Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Se.UnitSpawn;
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(seKey, resources[seKey].buffer);
         for (var i = 0; i < this.userBattle.unlockedUnitIds.length; i++) {
             var unitId = this.userBattle.unlockedUnitIds[i];
-            additionalAssets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel(unitId));
+            additionalAssets.push(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Dynamic.UnitPanel(unitId));
         }
         return additionalAssets;
     };
@@ -48428,8 +48628,9 @@ var OrderScene = /** @class */ (function (_super) {
         }
         for (var i = 0; i < this.userBattle.unlockedUnitIds.length; i++) {
             var unitId = this.userBattle.unlockedUnitIds[i];
-            var url = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Dynamic.UnitPanel(unitId);
-            this.unitButtonTexturesCache.set(unitId, PIXI.loader.resources[url].texture);
+            var url = Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Dynamic.UnitPanel(unitId);
+            var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
+            this.unitButtonTexturesCache.set(unitId, resources[url].texture);
         }
         this.initUnitButtons();
         this.updateCurrentStageId(this.currentStageId);
@@ -48450,12 +48651,13 @@ var OrderScene = /** @class */ (function (_super) {
             return;
         }
         var availableUnitIds = this.userBattle.unlockedUnitIds;
+        var availableUnitCount = availableUnitIds.length;
         var nextIndex = availableUnitIds.indexOf(unitButton.unitId) + addValue;
-        if (nextIndex >= availableUnitIds.length) {
-            nextIndex = nextIndex % availableUnitIds.length;
+        if (nextIndex >= availableUnitCount) {
+            nextIndex = nextIndex % availableUnitCount;
         }
         else if (nextIndex < 0) {
-            nextIndex = availableUnitIds.length + (nextIndex % availableUnitIds.length);
+            nextIndex = availableUnitCount + (nextIndex % availableUnitCount);
         }
         var cost = -1;
         var newUnitId = availableUnitIds[nextIndex];
@@ -48466,7 +48668,7 @@ var OrderScene = /** @class */ (function (_super) {
             }
         }
         unitButton.changeUnit(newUnitId, cost);
-        this.playSe(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+        this.playSe(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Se.UnitSpawn);
     };
     /**
      * ステージの切り替えボタンが押下された時のコールバック
@@ -48490,14 +48692,14 @@ var OrderScene = /** @class */ (function (_super) {
             }
         }
         this.updateCurrentStageId(newStageId);
-        this.playSe(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+        this.playSe(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Se.UnitSpawn);
     };
     /**
      * OK ボタンが押下されたされたときのコールバック
      */
     OrderScene.prototype.onOkButtonDown = function () {
         this.uiGraph.ok_button_off.visible = false;
-        this.playSe(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Se.UnitSpawn);
+        this.playSe(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Se.UnitSpawn);
     };
     /**
      * OK ボタン押下が離されたされたときのコールバック
@@ -48512,7 +48714,7 @@ var OrderScene = /** @class */ (function (_super) {
      */
     OrderScene.prototype.getCustomUiGraphFactory = function (type) {
         if (type === 'unit_button') {
-            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_5__["default"]();
+            return new modules_UiNodeFactory_battle_UnitButtonFactory__WEBPACK_IMPORTED_MODULE_6__["default"]();
         }
         return null;
     };
@@ -48528,10 +48730,10 @@ var OrderScene = /** @class */ (function (_super) {
             return false;
         }
         this.fadeOutBgm();
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].unregisterSound(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].unregisterSound(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Bgm.Title);
         this.saveStageIdToDB(params.stageId);
         this.saveUnitIdsToDB(params.unitIds);
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_7__["default"](params));
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_3__["default"].loadScene(new scenes_BattleScene__WEBPACK_IMPORTED_MODULE_8__["default"](params));
         return true;
     };
     /**
@@ -48561,7 +48763,7 @@ var OrderScene = /** @class */ (function (_super) {
                 }
                 this.unitButtons.set(slotIndex, unitButton);
                 slotIndex++;
-                if (slotIndex >= Config__WEBPACK_IMPORTED_MODULE_0__["default"].MaxUnitSlotCount) {
+                if (slotIndex >= Config__WEBPACK_IMPORTED_MODULE_1__["default"].MaxUnitSlotCount) {
                     break;
                 }
             }
@@ -48587,9 +48789,9 @@ var OrderScene = /** @class */ (function (_super) {
         });
         return {
             unitIds: unitIds,
-            unitSlotCount: Config__WEBPACK_IMPORTED_MODULE_0__["default"].MaxUnitSlotCount,
+            unitSlotCount: Config__WEBPACK_IMPORTED_MODULE_1__["default"].MaxUnitSlotCount,
             stageId: this.currentStageId,
-            playerBase: this.userBattle.base,
+            playerCastle: this.userBattle.castle,
             cost: this.userBattle.cost
         };
     };
@@ -48597,10 +48799,10 @@ var OrderScene = /** @class */ (function (_super) {
      * 必要であれば BGM を再生する
      */
     OrderScene.prototype.playBgmIfNeeded = function () {
-        var bgmTitleName = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title;
-        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].hasSound(bgmTitleName)) {
-            var resource = PIXI.loader.resources[bgmTitleName];
-            var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].createSound(bgmTitleName, resource.buffer);
+        var bgmTitleName = Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Bgm.Title;
+        if (!managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].hasSound(bgmTitleName)) {
+            var resource = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[bgmTitleName];
+            var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].createSound(bgmTitleName, resource.buffer);
             bgm.play(true);
         }
     };
@@ -48608,37 +48810,37 @@ var OrderScene = /** @class */ (function (_super) {
      * DB へユニットID配列を保存する
      */
     OrderScene.prototype.saveUnitIdsToDB = function (unitIds) {
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].put('lastUnitOrder', unitIds);
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_4__["default"].put('lastUnitOrder', unitIds);
     };
     /**
      * DB からユニットID配列を取得する
      */
     OrderScene.prototype.loadUnitIdsFromDB = function (callback) {
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastUnitOrder', function (unitIds) { callback(unitIds); });
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_4__["default"].get('lastUnitOrder', function (unitIds) { callback(unitIds); }, function (_e) { callback([]); });
     };
     /**
      * DB へステージIDを保存する
      */
     OrderScene.prototype.saveStageIdToDB = function (stageId) {
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].put('lastStageId', stageId);
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_4__["default"].put('lastStageId', stageId);
     };
     /**
      * DB からステージIDを取得する
      */
     OrderScene.prototype.loadStageIdFromDB = function (callback) {
-        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_3__["default"].get('lastStageId', function (stageId) { callback(stageId); });
+        managers_IndexedDBManager__WEBPACK_IMPORTED_MODULE_4__["default"].get('lastStageId', function (stageId) { callback(stageId); }, function (_e) { callback(0); });
     };
     /**
      * BGM をフェードアウトする
      */
     OrderScene.prototype.fadeOutBgm = function () {
-        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].getSound(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
+        var bgm = managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].getSound(Resource__WEBPACK_IMPORTED_MODULE_2__["default"].Audio.Bgm.Title);
         if (bgm) {
-            managers_SoundManager__WEBPACK_IMPORTED_MODULE_4__["default"].fade(bgm, 0.01, 0.5, true);
+            managers_SoundManager__WEBPACK_IMPORTED_MODULE_5__["default"].fade(bgm, 0.01, 0.5, true);
         }
     };
     return OrderScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_6__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_7__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (OrderScene);
 
 
@@ -48780,14 +48982,14 @@ var Scene = /** @class */ (function (_super) {
         this.transitionOut.begin();
     };
     /**
-     * loadResource に用いるリソースリストを作成するメソッド
+     * loadInitialResource に用いるリソースリストを作成するメソッド
      * デフォルトでは UiGraph のリソースリストを作成する
      */
     Scene.prototype.createInitialResourceList = function () {
         return [];
     };
     /**
-     * リソースをロードする
+     * リソースダウンロードのフローを実行する
      * デフォルトでは UiGraph 用の情報が取得される
      */
     Scene.prototype.beginLoadResource = function (onLoaded) {
@@ -48806,7 +49008,8 @@ var Scene = /** @class */ (function (_super) {
         });
     };
     /**
-     * UiGraph 情報のロードを行う
+     * リソースダウンロードのフローを実行する
+     * UiGraph 情報も含まれる
      */
     Scene.prototype.loadInitialResource = function (onLoaded) {
         var assets = this.createInitialResourceList();
@@ -48833,7 +49036,10 @@ var Scene = /** @class */ (function (_super) {
             for (var i = 0; i < uiGraph.data.nodes.length; i++) {
                 var node = uiGraph.data.nodes[i];
                 if (node.type === 'sprite') {
-                    additionalAssets.push({ name: node.params.textureName, url: node.params.url });
+                    additionalAssets.push({
+                        name: node.params.textureName,
+                        url: node.params.url
+                    });
                 }
             }
         }
@@ -48865,12 +49071,13 @@ var Scene = /** @class */ (function (_super) {
         onLoaded();
     };
     /**
-     * loadResource 完了時のコールバックメソッド
+     * beginLoadResource 完了時のコールバックメソッド
      */
     Scene.prototype.onResourceLoaded = function () {
         if (this.hasSceneUiGraph) {
             var sceneUiGraphName = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Api.SceneUiGraph(this);
-            this.prepareUiGraphContainer(pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[sceneUiGraphName].data);
+            var resources = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources;
+            this.prepareUiGraphContainer(resources[sceneUiGraphName].data);
             this.addChild(this.uiGraphContainer);
         }
     };
@@ -48922,7 +49129,9 @@ var Scene = /** @class */ (function (_super) {
                 }
             }
         }
-        return Array.from(assetMap.values());
+        var loaderParams = [];
+        assetMap.forEach(function (value) { return loaderParams.push(value); });
+        return loaderParams;
     };
     /**
      * BGM をループ再生する
@@ -48967,12 +49176,14 @@ var Scene = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
-/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
-/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
-/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
-/* harmony import */ var scenes_OrderScene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/OrderScene */ "./src/scenes/OrderScene.ts");
-/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pixi_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var Resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Resource */ "./src/Resource.ts");
+/* harmony import */ var managers_GameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! managers/GameManager */ "./src/managers/GameManager.ts");
+/* harmony import */ var managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! managers/SoundManager */ "./src/managers/SoundManager.ts");
+/* harmony import */ var scenes_Scene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! scenes/Scene */ "./src/scenes/Scene.ts");
+/* harmony import */ var scenes_OrderScene__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! scenes/OrderScene */ "./src/scenes/OrderScene.ts");
+/* harmony import */ var scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! scenes/transition/Fade */ "./src/scenes/transition/Fade.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -48986,6 +49197,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -49006,8 +49218,8 @@ var TitleScene = /** @class */ (function (_super) {
          * TOUCH TO START テキストの明滅感覚
          */
         _this.textAppealDuration = 20;
-        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_5__["default"](1.0, 0.0, -0.02);
-        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_5__["default"](0.0, 1.0, 0.02);
+        _this.transitionIn = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_6__["default"](1.0, 0.0, -0.02);
+        _this.transitionOut = new scenes_transition_Fade__WEBPACK_IMPORTED_MODULE_6__["default"](0.0, 1.0, 0.02);
         _this.interactive = true;
         _this.on('pointerup', function () { return _this.startOrder(); });
         return _this;
@@ -49017,7 +49229,7 @@ var TitleScene = /** @class */ (function (_super) {
      */
     TitleScene.prototype.createInitialResourceList = function () {
         var assets = _super.prototype.createInitialResourceList.call(this);
-        assets.push(Resource__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
+        assets.push(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
         return assets;
     };
     /**
@@ -49025,10 +49237,10 @@ var TitleScene = /** @class */ (function (_super) {
      */
     TitleScene.prototype.onResourceLoaded = function () {
         _super.prototype.onResourceLoaded.call(this);
-        var bgmTitleName = Resource__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title;
-        var resource = PIXI.loader.resources[bgmTitleName];
-        managers_SoundManager__WEBPACK_IMPORTED_MODULE_2__["default"].createSound(bgmTitleName, resource.buffer);
-        this.playBgm(Resource__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Bgm.Title);
+        var bgmTitleName = Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title;
+        var resource = pixi_js__WEBPACK_IMPORTED_MODULE_0__["loader"].resources[bgmTitleName];
+        managers_SoundManager__WEBPACK_IMPORTED_MODULE_3__["default"].createSound(bgmTitleName, resource.buffer);
+        this.playBgm(Resource__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.Bgm.Title);
     };
     /**
      * 毎フレームの更新処理
@@ -49047,10 +49259,10 @@ var TitleScene = /** @class */ (function (_super) {
         if (this.transitionIn.isActive() || this.transitionOut.isActive()) {
             return;
         }
-        managers_GameManager__WEBPACK_IMPORTED_MODULE_1__["default"].loadScene(new scenes_OrderScene__WEBPACK_IMPORTED_MODULE_4__["default"]());
+        managers_GameManager__WEBPACK_IMPORTED_MODULE_2__["default"].loadScene(new scenes_OrderScene__WEBPACK_IMPORTED_MODULE_5__["default"]());
     };
     return TitleScene;
-}(scenes_Scene__WEBPACK_IMPORTED_MODULE_3__["default"]));
+}(scenes_Scene__WEBPACK_IMPORTED_MODULE_4__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (TitleScene);
 
 
@@ -49190,6 +49402,7 @@ __webpack_require__.r(__webpack_exports__);
 var Immediate = /** @class */ (function () {
     function Immediate() {
         this.onTransitionFinished = function () { };
+        this.finished = false;
     }
     /**
      * トランジション描画物を含む PIXI.Container インスタンスを返す
@@ -49202,6 +49415,7 @@ var Immediate = /** @class */ (function () {
      * このトランジションは即時終了させる
      */
     Immediate.prototype.begin = function () {
+        this.finished = true;
         this.onTransitionFinished();
     };
     /**
@@ -49213,10 +49427,9 @@ var Immediate = /** @class */ (function () {
     };
     /**
      * トランジションが終了しているかどうかを返す
-     * このトランジションは即時終了するため false になることなはない
      */
     Immediate.prototype.isFinished = function () {
-        return true;
+        return this.finished;
     };
     /**
      * トランジションが実行中かどうかを返す
@@ -49247,4 +49460,4 @@ var Immediate = /** @class */ (function () {
 
 /******/ });
 });
-//# sourceMappingURL=tower-diffence.js.map
+//# sourceMappingURL=tower-diffense.js.map

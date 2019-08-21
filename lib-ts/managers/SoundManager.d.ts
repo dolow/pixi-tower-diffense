@@ -19,9 +19,13 @@ export default class SoundManager {
      */
     private static context;
     /**
-     * PIXI.Loader ミドルウェアが登録済みかどうかのフラグ
+     * WebAudio 利用の初期化済みフラグ
      */
-    private static loaderMiddlewareAdded;
+    private static webAudioInitialized;
+    /**
+     * SoundManager がサポートするサウンドファイル拡張子
+     */
+    private static readonly supportedExtensions;
     /**
      * 一時停止中かどうかのフラグ
      */
@@ -50,7 +54,7 @@ export default class SoundManager {
     /**
      * オーディオデータをパースするための PIXI.Loader ミドルウェアを登録する
      */
-    static addLoaderMiddleware(browser: BrowserInfo | BotInfo | NodeInfo): void;
+    static useWebAudio(browser: BrowserInfo | BotInfo | NodeInfo): void;
     /**
      * オーディオデータのデコード処理
      */

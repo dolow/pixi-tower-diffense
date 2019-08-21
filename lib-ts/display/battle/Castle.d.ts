@@ -4,7 +4,7 @@ import Attackable from 'display/battle/Attackable';
  * 拠点の振舞い、及び見た目に関する処理を行う
  * Attackable を継承する
  */
-export default class Base extends Attackable {
+export default class Castle extends Attackable {
     /**
      * 爆発エフェクト用コンテナ
      */
@@ -12,11 +12,7 @@ export default class Base extends Attackable {
     /**
      * 拠点 ID
      */
-    protected baseId: number;
-    /**
-     * 初期座標、アニメーションなどで更新されるため覚えておく
-     */
-    protected originalPositon: PIXI.Point;
+    protected castleId: number;
     /**
      * このクラスで利用するリソースリスト
      */
@@ -24,7 +20,10 @@ export default class Base extends Attackable {
     /**
      * コンストラクタ
      */
-    constructor(baseId: number);
+    constructor(castleId: number, spawnPosition: {
+        x: number;
+        y: number;
+    });
     /**
      * UpdateObject インターフェース実装
      * requestAnimationFrame 毎のアップデート処理

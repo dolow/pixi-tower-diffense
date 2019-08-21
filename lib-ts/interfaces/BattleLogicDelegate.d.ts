@@ -1,26 +1,30 @@
 import AttackableEntity from 'entity/AttackableEntity';
 import UnitEntity from 'entity/UnitEntity';
-import BaseEntity from 'entity/BaseEntity';
+import CastleEntity from 'entity/CastleEntity';
 /**
  * BattleLogic が委譲する処理を著したインターフェース
  */
 export default interface BattleLogicDelegate {
     /**
-     * BaseEntity が生成された時のコールバック
+     * CastleEntity が生成された時のコールバック
      */
-    onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void;
+    onCastleEntitySpawned(entity: CastleEntity, isPlayer: boolean): void;
     /**
      * UnitEntity が生成された時のコールバック
      */
-    onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void;
+    onUnitEntitySpawned(entity: UnitEntity): void;
     /**
      * エンティティのステートが変更した際のコールバック
      */
     onAttackableEntityStateChanged(entity: AttackableEntity, oldState: number): void;
     /**
-     * UnitEntity が生成された時のコールバック
+     * UnitEntity が歩いた時のコールバック
      */
-    onUnitEntityWalked(entity: UnitEntity): void;
+    onAttackableEntityWalked(entity: AttackableEntity): void;
+    /**
+     * UnitEntity がノックバックした時のコールバック
+     */
+    onAttackableEntityKnockingBack(entity: AttackableEntity, knockBackRate: number): void;
     /**
      * エンティティの health が変動した際のコールバック
      */
@@ -28,7 +32,7 @@ export default interface BattleLogicDelegate {
     /**
      * 利用可能コストが変動した際のコールバック
      */
-    onAvailableCostUpdated(cost: number): void;
+    onAvailableCostUpdated(cost: number, maxCost: number, availablePlayerUnitIds: number[]): void;
     /**
      * ゲームが終了した際のコールバック
      */
@@ -44,5 +48,5 @@ export default interface BattleLogicDelegate {
     /**
      * 渡されたユニットが移動可能か返す
      */
-    shouldUnitWalk(unit: UnitEntity): boolean;
+    shouldAttackableWalk(attackable: AttackableEntity): boolean;
 }

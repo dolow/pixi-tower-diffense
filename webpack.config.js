@@ -1,8 +1,10 @@
-const webpack = require('webpack');
-const path    = require('path');
+const webpack      = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const path         = require('path');
 
 module.exports = (env, argv) => {
   const mode = process.env.NODE_ENV || process.env.WEBPACK_ENV || argv.mode || 'development';
+  const isProduction = (mode === 'production');
 
   return {
     mode: mode,
@@ -12,10 +14,10 @@ module.exports = (env, argv) => {
 
     output: {
       path: path.join(__dirname, 'www'),
-      filename: (mode === 'production')
-        ? 'tower-diffence.min.js'
-        : 'tower-diffence.js',
-      library: 'tower-diffence',
+      filename: isProduction
+        ? 'tower-diffense.min.js'
+        : 'tower-diffense.js',
+      library: 'tower-diffense',
       libraryTarget: 'umd'
     },
 
@@ -45,7 +47,20 @@ module.exports = (env, argv) => {
       fs: 'empty'
     },
 
-    devtool: (mode === 'production') ? false : 'source-map',
+    devtool: 'source-map',
+
+    optimization: {
+      minimizer: [
+        // クラス名で比較している箇所を機能させる
+        new TerserPlugin({
+          sourceMap: !isProduction,
+          terserOptions: {
+            keep_classnames: true,
+            keep_fnames: true
+          }
+        })
+      ]
+    },
 
     plugins: [
       new webpack.optimize.OccurrenceOrderPlugin(),

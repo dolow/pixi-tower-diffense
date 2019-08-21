@@ -5,18 +5,7 @@ export default interface StageMaster {
     id: number;
     length: number;
     zLines: number;
-    playerBase: {
-        position: {
-            x: number;
-        };
-    };
-    aiBase: {
-        baseId: number;
-        position: {
-            x: number;
-        };
-        health: number;
-    };
+    aiCastleId: number;
     waves: {
         [key: string]: {
             unitId: number;

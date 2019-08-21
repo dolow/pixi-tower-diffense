@@ -4,13 +4,19 @@ import LoaderAddParam from 'interfaces/PixiTypePolyfill/LoaderAddParam';
 import Scene from 'scenes/Scene';
 import UiNodeFactory from 'modules/UiNodeFactory/UiNodeFactory';
 import AttackableEntity from 'entity/AttackableEntity';
-import BaseEntity from 'entity/BaseEntity';
+import CastleEntity from 'entity/CastleEntity';
 import UnitEntity from 'entity/UnitEntity';
 /**
  * メインのゲーム部分のシーン
  * ゲームロジックは BattleLogic に委譲し、主に描画周りを行う
  */
 export default class BattleScene extends Scene implements BattleLogicDelegate {
+    private static readonly castleXOffset;
+    private static readonly unitLeapHeight;
+    /**
+     * UI Graph ユニットボタンのキープリフィックス
+     */
+    private static readonly unitButtonPrefix;
     /**
      * このシーンのステート
      */
@@ -26,7 +32,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
      * 編成した拠点パラメータ
      */
-    private playerBase;
+    private playerCastle;
     /**
      * 編成したユニットID配列
      */
@@ -34,7 +40,11 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
      * ゲームロジックを処理する BattleLogic のインスタンス
      */
-    private manager;
+    private battleLogic;
+    /**
+     * BattleLogic 用の設定
+     */
+    private battleLogicConfig;
     /**
      * 背景の PIXI.Container
      */
@@ -44,18 +54,13 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      */
     private attackables;
     /**
-     * エンティティの ID で紐付けられた有効な Base インスタンスのマップ
+     * エンティティの ID で紐付けられた有効な Castle インスタンスのマップ
      */
-    private bases;
+    private castles;
     /**
      * ユニットアニメーションマスターのキャッシュ
      */
     private unitAnimationMasterCache;
-    /**
-     * Field に最後にユニットを追加した Zline のインデックス
-     * ユニットが重なって表示されるのを防ぐ
-     */
-    private fieldLastAddedZline;
     /**
      * コンストラクタ
      */
@@ -95,14 +100,14 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
      * BattleLogicDelegate 実装
      */
     /**
-     * BaseEntity が生成されたときのコールバック
+     * CastleEntity が生成されたときのコールバック
      */
-    onBaseEntitySpawned(entity: BaseEntity, basePosition: number): void;
+    onCastleEntitySpawned(entity: CastleEntity, isPlayer: boolean): void;
     /**
      * UnitEntity が生成されたときのコールバック
      * id に紐つけて表示物を生成する
      */
-    onUnitEntitySpawned(entity: UnitEntity, basePosition: number): void;
+    onUnitEntitySpawned(entity: UnitEntity): void;
     /**
      * エンティティのステートが変更された際のコールバック
      */
@@ -110,7 +115,7 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
      * 利用可能なコストの値が変動したときのコールバック
      */
-    onAvailableCostUpdated(cost: number): void;
+    onAvailableCostUpdated(cost: number, maxCost: number, availablePlayerUnitIds: number[]): void;
     /**
      * 勝敗が決定したときのコールバック
      */
@@ -126,15 +131,19 @@ export default class BattleScene extends Scene implements BattleLogicDelegate {
     /**
      * 渡された UnitEntity の distance が変化した時に呼ばれる
      */
-    onUnitEntityWalked(entity: UnitEntity): void;
+    onAttackableEntityWalked(entity: AttackableEntity): void;
+    /**
+     * 渡された UnitEntity がノックバック中に呼ばれる
+     */
+    onAttackableEntityKnockingBack(entity: AttackableEntity, knockBackRate: number): void;
     /**
      * 渡されたエンティティの health が増減した場合に呼ばれる
      */
     onAttackableEntityHealthUpdated(_attacker: AttackableEntity, target: AttackableEntity, fromHealth: number, toHealth: number, maxHealth: number): void;
     /**
-    * 渡されたユニットが移動すべきかどうかを返す
+     * 渡されたユニットが移動すべきかどうかを返す
      */
-    shouldUnitWalk(entity: UnitEntity): boolean;
+    shouldAttackableWalk(entity: AttackableEntity): boolean;
     /**
      * 特異メソッド
      */

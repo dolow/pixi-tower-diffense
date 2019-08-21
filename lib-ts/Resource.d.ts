@@ -1,4 +1,4 @@
-/// <reference types="pixi.js" />
+import * as PIXI from 'pixi.js';
 import Scene from 'scenes/Scene';
 /**
  * リソースの URL や命名規則のマスタ
@@ -14,6 +14,7 @@ declare const Resource: Readonly<{
         Unit: (unitIds: number[]) => string;
         AllUnit: () => string;
         UnitAnimation: (unitIds: number[]) => string;
+        Castle: (castleIds: number[]) => string;
     };
     /**
      * 渡されたパラメータによって動的に変わる url を有するオブジェクト
@@ -21,7 +22,7 @@ declare const Resource: Readonly<{
     Dynamic: {
         Unit: (unitId: number) => string;
         UnitPanel: (unitId: number) => string;
-        Base: (baseId: number) => string;
+        Castle: (castleId: number) => string;
     };
     /**
      * 静的なリソースを有するオブジェクト
@@ -59,7 +60,7 @@ declare const Resource: Readonly<{
      */
     TextureFrame: {
         Unit: (unitActionType: string, unitId: number, index: number) => PIXI.Texture;
-        Base: (baseId: number, index?: number) => PIXI.Texture;
+        Castle: (castleId: number, index?: number) => PIXI.Texture;
         CollapseExplode: (index?: number) => PIXI.Texture;
         AttackSmoke: (index?: number) => PIXI.Texture;
     };
@@ -73,13 +74,14 @@ declare const Resource: Readonly<{
             ATTACK: string;
             DAMAGE: string;
         }>;
-        Base: Readonly<{
+        Castle: Readonly<{
             IDLE: string;
             SPAWN: string;
             COLLAPSE: string;
         }>;
     };
     FontFamily: {
+        Css: string;
         Default: string;
     };
     /**

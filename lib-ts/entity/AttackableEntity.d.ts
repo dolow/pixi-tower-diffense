@@ -24,6 +24,14 @@ export default class AttackableEntity {
      */
     currentHealth: number;
     /**
+     * 現在フレームでのダメージ数
+     */
+    currentFrameDamage: number;
+    /**
+     * ノックバック経過フレーム数
+     */
+    currentKnockBackFrameCount: number;
+    /**
      * 拠点からの距離
      */
     distance: number;

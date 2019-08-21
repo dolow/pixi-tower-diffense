@@ -1,7 +1,7 @@
 {
-  "name": "tower-diffence",
+  "name": "tower-diffense",
   "version": "0.0.1",
-  "description": "sample tower diffence game made with pixi.js",
+  "description": "sample tower diffense game made with pixi.js",
   "main": "index.js",
   "scripts": {
     "build:develop": "webpack --mode development",

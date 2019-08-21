@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BaseEntity | tower-diffence</title>
+	<title>CastleEntity | tower-diffence</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="baseentity.html">BaseEntity</a>
+					<a href="castleentity.html">CastleEntity</a>
 				</li>
 			</ul>
-			<h1>Class BaseEntity</h1>
+			<h1>Class CastleEntity</h1>
 		</div>
 	</div>
 </header>
@@ -78,7 +78,7 @@
 						<a href="attackableentity.html" class="tsd-signature-type">AttackableEntity</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">BaseEntity</span>
+								<span class="target">CastleEntity</span>
 							</li>
 						</ul>
 					</li>
@@ -91,20 +91,22 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="baseentity.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="castleentity.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="baseentity.html#baseid" class="tsd-kind-icon">base<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseentity.html#currenthealth" class="tsd-kind-icon">current<wbr>Health</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseentity.html#distance" class="tsd-kind-icon">distance</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseentity.html#engagedentity" class="tsd-kind-icon">engaged<wbr>Entity</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseentity.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseentity.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseentity.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseentity.html#state" class="tsd-kind-icon">state</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="castleentity.html#castleid" class="tsd-kind-icon">castle<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#currentframedamage" class="tsd-kind-icon">current<wbr>Frame<wbr>Damage</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#currenthealth" class="tsd-kind-icon">current<wbr>Health</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#currentknockbackframecount" class="tsd-kind-icon">current<wbr>Knock<wbr>Back<wbr>Frame<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#distance" class="tsd-kind-icon">distance</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#engagedentity" class="tsd-kind-icon">engaged<wbr>Entity</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="castleentity.html#state" class="tsd-kind-icon">state</a></li>
 							</ul>
 						</section>
 					</div>
@@ -116,14 +118,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Base<wbr>Entity<span class="tsd-signature-symbol">(</span>baseId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Castle<wbr>Entity<span class="tsd-signature-symbol">(</span>master<span class="tsd-signature-symbol">: </span><a href="../interfaces/castlemaster.html" class="tsd-signature-type">CastleMaster</a>, isPlayer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="castleentity.html" class="tsd-signature-type">CastleEntity</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/BaseEntity.ts#L10">entity/BaseEntity.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/CastleEntity.ts#L11">entity/CastleEntity.ts:11</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -134,13 +136,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>baseId: <span class="tsd-signature-type">number</span></h5>
+									<h5>master: <a href="../interfaces/castlemaster.html" class="tsd-signature-type">CastleMaster</a></h5>
 								</li>
 								<li>
 									<h5>isPlayer: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="baseentity.html" class="tsd-signature-type">BaseEntity</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="castleentity.html" class="tsd-signature-type">CastleEntity</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -148,17 +150,33 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="baseid" class="tsd-anchor"></a>
-					<h3>base<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">base<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<a name="castleid" class="tsd-anchor"></a>
+					<h3>castle<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">castle<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/BaseEntity.ts#L10">entity/BaseEntity.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/CastleEntity.ts#L11">entity/CastleEntity.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>拠点 ID</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="currentframedamage" class="tsd-anchor"></a>
+					<h3>current<wbr>Frame<wbr>Damage</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Frame<wbr>Damage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#currentframedamage">currentFrameDamage</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L29">entity/AttackableEntity.ts:29</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>現在フレームでのダメージ数</p>
 						</div>
 					</div>
 				</section>
@@ -179,13 +197,29 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="currentknockbackframecount" class="tsd-anchor"></a>
+					<h3>current<wbr>Knock<wbr>Back<wbr>Frame<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Knock<wbr>Back<wbr>Frame<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#currentknockbackframecount">currentKnockBackFrameCount</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L33">entity/AttackableEntity.ts:33</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ノックバック経過フレーム数</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="distance" class="tsd-anchor"></a>
 					<h3>distance</h3>
 					<div class="tsd-signature tsd-kind-icon">distance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#distance">distance</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L29">entity/AttackableEntity.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L37">entity/AttackableEntity.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -201,7 +235,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="attackableentity.html">AttackableEntity</a>.<a href="attackableentity.html#engagedentity">engagedEntity</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L33">entity/AttackableEntity.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/dolow/pixi-tower-diffense/blob/develop/src/entity/AttackableEntity.ts#L41">entity/AttackableEntity.ts:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -290,34 +324,40 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="baseentity.html" class="tsd-kind-icon">Base<wbr>Entity</a>
+						<a href="castleentity.html" class="tsd-kind-icon">Castle<wbr>Entity</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="baseentity.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="castleentity.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="baseentity.html#baseid" class="tsd-kind-icon">base<wbr>Id</a>
+								<a href="castleentity.html#castleid" class="tsd-kind-icon">castle<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="baseentity.html#currenthealth" class="tsd-kind-icon">current<wbr>Health</a>
+								<a href="castleentity.html#currentframedamage" class="tsd-kind-icon">current<wbr>Frame<wbr>Damage</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="baseentity.html#distance" class="tsd-kind-icon">distance</a>
+								<a href="castleentity.html#currenthealth" class="tsd-kind-icon">current<wbr>Health</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="baseentity.html#engagedentity" class="tsd-kind-icon">engaged<wbr>Entity</a>
+								<a href="castleentity.html#currentknockbackframecount" class="tsd-kind-icon">current<wbr>Knock<wbr>Back<wbr>Frame<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="baseentity.html#id" class="tsd-kind-icon">id</a>
+								<a href="castleentity.html#distance" class="tsd-kind-icon">distance</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="baseentity.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a>
+								<a href="castleentity.html#engagedentity" class="tsd-kind-icon">engaged<wbr>Entity</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="baseentity.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a>
+								<a href="castleentity.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="baseentity.html#state" class="tsd-kind-icon">state</a>
+								<a href="castleentity.html#isplayer" class="tsd-kind-icon">is<wbr>Player</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="castleentity.html#maxhealth" class="tsd-kind-icon">max<wbr>Health</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="castleentity.html#state" class="tsd-kind-icon">state</a>
 							</li>
 						</ul>
 					</li>

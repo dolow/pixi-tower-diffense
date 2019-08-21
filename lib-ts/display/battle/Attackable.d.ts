@@ -9,13 +9,13 @@ export default abstract class Attackable implements UpdateObject {
      */
     sprite: PIXI.Sprite;
     /**
+     * スポーンした座標
+     */
+    protected spawnedPosition: PIXI.Point;
+    /**
      * 現在のアニメーション種別
      */
     animationType: string;
-    /**
-     * 現在のアニメーションフレーム
-     */
-    protected animationFrameIndex: number;
     /**
      * 経過フレーム数
      */
@@ -24,7 +24,14 @@ export default abstract class Attackable implements UpdateObject {
      * 破棄フラグ
      */
     protected destroyed: boolean;
-    constructor();
+    /**
+     * spawnedPosition を返す
+     */
+    readonly distanceBasePosition: PIXI.Point;
+    constructor(spawnPosition: {
+        x: number;
+        y: number;
+    });
     /**
      * UpdateObject インターフェース実装
      * 削除フラグが立っているか返す
@@ -39,10 +46,6 @@ export default abstract class Attackable implements UpdateObject {
      * 接敵しているかどうかを返す
      */
     isFoeContact(target: PIXI.Container): boolean;
-    /**
-     * 現在のアニメーション種別を返す
-     */
-    getAnimationType(): string;
     /**
      * アニメーション時間をリセットする
      */
